@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+#include "temas.h"
 
 struct notema{
 	char Tema[100];
@@ -12,3 +12,11 @@ struct notema{
 struct noraiz{
 	struct notema* RaizTema;
 };
+
+NoTema* criaArvT(){
+	NoEntrevista* Arv;
+	NoEntrevista->Esq = NULL;
+	NoEntrevista->Dir = NULL;
+	arv* = (NoTema*) = malloc(sizeof(NoTema));
+	return arv;
+}
