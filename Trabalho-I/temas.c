@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "temas.h"
-
+#include "entrevistas.h"
 struct notema{
 	char Tema[100];
 	struct notema* Esq;
@@ -13,10 +13,5 @@ struct noraiz{
 	struct notema* RaizTema;
 };
 
-NoTema* criaArvT(){
-	NoEntrevista* Arv;
-	NoEntrevista->Esq = NULL;
-	NoEntrevista->Dir = NULL;
-	arv* = (NoTema*) = malloc(sizeof(NoTema));
-	return arv;
-}
+
+
