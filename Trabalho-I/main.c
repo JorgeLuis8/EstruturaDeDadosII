@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "entrevistas.c"
-
+#include "temas.h"
 int main() {
     NoEntrevista *raiz = NULL; // Inicializa a raiz como NULL
+    //NoTema *raizTema = NULL; // Inicializa a raiz como NULL
 
     int opcao;
     do {
@@ -21,6 +22,12 @@ int main() {
                 Ler_dados_de_insercao_entrevistas(novaEntrevista);
                 raiz = inserir_entrevistas(raiz, novaEntrevista);
                 printf("Entrevista inserida com sucesso!\n");
+
+                // printf("\nInserir novo tema:\n");
+                // NoTema *novoTema = cria_arvore_tema();
+                // ler_dados(novoTema);
+                // Inserir_Tema(raizTema, novoTema, raiz);
+                // printf("Tema inserido com sucesso!\n");
                 break;
             case 2:
                 printf("\nBuscar entrevista por titulo:\n");
@@ -54,4 +61,3 @@ int main() {
 
     return 0;
 }
-

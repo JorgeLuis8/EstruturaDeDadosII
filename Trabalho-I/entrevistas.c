@@ -19,7 +19,9 @@ struct raizentrevista
 {
     struct noentrevista *raiz;
 };
-/*criando a arvore de entrevistas, onde a memoria é alocada e depois é atribuido NULL para os ponteiros de esquerda e direita e depois é retornada a arvore alocada*/
+/*criando a arvore de entrevistas, onde a memoria é alocada e
+ depois é atribuido NULL para os ponteiros de esquerda e direita e depois é retornada a
+  arvore alocada*/
 NoEntrevista *criar_arvore_entrevistas()
 {
     NoEntrevista *a = (NoEntrevista *)malloc(sizeof(NoEntrevista));
@@ -44,7 +46,8 @@ void Ler_dados_de_insercao_entrevistas(NoEntrevista *no)
 }
 
 /* Funcao de insercao das entrevista, onde a raiz e o no sao passados de parametro e logo depois
-é verificado se a raiz é nula, se sim insere o no diretamente na raiz,se nao verfica a esquerda em ordem alfabetica, e depois a direita. */
+é verificado se a raiz é nula, se sim insere o no diretamente na raiz,se nao verfica
+ a esquerda em ordem alfabetica, e depois a direita. */
 NoEntrevista *inserir_entrevistas(NoEntrevista *raiz, NoEntrevista *no)
 {
     if (raiz == NULL)
@@ -79,7 +82,9 @@ NoEntrevista *inserir_entrevistas(NoEntrevista *raiz, NoEntrevista *no)
     return raiz;
 }
 
-/* Funcao de busca, onde e passada a arvore e o titulo logo apos é feita a busca na raiz,se nao vai para a esquerda e se nao estiver na esquerda ele vai para a direira e se nao encontrar retorna NULL  */
+/* Funcao de busca, onde e passada a arvore e o titulo logo apos é feita a busca na raiz,
+se nao vai para a esquerda e se nao estiver na esquerda ele vai para a direira e se nao
+ encontrar retorna NULL */
 NoEntrevista *buscar_entrevistas(NoEntrevista *raiz, char *titulo)
 {
     NoEntrevista *resultado = NULL;
