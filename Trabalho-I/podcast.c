@@ -14,3 +14,11 @@ struct nopodcast{
 struct raizpodcast{
 	struct nopodcast *RaizPodcast;
 };
+
+NoPodcast *criar_arvore_podcast()
+{
+    NoPodcast *a = (NoPodcast *)malloc(sizeof(NoPodcast));
+    a->Esq = NULL;
+    a->Dir = NULL;
+    return a;
+}

@@ -1,82 +1,107 @@
 #include "entrevistas.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-struct arvore_entrevistas
+// struct da arvore de entrevistas
+struct noentrevista
 {
     char titulos[50];
     char data[50];
     int duracao;
     char nome_convidado[50];
     char especialidade_convidado[50];
-    struct arvore_entrevistas *esq;
-    struct arvore_entrevistas *dir;
+    struct noentrevista *esq;
+    struct noentrevista *dir;
 };
-
-struct raiz_entrevistas {
-    struct arvore_entrevistas *raiz;
+// struct da raiz da arvore de entrevistas
+struct raizentrevista
+{
+    struct noentrevista *raiz;
 };
-
-Arvore_entrevistas* criar_arvore_entrevistas() {
-    Arvore_entrevistas *a = (Arvore_entrevistas*) malloc(sizeof(Arvore_entrevistas));
+/*criando a arvore de entrevistas, onde a memoria Ã© alocada e depois Ã© atribuido NULL para os ponteiros de esquerda e direita e depois Ã© retornada a arvore alocada*/
+NoEntrevista *criar_arvore_entrevistas()
+{
+    NoEntrevista *a = (NoEntrevista *)malloc(sizeof(NoEntrevista));
     a->esq = NULL;
     a->dir = NULL;
     return a;
 }
 
-//inserindo dados 
-void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no){
+/*FunÃ§Ã£o simples parar ler os dados da entrevista*/
+void Ler_dados_de_insercao_entrevistas(NoEntrevista *no)
+{
     printf("Digite o titulo da entrevista: ");
     scanf("%s", no->titulos);
     printf("Digite a data da entrevista: ");
     scanf("%s", no->data);
-    printf("Digite a duração da entrevista: ");
+    printf("Digite a duracao da entrevista: ");
     scanf("%d", &no->duracao);
     printf("Digite o nome do convidado: ");
     scanf("%s", no->nome_convidado);
     printf("Digite a especialidade do convidado: ");
     scanf("%s", no->especialidade_convidado);
 }
- 
- // Função para inserir entrevistas na árvore, usando a função de ler os dados de inserção
-Arvore_entrevistas* inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevistas *no) {
-    // Se a raiz for nula, o nó inserido será a raiz
-    if (raiz == NULL) {
+
+/* Funcao de insercao das entrevista, onde a raiz e o no sao passados de parametro e logo depois
+Ã© verificado se a raiz Ã© nula, se sim insere o no diretamente na raiz,se nao verfica a esquerda em ordem alfabetica, e depois a direita. */
+NoEntrevista *inserir_entrevistas(NoEntrevista *raiz, NoEntrevista *no)
+{
+    if (raiz == NULL)
+    {
         raiz = no;
-    } 
-    else {
-        // Se o título do nó inserido for menor que o título da raiz, o nó será inserido à esquerda
-        if (strcmp(no->titulos, raiz->titulos) < 0) {
-            if (raiz->esq == NULL) {
+    }
+    else
+    {
+        if ((strcmp(no->titulos, raiz->titulos) < 0))
+        {
+            if (raiz->esq == NULL)
+            {
                 raiz->esq = no;
-            } else {
+            }
+            else
+            {
                 raiz->esq = inserir_entrevistas(raiz->esq, no);
             }
-        // Se o título do nó inserido for maior que o título da raiz, o nó será inserido à direita
-        } else {
-            if (raiz->dir == NULL) {
+        }
+        else
+        {
+            if (raiz->dir == NULL)
+            {
                 raiz->dir = no;
-            } else {
+            }
+            else
+            {
                 raiz->dir = inserir_entrevistas(raiz->dir, no);
             }
         }
     }
-
     return raiz;
 }
 
-// Função para buscar entrevistas na árvore
-Arvore_entrevistas* buscar_entrevistas(Arvore_entrevistas *raiz, char *titulo) {
-     if(raiz != NULL){ {
-        if (strcmp(titulo, raiz->titulos) == 0) {
-            return raiz;
-        } else {
-            if (strcmp(titulo, raiz->titulos) < 0) {
-                return buscar_entrevistas(raiz->esq, titulo);
-            } else {
-                return buscar_entrevistas(raiz->dir, titulo);
-                }
+/* Funcao de busca, onde e passada a arvore e o titulo logo apos Ã© feita a busca na raiz,se nao vai para a esquerda e se nao estiver na esquerda ele vai para a direira e se nao encontrar retorna NULL  */
+NoEntrevista *buscar_entrevistas(NoEntrevista *raiz, char *titulo)
+{
+    NoEntrevista *resultado = NULL;
+
+    if (raiz != NULL)
+    {
+        if (strcmp(titulo, raiz->titulos) == 0)
+        {
+            resultado = raiz;
+        }
+        else
+        {
+            if (strcmp(titulo, raiz->titulos) < 0)
+            {
+                resultado = buscar_entrevistas(raiz->esq, titulo);
+            }
+            else if (strcmp(titulo, raiz->titulos) > 0)
+            {
+                resultado = buscar_entrevistas(raiz->dir, titulo);
             }
         }
     }
+
+    return resultado;
 }
