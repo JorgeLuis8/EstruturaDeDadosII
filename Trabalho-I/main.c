@@ -3,7 +3,7 @@
 #include "entrevistas.c"
 #include "temas.h"
 int main() {
-    NoEntrevista *raiz = NULL; // Inicializa a raiz como NULL
+    RaizEntrevista *raiz = NULL; // Inicializa a raiz como NULL
     //NoTema *raizTema = NULL; // Inicializa a raiz como NULL
 
     int opcao;

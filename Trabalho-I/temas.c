@@ -35,37 +35,13 @@ void ler_dados(NoTema *no){
 	fgets(no->Tema, sizeof(no->Tema), stdin);
 }
 
-/* Função para inserir um tema na árvore de temas. 
- * Recebe a raiz da árvore de temas, o nó a ser inserido e a raiz da árvore de entrevistas.
- * Se a raiz for NULL, o nó é inserido na raiz e a raiz da árvore de entrevistas é atribuída ao nó.
- * Caso contrário, verifica se o tema do nó é menor que o tema da raiz.
- * Se for menor, chama a função recursivamente para a esquerda.
- * Se for maior, chama a função recursivamente para a direita.
- */
-void Inserir_Tema(NoTema *raiz, NoTema *no,RaizEntrevista *raizEntrevista){
-	if(no->Esq == NULL){
-		raiz = no;
-		no->entrevistas = raizEntrevista;
-	}
-	else{
-		if(strcmp(no->Tema, raiz->Tema) < 0){
-			Inserir_Tema(raiz->Esq, no, raizEntrevista);
-		}
-		else{
-			Inserir_Tema(raiz->Dir, no, raizEntrevista);
-		}
-	}
-}
 
-/* Função para buscar um tema na árvore de temas.
- * Recebe a raiz da árvore de temas e o tema a ser buscado.
- * Se a raiz for NULL, retorna NULL.
- * Se o tema da raiz for igual ao tema buscado, retorna a raiz.
- * Se o tema do nó for menor que o tema buscado, chama a função recursivamente para a esquerda.
- * Se o tema do nó for maior que o tema buscado, chama a função recursivamente para a direita.
- */
-NoTema *Buscar_Tema(NoTema *raiz, char *tema){
-	NoTema *achou = NULL;
+
+
+
+NoTema *Buscar_Tema(NoTema *raiz, char *tema)
+{
+    NoTema *achou = NULL;
 	if (raiz != NULL){
 		if(strcmp(raiz->Tema, tema) == 0){
 			achou = raiz;
@@ -77,4 +53,6 @@ NoTema *Buscar_Tema(NoTema *raiz, char *tema){
 			achou = Buscar_Tema(raiz->Dir, tema);
 		}
 		return achou;
-	}
+}
+
+
