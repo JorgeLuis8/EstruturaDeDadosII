@@ -38,14 +38,14 @@ void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no)
 {
     printf("Digite o titulo da entrevista: ");
     scanf("%s", no->titulos);
-    // printf("Digite a data da entrevista: ");
-    // scanf("%s", no->data);
-    // printf("Digite a duração da entrevista: ");
-    // scanf("%d", &no->duracao);
-    // printf("Digite o nome do convidado: ");
-    // scanf("%s", no->nome_convidado);
-    // printf("Digite a especialidade do convidado: ");
-    // scanf("%s", no->especialidade_convidado);
+    printf("Digite a data da entrevista: ");
+    scanf("%s", no->data);
+    printf("Digite a duração da entrevista: ");
+    scanf("%d", &no->duracao);
+    printf("Digite o nome do convidado: ");
+    scanf("%s", no->nome_convidado);
+    printf("Digite a especialidade do convidado: ");
+    scanf("%s", no->especialidade_convidado);
 }
 
 // Função para inserir entrevistas na árvore, usando a função de ler os dados de inserção
