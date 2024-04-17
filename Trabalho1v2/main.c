@@ -7,12 +7,13 @@ void exibir_menu() {
     printf("\n===== Menu =====\n");
     printf("1. Inserir nova entrevista\n");
     printf("2. Buscar entrevista por titulo\n");
-    printf("3. Sair\n");
+    printf("3. Imprimir melhor entrevista\n");
+    printf("0. Sair\n");
     printf("Escolha uma opcao: ");
 }
 
 int main() {
-    Raiz_entrevistas *raiz = NULL;
+    Raiz_entrevistas *raiz = criar_raiz_entrevistas();
     Arvore_entrevistas *novo_no = NULL;
     int opcao;
     char titulo[50];
@@ -27,14 +28,15 @@ int main() {
                 novo_no = criar_arvore_entrevistas();
                 Ler_dados_de_insercao_entrevistas(novo_no);
                 // Inserir a nova entrevista na arvore
-                raiz = inserir_entrevistas(raiz, novo_no);
+                inserir_arvore(raiz, novo_no);
+
                 printf("Entrevista inserida com sucesso!\n");
                 break;
             case 2:
                 printf("Digite o titulo da entrevista a ser buscada: ");
                 scanf("%s", titulo);
                 // Buscar a entrevista na arvore
-                novo_no = buscar_entrevistas(raiz, titulo);
+                novo_no = arvore_busca(raiz, titulo);
                 if (novo_no != NULL) {
                     printf("Entrevista encontrada:\n");
                     printf("Titulo: %s\n", novo_no->titulos);
@@ -47,12 +49,12 @@ int main() {
                 }
                 break;
             case 3:
-                printf("Saindo...\n");
+                imprimir_arvore(raiz);
                 break;
             default:
                 printf("Opcao invalida! Tente novamente.\n");
         }
-    } while (opcao != 3);
+    } while (opcao);
 
     return 0;
 }
