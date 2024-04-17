@@ -17,7 +17,7 @@ struct noentrevista
 // struct da raiz da arvore de entrevistas
 struct raizentrevista
 {
-    struct noentrevista *raiz;
+    struct noentrevista *raizEnt;
 };
 /*criando a arvore de entrevistas, onde a memoria é alocada e
  depois é atribuido NULL para os ponteiros de esquerda e direita e depois é retornada a
@@ -48,34 +48,35 @@ void Ler_dados_de_insercao_entrevistas(NoEntrevista *no)
 /* Funcao de insercao das entrevista, onde a raiz e o no sao passados de parametro e logo depois
 é verificado se a raiz é nula, se sim insere o no diretamente na raiz,se nao verfica
  a esquerda em ordem alfabetica, e depois a direita. */
-NoEntrevista *inserir_entrevistas(NoEntrevista *raiz, NoEntrevista *no)
+NoEntrevista *inserir_entrevistas(RaizEntrevista *raiz, NoEntrevista *no)
 {
+
     if (raiz == NULL)
     {
         raiz = no;
     }
     else
     {
-        if ((strcmp(no->titulos, raiz->titulos) < 0))
+        if ((strcmp(no->titulos, raiz->raizEnt->titulos) < 0))
         {
-            if (raiz->esq == NULL)
+            if (raiz->raizEnt->esq == NULL)
             {
-                raiz->esq = no;
+                raiz->raizEnt->esq = no;
             }
             else
             {
-                raiz->esq = inserir_entrevistas(raiz->esq, no);
+                raiz->raizEnt->esq = inserir_entrevistas(raiz->raiz->esq, no);
             }
         }
         else
         {
-            if (raiz->dir == NULL)
+            if (raiz->raiz->dir == NULL)
             {
-                raiz->dir = no;
+                raiz->raiz->dir = no;
             }
             else
             {
-                raiz->dir = inserir_entrevistas(raiz->dir, no);
+                raiz->raiz->dir = inserir_entrevistas(raiz->raiz->dir, no);
             }
         }
     }
