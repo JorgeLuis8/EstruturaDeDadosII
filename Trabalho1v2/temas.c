@@ -6,83 +6,58 @@
 struct arvore_temas
 {
     char tema[50];
-    struct raiz_entrevistas *entrevistas;
+    struct Arvore_entrevistas *entrevistas;
     struct arvore_temas *esq;
     struct arvore_temas *dir;
 };
 
-struct raiz_temas
-{
-    struct arvore_temas *raiz;
-};
-
 Arvore_temas *criar_arvore_temas()
 {
-    Arvore_temas *a = (Arvore_temas *)malloc(sizeof(Arvore_temas));
-    a->esq = NULL;
-    a->dir = NULL;
-    return a;
+    Arvore_temas *nova_arvore = (Arvore_temas *)malloc(sizeof(Arvore_temas));
+    nova_arvore->esq = NULL;
+    nova_arvore->dir = NULL;
+    nova_arvore->entrevistas = NULL;
+    return nova_arvore;
 }
 
-Raiz_temas *criar_raiz_temas()
+void lerDados(Arvore_temas *no)
 {
-    Raiz_temas *r = (Raiz_temas *)malloc(sizeof(Raiz_temas));
-    r->raiz = NULL;
-    return r;
-}
-
-void Ler_dados_de_insercao_temas(Arvore_temas *no)
-{
-    printf("Digite o tema da entrevista: ");
+    printf("Digite o tema: ");
     scanf("%s", no->tema);
 }
 
-Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
+Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no,Arvore_entrevistas *entrevistas)
 {
     if (raiz == NULL)
     {
         raiz = no;
+        raiz->entrevistas = entrevistas;
     }
     else
     {
         if (strcmp(no->tema, raiz->tema) < 0)
-            raiz->esq = inserir_temas(raiz->esq, no);
-        else if (strcmp(no->tema, raiz->tema) > 0)
-            raiz->dir = inserir_temas(raiz->dir, no);
-    }
-    printf("Tema: %s\n", raiz->tema);
-    return raiz;
-}
-
-void inserir_arvore_temas(Raiz_temas *arvore, Arvore_temas *no)
-{
-    if (arvore->raiz == NULL)
-    {
-        arvore->raiz = no;
-    }
-    else
-    {
-        arvore->raiz = inserir_temas(arvore->raiz, no);
-    }
-}
-
-Arvore_temas *buscar_temas(Arvore_temas *raiz, char *titulo)
-{
-    Arvore_entrevistas *resultado = NULL;
-    if (raiz != NULL)
-    {
-        if (strcmp(titulo, raiz->tema) == 0)
         {
-            resultado = raiz;
-        }
-        else if (strcmp(titulo, raiz->tema) < 0)
-        {
-            resultado = buscar_entrevistas(raiz->esq, titulo);
+            raiz->esq = inserir_temas(raiz->esq, no,entrevistas);
         }
         else
         {
-            resultado = buscar_entrevistas(raiz->dir, titulo);
+            raiz->dir = inserir_temas(raiz->dir, no,entrevistas);
         }
     }
-    return resultado;
+    return raiz;
+}
+
+Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema)
+{
+    Arvore_temas *aux = NULL;
+    if(raiz != NULL){
+        if(strcmp(tema, raiz->tema) == 0){
+            aux = raiz;
+        }else if (strcmp(tema, raiz->tema) < 0){
+            aux = Busca_arv(raiz->esq, tema);
+    }   else{
+            aux = Busca_arv(raiz->dir, tema);
+        }
+    }
+    return aux;
 }
