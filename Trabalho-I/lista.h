@@ -1,2 +1,0 @@
-typedef struct lista Lista;
-
