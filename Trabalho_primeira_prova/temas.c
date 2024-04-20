@@ -1,16 +1,11 @@
 #include "temas.h"
 #include "entrevistas.h"
+#include "podcast.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-struct arvore_temas
-{
-    char tema[50];
-    Arvore_entrevistas *entrevistas;
-    struct arvore_temas *esq;
-    struct arvore_temas *dir;
-};
+
 
 Arvore_temas *criar_arvore_temas()
 {
@@ -32,8 +27,7 @@ Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
     if (raiz == NULL)
     {
         raiz = no;
-        // Inicializa a árvore de entrevistas associada ao nó inserido
-        raiz->entrevistas = criar_arvore_entrevistas();
+        raiz->entrevistas = NULL;
     }
     else
     {
@@ -80,10 +74,8 @@ void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
     Arvore_temas *tema_encontrado = Busca_arv(raiz, tema);
 
     if (tema_encontrado != NULL) {
-        printf("Tema: %s\n", tema_encontrado->tema);
         // Verifica se há entrevistas associadas ao tema
         if (tema_encontrado->entrevistas != NULL) {
-            // Imprime todas as entrevistas na árvore de entrevistas associada ao tema
             imprimir_dados_entrevista(tema_encontrado->entrevistas);
         } else {
             printf("Nao ha entrevistas cadastradas para este tema.\n");
@@ -93,4 +85,31 @@ void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
     }
 }
 
-
+Arvore_temas *remover_tema (Arvore_temas *raiz, char *tema) {
+    Arvore_temas *resultado = NULL;
+    if (raiz != NULL && raiz->entrevistas == NULL) {
+        if (strcmp(tema, raiz->tema) < 0) {
+            raiz->esq = remover_tema(raiz->esq, tema);
+        } else if (strcmp(tema, raiz->tema) > 0) {
+            raiz->dir = remover_tema(raiz->dir, tema);
+        } else {
+            if (raiz->esq == NULL) {
+                Arvore_temas *aux = raiz->dir;
+                free(raiz);
+                resultado = aux;
+            } else if (raiz->dir == NULL) {
+                Arvore_temas *aux = raiz->esq;
+                free(raiz);
+                resultado = aux;
+            } else {
+                Arvore_temas *aux = raiz->dir;
+                while (aux->esq != NULL) {
+                    aux = aux->esq;
+                }
+                strcpy(raiz->tema, aux->tema);
+                raiz->dir = remover_tema(raiz->dir, aux->tema);
+            }
+        }
+    }
+    return resultado;
+}

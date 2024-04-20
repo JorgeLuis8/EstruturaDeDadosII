@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "entrevistas.h"
 
 Arvore_entrevistas* criar_arvore_entrevistas() {
     Arvore_entrevistas *a = (Arvore_entrevistas*) malloc(sizeof(Arvore_entrevistas));
@@ -67,20 +68,17 @@ Arvore_entrevistas* inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevi
 
 void imprimir_dados_entrevista(Arvore_entrevistas *raiz) {
     if (raiz != NULL) {
-        if (strlen(raiz->titulos) > 0 || strlen(raiz->data) > 0 || raiz->duracao > 0 || strlen(raiz->nome_convidado) > 0 || strlen(raiz->especialidade_convidado) > 0) {
-            printf("Titulo: %s\n", raiz->titulos);
-            printf("Data: %s\n", raiz->data);
-            printf("Duracao: %d\n", raiz->duracao);
-            printf("Nome do convidado: %s\n", raiz->nome_convidado);
-            printf("Especialidade do convidado: %s\n", raiz->especialidade_convidado);
-        }
-        else {
-            printf("Nao ha entrevistas cadastradas para este tema.\n");
-        }
+        printf("Titulo: %s\n", raiz->titulos);
+        printf("Data: %s\n", raiz->data);
+        printf("Duracao: %d\n", raiz->duracao);
+        printf("Nome do convidado: %s\n", raiz->nome_convidado);
+        printf("Especialidade do convidado: %s\n", raiz->especialidade_convidado);
         imprimir_dados_entrevista(raiz->esq);
         imprimir_dados_entrevista(raiz->dir);
     }
 }
+
+
 
 
 
@@ -100,4 +98,36 @@ Arvore_entrevistas* buscar_entrevistas(Arvore_entrevistas *raiz, char *titulo) {
         }
     }
     return aux;
+}
+
+
+Arvore_entrevistas* remover_entrevista (Arvore_entrevistas *raiz, char *titulo) {
+    if (raiz != NULL) {
+        if (strcmp(titulo, raiz->titulos) < 0) {
+            raiz->esq = remover_entrevista(raiz->esq, titulo);
+        } else if (strcmp(titulo, raiz->titulos) > 0) {
+            raiz->dir = remover_entrevista(raiz->dir, titulo);
+        } else {
+            if (raiz->esq == NULL && raiz->dir == NULL) {
+                free(raiz);
+                raiz = NULL;
+            } else if (raiz->esq == NULL) {
+                Arvore_entrevistas *aux = raiz;
+                raiz = raiz->dir;
+                free(aux);
+            } else if (raiz->dir == NULL) {
+                Arvore_entrevistas *aux = raiz;
+                raiz = raiz->esq;
+                free(aux);
+            } else {
+                Arvore_entrevistas *aux = raiz->esq;
+                while (aux->dir != NULL) {
+                    aux = aux->dir;
+                }
+                strcpy(raiz->titulos, aux->titulos);
+                raiz->esq = remover_entrevista(raiz->esq, aux->titulos);
+            }
+        }
+    }
+    return raiz;
 }
