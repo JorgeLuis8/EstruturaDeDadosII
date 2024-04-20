@@ -3,6 +3,8 @@
     "files.associations": {
         "stdio.h": "c",
         "temas.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "podcast.h": "c",
+        "string.h": "c"
     }
 }
