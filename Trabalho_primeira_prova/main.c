@@ -58,7 +58,7 @@ int main()
             printf("Digite o tema relacionado a entrevista: ");
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
-            Arvore_temas *tema_encontrado = Busca_arv(raiz_temas, tema);
+            Arvore_temas *tema_encontrado = Busca_arv(raiz_podcast->raiz_temas, tema);
             if (tema_encontrado != NULL)
             {
                 Arvore_entrevistas *nova_entrevista = criar_arvore_entrevistas();
@@ -76,9 +76,9 @@ int main()
             printf("Informe o tema: ");
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
-            if (raiz_temas != NULL)
+            if (raiz_podcast->raiz_temas != NULL)
             {
-                imprimir_entrevistas_tema(raiz_temas, tema);
+                imprimir_entrevistas_tema(raiz_podcast->raiz_temas, tema);
             }
             else
             {

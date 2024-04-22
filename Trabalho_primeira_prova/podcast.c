@@ -2,6 +2,7 @@
 #include "temas.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 struct arvore_podCast
 {
@@ -50,6 +51,7 @@ Arvore_podCast *inserir_podcast(Arvore_podCast *raiz, Arvore_podCast *no)
             raiz->dir = inserir_podcast(raiz->dir, no);
         }
     }
+    printf("Tema '%s'\n", no->raiz_temas->tema);
     return raiz;
 }
 
