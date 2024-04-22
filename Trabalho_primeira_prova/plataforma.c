@@ -20,4 +20,3 @@ void ler_dados_plataforma(Plataforma *p)
     sscanf(buffer, "%[^\n]", p->nome);
 }
 
-
