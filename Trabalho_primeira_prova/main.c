@@ -116,7 +116,7 @@ int main()
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
             // Conferir se o tema tem entrevistas associadas
-            Arvore_temas *tema_encontrado = Busca_arv(raiz_temas, tema);
+            Arvore_temas *tema_encontrado = Busca_arv(raiz_podcast->raiz_temas, tema);
             if (tema_encontrado != NULL)
             {
                 if (tema_encontrado->entrevistas != NULL)
