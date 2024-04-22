@@ -15,12 +15,13 @@ Arvore_temas *criar_arvore_temas()
     nova_arvore->entrevistas = NULL;
     return nova_arvore;
 }
-
 void lerDados(Arvore_temas *no)
 {
     printf("Digite o tema: ");
-    scanf("%s", no->tema);
+    fgets(no->tema, sizeof(no->tema), stdin);
+    no->tema[strcspn(no->tema, "\n")] = 0; // Remover o caractere de nova linha, se presente
 }
+
 
 Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
 {
@@ -40,6 +41,7 @@ Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
             raiz->dir = inserir_temas(raiz->dir, no);
         }
     }
+    printf("Tema '%s' inserido com sucesso.\n", no->tema);
     return raiz;
 }
 
@@ -67,7 +69,15 @@ Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema)
 }
 
 
-
+void imprimir_temas(Arvore_temas *raiz)
+{
+    if (raiz != NULL)
+    {
+        printf("Tema: %s\n", raiz->tema);
+        imprimir_temas(raiz->esq);
+        imprimir_temas(raiz->dir);
+    }
+}
 // Função para imprimir as entrevistas de uma árvore de entrevistas
 void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
     // Busca o tema na árvore de temas
