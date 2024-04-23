@@ -101,3 +101,4 @@ Arvore_podCast *remover_podcast (Arvore_podCast *raiz, char *nome) {
     }
     return resultado;
 }
+
