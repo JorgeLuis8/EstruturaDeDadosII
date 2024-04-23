@@ -18,8 +18,7 @@ Arvore_temas *criar_arvore_temas()
 void lerDados(Arvore_temas *no)
 {
     printf("Digite o tema: ");
-    fgets(no->tema, sizeof(no->tema), stdin);
-    no->tema[strcspn(no->tema, "\n")] = 0; // Remover o caractere de nova linha, se presente
+    scanf(" %[^\n]", no->tema);
 }
 
 
@@ -41,7 +40,6 @@ Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
             raiz->dir = inserir_temas(raiz->dir, no);
         }
     }
-    printf("Tema '%s' inserido com sucesso.\n", no->tema);
     return raiz;
 }
 
