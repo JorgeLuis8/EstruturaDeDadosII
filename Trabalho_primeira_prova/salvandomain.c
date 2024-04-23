@@ -24,6 +24,8 @@ int main()
         printf("9. Mostrar todos os nomes dos podcasts em ordem alfabetica de uma plataforma\n");
         printf("10. Mostrar todos os temas de um podcast de uma plataforma\n");
         printf("11. Mostrar todos os titulos das entrevistas de um tema de um podcast de uma plataforma\n");
+        printf("12. Mostrar todos os dados de uma entrevista de um podcast de uma determinada plataforma, tema e titulo da entrevista\n");
+        printf("13. Mostrar todos os entrevistados de um determinado tema de um podcast de uma plataforma\n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &escolha);
@@ -372,46 +374,169 @@ int main()
                 printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_temas);
             }
             break;
-            case 11:
-                // Caso para mostrar todos os títulos das entrevistas de um tema de um podcast de uma plataforma
-                printf("Digite o nome da plataforma: ");
-                char nome_plataforma_titulos[50];
-                scanf(" %[^\n]", nome_plataforma_titulos);
+        case 11:
+            // Caso para mostrar todos os títulos das entrevistas de um tema de um podcast de uma plataforma
+            printf("Digite o nome da plataforma: ");
+            char nome_plataforma_titulos[50];
+            scanf(" %[^\n]", nome_plataforma_titulos);
 
-                // Buscar a plataforma na lista de plataformas
-                Plataforma *plataforma_titulos = buscar_plataforma(lista_plataformas, nome_plataforma_titulos);
-                if (plataforma_titulos != NULL) {
-                    printf("Digite o nome do podcast: ");
-                    char nome_podcast_titulos[50];
-                    scanf(" %[^\n]", nome_podcast_titulos);
+            // Buscar a plataforma na lista de plataformas
+            Plataforma *plataforma_titulos = buscar_plataforma(lista_plataformas, nome_plataforma_titulos);
+            if (plataforma_titulos != NULL)
+            {
+                printf("Digite o nome do podcast: ");
+                char nome_podcast_titulos[50];
+                scanf(" %[^\n]", nome_podcast_titulos);
 
-                    // Buscar o podcast dentro da plataforma
-                    Arvore_podCast *podcast_titulos = Busca_arv_podcast(plataforma_titulos->raiz_podcast, nome_podcast_titulos);
-                    if (podcast_titulos != NULL) {
-                        printf("Digite o nome do tema: ");
-                        char nome_tema_titulos[50];
-                        scanf(" %[^\n]", nome_tema_titulos);
+                // Buscar o podcast dentro da plataforma
+                Arvore_podCast *podcast_titulos = Busca_arv_podcast(plataforma_titulos->raiz_podcast, nome_podcast_titulos);
+                if (podcast_titulos != NULL)
+                {
+                    printf("Digite o nome do tema: ");
+                    char nome_tema_titulos[50];
+                    scanf(" %[^\n]", nome_tema_titulos);
 
-                        // Buscar o tema na árvore de temas do podcast
-                        Arvore_temas *tema_titulos = Busca_arv(podcast_titulos->raiz_temas, nome_tema_titulos);
-                        if (tema_titulos != NULL && tema_titulos->entrevistas != NULL) {
-                            printf("Títulos das entrevistas do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_titulos, nome_podcast_titulos, nome_plataforma_titulos);
-                            imprimir_titulos_entrevistas(tema_titulos->entrevistas);
-                        } else {
-                            printf("Tema '%s' nao encontrado ou sem entrevistas no podcast '%s'.\n", nome_tema_titulos, nome_podcast_titulos);
-                        }
-                    } else {
-                        printf("Podcast '%s' nao encontrado na plataforma '%s'.\n", nome_podcast_titulos, nome_plataforma_titulos);
+                    // Buscar o tema na árvore de temas do podcast
+                    Arvore_temas *tema_titulos = Busca_arv(podcast_titulos->raiz_temas, nome_tema_titulos);
+                    if (tema_titulos != NULL && tema_titulos->entrevistas != NULL)
+                    {
+                        printf("Títulos das entrevistas do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_titulos, nome_podcast_titulos, nome_plataforma_titulos);
+                        imprimir_titulos_entrevistas(tema_titulos->entrevistas);
                     }
-                } else {
-                    printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_titulos);
+                    else
+                    {
+                        printf("Tema '%s' nao encontrado ou sem entrevistas no podcast '%s'.\n", nome_tema_titulos, nome_podcast_titulos);
+                    }
                 }
-                break;
-                
-                
-                
+                else
+                {
+                    printf("Podcast '%s' nao encontrado na plataforma '%s'.\n", nome_podcast_titulos, nome_plataforma_titulos);
+                }
+            }
+            else
+            {
+                printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_titulos);
+            }
+            break;
+
+        case 12:
+            // Mostrar todos os dados de uma entrevista de um podcast de uma determinada plataforma, tema e título da entrevista
+            printf("Digite o nome da plataforma: ");
+            char nome_plataforma_entrevista_dados[50];
+            scanf(" %[^\n]", nome_plataforma_entrevista_dados);
+
+            // Buscar a plataforma na lista de plataformas
+            Plataforma *plataforma_entrevista_dados = buscar_plataforma(lista_plataformas, nome_plataforma_entrevista_dados);
+            if (plataforma_entrevista_dados != NULL)
+            {
+                printf("Digite o nome do podcast: ");
+                char nome_podcast_entrevista_dados[50];
+                scanf(" %[^\n]", nome_podcast_entrevista_dados);
+
+                // Buscar o podcast dentro da plataforma
+                Arvore_podCast *podcast_entrevista_dados = Busca_arv_podcast(plataforma_entrevista_dados->raiz_podcast, nome_podcast_entrevista_dados);
+                if (podcast_entrevista_dados != NULL)
+                {
+                    printf("Digite o nome do tema: ");
+                    char nome_tema_entrevista_dados[50];
+                    scanf(" %[^\n]", nome_tema_entrevista_dados);
+
+                    // Buscar o tema na árvore de temas do podcast
+                    Arvore_temas *tema_entrevista_dados = Busca_arv(podcast_entrevista_dados->raiz_temas, nome_tema_entrevista_dados);
+                    if (tema_entrevista_dados != NULL)
+                    {
+                        printf("Digite o título da entrevista: ");
+                        char titulo_entrevista_dados[100];
+                        scanf(" %[^\n]", titulo_entrevista_dados);
+
+                        // Buscar a entrevista na árvore de entrevistas do tema
+                        Arvore_entrevistas *entrevista_dados = buscar_entrevistas(tema_entrevista_dados->entrevistas, titulo_entrevista_dados);
+                        if (entrevista_dados != NULL)
+                        {
+                            printf("Dados da entrevista:\n");
+                            printf("Título: %s\n", entrevista_dados->titulos);
+                            printf("Convidado: %s\n", entrevista_dados->nome_convidado);
+                            printf("Data: %s\n", entrevista_dados->data);
+                            printf("Duração: %d minutos\n", entrevista_dados->duracao);
+                            printf("Especialidade: %s\n", entrevista_dados->especialidade_convidado);
+                            // Adicione mais campos conforme necessário
+                        }
+                        else
+                        {
+                            printf("Entrevista '%s' nao encontrada no tema '%s' do podcast '%s'.\n", titulo_entrevista_dados, nome_tema_entrevista_dados, nome_podcast_entrevista_dados);
+                        }
+                    }
+                    else
+                    {
+                        printf("Tema '%s' nao encontrado no podcast '%s'.\n", nome_tema_entrevista_dados, nome_podcast_entrevista_dados);
+                    }
+                }
+                else
+                {
+                    printf("Podcast '%s' nao encontrado na plataforma '%s'.\n", nome_podcast_entrevista_dados, nome_plataforma_entrevista_dados);
+                }
+            }
+            else
+            {
+                printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_entrevista_dados);
+            }
+            break;
+
         default:
             printf("Opcao invalida. Por favor, escolha uma opcao valida.\n");
+            break;
+
+        case 13:
+            // Mostrar todos os entrevistados de um determinado tema de um podcast de uma plataforma
+            printf("Digite o nome da plataforma: ");
+            char nome_plataforma_entrevistados[50];
+            scanf(" %[^\n]", nome_plataforma_entrevistados);
+
+            // Buscar a plataforma na lista de plataformas
+            Plataforma *plataforma_entrevistados = buscar_plataforma(lista_plataformas, nome_plataforma_entrevistados);
+            if (plataforma_entrevistados != NULL)
+            {
+                printf("Digite o nome do podcast: ");
+                char nome_podcast_entrevistados[50];
+                scanf(" %[^\n]", nome_podcast_entrevistados);
+
+                // Buscar o podcast dentro da plataforma
+                Arvore_podCast *podcast_entrevistados = Busca_arv_podcast(plataforma_entrevistados->raiz_podcast, nome_podcast_entrevistados);
+                if (podcast_entrevistados != NULL)
+                {
+                    printf("Digite o nome do tema: ");
+                    char nome_tema_entrevistados[50];
+                    scanf(" %[^\n]", nome_tema_entrevistados);
+
+                    // Buscar o tema na árvore de temas do podcast
+                    Arvore_temas *tema_entrevistados = Busca_arv(podcast_entrevistados->raiz_temas, nome_tema_entrevistados);
+                    if (tema_entrevistados != NULL)
+                    {
+                        // Verificar se há entrevistas associadas ao tema
+                        if (tema_entrevistados->entrevistas != NULL)
+                        {
+                            printf("Entrevistados do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
+                            listar_entrevistados(tema_entrevistados->entrevistas);
+                        }
+                        else
+                        {
+                            printf("O tema '%s' do podcast '%s' na plataforma '%s' nao possui entrevistas.\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
+                        }
+                    }
+                    else
+                    {
+                        printf("Tema '%s' nao encontrado no podcast '%s'.\n", nome_tema_entrevistados, nome_podcast_entrevistados);
+                    }
+                }
+                else
+                {
+                    printf("Podcast '%s' nao encontrado na plataforma '%s'.\n", nome_podcast_entrevistados, nome_plataforma_entrevistados);
+                }
+            }
+            else
+            {
+                printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_entrevistados);
+            }
             break;
         }
     } while (escolha != 0);
