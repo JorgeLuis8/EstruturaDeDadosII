@@ -102,3 +102,10 @@ Arvore_podCast *remover_podcast (Arvore_podCast *raiz, char *nome) {
     return resultado;
 }
 
+void imprimir_nomes_podcasts_em_ordem(Arvore_podCast *raiz) {
+    if (raiz != NULL) {
+        imprimir_nomes_podcasts_em_ordem(raiz->esq);
+        printf("%s\n", raiz->nome);
+        imprimir_nomes_podcasts_em_ordem(raiz->dir);
+    }
+}
