@@ -5,8 +5,11 @@
 #include "entrevistas.c" // Supondo que "entrevistas.h" contenha as definições das estruturas e funções
 #include "temas.c"       // Supondo que "temas.h" contenha as definições das estruturas e funções
 #include "plataforma.c"  // Supondo que "plataforma.h" contenha as definições das estruturas e funções
+#include <locale.h>
 int main()
 {
+    setlocale(LC_ALL, "Portuguese");
+
     Plataforma *lista_plataformas = NULL;
     int escolha;
 
@@ -400,7 +403,7 @@ int main()
                     Arvore_temas *tema_titulos = Busca_arv(podcast_titulos->raiz_temas, nome_tema_titulos);
                     if (tema_titulos != NULL && tema_titulos->entrevistas != NULL)
                     {
-                        printf("Títulos das entrevistas do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_titulos, nome_podcast_titulos, nome_plataforma_titulos);
+                        printf("Titulos das entrevistas do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_titulos, nome_podcast_titulos, nome_plataforma_titulos);
                         imprimir_titulos_entrevistas(tema_titulos->entrevistas);
                     }
                     else
@@ -445,7 +448,7 @@ int main()
                     Arvore_temas *tema_entrevista_dados = Busca_arv(podcast_entrevista_dados->raiz_temas, nome_tema_entrevista_dados);
                     if (tema_entrevista_dados != NULL)
                     {
-                        printf("Digite o título da entrevista: ");
+                        printf("Digite o titulo da entrevista: ");
                         char titulo_entrevista_dados[100];
                         scanf(" %[^\n]", titulo_entrevista_dados);
 
@@ -454,10 +457,10 @@ int main()
                         if (entrevista_dados != NULL)
                         {
                             printf("Dados da entrevista:\n");
-                            printf("Título: %s\n", entrevista_dados->titulos);
+                            printf("Titulo: %s\n", entrevista_dados->titulos);
                             printf("Convidado: %s\n", entrevista_dados->nome_convidado);
                             printf("Data: %s\n", entrevista_dados->data);
-                            printf("Duração: %d minutos\n", entrevista_dados->duracao);
+                            printf("Duracao: %d minutos\n", entrevista_dados->duracao);
                             printf("Especialidade: %s\n", entrevista_dados->especialidade_convidado);
                             // Adicione mais campos conforme necessário
                         }
@@ -516,7 +519,7 @@ int main()
                         if (tema_entrevistados->entrevistas != NULL)
                         {
                             printf("Entrevistados do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
-                            listar_entrevistados(tema_entrevistados->entrevistas);
+                            imprimir_dados_entrevista(tema_entrevistados->entrevistas);
                         }
                         else
                         {
