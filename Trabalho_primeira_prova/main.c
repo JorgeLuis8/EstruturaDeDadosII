@@ -1,20 +1,21 @@
+
 #include "temas.c"
 #include "entrevistas.c"
 #include "podcast.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+ 
 int main()
 {
     Arvore_temas *raiz_temas = NULL;
     Arvore_podCast *raiz_podcast = NULL;
-
+ 
     int escolha;
     char tema[50];
     char titulo_entrevista[100];
     char nome_podcast[50];
-
+ 
     do
     {
         printf("\n====== Menu ======\n");
@@ -30,11 +31,11 @@ int main()
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
         getchar();
-
+ 
         switch (escolha)
         {
-        case 1:
-        {
+       case 1:
+            
             printf("Digite o nome do podcast onde deseja inserir o tema: ");
             fgets(nome_podcast, sizeof(nome_podcast), stdin);
             nome_podcast[strcspn(nome_podcast, "\n")] = 0;
@@ -54,13 +55,11 @@ int main()
                 printf("Podcast '%s' não encontrado.\n", nome_podcast);
             }
             break;
-        }
         case 2:
-        {
             printf("Digite o tema relacionado a entrevista: ");
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
-            Arvore_temas *tema_encontrado = Busca_arv(raiz_podcast->raiz_temas, tema);
+            Arvore_temas *tema_encontrado = Busca_arv(raiz_temas, tema);
             if (tema_encontrado != NULL)
             {
                 Arvore_entrevistas *nova_entrevista = criar_arvore_entrevistas();
@@ -70,18 +69,17 @@ int main()
             }
             else
             {
-                printf("Tema '%s' nao encontrado. Por favor, insira o tema antes de adicionar uma entrevista.\n", tema);
+                printf("Tema '%s' nao encontrado.\n", tema);
             }
             break;
-        }
         case 3:
         {
             printf("Informe o tema: ");
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
-            if (raiz_podcast->raiz_temas != NULL)
+            if (raiz_temas != NULL)
             {
-                imprimir_entrevistas_tema(raiz_podcast->raiz_temas, tema);
+                imprimir_entrevistas_tema(raiz_temas, tema);
             }
             else
             {
@@ -103,7 +101,7 @@ int main()
                 tema_encontrado->entrevistas = remover_entrevista(tema_encontrado->entrevistas, titulo_entrevista);
                 printf("Entrevista removida com sucesso.\n");
             }
-
+ 
             else
             {
                 printf("Tema '%s' não encontrado.\n", tema);
@@ -115,8 +113,8 @@ int main()
             printf("Digite o tema que deseja remover: ");
             fgets(tema, sizeof(tema), stdin);
             tema[strcspn(tema, "\n")] = 0;
-            // Conferir se o tema tem entrevistas associadas
-            Arvore_temas *tema_encontrado = Busca_arv(raiz_podcast->raiz_temas, tema);
+            //Conferir se o tema tem entrevistas associadas
+            Arvore_temas *tema_encontrado = Busca_arv(raiz_temas, tema);
             if (tema_encontrado != NULL)
             {
                 if (tema_encontrado->entrevistas != NULL)
@@ -137,11 +135,12 @@ int main()
         }
         case 6:
         {
-
+            
             Arvore_podCast *novo_podcast = criar_arvore_podCast();
             ler_dados_podcast(novo_podcast);
             raiz_podcast = inserir_podcast(raiz_podcast, novo_podcast);
             break;
+            
         }
         case 7:
         {
@@ -150,17 +149,18 @@ int main()
                 char nome[50];
                 printf("Digite o nome do podcast: ");
                 scanf("%s", nome);
-                // imprimir_podcast_tema(raiz_podcast, nome);
+                //imprimir_podcast_tema(raiz_podcast, nome);
             }
             else
             {
                 printf("A arvore de podcast esta vazia.\n");
             }
             break;
+            
         }
         case 8:
         {
-
+            
             printf("Digite o nome do podcast que deseja remover: ");
             fgets(titulo_entrevista, sizeof(titulo_entrevista), stdin);
             titulo_entrevista[strcspn(titulo_entrevista, "\n")] = 0;
@@ -175,6 +175,7 @@ int main()
                 printf("Podcast '%s' nao encontrado.\n", titulo_entrevista);
             }
             break;
+            
         }
 
         case 0:
@@ -184,6 +185,6 @@ int main()
             printf("Escolha invalida. Tente novamente.\n");
         }
     } while (escolha != 0);
-
+ 
     return 0;
 }

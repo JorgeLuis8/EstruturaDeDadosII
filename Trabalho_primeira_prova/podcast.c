@@ -23,14 +23,11 @@ Arvore_podCast* criar_arvore_podCast() {
 }
 
 void ler_dados_podcast(Arvore_podCast *no){
-    char buffer[50];
     printf("Digite o nome do podcast: ");
-    fgets(buffer, sizeof(buffer), stdin);
-    sscanf(buffer, "%[^\n]", no->nome);
+    scanf(" %[^\n]", no->nome);
 
     printf("Digite o nome do entrevistador: ");
-    fgets(buffer, sizeof(buffer), stdin);
-    sscanf(buffer, "%[^\n]", no->entrevistador);
+    scanf(" %[^\n]", no->entrevistador);
 }
 
 Arvore_podCast *inserir_podcast(Arvore_podCast *raiz, Arvore_podCast *no)
