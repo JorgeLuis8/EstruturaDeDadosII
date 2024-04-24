@@ -16,20 +16,20 @@ int main()
     {
         printf("\nMenu:\n");
         printf("1. Adicionar Plataforma\n");
-        printf("2. Adicionar um podcast\n");
-        printf("3. Adicionar um tema\n");
-        printf("4. Adcionar uma entrevista\n");
-        printf("5. Remover uma entrevista\n");
-        printf("6. Remover um tema\n");
-        printf("7. Remover um podcast\n");
-        printf("8. Remover uma plataforma\n");
-        printf("9. Mostrar todos os nomes dos podcasts em ordem alfabetica de uma plataforma\n");
-        printf("10. Mostrar todos os temas de um podcast de uma plataforma\n");
-        printf("11. Mostrar todos os titulos das entrevistas de um tema de um podcast de uma plataforma\n");
-        printf("12. Mostrar todos os dados de uma entrevista de um podcast de uma determinada plataforma, tema e titulo da entrevista\n");
-        printf("13. Mostrar todos os entrevistados de um determinado tema de um podcast de uma plataforma\n");
+        printf("2. Adicionar Podcast\n");
+        printf("3. Adicionar Tema\n");
+        printf("4. Adicionar Entrevista\n");
+        printf("5. Remover Entrevista\n");
+        printf("6. Remover Tema\n");
+        printf("7. Remover Podcast\n");
+        printf("8. Remover Plataforma\n");
+        printf("9. Mostrar todos os nomes dos Podcasts em ordem alfabética de uma plataforma\n");
+        printf("10. Mostrar todos os temas de um Podcast de uma plataforma\n");
+        printf("11. Mostrar todos os títulos das entrevistas de um tema de um Podcast de uma plataforma\n");
+        printf("12. Mostrar todos os dados de uma entrevista de um Podcast de uma determinada plataforma, tema e título da entrevista\n");
+        printf("13. Mostrar todos os entrevistados de um determinado tema de um Podcast de uma plataforma\n");
         printf("0. Sair\n");
-        printf("Escolha uma opcao: ");
+        printf("Escolha uma opção: ");
         scanf("%d", &escolha);
 
         switch (escolha)
