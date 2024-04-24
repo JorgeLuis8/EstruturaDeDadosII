@@ -6,10 +6,8 @@
 Arvore_entrevistas *criar_arvore_entrevistas()
 {
     Arvore_entrevistas *a = (Arvore_entrevistas *)malloc(sizeof(Arvore_entrevistas));
-    if (a != NULL)
-    {
-        memset(a, 0, sizeof(Arvore_entrevistas));
-    }
+    a->esq = NULL;
+    a->dir = NULL;
     return a;
 }
 
@@ -174,3 +172,19 @@ void mostrar_dados_entrevista(Arvore_entrevistas* entrevista) {
     printf("Data: %s\n", entrevista->data);
     printf("Especialidade do convidado: %s\n", entrevista->especialidade_convidado);
 }
+
+// Função para imprimir os nomes dos entrevistados de todas as entrevistas de um tema
+// Função para imprimir os nomes dos entrevistados de todas as entrevistas de um tema
+void imprimir_entrevistados(Arvore_entrevistas *entrevistas) {
+    if (entrevistas != NULL) {
+        // Imprimir os entrevistados da subárvore da esquerda
+        imprimir_entrevistados(entrevistas->esq);
+        
+        // Imprimir o nome do entrevistado da entrevista atual
+        printf("- %s\n", entrevistas->nome_convidado);
+        
+        // Imprimir os entrevistados da subárvore da direita
+        imprimir_entrevistados(entrevistas->dir);
+    }
+}
+

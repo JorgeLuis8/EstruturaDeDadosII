@@ -21,5 +21,6 @@ void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no);
 Arvore_entrevistas* inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevistas *no);
 void imprimir_dados_entrevista(Arvore_entrevistas *no);
 Arvore_entrevistas* buscar_entrevistas(Arvore_entrevistas *raiz, char *titulo);
+void imprimir_entrevistados(Arvore_entrevistas *entrevistas);
 
 #endif /* ENTREVISTAS_H */

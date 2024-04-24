@@ -485,10 +485,6 @@ int main()
             }
             break;
 
-        default:
-            printf("Opcao invalida. Por favor, escolha uma opcao valida.\n");
-            break;
-
         case 13:
             // Mostrar todos os entrevistados de um determinado tema de um podcast de uma plataforma
             printf("Digite o nome da plataforma: ");
@@ -513,22 +509,14 @@ int main()
 
                     // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_entrevistados = Busca_arv(podcast_entrevistados->raiz_temas, nome_tema_entrevistados);
-                    if (tema_entrevistados != NULL)
+                    if (tema_entrevistados != NULL && tema_entrevistados->entrevistas != NULL)
                     {
-                        // Verificar se há entrevistas associadas ao tema
-                        if (tema_entrevistados->entrevistas != NULL)
-                        {
-                            printf("Entrevistados do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
-                            imprimir_dados_entrevista(tema_entrevistados->entrevistas);
-                        }
-                        else
-                        {
-                            printf("O tema '%s' do podcast '%s' na plataforma '%s' nao possui entrevistas.\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
-                        }
+                        printf("Entrevistados do tema '%s' do podcast '%s' na plataforma '%s':\n", nome_tema_entrevistados, nome_podcast_entrevistados, nome_plataforma_entrevistados);
+                        imprimir_entrevistados(tema_entrevistados->entrevistas);
                     }
                     else
                     {
-                        printf("Tema '%s' nao encontrado no podcast '%s'.\n", nome_tema_entrevistados, nome_podcast_entrevistados);
+                        printf("Tema '%s' nao encontrado ou sem entrevistas no podcast '%s'.\n", nome_tema_entrevistados, nome_podcast_entrevistados);
                     }
                 }
                 else
@@ -540,6 +528,10 @@ int main()
             {
                 printf("Plataforma '%s' nao encontrada.\n", nome_plataforma_entrevistados);
             }
+            break;
+
+        default:
+            printf("Opcao invalida. Por favor, escolha uma opcao valida.\n");
             break;
         }
     } while (escolha != 0);
