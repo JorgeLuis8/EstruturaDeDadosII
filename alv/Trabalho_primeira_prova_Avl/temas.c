@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
-
 Arvore_temas *criar_arvore_temas()
 {
     Arvore_temas *nova_arvore = (Arvore_temas *)malloc(sizeof(Arvore_temas));
@@ -20,7 +18,6 @@ void lerDados(Arvore_temas *no)
     printf("Digite o tema: ");
     scanf(" %[^\n]", no->tema);
 }
-
 
 Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
 {
@@ -47,7 +44,6 @@ Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
     return raiz;
 }
 
-
 Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema)
 {
     Arvore_temas *aux = NULL;
@@ -69,7 +65,6 @@ Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema)
     return aux;
 }
 
-
 void imprimir_temas(Arvore_temas *raiz)
 {
     if (raiz != NULL)
@@ -80,41 +75,61 @@ void imprimir_temas(Arvore_temas *raiz)
     }
 }
 // FunÃ§Ã£o para imprimir as entrevistas de uma Ã¡rvore de entrevistas
-void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
+void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema)
+{
     // Busca o tema na Ã¡rvore de temas
     Arvore_temas *tema_encontrado = Busca_arv(raiz, tema);
 
-    if (tema_encontrado != NULL) {
+    if (tema_encontrado != NULL)
+    {
         // Verifica se hÃ¡ entrevistas associadas ao tema
-        if (tema_encontrado->entrevistas != NULL) {
+        if (tema_encontrado->entrevistas != NULL)
+        {
             imprimir_dados_entrevista(tema_encontrado->entrevistas);
-        } else {
+        }
+        else
+        {
             printf("Nao ha entrevistas cadastradas para este tema.\n");
         }
-    } else {
+    }
+    else
+    {
         printf("Tema nao encontrado.\n");
     }
 }
 
-Arvore_temas *remover_tema (Arvore_temas *raiz, char *tema) {
+Arvore_temas *remover_tema(Arvore_temas *raiz, char *tema)
+{
     Arvore_temas *resultado = NULL;
-    if (raiz != NULL && raiz->entrevistas == NULL) {
-        if (strcmp(tema, raiz->tema) < 0) {
+    if (raiz != NULL && raiz->entrevistas == NULL)
+    {
+        if (strcmp(tema, raiz->tema) < 0)
+        {
             raiz->esq = remover_tema(raiz->esq, tema);
-        } else if (strcmp(tema, raiz->tema) > 0) {
+        }
+        else if (strcmp(tema, raiz->tema) > 0)
+        {
             raiz->dir = remover_tema(raiz->dir, tema);
-        } else {
-            if (raiz->esq == NULL) {
+        }
+        else
+        {
+            if (raiz->esq == NULL)
+            {
                 Arvore_temas *aux = raiz->dir;
                 free(raiz);
                 resultado = aux;
-            } else if (raiz->dir == NULL) {
+            }
+            else if (raiz->dir == NULL)
+            {
                 Arvore_temas *aux = raiz->esq;
                 free(raiz);
                 resultado = aux;
-            } else {
+            }
+            else
+            {
                 Arvore_temas *aux = raiz->dir;
-                while (aux->esq != NULL) {
+                while (aux->esq != NULL)
+                {
                     aux = aux->esq;
                 }
                 strcpy(raiz->tema, aux->tema);
@@ -170,7 +185,7 @@ Arvore_temas *rotar_esquerda_temas(Arvore_temas *no)
     aux->esq = no;
     no->dir = aux1;
 
-    no->altura = maior_no(altura_do_no_temas(no->esq), altura_do_no_temas(no->dir)) + 1;
+    no->altura = maior_no_temas(altura_do_no_temas(no->esq), altura_do_no_temas(no->dir)) + 1;
     aux->altura = maior_no_temas(altura_do_no_temas(aux->esq), altura_do_no_temas(aux->dir)) + 1;
 
     return aux;
@@ -216,10 +231,12 @@ Arvore_temas *balencar_arvore_temas(Arvore_temas *raiz)
     {
         raiz = rotar_direita_temas(raiz);
     }
-    else if(fb > 1 && fator_balanceamento_temas(raiz->esq) < 0){
+    else if (fb > 1 && fator_balanceamento_temas(raiz->esq) < 0)
+    {
         raiz = rotar_esquerda_direita_temas(raiz);
     }
-    else if(fb < -1 && fator_balanceamento_temas(raiz->dir) > 0){
+    else if (fb < -1 && fator_balanceamento_temas(raiz->dir) > 0)
+    {
         raiz = rotar_direita_esquerda_temas(raiz);
     }
     return raiz;
