@@ -6,6 +6,7 @@
         "stdlib.h": "c",
         "podcast.h": "c",
         "string.h": "c",
-        "entrevistas.h": "c"
+        "entrevistas.h": "c",
+        "entrevistas_avl.h": "c"
     }
 }
