@@ -40,9 +40,12 @@ Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no)
             raiz->dir = inserir_temas(raiz->dir, no);
         }
     }
+    raiz->altura = maior_no_temas(altura_do_no_temas(raiz->esq), altura_do_no_temas(raiz->dir)) + 1;
+
+    raiz = balencar_arvore_temas(raiz);
+
     return raiz;
 }
-
 
 
 Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema)
@@ -76,13 +79,13 @@ void imprimir_temas(Arvore_temas *raiz)
         imprimir_temas(raiz->dir);
     }
 }
-// Função para imprimir as entrevistas de uma árvore de entrevistas
+// FunÃ§Ã£o para imprimir as entrevistas de uma Ã¡rvore de entrevistas
 void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
-    // Busca o tema na árvore de temas
+    // Busca o tema na Ã¡rvore de temas
     Arvore_temas *tema_encontrado = Busca_arv(raiz, tema);
 
     if (tema_encontrado != NULL) {
-        // Verifica se há entrevistas associadas ao tema
+        // Verifica se hÃ¡ entrevistas associadas ao tema
         if (tema_encontrado->entrevistas != NULL) {
             imprimir_dados_entrevista(tema_encontrado->entrevistas);
         } else {
@@ -119,5 +122,105 @@ Arvore_temas *remover_tema (Arvore_temas *raiz, char *tema) {
             }
         }
     }
+    raiz->altura = maior_no_temas(altura_do_no_temas(raiz->esq), altura_do_no_temas(raiz->dir)) + 1;
+    raiz = balencar_arvore_temas(raiz);
     return resultado;
+}
+
+short maior_no_temas(short a, short b)
+{
+    return (a > b) ? a : b;
+}
+
+short altura_do_no_temas(Arvore_temas *no)
+{
+    short altura;
+
+    if (no == NULL)
+    {
+        altura = -1;
+    }
+    else
+    {
+        altura = no->altura;
+    }
+
+    return altura;
+}
+
+short fator_balanceamento_temas(Arvore_temas *no)
+{
+    short fb = 0;
+
+    if (no != NULL)
+    {
+        fb = altura_do_no_temas(no->esq) - altura_do_no_temas(no->dir);
+    }
+
+    return fb;
+}
+
+Arvore_temas *rotar_esquerda_temas(Arvore_temas *no)
+{
+    Arvore_temas *aux, *aux1;
+
+    aux = no->dir;
+    aux1 = aux->esq;
+
+    aux->esq = no;
+    no->dir = aux1;
+
+    no->altura = maior_no(altura_do_no_temas(no->esq), altura_do_no_temas(no->dir)) + 1;
+    aux->altura = maior_no_temas(altura_do_no_temas(aux->esq), altura_do_no_temas(aux->dir)) + 1;
+
+    return aux;
+}
+
+Arvore_temas *rotar_direita_temas(Arvore_temas *no)
+{
+    Arvore_temas *aux, *aux1;
+
+    aux = no->esq;
+    aux1 = aux->dir;
+
+    aux->dir = no;
+    no->esq = aux1;
+
+    no->altura = maior_no_temas(altura_do_no_temas(no->esq), altura_do_no_temas(no->dir)) + 1;
+    aux->altura = maior_no_temas(altura_do_no_temas(aux->esq), altura_do_no_temas(aux->dir)) + 1;
+
+    return aux;
+}
+
+Arvore_temas *rotar_direita_esquerda_temas(Arvore_temas *no)
+{
+    no->dir = rotar_direita_temas(no->dir);
+    return rotar_esquerda_temas(no);
+}
+
+Arvore_temas *rotar_esquerda_direita_temas(Arvore_temas *no)
+{
+    no->esq = rotar_esquerda_temas(no->esq);
+    return rotar_direita_temas(no);
+}
+
+Arvore_temas *balencar_arvore_temas(Arvore_temas *raiz)
+{
+    short fb = fator_balanceamento_temas(raiz);
+
+    if (fb < -1 && fator_balanceamento_temas(raiz->dir) <= 0)
+    {
+        raiz = rotar_esquerda_temas(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_temas(raiz->esq) >= 0)
+    {
+        raiz = rotar_direita_temas(raiz);
+    }
+    else if(fb > 1 && fator_balanceamento_temas(raiz->esq) < 0){
+        raiz = rotar_esquerda_direita_temas(raiz);
+    }
+    else if(fb < -1 && fator_balanceamento_temas(raiz->dir) > 0){
+        raiz = rotar_direita_esquerda_temas(raiz);
+    }
+    return raiz;
 }

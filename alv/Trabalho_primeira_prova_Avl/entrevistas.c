@@ -165,6 +165,21 @@ Arvore_entrevistas *inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevi
     return raiz;
 }
 
+
+void imprimir_dados(Arvore_entrevistas *raiz,int nivel){
+    int i;
+    if(raiz != NULL){
+        imprimir_dados(raiz->dir,nivel+1);
+        printf("\n\n");
+        for(i=0;i<nivel;i++){
+            printf("\t");
+        }
+        printf("%s\n",raiz->titulos);
+        imprimir_dados(raiz->esq,nivel+1);
+    }
+}
+
+
 void imprimir_dados_entrevista(Arvore_entrevistas *raiz)
 {
     if (raiz != NULL)
