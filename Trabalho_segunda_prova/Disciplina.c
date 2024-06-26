@@ -14,6 +14,7 @@ arv_disciplina *cria_no()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
+        
     }
     return no;
 }
