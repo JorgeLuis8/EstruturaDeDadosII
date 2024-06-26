@@ -6,10 +6,8 @@ int main()
 {
     arv_disciplina *raiz = NULL;
     int opcao;
-
     do
     {
-        printf("\nMenu:\n");
         printf("1. Inserir disciplina\n");
         printf("2. Imprimir disciplinas\n");
         printf("3. Sair\n");
@@ -20,28 +18,20 @@ int main()
         {
         case 1:
         {
-            arv_disciplina *novo_no = cria_no();
-            if (novo_no == NULL)
-            {
-                printf("Erro ao criar novo no!\n");
-                break;
-            }
-            ler_dados(novo_no);
-            raiz = inserir_disciplina(raiz, novo_no);
+            arv_disciplina *no = cria_no();
+            ler_dados(no);
+            raiz = inserir_disciplina(raiz, no);
             break;
         }
         case 2:
-            printf("\nDisciplinas inseridas:\n");
             imprimir_disciplinas(raiz);
             break;
         case 3:
-            printf("Saindo...\n");
             break;
         default:
             printf("Opcao invalida!\n");
         }
     } while (opcao != 3);
-
 
     return 0;
 }
