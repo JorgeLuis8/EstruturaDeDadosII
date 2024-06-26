@@ -69,8 +69,15 @@ arv_disciplina *rotacionarDireita(arv_disciplina *A)
     return B;
 }
 
-// Função para inserir uma disciplina na árvore
 arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no)
+{
+    raiz = inserir_rec(raiz, no); // Inserir e corrigir a árvore
+    if (raiz != NULL)             // Garantir que a raiz seja sempre preta
+        raiz->cor = BLACK;
+    return raiz;
+}
+
+arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no)
 {
     if (raiz == NULL)
     {
@@ -79,9 +86,9 @@ arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no)
     else
     {
         if (no->dados->codigo < raiz->dados->codigo)
-            raiz->esq = inserir_disciplina(raiz->esq, no);
+            raiz->esq = inserir_rec(raiz->esq, no);
         else
-            raiz->dir = inserir_disciplina(raiz->dir, no);
+            raiz->dir = inserir_rec(raiz->dir, no);
 
         // Verificações de correção de árvore vermelho-preta
         if (raiz->dir != NULL && raiz->dir->cor == RED)

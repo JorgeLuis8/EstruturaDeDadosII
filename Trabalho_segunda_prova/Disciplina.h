@@ -25,7 +25,6 @@ arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no);
 arv_disciplina *rotacionarDireita(arv_disciplina *no);
 arv_disciplina *rotacionarEsquerda(arv_disciplina *no);
 void trocaCor(arv_disciplina *no);
-arv_disciplina *balancear(arv_disciplina *raiz);
-int cor(arv_disciplina *no);
+arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no);
 arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no);
 #endif // DISCIPLINA_H
