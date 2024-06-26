@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Disciplina.h"
+
 #define BLACK 0
 #define RED 1
+
 arv_disciplina *cria_no()
 {
     arv_disciplina *no = (arv_disciplina *)malloc(sizeof(arv_disciplina));
     if (no != NULL)
     {
         no->dados = (dados_disciplina *)malloc(sizeof(dados_disciplina));
-        no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
     }
@@ -22,27 +23,22 @@ void ler_dados(arv_disciplina *no)
     printf("Informe o codigo da disciplina: ");
     scanf("%d", &no->dados->codigo);
 
-    // printf("Informe o nome da disciplina: ");
-    // scanf("%s", no->dados->nome);
+//     printf("Informe o nome da disciplina: ");
+//     scanf("%s", no->dados->nome);
 
-    // printf("Informe o bloco da disciplina: ");
-    // scanf("%d", &no->dados->bloco);
+//     printf("Informe o bloco da disciplina: ");
+//     scanf("%d", &no->dados->bloco);
 
-    // printf("Informe a carga-horaria da disciplina: ");
-    // scanf("%d", &no->dados->carga_horaria);
+//     printf("Informe a carga-horaria da disciplina: ");
+//     scanf("%d", &no->dados->carga_horaria);
 }
 
 // Função para trocar a cor dos nós
 void trocaCor(arv_disciplina *no)
 {
-    no->cor = !no->cor;
-    if (no->esq != NULL)
+    if (no != NULL)
     {
-        no->esq->cor = !no->esq->cor;
-    }
-    if (no->dir != NULL)
-    {
-        no->dir->cor = !no->dir->cor;
+        no->cor = (no->cor == RED) ? BLACK : RED;
     }
 }
 
@@ -52,7 +48,6 @@ arv_disciplina *rotacionarDireita(arv_disciplina *no)
     arv_disciplina *aux = no->esq;
     no->esq = aux->dir;
     aux->dir = no;
-    trocaCor(aux);
     return aux;
 }
 
@@ -62,34 +57,33 @@ arv_disciplina *rotacionarEsquerda(arv_disciplina *no)
     arv_disciplina *aux = no->dir;
     no->dir = aux->esq;
     aux->esq = no;
-    trocaCor(aux);
-
     return aux;
 }
 
-// Função para balancear a árvore
-// Função para balancear a árvore
 arv_disciplina *balancear(arv_disciplina *raiz)
 {
-    if (raiz == NULL)
-        return NULL;
-
-    // Verifica se o filho direito é vermelho e o filho esquerdo é preto ou nulo
-    if (raiz->dir != NULL && raiz->dir->cor == RED && (raiz->esq == NULL || raiz->esq->cor == BLACK))
+    // Caso 1: Filho da direita é vermelho
+    if (raiz->dir != NULL && raiz->dir->cor == RED)
     {
         raiz = rotacionarEsquerda(raiz);
+        trocaCor(raiz);
+        trocaCor(raiz->esq);
     }
 
-    // Verifica se o filho esquerdo é vermelho e o neto esquerdo também é vermelho
+    // Caso 2: Filho da esquerda e neto esquerdo são vermelhos
     if (raiz->esq != NULL && raiz->esq->cor == RED && raiz->esq->esq != NULL && raiz->esq->esq->cor == RED)
     {
         raiz = rotacionarDireita(raiz);
+        trocaCor(raiz);
+        trocaCor(raiz->dir);
     }
 
-    // Verifica se ambos os filhos são vermelhos
+    // Caso 3: Ambos os filhos são vermelhos
     if (raiz->esq != NULL && raiz->esq->cor == RED && raiz->dir != NULL && raiz->dir->cor == RED)
     {
         trocaCor(raiz);
+        trocaCor(raiz->esq);
+        trocaCor(raiz->dir);
     }
 
     return raiz;
@@ -100,8 +94,8 @@ arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no)
 {
     if (raiz == NULL)
     {
-        no->cor = BLACK; // Nó raiz é sempre preto
         raiz = no;
+        raiz->cor = RED;
     }
     else
     {
