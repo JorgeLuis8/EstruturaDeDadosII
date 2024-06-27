@@ -116,3 +116,19 @@ void imprimir_disciplinas(arv_disciplina *raiz)
         imprimir_disciplinas(raiz->dir);
     }
 }
+
+arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
+{
+    arv_disciplina *aux = NULL;
+    if (raiz != NULL)
+    {
+        if (raiz->dados->codigo == codigo)
+            aux = raiz;
+        else if (raiz->dados->codigo < codigo)
+            aux = buscar_disciplina(raiz->dir, codigo);
+        else
+            aux = buscar_disciplina(raiz->esq, codigo);
+    }
+
+    return aux;
+}
