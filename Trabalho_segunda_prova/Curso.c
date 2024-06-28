@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Curso.h"
-
+#include "Disciplina.h"
 #define BLACK 0
 #define RED 1
 
-arv_curso *cria_no()
+arv_curso *cria_no_curso()
 {
     arv_curso *no = (arv_curso *)malloc(sizeof(arv_curso));
     if (no != NULL)
@@ -18,7 +18,7 @@ arv_curso *cria_no()
     return no;
 }
 
-void ler_dados(arv_curso *no)
+void ler_dados_curso(arv_curso *no)
 {
     printf("Informe o código do curso: ");
     scanf("%d", &no->dados->codigo);
@@ -33,7 +33,7 @@ void ler_dados(arv_curso *no)
     scanf("%d", &no->dados->num_semanas);
 }
 
-void trocaCor(arv_disciplina *H)
+void trocaCor_curso(arv_curso *H)
 {
     if (H != NULL)
     {
@@ -45,9 +45,9 @@ void trocaCor(arv_disciplina *H)
     }
 }
 
-arv_disciplina *rotacionarEsquerda(arv_disciplina *A)
+arv_curso *rotacionarEsquerda_curso(arv_curso *A)
 {
-    arv_disciplina *B = A->dir;
+    arv_curso *B = A->dir;
     A->dir = B->esq;
     B->esq = A;
     B->cor = A->cor;
@@ -55,9 +55,9 @@ arv_disciplina *rotacionarEsquerda(arv_disciplina *A)
     return B;
 }
 
-arv_disciplina *rotacionarDireita(arv_disciplina *A)
+arv_curso *rotacionarDireita_curso(arv_curso *A)
 {
-    arv_disciplina *B = A->esq;
+    arv_curso *B = A->esq;
     A->esq = B->dir;
     B->dir = A;
     B->cor = A->cor;
@@ -65,15 +65,15 @@ arv_disciplina *rotacionarDireita(arv_disciplina *A)
     return B;
 }
 
-arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no)
+arv_curso *inserir_curso(arv_curso *raiz, arv_curso *no)
 {
-    raiz = inserir_rec(raiz, no);
+    raiz = inserir_rec_curso(raiz, no);
     if (raiz != NULL)
         raiz->cor = BLACK;
     return raiz;
 }
 
-arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no)
+arv_curso *inserir_rec_curso(arv_curso *raiz, arv_curso *no)
 {
     if (raiz == NULL)
     {
@@ -90,7 +90,7 @@ arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no)
     return raiz;
 }
 
-arv_disciplina *balancear(arv_disciplina *raiz)
+arv_curso *balancear_curso(arv_curso *raiz)
 {
     if (raiz->dir != NULL && raiz->dir->cor == RED)
         raiz = rotacionarEsquerda(raiz);
@@ -104,23 +104,27 @@ arv_disciplina *balancear(arv_disciplina *raiz)
     return raiz;
 }
 
-void imprimir_disciplinas(arv_disciplina *raiz)
+#include <stdio.h>
+#include "curso.h"
+
+// Função para imprimir os dados do curso
+void imprimir_disciplinas_curso(arv_curso *raiz)
 {
     if (raiz != NULL)
     {
-        imprimir_disciplinas(raiz->esq);
-        printf("Codigo: %d\n", raiz->dados->codigo);
+        imprimir_disciplinas(raiz->esq); // Percorre a subárvore esquerda
+        printf("Código: %d\n", raiz->dados->codigo);
         printf("Nome: %s\n", raiz->dados->nome);
-        printf("Bloco: %d\n", raiz->dados->bloco);
-        printf("Carga-Horaria: %d\n", raiz->dados->carga_horaria);
-        printf("Cor: %d\n", raiz->cor);
-        imprimir_disciplinas(raiz->dir);
+        printf("Quantidade de blocos: %d\n", raiz->dados->qtd_blocos);
+        printf("Número de semanas: %d\n", raiz->dados->num_semanas);
+        printf("Cor: %s\n", raiz->cor == RED ? "Vermelho" : "Preto");
+        imprimir_disciplinas(raiz->dir); // Percorre a subárvore direita
     }
 }
 
-arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
+arv_curso *buscar_disciplina_curso(arv_curso *raiz, int codigo)
 {
-    arv_disciplina *aux = NULL;
+    arv_curso *aux = NULL;
     if (raiz != NULL)
     {
         if (raiz->dados->codigo == codigo)
@@ -133,7 +137,7 @@ arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
     return aux;
 }
 
-arv_disciplina *move2EsqRED(arv_disciplina *H)
+arv_curso *move2EsqRED_curso(arv_curso *H)
 {
     trocaCor(H);
     if (H->dir != NULL && H->dir->esq != NULL && H->dir->esq->cor == RED)
@@ -145,7 +149,7 @@ arv_disciplina *move2EsqRED(arv_disciplina *H)
     return H;
 }
 
-arv_disciplina *move2DirRED(arv_disciplina *H)
+arv_curso *move2DirRED_curso(arv_curso *H)
 {
     trocaCor(H);
     if (H->esq != NULL && H->esq->esq != NULL && H->esq->esq->cor == RED)
@@ -156,9 +160,9 @@ arv_disciplina *move2DirRED(arv_disciplina *H)
     return H;
 }
 
-arv_disciplina *removerMenor(arv_disciplina *H)
+arv_curso *removerMenor_curso(arv_curso *H)
 {
-    arv_disciplina *temp = H;
+    arv_curso *temp = H;
 
     if (H->esq == NULL)
     {
@@ -179,10 +183,10 @@ arv_disciplina *removerMenor(arv_disciplina *H)
     return temp;
 }
 
-arv_disciplina *procuraMenor(arv_disciplina *atual)
+arv_curso *procuraMenor_curso(arv_curso *atual)
 {
-    arv_disciplina *no1 = atual;
-    arv_disciplina *no2 = atual->esq;
+    arv_curso *no1 = atual;
+    arv_curso *no2 = atual->esq;
     while (no2 != NULL)
     {
         no1 = no2;
@@ -191,9 +195,9 @@ arv_disciplina *procuraMenor(arv_disciplina *atual)
     return no1;
 }
 
-arv_disciplina *remove_NO(arv_disciplina *H, int valor)
+arv_curso *remove_NO_curso(arv_curso *H, int valor)
 {
-    arv_disciplina *resultado = H; // Variável auxiliar para armazenar o resultado final
+    arv_curso *resultado = H; // Variável auxiliar para armazenar o resultado final
 
     if (H == NULL)
     {
@@ -226,7 +230,7 @@ arv_disciplina *remove_NO(arv_disciplina *H, int valor)
 
                 if (valor == H->dados->codigo)
                 {
-                    arv_disciplina *x = procuraMenor(H->dir);
+                    arv_curso *x = procuraMenor(H->dir);
                     H->dados->codigo = x->dados->codigo;
                     H->dir = removerMenor(H->dir);
                 }
@@ -246,7 +250,7 @@ arv_disciplina *remove_NO(arv_disciplina *H, int valor)
     return resultado;
 }
 
-int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
+int remove_ArvLLRB_curso(arv_curso **raiz, int codigo)
 {
     int aux = 0;
     if (buscar_disciplina(*raiz, codigo))
