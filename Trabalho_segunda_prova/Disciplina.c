@@ -18,39 +18,20 @@ arv_disciplina *cria_no()
     return no;
 }
 
-void ler_dados(arv_disciplina *no, arv_curso *curso)
+void ler_dados(arv_disciplina *no)
 {
     printf("Informe o codigo da disciplina: ");
     scanf("%d", &no->dados->codigo);
 
-    printf("Informe o nome da disciplina: ");
-    scanf(" %99[^\n]", no->dados->nome);
+    // printf("Informe o nome da disciplina: ");
+    // scanf("%s", no->dados->nome);
 
-    int bloco;
-    do
-    {
-        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que é %d): ", curso->dados->qtd_blocos);
-        scanf("%d", &bloco);
-        if (bloco >= curso->dados->qtd_blocos)
-        {
-            printf("Bloco inválido. Deve ser menor que a quantidade de blocos do curso.\n");
-        }
-    } while (bloco >= curso->dados->qtd_blocos);
-    no->dados->bloco = bloco;
+    // printf("Informe o bloco da disciplina: ");
+    // scanf("%d", &no->dados->bloco);
 
-    int carga_horaria;
-    do
-    {
-        printf("Informe a carga-horaria da disciplina (deve ser múltiplo de %d semanas): ", curso->dados->num_semanas);
-        scanf("%d", &carga_horaria);
-        if (carga_horaria % curso->dados->num_semanas != 0)
-        {
-            printf("Carga-horária inválida. Deve ser múltiplo de %d semanas.\n", curso->dados->num_semanas);
-        }
-    } while (carga_horaria % curso->dados->num_semanas != 0);
-    no->dados->carga_horaria = carga_horaria;
+    // printf("Informe a carga-horaria da disciplina: ");
+    // scanf("%d", &no->dados->carga_horaria);
 }
-
 
 void trocaCor(arv_disciplina *H)
 {
@@ -128,16 +109,14 @@ void imprimir_disciplinas(arv_disciplina *raiz)
     if (raiz != NULL)
     {
         imprimir_disciplinas(raiz->esq);
-        printf("Código da Disciplina: %d\n", raiz->dados->codigo);
-        printf("Nome da Disciplina: %s\n", raiz->dados->nome);
-        printf("Bloco da Disciplina: %d\n", raiz->dados->bloco);
-        printf("Carga Horária da Disciplina: %d\n", raiz->dados->carga_horaria);
-        printf("Cor: %s\n", raiz->cor == RED ? "Vermelho" : "Preto");
-        printf("------------------------\n");
+        printf("Codigo: %d\n", raiz->dados->codigo);
+        printf("Nome: %s\n", raiz->dados->nome);
+        printf("Bloco: %d\n", raiz->dados->bloco);
+        printf("Carga-Horaria: %d\n", raiz->dados->carga_horaria);
+        printf("Cor: %d\n", raiz->cor);
         imprimir_disciplinas(raiz->dir);
     }
 }
-
 
 arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
 {

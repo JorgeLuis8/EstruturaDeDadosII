@@ -3,7 +3,6 @@
 
 #define BLACK 0
 #define RED 1
-#include "Curso.h"
 
 typedef struct dados_disciplina
 {
@@ -23,8 +22,7 @@ typedef struct arv_disciplina
 
 // Funções de criação e inserção
 arv_disciplina *cria_no();
-void ler_dados(arv_disciplina *no, arv_curso *curso);
-void imprimir_disciplinas(arv_disciplina *raiz);
+void ler_dados(arv_disciplina *no);
 arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no);
 arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no);
 

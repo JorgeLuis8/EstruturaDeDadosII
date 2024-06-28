@@ -19,8 +19,8 @@ typedef struct arv_curso
 } arv_curso;
 
 arv_curso *cria_no_curso();
-void imprimir_cursos_por_blocos(arv_curso *raiz, int qtd_blocos);
 void ler_dados_curso(arv_curso *no);
+void imprimir_disciplinas_curso(arv_curso *raiz);
 arv_curso *inserir_curso(arv_curso *raiz, arv_curso *no);
 arv_curso *buscar_disciplina_curso(arv_curso *raiz, int codigo);
 arv_curso *remove_NO_curso(arv_curso *H, int valor);
