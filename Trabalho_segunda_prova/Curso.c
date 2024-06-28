@@ -14,6 +14,7 @@ arv_curso *cria_no_curso()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
+        no->disciplinas = NULL;
     }
     return no;
 }
