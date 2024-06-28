@@ -2,27 +2,10 @@
 #include <stdlib.h>
 #include "Disciplina.h"
 
-#define RED 0
-#define BLACK 1
-
-typedef struct Dados
-{
-    int codigo;
-    char nome[50];
-    int qtd_blocos;
-    int num_semanas;
-}dados_curso;
-
-typedef struct Curso
-{
-    arv_disciplina * disciplinas;
-    struct Dados *dados;
-    int cor;
-    struct Curso *esq,*dir;
-}arv_curso;
 
 
-arv_curso *cria_no()
+
+arv_curso *cria_no_curso()
 {
     arv_curso *no = (arv_curso *)malloc(sizeof(arv_curso));
     if (no != NULL)
