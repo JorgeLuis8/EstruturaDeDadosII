@@ -1,10 +1,6 @@
 #ifndef CURSO_H
 #define CURSO_H
 #include "Disciplina.h"
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 typedef struct dados_curso
 {
     int codigo;
