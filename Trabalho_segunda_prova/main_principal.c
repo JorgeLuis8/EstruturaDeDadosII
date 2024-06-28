@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Disciplina.c"
-#include "Curso.c"
+#include "Disciplina.C"
+#include "Curso.C"
 
 #define BLACK 0
 #define RED 1
@@ -35,6 +35,14 @@ int main()
             }
             case 3:
             {
+                int qtd_blocos;
+                printf("Informe a quantidade de blocos: ");
+                scanf("%d", &qtd_blocos);
+                imprimir_cursos_por_blocos(raiz_curso, qtd_blocos);
+                break;
+            }
+            case 4:
+            {
                 arv_curso *novo_curso = cria_no_curso();
                 if (novo_curso == NULL)
                 {
@@ -45,7 +53,7 @@ int main()
                 raiz_curso = inserir_curso(raiz_curso, novo_curso);
                 break;
             }
-            case 4:
+            case 5:
             {
                 int codigo_curso;
                 printf("Informe o codigo do curso onde deseja inserir a disciplina: ");
@@ -68,13 +76,13 @@ int main()
                 }
                 break;
             }
-            case 5:
+            case 6:
                 printf("Saindo...\n");
                 break;
             default:
                 printf("Opcao invalida! Tente novamente.\n");
         }
-    } while (opcao != 5);
+    } while (opcao != 6);
 
     return 0;
 }
@@ -84,7 +92,8 @@ void menu()
     printf("\n===== Menu =====\n");
     printf("1. Imprimir a árvore de cursos em ordem crescente pelo código do curso\n");
     printf("2. Imprimir os dados de um curso dado o código do mesmo\n");
-    printf("3. Inserir um novo curso\n");
-    printf("4. Inserir uma nova disciplina em um curso existente\n");
-    printf("5. Sair\n");
+    printf("3. Imprimir todos os cursos com a mesma quantidade de blocos\n");
+    printf("4. Inserir um novo curso\n");
+    printf("5. Inserir uma nova disciplina em um curso existente\n");
+    printf("6. Sair\n");
 }
