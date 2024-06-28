@@ -23,14 +23,14 @@ void ler_dados(arv_disciplina *no)
     printf("Informe o codigo da disciplina: ");
     scanf("%d", &no->dados->codigo);
 
-    printf("Informe o nome da disciplina: ");
-    scanf("%s", no->dados->nome);
+    // printf("Informe o nome da disciplina: ");
+    // scanf("%s", no->dados->nome);
 
-    printf("Informe o bloco da disciplina: ");
-    scanf("%d", &no->dados->bloco);
+    // printf("Informe o bloco da disciplina: ");
+    // scanf("%d", &no->dados->bloco);
 
-    printf("Informe a carga-horaria da disciplina: ");
-    scanf("%d", &no->dados->carga_horaria);
+    // printf("Informe a carga-horaria da disciplina: ");
+    // scanf("%d", &no->dados->carga_horaria);
 }
 
 void trocaCor(arv_disciplina *H)
@@ -120,16 +120,17 @@ void imprimir_disciplinas(arv_disciplina *raiz)
 
 arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
 {
-    if (raiz == NULL)
-        return NULL;
-
-    if (raiz->dados->codigo == codigo)
-        return raiz;
-
-    if (codigo < raiz->dados->codigo)
-        return buscar_disciplina(raiz->esq, codigo);
-    else
-        return buscar_disciplina(raiz->dir, codigo);
+    arv_disciplina *aux = NULL;
+    if (raiz != NULL)
+    {
+        if (raiz->dados->codigo == codigo)
+            aux = raiz;
+        else if (raiz->dados->codigo < codigo)
+            aux = buscar_disciplina(raiz->dir, codigo);
+        else
+            aux = buscar_disciplina(raiz->esq, codigo);
+    }
+    return aux;
 }
 
 arv_disciplina *move2EsqRED(arv_disciplina *H)
@@ -157,17 +158,25 @@ arv_disciplina *move2DirRED(arv_disciplina *H)
 
 arv_disciplina *removerMenor(arv_disciplina *H)
 {
+    arv_disciplina *temp = H;
+
     if (H->esq == NULL)
     {
         free(H);
-        return NULL;
+        temp = NULL;
     }
-    if (H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
+    else
     {
-        H = move2EsqRED(H);
+        if (H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
+        {
+            H = move2EsqRED(H);
+        }
+
+        H->esq = removerMenor(H->esq);
+        H = balancear(H);
     }
-    H->esq = removerMenor(H->esq);
-    return balancear(H);
+
+    return temp;
 }
 
 arv_disciplina *procuraMenor(arv_disciplina *atual)
@@ -184,45 +193,62 @@ arv_disciplina *procuraMenor(arv_disciplina *atual)
 
 arv_disciplina *remove_NO(arv_disciplina *H, int valor)
 {
+    arv_disciplina *resultado = H; // Variável auxiliar para armazenar o resultado final
+
     if (H == NULL)
-        return NULL;
-
-    if (valor < H->dados->codigo)
     {
-        if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
-            H = move2EsqRED(H);
-
-        if (H->esq != NULL)
-            H->esq = remove_NO(H->esq, valor);
+        resultado = NULL;
     }
     else
     {
-        if (H->esq != NULL && H->esq->cor == RED)
-            H = rotacionarDireita(H);
-
-        if (valor == H->dados->codigo && (H->dir == NULL))
+        if (valor < H->dados->codigo)
         {
-            free(H);
-            return NULL;
+            if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
+                H = move2EsqRED(H);
+
+            if (H->esq != NULL)
+                H->esq = remove_NO(H->esq, valor);
         }
-
-        if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
-            H = move2DirRED(H);
-
-        if (valor == H->dados->codigo)
+        else
         {
-            arv_disciplina *x = procuraMenor(H->dir);
-            H->dados->codigo = x->dados->codigo;
-            H->dir = removerMenor(H->dir);
+            if (H->esq != NULL && H->esq->cor == RED)
+                H = rotacionarDireita(H);
+
+            if (valor == H->dados->codigo && (H->dir == NULL))
+            {
+                free(H);
+                resultado = NULL;
+            }
+            else
+            {
+                if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
+                    H = move2DirRED(H);
+
+                if (valor == H->dados->codigo)
+                {
+                    arv_disciplina *x = procuraMenor(H->dir);
+                    H->dados->codigo = x->dados->codigo;
+                    H->dir = removerMenor(H->dir);
+                }
+                else if (H->dir != NULL)
+                {
+                    H->dir = remove_NO(H->dir, valor);
+                }
+            }
         }
-        else if (H->dir != NULL)
-            H->dir = remove_NO(H->dir, valor);
     }
-    return balancear(H);
+
+    if (resultado != NULL)
+    {
+        resultado = balancear(resultado);
+    }
+
+    return resultado;
 }
 
 int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
 {
+    int aux = 0;
     if (buscar_disciplina(*raiz, codigo))
     {
         *raiz = remove_NO(*raiz, codigo);
@@ -230,7 +256,7 @@ int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
         {
             (*raiz)->cor = BLACK;
         }
-        return 1;
+        aux = 1;
     }
-    return 0;
+    return aux;
 }
