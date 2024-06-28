@@ -22,15 +22,15 @@ int main()
         switch (opcao)
         {
         case 1:
-            novo_no = cria_no();
-            ler_dados(novo_no);
-            raiz = inserir_disciplina(raiz, novo_no);
+            novo_no = cria_no_curso();
+            ler_dados_curso(novo_no);
+            raiz = inserir_curso(raiz, novo_no);
             break;
 
         case 2:
             printf("Informe o código do curso a ser removido: ");
             scanf("%d", &codigo);
-            if (remove_ArvLLRB(&raiz, codigo))
+            if (remove_ArvLLRB_curso(&raiz, codigo))
                 printf("Curso removido com sucesso!\n");
             else
                 printf("Curso não encontrado!\n");
@@ -39,7 +39,7 @@ int main()
         case 3:
             printf("Informe o código do curso a ser buscado: ");
             scanf("%d", &codigo);
-            arv_curso *curso = buscar_disciplina(raiz, codigo);
+            arv_curso *curso = buscar_disciplina_curso(raiz, codigo);
             if (curso != NULL)
             {
                 printf("Curso encontrado:\n");
@@ -56,7 +56,7 @@ int main()
             break;
 
         case 4:
-            imprimir_disciplinas(raiz);
+            imprimir_disciplinas_curso(raiz);
             break;
 
         case 5:
