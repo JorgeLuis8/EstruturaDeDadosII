@@ -23,25 +23,25 @@ void ler_dados(arv_disciplina *no)
     printf("Informe o codigo da disciplina: ");
     scanf("%d", &no->dados->codigo);
 
-    printf("Informe o nome da disciplina: ");
-    scanf("%s", no->dados->nome);
+    // printf("Informe o nome da disciplina: ");
+    // scanf("%s", no->dados->nome);
 
-    printf("Informe o bloco da disciplina: ");
-    scanf("%d", &no->dados->bloco);
+    // printf("Informe o bloco da disciplina: ");
+    // scanf("%d", &no->dados->bloco);
 
-    printf("Informe a carga-horaria da disciplina: ");
-    scanf("%d", &no->dados->carga_horaria);
+    // printf("Informe a carga-horaria da disciplina: ");
+    // scanf("%d", &no->dados->carga_horaria);
 }
 
-void trocaCor(arv_disciplina *no)
+void trocaCor(arv_disciplina *H)
 {
-    if (no != NULL)
+    if (H != NULL)
     {
-        no->cor = !no->cor;
-        if (no->esq != NULL)
-            no->esq->cor = !no->esq->cor;
-        if (no->dir != NULL)
-            no->dir->cor = !no->dir->cor;
+        H->cor = !H->cor;
+        if (H->esq != NULL)
+            H->esq->cor = !H->esq->cor;
+        if (H->dir != NULL)
+            H->dir->cor = !H->dir->cor;
     }
 }
 
@@ -121,7 +121,8 @@ void imprimir_disciplinas(arv_disciplina *raiz)
 arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
 {
     arv_disciplina *aux = NULL;
-    if (raiz != NULL) {
+    if (raiz != NULL)
+    {
         if (raiz->dados->codigo == codigo)
             aux = raiz;
         else if (raiz->dados->codigo < codigo)
@@ -132,42 +133,50 @@ arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
     return aux;
 }
 
-arv_disciplina *move2EsqRED(arv_disciplina *no)
+arv_disciplina *move2EsqRED(arv_disciplina *H)
 {
-    trocaCor(no);
-    if (no->dir != NULL && no->dir->esq != NULL && no->dir->esq->cor == RED)
+    trocaCor(H);
+    if (H->dir != NULL && H->dir->esq != NULL && H->dir->esq->cor == RED)
     {
-        no->dir = rotacionarDireita(no->dir);
-        no = rotacionarEsquerda(no);
-        trocaCor(no);
+        H->dir = rotacionarDireita(H->dir);
+        H = rotacionarEsquerda(H);
+        trocaCor(H);
     }
-    return no;
+    return H;
 }
 
-arv_disciplina *move2DirRED(arv_disciplina *no)
+arv_disciplina *move2DirRED(arv_disciplina *H)
 {
-    trocaCor(no);
-    if (no->esq != NULL && no->esq->esq != NULL && no->esq->esq->cor == RED)
+    trocaCor(H);
+    if (H->esq != NULL && H->esq->esq != NULL && H->esq->esq->cor == RED)
     {
-        no = rotacionarDireita(no);
-        trocaCor(no);
+        H = rotacionarDireita(H);
+        trocaCor(H);
     }
-    return no;
+    return H;
 }
 
-arv_disciplina *removerMenor(arv_disciplina *no)
+arv_disciplina *removerMenor(arv_disciplina *H)
 {
-    if (no->esq == NULL)
+    arv_disciplina *temp = H;
+
+    if (H->esq == NULL)
     {
-        free(no);
-        return NULL;
+        free(H);
+        temp = NULL;
     }
-    if (no->esq->cor == BLACK && (no->esq->esq == NULL || no->esq->esq->cor == BLACK))
+    else
     {
-        no = move2EsqRED(no);
+        if (H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
+        {
+            H = move2EsqRED(H);
+        }
+
+        H->esq = removerMenor(H->esq);
+        H = balancear(H);
     }
-    no->esq = removerMenor(no->esq);
-    return balancear(no);
+
+    return temp;
 }
 
 arv_disciplina *procuraMenor(arv_disciplina *atual)
@@ -182,48 +191,64 @@ arv_disciplina *procuraMenor(arv_disciplina *atual)
     return no1;
 }
 
-arv_disciplina *remove_NO(arv_disciplina *no, int valor)
+arv_disciplina *remove_NO(arv_disciplina *H, int valor)
 {
-    arv_disciplina *aux;
-    if (no == NULL)
-        aux = NULL;
-    if (valor < no->dados->codigo)
-    {
-        if (no->esq != NULL && no->esq->cor == BLACK && (no->esq->esq == NULL || no->esq->esq->cor == BLACK))
-            aux = move2EsqRED(no);
+    arv_disciplina *resultado = H; // Variável auxiliar para armazenar o resultado final
 
-        if (no->esq != NULL)
-            aux->esq = remove_NO(no->esq, valor);
+    if (H == NULL)
+    {
+        resultado = NULL;
     }
     else
     {
-        if (no->esq != NULL && no->esq->cor == RED)
-            aux = rotacionarDireita(no);
-
-        if (valor == no->dados->codigo && (no->dir == NULL))
+        if (valor < H->dados->codigo)
         {
-            free(no);
-            aux = NULL;
+            if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
+                H = move2EsqRED(H);
+
+            if (H->esq != NULL)
+                H->esq = remove_NO(H->esq, valor);
         }
-
-        if (no->dir != NULL && no->dir->cor == BLACK && (no->dir->esq == NULL || no->dir->esq->cor == BLACK))
-            aux = move2DirRED(no);
-
-        if (valor == no->dados->codigo)
+        else
         {
-            arv_disciplina *x = procuraMenor(no->dir);
-            aux->dados->codigo = x->dados->codigo;
-            aux->dir = removerMenor(no->dir);
+            if (H->esq != NULL && H->esq->cor == RED)
+                H = rotacionarDireita(H);
+
+            if (valor == H->dados->codigo && (H->dir == NULL))
+            {
+                free(H);
+                resultado = NULL;
+            }
+            else
+            {
+                if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
+                    H = move2DirRED(H);
+
+                if (valor == H->dados->codigo)
+                {
+                    arv_disciplina *x = procuraMenor(H->dir);
+                    H->dados->codigo = x->dados->codigo;
+                    H->dir = removerMenor(H->dir);
+                }
+                else if (H->dir != NULL)
+                {
+                    H->dir = remove_NO(H->dir, valor);
+                }
+            }
         }
-        else if (no->dir != NULL)
-            aux->dir = remove_NO(no->dir, valor);
     }
-    return balancear(aux);
+
+    if (resultado != NULL)
+    {
+        resultado = balancear(resultado);
+    }
+
+    return resultado;
 }
 
 int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
 {
-    int aux=0;
+    int aux = 0;
     if (buscar_disciplina(*raiz, codigo))
     {
         *raiz = remove_NO(*raiz, codigo);
@@ -233,6 +258,5 @@ int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
         }
         aux = 1;
     }
-
     return aux;
 }
