@@ -14,6 +14,7 @@ arv_curso *cria_no_curso()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
+        no->disciplinas = NULL;
     }
     return no;
 }
@@ -73,6 +74,27 @@ arv_curso *inserir_curso(arv_curso *raiz, arv_curso *no)
     return raiz;
 }
 
+void imprimir_cursos_por_blocos(arv_curso *raiz, int qtd_blocos)
+{
+    if (raiz == NULL)
+        return;
+
+    // Percorre a árvore em ordem
+    imprimir_cursos_por_blocos(raiz->esq, qtd_blocos);
+
+    // Imprime o curso se a quantidade de blocos for igual à informada
+    if (raiz->dados->qtd_blocos == qtd_blocos)
+    {
+        printf("Código do Curso: %d\n", raiz->dados->codigo);
+        printf("Nome do Curso: %s\n", raiz->dados->nome);
+        printf("Quantidade de Blocos: %d\n", raiz->dados->qtd_blocos);
+        printf("Número de Semanas: %d\n", raiz->dados->num_semanas);
+        printf("------------------------\n");
+    }
+
+    imprimir_cursos_por_blocos(raiz->dir, qtd_blocos);
+}
+
 arv_curso *inserir_rec_curso(arv_curso *raiz, arv_curso *no)
 {
     if (raiz == NULL)
@@ -102,24 +124,6 @@ arv_curso *balancear_curso(arv_curso *raiz)
         trocaCor_curso(raiz);
 
     return raiz;
-}
-
-#include <stdio.h>
-#include "curso.h"
-
-// Função para imprimir os dados do curso
-void imprimir_disciplinas_curso(arv_curso *raiz)
-{
-    if (raiz != NULL)
-    {
-        imprimir_disciplinas_curso(raiz->esq); // Percorre a subárvore esquerda
-        printf("Código: %d\n", raiz->dados->codigo);
-        printf("Nome: %s\n", raiz->dados->nome);
-        printf("Quantidade de blocos: %d\n", raiz->dados->qtd_blocos);
-        printf("Número de semanas: %d\n", raiz->dados->num_semanas);
-        printf("Cor: %s\n", raiz->cor == RED ? "Vermelho" : "Preto");
-        imprimir_disciplinas_curso(raiz->dir); // Percorre a subárvore direita
-    }
 }
 
 arv_curso *buscar_disciplina_curso(arv_curso *raiz, int codigo)
