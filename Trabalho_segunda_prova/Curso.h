@@ -1,5 +1,6 @@
 #ifndef CURSO_H
 #define CURSO_H
+#include "Disciplina.h"
 
 typedef struct dados_curso
 {
