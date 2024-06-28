@@ -1,6 +1,7 @@
 #ifndef CURSO_H
 #define CURSO_H
 #include "Disciplina.h"
+
 typedef struct dados_curso
 {
     int codigo;
@@ -27,5 +28,8 @@ arv_curso *remove_NO_curso(arv_curso *H, int valor);
 int remove_ArvLLRB_curso(arv_curso **raiz, int codigo);
 arv_curso *inserir_rec_curso(arv_curso *raiz, arv_curso *no);
 arv_curso *balancear_curso(arv_curso *raiz);
+
+void imprimir_dados_curso(arv_curso *curso);
+
 
 #endif /* CURSO_H */

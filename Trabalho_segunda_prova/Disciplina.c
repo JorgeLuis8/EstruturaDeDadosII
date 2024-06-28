@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Disciplina.h"
+#include "Curso.h"
 
 #define BLACK 0
 #define RED 1
@@ -14,24 +15,44 @@ arv_disciplina *cria_no()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
+
     }
     return no;
 }
 
-void ler_dados(arv_disciplina *no)
+void ler_dados(arv_disciplina *no, arv_curso *curso)
 {
     printf("Informe o codigo da disciplina: ");
     scanf("%d", &no->dados->codigo);
 
-    // printf("Informe o nome da disciplina: ");
-    // scanf("%s", no->dados->nome);
+    printf("Informe o nome da disciplina: ");
+    scanf(" %99[^\n]", no->dados->nome);
 
-    // printf("Informe o bloco da disciplina: ");
-    // scanf("%d", &no->dados->bloco);
+    int bloco;
+    do
+    {
+        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que é %d): ", curso->dados->qtd_blocos);
+        scanf("%d", &bloco);
+        if (bloco >= curso->dados->qtd_blocos)
+        {
+            printf("Bloco inválido. Deve ser menor que a quantidade de blocos do curso.\n");
+        }
+    } while (bloco >= curso->dados->qtd_blocos);
+    no->dados->bloco = bloco;
 
-    // printf("Informe a carga-horaria da disciplina: ");
-    // scanf("%d", &no->dados->carga_horaria);
+    int carga_horaria;
+    do
+    {
+        printf("Informe a carga-horaria da disciplina (deve ser múltiplo de %d semanas): ", curso->dados->num_semanas);
+        scanf("%d", &carga_horaria);
+        if (carga_horaria % curso->dados->num_semanas != 0)
+        {
+            printf("Carga-horária inválida. Deve ser múltiplo de %d semanas.\n", curso->dados->num_semanas);
+        }
+    } while (carga_horaria % curso->dados->num_semanas != 0);
+    no->dados->carga_horaria = carga_horaria;
 }
+
 
 void trocaCor(arv_disciplina *H)
 {

@@ -105,9 +105,6 @@ arv_curso *balancear_curso(arv_curso *raiz)
     return raiz;
 }
 
-#include <stdio.h>
-#include "curso.h"
-
 // Função para imprimir os dados do curso
 void imprimir_disciplinas_curso(arv_curso *raiz)
 {
@@ -264,4 +261,27 @@ int remove_ArvLLRB_curso(arv_curso **raiz, int codigo)
         aux = 1;
     }
     return aux;
+}
+
+void imprimir_dados_curso(arv_curso *curso)
+{
+    if (curso != NULL)
+    {
+        printf("Código: %d\n", curso->dados->codigo);
+        printf("Nome: %s\n", curso->dados->nome);
+        printf("Quantidade de blocos: %d\n", curso->dados->qtd_blocos);
+        printf("Número de semanas: %d\n", curso->dados->num_semanas);
+        printf("Cor: %s\n", curso->cor == RED ? "Vermelho" : "Preto");
+        
+        if (curso->disciplinas != NULL) {
+            printf("\nDisciplinas do Curso:\n");
+            imprimir_disciplinas(curso->disciplinas);
+        } else {
+            printf("\nNenhuma disciplina cadastrada neste curso.\n");
+        }
+    }
+    else
+    {
+        printf("Curso não encontrado.\n");
+    }
 }

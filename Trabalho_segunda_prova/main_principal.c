@@ -1,29 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Curso.c"
 #include "Disciplina.c"
+#include "Curso.c"
 
 #define BLACK 0
 #define RED 1
 
 void menu();
 
-int main() {
+int main()
+{
     arv_curso *raiz_curso = NULL;
     int opcao;
 
-    do {
+    do
+    {
         menu();
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
-        switch (opcao) {
+        switch (opcao)
+        {
             case 1:
                 imprimir_disciplinas_curso(raiz_curso);
                 break;
-            case 2: {
+            case 2:
+            {
+                int codigo_curso;
+                printf("Informe o código do curso que deseja buscar: ");
+                scanf("%d", &codigo_curso);
+                arv_curso *curso = buscar_disciplina_curso(raiz_curso, codigo_curso);
+                imprimir_dados_curso(curso);
+                break;
+            }
+            case 3:
+            {
                 arv_curso *novo_curso = cria_no_curso();
-                if (novo_curso == NULL) {
+                if (novo_curso == NULL)
+                {
                     printf("Erro ao criar novo curso.\n");
                     break;
                 }
@@ -31,39 +45,46 @@ int main() {
                 raiz_curso = inserir_curso(raiz_curso, novo_curso);
                 break;
             }
-            case 3: {
+            case 4:
+            {
                 int codigo_curso;
                 printf("Informe o codigo do curso onde deseja inserir a disciplina: ");
                 scanf("%d", &codigo_curso);
                 arv_curso *curso = buscar_disciplina_curso(raiz_curso, codigo_curso);
-                if (curso != NULL) {
+                if (curso != NULL)
+                {
                     arv_disciplina *nova_disciplina = cria_no();
-                    if (nova_disciplina == NULL) {
+                    if (nova_disciplina == NULL)
+                    {
                         printf("Erro ao criar nova disciplina.\n");
                         break;
                     }
-                    ler_dados(nova_disciplina);
+                    ler_dados(nova_disciplina, curso);
                     curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
-                } else {
+                }
+                else
+                {
                     printf("Curso nao encontrado!\n");
                 }
                 break;
             }
-            case 4:
+            case 5:
                 printf("Saindo...\n");
                 break;
             default:
                 printf("Opcao invalida! Tente novamente.\n");
         }
-    } while (opcao != 4);
+    } while (opcao != 5);
 
     return 0;
 }
 
-void menu() {
+void menu()
+{
     printf("\n===== Menu =====\n");
     printf("1. Imprimir a árvore de cursos em ordem crescente pelo código do curso\n");
-    printf("2. Inserir um novo curso\n");
-    printf("3. Inserir uma nova disciplina em um curso existente\n");
-    printf("4. Sair\n");
+    printf("2. Imprimir os dados de um curso dado o código do mesmo\n");
+    printf("3. Inserir um novo curso\n");
+    printf("4. Inserir uma nova disciplina em um curso existente\n");
+    printf("5. Sair\n");
 }
