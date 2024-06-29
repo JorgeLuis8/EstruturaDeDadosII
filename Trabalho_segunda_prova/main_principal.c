@@ -102,7 +102,7 @@ int main()
         default:
             printf("Opcao invalida! Tente novamente.\n");
         }
-    } while (opcao != 6);
+    } while (opcao != 7);
 
     return 0;
 }
