@@ -15,7 +15,6 @@ arv_disciplina *cria_no()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
-
     }
     return no;
 }
@@ -52,7 +51,6 @@ void ler_dados(arv_disciplina *no, arv_curso *curso)
     } while (carga_horaria % curso->dados->num_semanas != 0);
     no->dados->carga_horaria = carga_horaria;
 }
-
 
 void trocaCor(arv_disciplina *H)
 {
@@ -280,4 +278,14 @@ int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
         aux = 1;
     }
     return aux;
+}
+
+void imprimir_disciplinas_ordenadas(arv_disciplina *raiz)
+{
+    if (raiz != NULL)
+    {
+        imprimir_disciplinas_ordenadas(raiz->esq);
+        printf("Código: %d, Nome: %s, Carga Horária: %d\n", raiz->dados->codigo, raiz->dados->nome, raiz->dados->carga_horaria);
+        imprimir_disciplinas_ordenadas(raiz->dir);
+    }
 }

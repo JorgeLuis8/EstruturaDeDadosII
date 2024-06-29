@@ -32,23 +32,23 @@ void trocaCor(arv_disciplina *H);
 arv_disciplina *rotacionarEsquerda(arv_disciplina *A);
 arv_disciplina *rotacionarDireita(arv_disciplina *A);
 arv_disciplina *balancear(arv_disciplina *raiz);
+void imprimir_disciplinas_ordenadas(arv_disciplina *raiz);
 
-// Funções de remoção
-arv_disciplina *removerMenor(arv_disciplina *H);
-arv_disciplina *procuraMenor(arv_disciplina *atual);
-arv_disciplina *remove_NO(arv_disciplina *H, int valor);
-int remove_ArvLLRB(arv_disciplina **raiz, int codigo);
+
+    // Funções de remoção
+    arv_disciplina *removerMenor(arv_disciplina * H);
+    arv_disciplina *procuraMenor(arv_disciplina * atual);
+    arv_disciplina *remove_NO(arv_disciplina * H, int valor);
+    int remove_ArvLLRB(arv_disciplina * *raiz, int codigo);
 
     // Função de busca
-    arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo);
+    arv_disciplina *buscar_disciplina(arv_disciplina * raiz, int codigo);
 
-// Função de impressão
-void imprimir_disciplinas(arv_disciplina *raiz);
+    // Função de impressão
+    void imprimir_disciplinas(arv_disciplina * raiz);
 
-// Funções auxiliares
-arv_disciplina *move2EsqRED(arv_disciplina *H);
-arv_disciplina *move2DirRED(arv_disciplina *H);
-
-
+    // Funções auxiliares
+    arv_disciplina *move2EsqRED(arv_disciplina * H);
+    arv_disciplina *move2DirRED(arv_disciplina * H);
 
 #endif // DISCIPLINA_H

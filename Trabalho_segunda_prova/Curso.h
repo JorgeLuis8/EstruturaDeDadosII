@@ -30,6 +30,6 @@ arv_curso *inserir_rec_curso(arv_curso *raiz, arv_curso *no);
 arv_curso *balancear_curso(arv_curso *raiz);
 
 void imprimir_dados_curso(arv_curso *curso);
-
+void imprimir_cursos_por_blocos(arv_curso *raiz, int qtd_blocos);
 
 #endif /* CURSO_H */
