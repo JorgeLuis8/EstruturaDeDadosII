@@ -1,6 +1,6 @@
 #ifndef CURSO_H
 #define CURSO_H
-#include "Disciplina.h"
+#include "Disciplina23.h"
 
 //arvore 2-3
 
@@ -15,11 +15,11 @@ typedef struct dados_curso23
 typedef struct Arv_curso23
 {
     dados_curso23 *dados;
-    struct arv_curso *esq;
-    struct arv_curso *meio;
-    struct arv_curso *dir;
+    struct arv_curso23 *esq;
+    struct arv_curso23 *meio;
+    struct arv_curso23 *dir;
     int num_info;
-    arv_disciplina23 *disciplinas;
+    arv_23Disciplina *disciplinas;
     
 } arv_curso23;
 
