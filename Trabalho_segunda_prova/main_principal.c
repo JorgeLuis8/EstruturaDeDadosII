@@ -27,10 +27,22 @@ int main()
                 printf("Erro ao criar novo curso.\n");
                 break;
             }
+
             ler_dados_curso(novo_curso);
+
+            // Verificar se o curso já existe
+            arv_curso *curso_existente = buscar_disciplina_curso(raiz_curso, novo_curso->dados->codigo);
+            if (curso_existente != NULL)
+            {
+                printf("Erro: Ja existe um curso com o codigo %d.\n", novo_curso->dados->codigo);
+                break;
+            }
+
+            // Caso não exista, inserir o novo curso na árvore
             raiz_curso = inserir_curso(raiz_curso, novo_curso);
             break;
         }
+
         case 2:
         {
             int codigo_curso;
@@ -46,16 +58,7 @@ int main()
                     break;
                 }
                 ler_dados(nova_disciplina, curso);
-
-                if (buscar_disciplina(curso->disciplinas, nova_disciplina->dados->codigo) == NULL)
-                {
-                    curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
-                }
-                else
-                {
-                    printf("Disciplina com o código %d já cadastrada no curso.\n", nova_disciplina->dados->codigo);
-                }
-                break;
+                curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
             }
             else
             {
@@ -104,7 +107,6 @@ int main()
             {
                 printf("Curso inexistente\n");
             }
-
             break;
         case 7:
         {
@@ -237,7 +239,6 @@ int main()
             {
                 if (cursoRemover->disciplinas == NULL)
                 {
-                    // Remove o curso apenas se não houver disciplinas cadastradas
                     remove_ArvLLRB_curso(&raiz_curso, codigo_curso);
                     if (raiz_curso != NULL)
                     {
@@ -278,6 +279,6 @@ void menu()
     printf("8. Imprmir disciplinas de um determinado bloco \n");
     printf("9. Imprimir todas as disciplinas de um determinado curso com a mesma carga horária\n");
     printf("10. Remover uma disciplina \n");
-    printf("11. Remover um curso\n");
+    printf("remover um curso\n");
     printf("0. Sair\n");
 }
