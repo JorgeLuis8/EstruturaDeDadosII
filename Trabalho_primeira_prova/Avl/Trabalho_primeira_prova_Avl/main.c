@@ -25,7 +25,7 @@ int main()
         printf("8. Remover Plataforma\n");
         printf("9. Mostrar todos os nomes dos Podcasts em ordem alfabetica de uma plataforma\n");
         printf("10. Mostrar todos os temas de um Podcast de uma plataforma\n");
-        printf("11. Mostrar todos os ttulos das entrevistas de um tema de um Podcast de uma plataforma\n");
+        printf("11. Mostrar todos os titulos das entrevistas de um tema de um Podcast de uma plataforma\n");
         printf("12. Mostrar todos os dados de uma entrevista de um Podcast de uma determinada plataforma, tema e titulo da entrevista\n");
         printf("13. Mostrar todos os entrevistados de um determinado tema de um Podcast de uma plataforma\n");
         printf("0. Sair\n");
@@ -70,7 +70,7 @@ int main()
             printf("Adicionar um novo tema a um podcast em uma plataforma:\n");
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_tema[50];
-            scanf(" %[^\n]", nome_plataforma_tema); // Ler o nome da plataforma
+            scanf(" %[^\n]", nome_plataforma_tema); 
 
             Plataforma *plataforma_encontrada_tema = buscar_plataforma(lista_plataformas, nome_plataforma_tema);
             if (plataforma_encontrada_tema != NULL)

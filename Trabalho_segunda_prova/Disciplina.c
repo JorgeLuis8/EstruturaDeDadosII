@@ -289,3 +289,13 @@ void imprimir_disciplinas_ordenadas(arv_disciplina *raiz)
         imprimir_disciplinas_ordenadas(raiz->dir);
     }
 }
+
+void imprimir_disciplinas_por_bloco(arv_disciplina *raiz, int bloco) {
+    if (raiz != NULL) {
+        imprimir_disciplinas_por_bloco(raiz->esq, bloco);
+        if (raiz->dados->bloco == bloco) {
+            printf("Código: %d, Nome: %s\n", raiz->dados->bloco, raiz->dados->nome);
+        }
+        imprimir_disciplinas_por_bloco(raiz->dir, bloco);
+    }
+}
