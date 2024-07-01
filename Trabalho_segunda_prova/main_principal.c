@@ -84,7 +84,7 @@ int main()
                 printf("Disciplinas do curso em ordem crescente pelo código:\n");
                 if (cursoBuscar->disciplinas != NULL)
                 {
-                    imprimir_disciplinas_ordenadas(cursoBuscar->disciplinas);
+                    imprimir_disciplinas(cursoBuscar->disciplinas);
                 }
                 else
                 {
@@ -95,6 +95,8 @@ int main()
             {
                 printf("Curso inexistente\n");
             }
+
+            break;
         case 7:
         {
             printf("Informe o codigo do curso: ");
@@ -267,6 +269,6 @@ void menu()
     printf("8. Imprmir disciplinas de um determinado bloco \n");
     printf("9. Imprimir todas as disciplinas de um determinado curso com a mesma carga horária\n");
     printf("10. Remover uma disciplina \n");
-    printf("remover um curso\n");
+    printf("11. Remover um curso\n");
     printf("0. Sair\n");
 }

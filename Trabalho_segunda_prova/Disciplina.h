@@ -32,7 +32,6 @@ void trocaCor(arv_disciplina *H);
 arv_disciplina *rotacionarEsquerda(arv_disciplina *A);
 arv_disciplina *rotacionarDireita(arv_disciplina *A);
 arv_disciplina *balancear(arv_disciplina *raiz);
-void imprimir_disciplinas_ordenadas(arv_disciplina *raiz);
 
 
     // Funções de remoção
@@ -51,6 +50,4 @@ void imprimir_disciplinas_ordenadas(arv_disciplina *raiz);
     arv_disciplina *move2EsqRED(arv_disciplina * H);
     arv_disciplina *move2DirRED(arv_disciplina * H);
 
-
-    void imprimir_disciplinas_por_bloco(arv_disciplina *raiz, int bloco);
 #endif // DISCIPLINA_H

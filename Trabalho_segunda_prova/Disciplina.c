@@ -279,23 +279,3 @@ int remove_ArvLLRB(arv_disciplina **raiz, int codigo)
     }
     return aux;
 }
-
-void imprimir_disciplinas_ordenadas(arv_disciplina *raiz)
-{
-    if (raiz != NULL)
-    {
-        imprimir_disciplinas_ordenadas(raiz->esq);
-        printf("Código: %d, Nome: %s, Carga Horária: %d\n", raiz->dados->codigo, raiz->dados->nome, raiz->dados->carga_horaria);
-        imprimir_disciplinas_ordenadas(raiz->dir);
-    }
-}
-
-void imprimir_disciplinas_por_bloco(arv_disciplina *raiz, int bloco) {
-    if (raiz != NULL) {
-        imprimir_disciplinas_por_bloco(raiz->esq, bloco);
-        if (raiz->dados->bloco == bloco) {
-            printf("Código: %d, Nome: %s\n", raiz->dados->bloco, raiz->dados->nome);
-        }
-        imprimir_disciplinas_por_bloco(raiz->dir, bloco);
-    }
-}
