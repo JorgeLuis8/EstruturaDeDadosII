@@ -21,10 +21,11 @@ int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
 
     while (generated < total) {
         int new_code = rand() % 10000 + 1; // Gerar código aleatório entre 1 e 1000
+        int i;
 
         // Verificar se new_code já foi gerado
         is_unique = true;
-        for (int i = 0; i < generated; ++i) {
+        for (i = 0; i < generated; ++i) {
             (*passos)++;
             if (codes[i] == new_code) {
                 is_unique = false;
@@ -79,6 +80,7 @@ int main() {
     int unique_codes[TOTAL_CODES];
     int passos;
     double tempo;
+    int i;
 
     // Gerar códigos únicos e contar passos e tempo
     int num_generated = generate_unique_codes(unique_codes, TOTAL_CODES, &passos, &tempo);
@@ -88,7 +90,7 @@ int main() {
     }
 
     // Inserir cursos com códigos únicos na árvore
-    for (int i = 0; i < TOTAL_CODES; ++i) {
+    for (i = 0; i < TOTAL_CODES; ++i) {
         arv_curso *novo_curso = cria_no_curso();
         if (novo_curso == NULL) {
             printf("Erro ao criar novo curso.\n");
@@ -101,7 +103,7 @@ int main() {
     }
 
     // Realizar busca 30 vezes por códigos gerados anteriormente
-    for (int i = 0; i < NUM_SEARCHES; ++i) {
+    for (i = 0; i < NUM_SEARCHES; ++i) {
         // Escolher um código aleatório gerado anteriormente para buscar
         int codigo_busca = unique_codes[rand() % TOTAL_CODES];
 
