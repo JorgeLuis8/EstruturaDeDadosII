@@ -10,14 +10,41 @@
 
 void menu();
 
+#ifdef _WIN32
+#include <windows.h>
+
+// Função para obter o tempo em alta resolução no Windows
+void get_current_time(struct timespec *ts) {
+    LARGE_INTEGER frequency;
+    LARGE_INTEGER currentTime;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&currentTime);
+    ts->tv_sec = currentTime.QuadPart / frequency.QuadPart;
+    ts->tv_nsec = (currentTime.QuadPart % frequency.QuadPart) * 1E9 / frequency.QuadPart;
+}
+
+#else
+// Para sistemas POSIX, como Linux
+#include <unistd.h>
+#include <sys/time.h>
+
+void get_current_time(struct timespec *ts) {
+    clock_gettime(CLOCK_MONOTONIC, ts);
+}
+#endif
+
+double get_elapsed_time(struct timespec *start, struct timespec *end) {
+    return (end->tv_sec - start->tv_sec) + (end->tv_nsec - start->tv_nsec) / 1E9;
+}
+
 // Função para gerar códigos de curso únicos e contar os passos e tempo
 int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
     int generated = 0;
     bool is_unique;
-    clock_t start_time, end_time;
+    struct timespec start_time, end_time;
 
     *passos = 0;
-    start_time = clock();
+    get_current_time(&start_time);
 
     while (generated < total) {
         int new_code = rand() % 10000 + 1; // Gerar código aleatório entre 1 e 1000
@@ -39,8 +66,8 @@ int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
         }
     }
 
-    end_time = clock();
-    *tempo = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    get_current_time(&end_time);
+    *tempo = get_elapsed_time(&start_time, &end_time);
 
     return generated; // Retornar o número de códigos gerados (deve ser igual a total)
 }
@@ -48,9 +75,9 @@ int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
 // Função para buscar um curso na árvore e contar os passos
 arv_curso *buscar_disciplina_curso_contador(arv_curso *raiz, int codigo, int *passos) {
     *passos = 0;
-    clock_t start_time, end_time;
+    struct timespec start_time, end_time;
 
-    start_time = clock();
+    get_current_time(&start_time);
 
     arv_curso *atual = raiz;
     while (atual != NULL && atual->dados->codigo != codigo) {
@@ -61,9 +88,9 @@ arv_curso *buscar_disciplina_curso_contador(arv_curso *raiz, int codigo, int *pa
             atual = atual->dir;
     }
 
-    end_time = clock();
-    double tempo = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Tempo gasto na busca: %.6f segundos\n", tempo);
+    get_current_time(&end_time);
+    double tempo = get_elapsed_time(&start_time, &end_time);
+    printf("Tempo gasto na busca: %.9f segundos\n", tempo);
 
     return atual;
 }
