@@ -21,7 +21,7 @@ arv_curso *cria_no_curso()
 
 void ler_dados_curso(arv_curso *no)
 {
-    printf("Informe o código do curso: ");
+    printf("Informe o codigo do curso: ");
     scanf("%d", &no->dados->codigo);
 
     printf("Informe o nome do curso: ");
@@ -30,7 +30,7 @@ void ler_dados_curso(arv_curso *no)
     printf("Informe a quantidade de blocos do curso: ");
     scanf("%d", &no->dados->qtd_blocos);
 
-    printf("Informe o número de semanas para cada disciplina: ");
+    printf("Informe o numero de semanas para cada disciplina: ");
     scanf("%d", &no->dados->num_semanas);
 }
 
@@ -110,13 +110,12 @@ void imprimir_disciplinas_curso(arv_curso *raiz)
 {
     if (raiz != NULL)
     {
-        imprimir_disciplinas_curso(raiz->esq); // Percorre a subárvore esquerda
-        printf("Código: %d\n", raiz->dados->codigo);
+        imprimir_disciplinas_curso(raiz->esq); // Percorre a subarvore esquerda
+        printf("Codigo: %d\n", raiz->dados->codigo);
         printf("Nome: %s\n", raiz->dados->nome);
         printf("Quantidade de blocos: %d\n", raiz->dados->qtd_blocos);
-        printf("Número de semanas: %d\n", raiz->dados->num_semanas);
-        printf("Cor: %s\n", raiz->cor == RED ? "Vermelho" : "Preto");
-        imprimir_disciplinas_curso(raiz->dir); // Percorre a subárvore direita
+        printf("Numero de semanas: %d\n", raiz->dados->num_semanas);
+        imprimir_disciplinas_curso(raiz->dir); // Percorre a subarvore direita
     }
 }
 
@@ -195,7 +194,7 @@ arv_curso *procuraMenor_curso(arv_curso *atual)
 
 arv_curso *remove_NO_curso(arv_curso *H, int valor)
 {
-    arv_curso *resultado = H; // Variável auxiliar para armazenar o resultado final
+    arv_curso *resultado = H; // Variavel auxiliar para armazenar o resultado final
 
     if (H == NULL)
     {
@@ -267,10 +266,10 @@ void imprimir_dados_curso(arv_curso *curso)
 {
     if (curso != NULL)
     {
-        printf("Código: %d\n", curso->dados->codigo);
+        printf("Codigo: %d\n", curso->dados->codigo);
         printf("Nome: %s\n", curso->dados->nome);
         printf("Quantidade de blocos: %d\n", curso->dados->qtd_blocos);
-        printf("Número de semanas: %d\n", curso->dados->num_semanas);
+        printf("Numero de semanas: %d\n", curso->dados->num_semanas);
         printf("Cor: %s\n", curso->cor == RED ? "Vermelho" : "Preto");
 
         if (curso->disciplinas != NULL)
@@ -285,7 +284,7 @@ void imprimir_dados_curso(arv_curso *curso)
     }
     else
     {
-        printf("Curso não encontrado.\n");
+        printf("Curso nao encontrado.\n");
     }
 }
 
@@ -294,16 +293,16 @@ void imprimir_cursos_por_blocos(arv_curso *raiz, int qtd_blocos)
     if (raiz == NULL)
         return;
 
-    // Percorre a árvore em ordem
+    // Percorre a arvore em ordem
     imprimir_cursos_por_blocos(raiz->esq, qtd_blocos);
 
-    // Imprime o curso se a quantidade de blocos for igual à informada
+    // Imprime o curso se a quantidade de blocos for igual a informada
     if (raiz->dados->qtd_blocos == qtd_blocos)
     {
-        printf("Código do Curso: %d\n", raiz->dados->codigo);
+        printf("Codigo do Curso: %d\n", raiz->dados->codigo);
         printf("Nome do Curso: %s\n", raiz->dados->nome);
         printf("Quantidade de Blocos: %d\n", raiz->dados->qtd_blocos);
-        printf("Número de Semanas: %d\n", raiz->dados->num_semanas);
+        printf("Numero de Semanas: %d\n", raiz->dados->num_semanas);
         printf("------------------------\n");
     }
 

@@ -30,11 +30,11 @@ void ler_dados(arv_disciplina *no, arv_curso *curso)
     int bloco;
     do
     {
-        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que é %d): ", curso->dados->qtd_blocos);
+        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que eh %d): ", curso->dados->qtd_blocos);
         scanf("%d", &bloco);
         if (bloco >= curso->dados->qtd_blocos)
         {
-            printf("Bloco inválido. Deve ser menor que a quantidade de blocos do curso.\n");
+            printf("Bloco invalido. Deve ser menor que a quantidade de blocos do curso.\n");
         }
     } while (bloco >= curso->dados->qtd_blocos);
     no->dados->bloco = bloco;
@@ -42,11 +42,11 @@ void ler_dados(arv_disciplina *no, arv_curso *curso)
     int carga_horaria;
     do
     {
-        printf("Informe a carga-horaria da disciplina (deve ser múltiplo de %d semanas): ", curso->dados->num_semanas);
+        printf("Informe a carga-horaria da disciplina (deve ser multiplo de %d semanas): ", curso->dados->num_semanas);
         scanf("%d", &carga_horaria);
         if (carga_horaria % curso->dados->num_semanas != 0)
         {
-            printf("Carga-horária inválida. Deve ser múltiplo de %d semanas.\n", curso->dados->num_semanas);
+            printf("Carga-horaria invalida. Deve ser multiplo de %d semanas.\n", curso->dados->num_semanas);
         }
     } while (carga_horaria % curso->dados->num_semanas != 0);
     no->dados->carga_horaria = carga_horaria;
@@ -132,7 +132,6 @@ void imprimir_disciplinas(arv_disciplina *raiz)
         printf("Nome: %s\n", raiz->dados->nome);
         printf("Bloco: %d\n", raiz->dados->bloco);
         printf("Carga-Horaria: %d\n", raiz->dados->carga_horaria);
-        printf("Cor: %d\n", raiz->cor);
         imprimir_disciplinas(raiz->dir);
     }
 }
@@ -212,7 +211,7 @@ arv_disciplina *procuraMenor(arv_disciplina *atual)
 
 arv_disciplina *remove_NO(arv_disciplina *H, int valor)
 {
-    arv_disciplina *resultado = H; // Variável auxiliar para armazenar o resultado final
+    arv_disciplina *resultado = H; // Variavel auxiliar para armazenar o resultado final
 
     if (H == NULL)
     {
