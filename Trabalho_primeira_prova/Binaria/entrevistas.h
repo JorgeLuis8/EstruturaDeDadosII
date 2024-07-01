@@ -1,4 +1,3 @@
-// Em entrevistas.h
 
 #ifndef ENTREVISTAS_H
 #define ENTREVISTAS_H

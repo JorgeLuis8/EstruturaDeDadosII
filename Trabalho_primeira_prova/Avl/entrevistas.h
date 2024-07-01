@@ -31,4 +31,4 @@ Arvore_entrevistas *remover_entrevista(Arvore_entrevistas *raiz, char *titulo);
 void mostrar_dados_entrevista(Arvore_entrevistas *entrevista);
 void imprimir_entrevistados(Arvore_entrevistas *entrevistas);
 
-#endif // ENTREVISTAS_H
+#endif 

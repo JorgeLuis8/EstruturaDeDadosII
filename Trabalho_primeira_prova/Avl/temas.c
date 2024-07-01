@@ -20,9 +20,7 @@ void lerDados(Arvore_temas *no)
     scanf(" %[^\n]", no->tema);
 }
 
-// void lerDados(Arvore_temas *no,char *nome){
-//     strcpy(no->tema,nome);
-// }
+
     
 
 
@@ -81,15 +79,14 @@ void imprimir_temas(Arvore_temas *raiz)
         imprimir_temas(raiz->dir);
     }
 }
-// FunÃ§Ã£o para imprimir as entrevistas de uma Ã¡rvore de entrevistas
 void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema)
 {
-    // Busca o tema na Ã¡rvore de temas
+    
     Arvore_temas *tema_encontrado = Busca_arv(raiz, tema);
 
     if (tema_encontrado != NULL)
     {
-        // Verifica se hÃ¡ entrevistas associadas ao tema
+     
         if (tema_encontrado->entrevistas != NULL)
         {
             imprimir_dados_entrevista(tema_encontrado->entrevistas);

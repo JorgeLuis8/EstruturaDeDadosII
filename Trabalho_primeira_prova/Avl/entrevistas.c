@@ -159,7 +159,6 @@ Arvore_entrevistas *inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevi
                 raiz->dir = inserir_entrevistas(raiz->dir, no);
             }
         }
-        // Atualizar a altura da raiz apenas se não for NULL
         raiz->altura = maior_no(altura_do_no(raiz->esq), altura_do_no(raiz->dir)) + 1;
         raiz = balencar_arvore(raiz);
     }

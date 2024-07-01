@@ -11,7 +11,7 @@ Arvore_entrevistas *criar_arvore_entrevistas()
     return a;
 }
 
-// inserindo dados
+
 void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no)
 {
     printf("Digite o titulo da entrevista: ");
@@ -30,17 +30,16 @@ void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no)
     scanf(" %[^\n]", no->especialidade_convidado);
 }
 
-// Funcao para inserir entrevistas na arvore, usando a funcao de ler os dados de insercao
+
 Arvore_entrevistas *inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevistas *no)
 {
-    // Se a raiz for nula, o no inserido sera a raiz
+   
     if (raiz == NULL)
     {
         raiz = no;
     }
     else
     {
-        // Se o titulo do no inserido for menor que o titulo da raiz, o no sera inserido a esquerda
         if (strcmp(no->titulos, raiz->titulos) < 0)
         {
             if (raiz->esq == NULL)
@@ -51,7 +50,7 @@ Arvore_entrevistas *inserir_entrevistas(Arvore_entrevistas *raiz, Arvore_entrevi
             {
                 raiz->esq = inserir_entrevistas(raiz->esq, no);
             }
-            // Se o titulo do no inserido for maior que o titulo da raiz, o no sera inserido a direita
+        
         }
         else
         {
@@ -93,7 +92,7 @@ void imprimir_titulos_entrevistas(Arvore_entrevistas *raiz)
     }
 }
 
-// Funcao para buscar entrevistas na arvore
+
 Arvore_entrevistas *buscar_entrevistas(Arvore_entrevistas *raiz, char *titulo)
 {
     Arvore_entrevistas *aux = NULL;
@@ -173,17 +172,16 @@ void mostrar_dados_entrevista(Arvore_entrevistas* entrevista) {
     printf("Especialidade do convidado: %s\n", entrevista->especialidade_convidado);
 }
 
-// Função para imprimir os nomes dos entrevistados de todas as entrevistas de um tema
-// Função para imprimir os nomes dos entrevistados de todas as entrevistas de um tema
+
 void imprimir_entrevistados(Arvore_entrevistas *entrevistas) {
     if (entrevistas != NULL) {
-        // Imprimir os entrevistados da subárvore da esquerda
+
         imprimir_entrevistados(entrevistas->esq);
         
-        // Imprimir o nome do entrevistado da entrevista atual
+     
         printf("- %s\n", entrevistas->nome_convidado);
         
-        // Imprimir os entrevistados da subárvore da direita
+ 
         imprimir_entrevistados(entrevistas->dir);
     }
 }

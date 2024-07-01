@@ -5,7 +5,6 @@
 typedef struct arvore_podCast Arvore_podCast;
 
 Arvore_podCast* criar_arvore_podCast();
-// void ler_dados_podcast(Arvore_podCast *no, char *nome);
 void ler_dados_podcast(Arvore_podCast *no);
 
 Arvore_podCast *inserir_podcast(Arvore_podCast *raiz, Arvore_podCast *no);

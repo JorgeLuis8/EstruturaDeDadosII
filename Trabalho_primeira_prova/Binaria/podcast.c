@@ -29,13 +29,7 @@ void ler_dados_podcast(Arvore_podCast *no){
     printf("Digite o nome do entrevistador: ");
     scanf(" %[^\n]", no->entrevistador);
 }
-// void ler_dados_podcast(Arvore_podCast *no, char *nome){
-//     //printf("Digite o nome do podcast: ");
-//     strcpy(no->nome, nome);
 
-//     // printf("Digite o nome do entrevistador: ");
-//     // scanf(" %[^\n]", no->entrevistador);
-// }
 
 Arvore_podCast *inserir_podcast(Arvore_podCast *raiz, Arvore_podCast *no)
 {

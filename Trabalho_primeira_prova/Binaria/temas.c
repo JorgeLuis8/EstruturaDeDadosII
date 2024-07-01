@@ -15,10 +15,7 @@ Arvore_temas *criar_arvore_temas()
     nova_arvore->entrevistas = NULL;
     return nova_arvore;
 }
-// void lerDados(Arvore_temas *no,char *nome)
-// {
-//     strcpy(no->tema,nome);
-// }
+
 
 void lerDados(Arvore_temas *no)
 {
@@ -81,13 +78,13 @@ void imprimir_temas(Arvore_temas *raiz)
         imprimir_temas(raiz->dir);
     }
 }
-// Função para imprimir as entrevistas de uma árvore de entrevistas
+
 void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema) {
-    // Busca o tema na árvore de temas
+   
     Arvore_temas *tema_encontrado = Busca_arv(raiz, tema);
 
     if (tema_encontrado != NULL) {
-        // Verifica se há entrevistas associadas ao tema
+       
         if (tema_encontrado->entrevistas != NULL) {
             imprimir_dados_entrevista(tema_encontrado->entrevistas);
         } else {

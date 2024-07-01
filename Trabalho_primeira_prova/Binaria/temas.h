@@ -13,7 +13,7 @@ typedef struct arvore_temas
 Arvore_temas *criar_arvore_temas();
 Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no);
 
-// Arvore_temas *inserir_temas(Arvore_temas *raiz, Arvore_temas *no);
+
 Arvore_temas *Busca_arv(Arvore_temas *raiz, char *tema);
 void imprimir_entrevistas_tema(Arvore_temas *raiz, char *tema);
 
