@@ -46,7 +46,16 @@ int main()
                     break;
                 }
                 ler_dados(nova_disciplina, curso);
-                curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
+
+                if (buscar_disciplina(curso->disciplinas, nova_disciplina->dados->codigo) == NULL)
+                {
+                    curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
+                }
+                else
+                {
+                    printf("Disciplina com o código %d já cadastrada no curso.\n", nova_disciplina->dados->codigo);
+                }
+                break;
             }
             else
             {
