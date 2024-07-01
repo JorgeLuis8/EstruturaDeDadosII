@@ -52,12 +52,12 @@ int main()
             if (curso != NULL)
             {
                 arv_disciplina *nova_disciplina = cria_no();
-                if (nova_disciplina == NULL)
+                ler_dados(nova_disciplina, curso);
+                if (buscar_disciplina(curso->disciplinas, nova_disciplina->dados->codigo) != NULL)
                 {
-                    printf("Erro ao criar nova disciplina.\n");
+                    printf("Erro: Ja existe uma disciplina com o codigo %d.\n", nova_disciplina->dados->codigo);
                     break;
                 }
-                ler_dados(nova_disciplina, curso);
                 curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);
             }
             else
