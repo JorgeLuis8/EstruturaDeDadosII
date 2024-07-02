@@ -3,6 +3,7 @@
         "stdio.h": "c",
         "string.h": "c",
         "disciplina.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "cwchar": "cpp"
     }
 }

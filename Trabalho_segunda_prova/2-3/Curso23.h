@@ -15,9 +15,9 @@ typedef struct dados_curso23
 typedef struct Arv_curso23
 {
     dados_curso23 *dados;
-    struct arv_curso23 *esq;
-    struct arv_curso23 *meio;
-    struct arv_curso23 *dir;
+    struct Arv_curso23 *esq;
+    struct Arv_curso23 *meio;
+    struct Arv_curso23 *dir;
     int num_info;
     arv_23Disciplina *disciplinas;
     

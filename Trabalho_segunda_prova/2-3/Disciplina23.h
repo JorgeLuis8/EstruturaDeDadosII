@@ -11,10 +11,10 @@ typedef struct dados_disciplina
 typedef struct Arv_23Disciplina
 {
     int ninfos;
-    struct dados_disciplina *dados;
-    struct arv_23Disciplina *esq;
-    struct arv_23Disciplina *meio;
-    struct arv_23Disciplina *dir;
+    struct dados_disciplina *info1,*info2;
+    struct Arv_23Disciplina *esq;
+    struct Arv_23Disciplina *meio;
+    struct Arv_23Disciplina *dir;
 } arv_23Disciplina;
 
 #endif
