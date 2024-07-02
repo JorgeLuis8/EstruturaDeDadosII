@@ -23,5 +23,10 @@ typedef struct Arv_curso23
     
 } arv_curso23;
 
+arv_curso23* cria_no23(dados_curso23* dados);
+arv_curso23* insere_arv23(arv_curso23* raiz, dados_curso23* dados);
+
+
+
 
 #endif /* CURSO_H */
