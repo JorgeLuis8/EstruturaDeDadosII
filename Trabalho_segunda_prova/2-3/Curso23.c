@@ -152,3 +152,28 @@ void imprimirCurso(arv_curso23 *raiz) {
         }
     }
 }
+
+arv_curso23 *buscarCurso(arv_curso23 *raiz, int codigo)
+{
+    arv_curso23 *encontrada = NULL;
+
+    if (raiz != NULL)
+    {
+        if (codigo == raiz->info1->codigo)
+            encontrada = raiz;
+
+        if (raiz->num_info == 2 && codigo == raiz->info2->codigo)
+            encontrada = raiz;
+
+        if (encontrada == NULL)
+        {
+            if (codigo < raiz->info1->codigo)
+                encontrada = buscarCurso(raiz->esq, codigo);
+            else if (raiz->num_info == 1 || (raiz->num_info == 2 && codigo < raiz->info2->codigo))
+                encontrada = buscarCurso(raiz->meio, codigo);
+            else
+                encontrada = buscarCurso(raiz->dir, codigo);
+        }
+    }
+    return encontrada;
+}
