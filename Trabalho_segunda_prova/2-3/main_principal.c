@@ -151,18 +151,14 @@ int main()
             }
             printf("Bloco da Disciplina: ");
             scanf("%d", &bloco);
-            if (buscarDisciplina(curso->disciplinas, bloco) == NULL)
-            {
-                printf("Disciplina não encontrada!\n");
-                break;
-            }
+
             imprimirDisciplinasBloco(curso->disciplinas, bloco);
             break;
         case 0:
             exit(0);
         default:
             printf("Opcao invalida!\n");
-        }
+        } 
     }
 
     return 0;
