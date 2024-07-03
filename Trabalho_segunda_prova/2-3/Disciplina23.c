@@ -203,3 +203,29 @@ void imprimirDisciplinasBloco (arv_23Disciplina *raiz, int bloco) {
         }
     }
 }
+
+void imprimirDisciplinasCargaHoraria(arv_23Disciplina *raiz, int carga_horaria)
+{
+    if (raiz == NULL)
+        return;
+
+    if (raiz->info1->carga_horaria == carga_horaria)
+    {
+        printf("Codigo: %d\n", raiz->info1->codigo);
+        printf("Nome: %s\n", raiz->info1->nome);
+        printf("Bloco: %d\n", raiz->info1->bloco);
+        printf("Carga Horaria: %d\n", raiz->info1->carga_horaria);
+    }
+
+    if (raiz->info2 != NULL && raiz->info2->carga_horaria == carga_horaria)
+    {
+        printf("Codigo: %d\n", raiz->info2->codigo);
+        printf("Nome: %s\n", raiz->info2->nome);
+        printf("Bloco: %d\n", raiz->info2->bloco);
+        printf("Carga Horaria: %d\n", raiz->info2->carga_horaria);
+    }
+
+    imprimirDisciplinasCargaHoraria(raiz->esq, carga_horaria);
+    imprimirDisciplinasCargaHoraria(raiz->meio, carga_horaria);
+    imprimirDisciplinasCargaHoraria(raiz->dir, carga_horaria);
+}
