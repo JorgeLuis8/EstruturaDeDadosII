@@ -153,6 +153,29 @@ void imprimirCurso(arv_curso23 *raiz) {
     }
 }
 
+// Função para buscar um curso na árvore 2-3 com o mesmo numero de blocos
+void imprimirCursoBlocos(arv_curso23 *raiz, int qtd_blocos) {
+    if (raiz != NULL) {
+        imprimirCursoBlocos(raiz->esq, qtd_blocos);
+        if (raiz->info1->qtd_blocos == qtd_blocos) {
+            printf("Info 1 codigo: %d\n", raiz->info1->codigo);
+            printf("Info 1 nome: %s\n", raiz->info1->nome);
+            printf("Info 1 qtd_blocos: %d\n", raiz->info1->qtd_blocos);
+            printf("Info 1 num_semanas: %d\n", raiz->info1->num_semanas);
+        }
+        imprimirCursoBlocos(raiz->meio, qtd_blocos);
+        if (raiz->num_info == 2) {
+            if (raiz->info2->qtd_blocos == qtd_blocos) {
+                printf("Info 2 codigo: %d\n", raiz->info2->codigo);
+                printf("Info 2 nome: %s\n", raiz->info2->nome);
+                printf("Info 2 qtd_blocos: %d\n", raiz->info2->qtd_blocos);
+                printf("Info 2 num_semanas: %d\n", raiz->info2->num_semanas);
+            }
+            imprimirCursoBlocos(raiz->dir, qtd_blocos);
+        }
+    }
+}
+
 arv_curso23 *buscarCurso(arv_curso23 *raiz, int codigo)
 {
     arv_curso23 *encontrada = NULL;

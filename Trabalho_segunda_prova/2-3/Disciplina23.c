@@ -161,3 +161,45 @@ void imprimir_Disciplina(arv_23Disciplina *raiz) {
         }
     }
 }
+
+arv_23Disciplina *buscarDisciplina(arv_23Disciplina *raiz, int codigo) {
+    arv_23Disciplina *disciplina;
+    if (raiz == NULL) {
+        disciplina = NULL;
+    } else {
+        if (raiz->info1->codigo == codigo) {
+            disciplina = raiz;
+        } else if (raiz->ninfos == 2 && raiz->info2->codigo == codigo) {
+            disciplina = raiz;
+        } else if (codigo < raiz->info1->codigo) {
+            disciplina = buscarDisciplina(raiz->esq, codigo);
+        } else if (raiz->ninfos == 2 && codigo < raiz->info2->codigo) {
+            disciplina = buscarDisciplina(raiz->meio, codigo);
+        } else {
+            disciplina = buscarDisciplina(raiz->dir, codigo);
+        }
+    }
+    return disciplina;
+}
+
+void imprimirDisciplinasBloco (arv_23Disciplina *raiz, int bloco) {
+    if (raiz != NULL) {
+        imprimirDisciplinasBloco(raiz->esq, bloco);
+        if (raiz->info1->bloco == bloco) {
+            printf("Info 1 codigo: %d\n", raiz->info1->codigo);
+            printf("Info 1 nome: %s\n", raiz->info1->nome);
+            printf("Info 1 bloco: %d\n", raiz->info1->bloco);
+            printf("Info 1 carga horaria: %d\n", raiz->info1->carga_horaria);
+        }
+        imprimirDisciplinasBloco(raiz->meio, bloco);
+        if (raiz->ninfos == 2) {
+            if (raiz->info2->bloco == bloco) {
+                printf("Info 2 codigo: %d\n", raiz->info2->codigo);
+                printf("Info 2 nome: %s\n", raiz->info2->nome);
+                printf("Info 2 bloco: %d\n", raiz->info2->bloco);
+                printf("Info 2 carga horaria: %d\n", raiz->info2->carga_horaria);
+            }
+            imprimirDisciplinasBloco(raiz->dir, bloco);
+        }
+    }
+}
