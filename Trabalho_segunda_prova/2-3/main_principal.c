@@ -176,13 +176,13 @@ int main()
             scanf("%d", &carga_horaria);
             imprimirDisciplinasCargaHoraria(curso->disciplinas, carga_horaria);
             break;
-
+        
         case 0:
             exit(0);
 
         default:
             printf("Opcao invalida!\n");
-        } 
+        }
     }
 
     return 0;

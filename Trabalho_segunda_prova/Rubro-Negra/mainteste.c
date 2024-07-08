@@ -5,8 +5,9 @@
 #include "Disciplina.C"
 #include "Curso.C"
 
-#define TOTAL_CODES 100
+#define TOTAL_CODES 15000 
 #define NUM_SEARCHES 30
+#define REPEAT_SEARCHES 10
 
 void menu();
 
@@ -47,7 +48,7 @@ int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
     get_current_time(&start_time);
 
     while (generated < total) {
-        int new_code = rand() % 10000 + 1; // Gerar código aleatório entre 1 e 1000
+        int new_code = rand() % 10000 + 1; // Gerar código aleatório entre 1 e 10000
         int i;
 
         // Verificar se new_code já foi gerado
@@ -73,8 +74,8 @@ int generate_unique_codes(int *codes, int total, int *passos, double *tempo) {
     return generated; // Retornar o número de códigos gerados (deve ser igual a total)
 }
 
-// Função para buscar um curso na árvore e contar os passos
-arv_curso *buscar_disciplina_curso_contador(arv_curso *raiz, int codigo, int *passos) {
+// Função para buscar um curso na árvore e contar os passos e tempo gasto
+double buscar_disciplina_curso_contador(arv_curso *raiz, int codigo, int *passos) {
     *passos = 0;
     struct timespec start_time, end_time;
 
@@ -91,9 +92,7 @@ arv_curso *buscar_disciplina_curso_contador(arv_curso *raiz, int codigo, int *pa
 
     get_current_time(&end_time);
     double tempo = get_elapsed_time(&start_time, &end_time);
-    printf("Tempo gasto na busca: %.9f segundos\n", tempo);
-
-    return atual;
+    return tempo;
 }
 
 int main() {
@@ -107,7 +106,7 @@ int main() {
     int unique_codes[TOTAL_CODES];
     int passos;
     double tempo;
-    int i;
+    int i, j;
 
     // Gerar códigos únicos e contar passos e tempo
     int num_generated = generate_unique_codes(unique_codes, TOTAL_CODES, &passos, &tempo);
@@ -129,18 +128,53 @@ int main() {
         raiz_curso = inserir_curso(raiz_curso, novo_curso);
     }
 
-    // Realizar busca 30 vezes por códigos gerados anteriormente
+    // Permitir que o usuário escolha um código para buscar
+    int codigo_busca;
+    printf("Digite o código que deseja buscar: ");
+    scanf("%d", &codigo_busca);
+
+    // Realizar busca 30 vezes pelo mesmo código, repetindo 10 vezes cada
+    double tempos_busca[NUM_SEARCHES][REPEAT_SEARCHES];
+    int passos_busca[NUM_SEARCHES][REPEAT_SEARCHES];
     for (i = 0; i < NUM_SEARCHES; ++i) {
-        // Escolher um código aleatório gerado anteriormente para buscar
-        int codigo_busca = unique_codes[rand() % TOTAL_CODES];
+        printf("\nRepetição %d:\n", i + 1);
+        for (j = 0; j < REPEAT_SEARCHES; ++j) {
+            double tempo_busca = buscar_disciplina_curso_contador(raiz_curso, codigo_busca, &passos);
+            tempos_busca[i][j] = tempo_busca;
+            passos_busca[i][j] = passos;
 
-        printf("\nBusca %d:\n", i + 1);
-        printf("Codigo buscado: %d\n", codigo_busca);
-
-        arv_curso *curso_encontrado = buscar_disciplina_curso_contador(raiz_curso, codigo_busca, &passos);
-
-        printf("Passos na busca: %d\n", passos);
+            printf("Busca %d - Passos: %d, Tempo: %.9f segundos\n", j + 1, passos, tempo_busca);
+        }
     }
+
+    // Calcular média dos tempos e passos de busca para cada repetição
+    double medias_tempos[NUM_SEARCHES];
+    double medias_passos[NUM_SEARCHES];
+    for (i = 0; i < NUM_SEARCHES; ++i) {
+        double soma_tempos = 0.0;
+        int soma_passos = 0;
+        for (j = 0; j < REPEAT_SEARCHES; ++j) {
+            soma_tempos += tempos_busca[i][j];
+            soma_passos += passos_busca[i][j];
+        }
+        medias_tempos[i] = soma_tempos / REPEAT_SEARCHES;
+        medias_passos[i] = (double)soma_passos / REPEAT_SEARCHES;
+        printf("\nMédia do tempo gasto na repetição %d: %.9f segundos\n", i + 1, medias_tempos[i]);
+        printf("Média de passos na repetição %d: %.2f passos\n", i + 1, medias_passos[i]);
+    }
+
+    // Calcular média geral dos tempos e passos de busca
+    double soma_medias_tempos = 0.0;
+    double soma_medias_passos = 0.0;
+    for (i = 0; i < NUM_SEARCHES; ++i) {
+        soma_medias_tempos += medias_tempos[i];
+        soma_medias_passos += medias_passos[i];
+    }
+    double media_geral_tempo = soma_medias_tempos / NUM_SEARCHES;
+    double media_geral_passos = soma_medias_passos / NUM_SEARCHES;
+
+    printf("\nMédia geral do tempo gasto nas buscas: %.9f segundos\n", media_geral_tempo);
+    printf("Média geral de passos nas buscas: %.2f passos\n", media_geral_passos);
 
     // Restante da lógica do programa guiado por menu
     // Exemplo: menu(), switch case, etc.

@@ -3,21 +3,7 @@
 #include <string.h>
 #include "Disciplina23.h"
 
-arv_23Disciplina *criaNo(int codigo, char *nome, int bloco, int carga_horaria, arv_23Disciplina *esq, arv_23Disciplina *meio) 
-{
-    arv_23Disciplina *no = (arv_23Disciplina*)malloc(sizeof(arv_23Disciplina)); 
-    no->info1 = (dados_disciplina*)malloc(sizeof(dados_disciplina));
-    no->info1->codigo = codigo;
-    strcpy( no->info1->nome,nome);
-    no->info1->bloco = bloco;
-    no->info1->carga_horaria = carga_horaria;
-    no->ninfos = 1;
-    no->esq = esq;
-    no->meio = meio;
-    no->dir = NULL;
-    no->info2 = NULL;
-    return no;
-}
+
 
 arv_23Disciplina *criaNo_disciplina(int codigo, char *nome, int bloco, int carga_horaria, arv_23Disciplina *noEsq, arv_23Disciplina *noMeio) {
     arv_23Disciplina *no = (arv_23Disciplina*)malloc(sizeof(arv_23Disciplina));
@@ -229,3 +215,8 @@ void imprimirDisciplinasCargaHoraria(arv_23Disciplina *raiz, int carga_horaria)
     imprimirDisciplinasCargaHoraria(raiz->meio, carga_horaria);
     imprimirDisciplinasCargaHoraria(raiz->dir, carga_horaria);
 }
+
+
+
+
+
