@@ -12,7 +12,7 @@ typedef struct dados_curso
 
 typedef struct arv_curso
 {
-    dados_curso *dados;
+    dados_curso dados;
     int cor;
     struct arv_curso *esq;
     struct arv_curso *dir;

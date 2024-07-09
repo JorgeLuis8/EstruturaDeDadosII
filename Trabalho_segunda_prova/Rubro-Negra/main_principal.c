@@ -31,10 +31,10 @@ int main()
             ler_dados_curso(novo_curso);
 
             // Verificar se o curso já existe
-            arv_curso *curso_existente = buscar_disciplina_curso(raiz_curso, novo_curso->dados->codigo);
+            arv_curso *curso_existente = buscar_disciplina_curso(raiz_curso, novo_curso->dados.codigo);
             if (curso_existente != NULL)
             {
-                printf("Erro: Ja existe um curso com o codigo %d.\n", novo_curso->dados->codigo);
+                printf("Erro: Ja existe um curso com o codigo %d.\n", novo_curso->dados.codigo);
                 break;
             }
 
@@ -53,9 +53,9 @@ int main()
             {
                 arv_disciplina *nova_disciplina = cria_no();
                 ler_dados(nova_disciplina, curso);
-                if (buscar_disciplina(curso->disciplinas, nova_disciplina->dados->codigo) != NULL)
+                if (buscar_disciplina(curso->disciplinas, nova_disciplina->dados.codigo) != NULL)
                 {
-                    printf("Erro: Ja existe uma disciplina com o codigo %d.\n", nova_disciplina->dados->codigo);
+                    printf("Erro: Ja existe uma disciplina com o codigo %d.\n", nova_disciplina->dados.codigo);
                     break;
                 }
                 curso->disciplinas = inserir_disciplina(curso->disciplinas, nova_disciplina);

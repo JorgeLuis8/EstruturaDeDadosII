@@ -10,7 +10,6 @@ arv_curso *cria_no_curso()
     arv_curso *no = (arv_curso *)malloc(sizeof(arv_curso));
     if (no != NULL)
     {
-        no->dados = (dados_curso *)malloc(sizeof(dados_curso));
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
@@ -22,16 +21,16 @@ arv_curso *cria_no_curso()
 void ler_dados_curso(arv_curso *no)
 {
     printf("Informe o codigo do curso: ");
-    scanf("%d", &no->dados->codigo);
+    scanf("%d", &no->dados.codigo);
 
     printf("Informe o nome do curso: ");
-    scanf(" %99[^\n]", no->dados->nome);
+    scanf(" %99[^\n]", no->dados.nome);
 
     printf("Informe a quantidade de blocos do curso: ");
-    scanf("%d", &no->dados->qtd_blocos);
+    scanf("%d", &no->dados.qtd_blocos);
 
     printf("Informe o numero de semanas para cada disciplina: ");
-    scanf("%d", &no->dados->num_semanas);
+    scanf("%d", &no->dados.num_semanas);
 }
 
 void trocaCor_curso(arv_curso *H)
@@ -82,7 +81,7 @@ arv_curso *inserir_rec_curso(arv_curso *raiz, arv_curso *no)
     }
     else
     {
-        if (no->dados->codigo < raiz->dados->codigo)
+        if (no->dados.codigo < raiz->dados.codigo)
             raiz->esq = inserir_rec_curso(raiz->esq, no);
         else
             raiz->dir = inserir_rec_curso(raiz->dir, no);
@@ -111,10 +110,10 @@ void imprimir_disciplinas_curso(arv_curso *raiz)
     if (raiz != NULL)
     {
         imprimir_disciplinas_curso(raiz->esq); // Percorre a subarvore esquerda
-        printf("Codigo: %d\n", raiz->dados->codigo);
-        printf("Nome: %s\n", raiz->dados->nome);
-        printf("Quantidade de blocos: %d\n", raiz->dados->qtd_blocos);
-        printf("Numero de semanas: %d\n", raiz->dados->num_semanas);
+        printf("Codigo: %d\n", raiz->dados.codigo);
+        printf("Nome: %s\n", raiz->dados.nome);
+        printf("Quantidade de blocos: %d\n", raiz->dados.qtd_blocos);
+        printf("Numero de semanas: %d\n", raiz->dados.num_semanas);
         imprimir_disciplinas_curso(raiz->dir); // Percorre a subarvore direita
     }
 }
@@ -124,9 +123,9 @@ arv_curso *buscar_disciplina_curso(arv_curso *raiz, int codigo)
     arv_curso *aux = NULL;
     if (raiz != NULL)
     {
-        if (raiz->dados->codigo == codigo)
+        if (raiz->dados.codigo == codigo)
             aux = raiz;
-        else if (raiz->dados->codigo < codigo)
+        else if (raiz->dados.codigo < codigo)
             aux = buscar_disciplina_curso(raiz->dir, codigo);
         else
             aux = buscar_disciplina_curso(raiz->esq, codigo);
@@ -202,7 +201,7 @@ arv_curso *remove_NO_curso(arv_curso *H, int valor)
     }
     else
     {
-        if (valor < H->dados->codigo)
+        if (valor < H->dados.codigo)
         {
             if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
                 H = move2EsqRED_curso(H);
@@ -215,7 +214,7 @@ arv_curso *remove_NO_curso(arv_curso *H, int valor)
             if (H->esq != NULL && H->esq->cor == RED)
                 H = rotacionarDireita_curso(H);
 
-            if (valor == H->dados->codigo && (H->dir == NULL))
+            if (valor == H->dados.codigo && (H->dir == NULL))
             {
                 free(H);
                 resultado = NULL;
@@ -225,10 +224,10 @@ arv_curso *remove_NO_curso(arv_curso *H, int valor)
                 if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
                     H = move2DirRED_curso(H);
 
-                if (valor == H->dados->codigo)
+                if (valor == H->dados.codigo)
                 {
                     arv_curso *x = procuraMenor_curso(H->dir);
-                    H->dados->codigo = x->dados->codigo;
+                    H->dados.codigo = x->dados.codigo;
                     H->dir = removerMenor_curso(H->dir);
                 }
                 else if (H->dir != NULL)
@@ -266,10 +265,10 @@ void imprimir_dados_curso(arv_curso *curso)
 {
     if (curso != NULL)
     {
-        printf("Codigo: %d\n", curso->dados->codigo);
-        printf("Nome: %s\n", curso->dados->nome);
-        printf("Quantidade de blocos: %d\n", curso->dados->qtd_blocos);
-        printf("Numero de semanas: %d\n", curso->dados->num_semanas);
+        printf("Codigo: %d\n", curso->dados.codigo);
+        printf("Nome: %s\n", curso->dados.nome);
+        printf("Quantidade de blocos: %d\n", curso->dados.qtd_blocos);
+        printf("Numero de semanas: %d\n", curso->dados.num_semanas);
         printf("Cor: %s\n", curso->cor == RED ? "Vermelho" : "Preto");
 
         if (curso->disciplinas != NULL)
@@ -297,12 +296,12 @@ void imprimir_cursos_por_blocos(arv_curso *raiz, int qtd_blocos)
     imprimir_cursos_por_blocos(raiz->esq, qtd_blocos);
 
     // Imprime o curso se a quantidade de blocos for igual a informada
-    if (raiz->dados->qtd_blocos == qtd_blocos)
+    if (raiz->dados.qtd_blocos == qtd_blocos)
     {
-        printf("Codigo do Curso: %d\n", raiz->dados->codigo);
-        printf("Nome do Curso: %s\n", raiz->dados->nome);
-        printf("Quantidade de Blocos: %d\n", raiz->dados->qtd_blocos);
-        printf("Numero de Semanas: %d\n", raiz->dados->num_semanas);
+        printf("Codigo do Curso: %d\n", raiz->dados.codigo);
+        printf("Nome do Curso: %s\n", raiz->dados.nome);
+        printf("Quantidade de Blocos: %d\n", raiz->dados.qtd_blocos);
+        printf("Numero de Semanas: %d\n", raiz->dados.num_semanas);
         printf("------------------------\n");
     }
 

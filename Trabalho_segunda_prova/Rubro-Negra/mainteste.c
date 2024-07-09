@@ -5,7 +5,7 @@
 #include "Disciplina.C"
 #include "Curso.C"
 
-#define TOTAL_CODES 15000 
+#define TOTAL_CODES 10000
 #define NUM_SEARCHES 30
 #define REPEAT_SEARCHES 10
 
@@ -99,8 +99,8 @@ int main() {
     srand(time(NULL)); // Inicializar semente para números aleatórios
 
     arv_curso *raiz_curso = NULL;
-    int opcao;
-    int codigo_curso, bloco, carga_horaria;
+    // int opcao;
+    // int codigo_curso, bloco, carga_horaria;
 
     // Array para armazenar os códigos de curso gerados
     int unique_codes[TOTAL_CODES];
