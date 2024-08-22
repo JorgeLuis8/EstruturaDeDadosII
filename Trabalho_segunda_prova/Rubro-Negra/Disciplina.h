@@ -15,7 +15,7 @@ typedef struct dados_disciplina
 
 typedef struct arv_disciplina
 {
-    dados_disciplina *dados;
+    dados_disciplina dados;
     struct arv_disciplina *esq;
     struct arv_disciplina *dir;
     int cor;

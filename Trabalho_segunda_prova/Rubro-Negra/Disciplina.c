@@ -11,7 +11,6 @@ arv_disciplina *cria_no()
     arv_disciplina *no = (arv_disciplina *)malloc(sizeof(arv_disciplina));
     if (no != NULL)
     {
-        no->dados = (dados_disciplina *)malloc(sizeof(dados_disciplina));
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
@@ -22,34 +21,34 @@ arv_disciplina *cria_no()
 void ler_dados(arv_disciplina *no, arv_curso *curso)
 {
     printf("Informe o codigo da disciplina: ");
-    scanf("%d", &no->dados->codigo);
+    scanf("%d", &no->dados.codigo);
 
     printf("Informe o nome da disciplina: ");
-    scanf(" %99[^\n]", no->dados->nome);
+    scanf(" %99[^\n]", no->dados.nome);
 
     int bloco;
     do
     {
-        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que eh %d): ", curso->dados->qtd_blocos);
+        printf("Informe o bloco da disciplina (deve ser menor que a quantidade de blocos do curso, que eh %d): ", curso->dados.qtd_blocos);
         scanf("%d", &bloco);
-        if (bloco >= curso->dados->qtd_blocos)
+        if (bloco >= curso->dados.qtd_blocos)
         {
             printf("Bloco invalido. Deve ser menor que a quantidade de blocos do curso.\n");
         }
-    } while (bloco >= curso->dados->qtd_blocos);
-    no->dados->bloco = bloco;
+    } while (bloco >= curso->dados.qtd_blocos);
+    no->dados.bloco = bloco;
 
     int carga_horaria;
     do
     {
-        printf("Informe a carga-horaria da disciplina (deve ser multiplo de %d semanas): ", curso->dados->num_semanas);
+        printf("Informe a carga-horaria da disciplina (deve ser multiplo de %d semanas): ", curso->dados.num_semanas);
         scanf("%d", &carga_horaria);
-        if (carga_horaria % curso->dados->num_semanas != 0)
+        if (carga_horaria % curso->dados.num_semanas != 0)
         {
-            printf("Carga-horaria invalida. Deve ser multiplo de %d semanas.\n", curso->dados->num_semanas);
+            printf("Carga-horaria invalida. Deve ser multiplo de %d semanas.\n", curso->dados.num_semanas);
         }
-    } while (carga_horaria % curso->dados->num_semanas != 0);
-    no->dados->carga_horaria = carga_horaria;
+    } while (carga_horaria % curso->dados.num_semanas != 0);
+    no->dados.carga_horaria = carga_horaria;
 }
 
 void trocaCor(arv_disciplina *H)
@@ -100,7 +99,7 @@ arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no)
     }
     else
     {
-        if (no->dados->codigo < raiz->dados->codigo)
+        if (no->dados.codigo < raiz->dados.codigo)
             raiz->esq = inserir_rec(raiz->esq, no);
         else
             raiz->dir = inserir_rec(raiz->dir, no);
@@ -128,10 +127,10 @@ void imprimir_disciplinas(arv_disciplina *raiz)
     if (raiz != NULL)
     {
         imprimir_disciplinas(raiz->esq);
-        printf("Codigo: %d\n", raiz->dados->codigo);
-        printf("Nome: %s\n", raiz->dados->nome);
-        printf("Bloco: %d\n", raiz->dados->bloco);
-        printf("Carga-Horaria: %d\n", raiz->dados->carga_horaria);
+        printf("Codigo: %d\n", raiz->dados.codigo);
+        printf("Nome: %s\n", raiz->dados.nome);
+        printf("Bloco: %d\n", raiz->dados.bloco);
+        printf("Carga-Horaria: %d\n", raiz->dados.carga_horaria);
         imprimir_disciplinas(raiz->dir);
     }
 }
@@ -141,9 +140,9 @@ arv_disciplina *buscar_disciplina(arv_disciplina *raiz, int codigo)
     arv_disciplina *aux = NULL;
     if (raiz != NULL)
     {
-        if (raiz->dados->codigo == codigo)
+        if (raiz->dados.codigo == codigo)
             aux = raiz;
-        else if (raiz->dados->codigo < codigo)
+        else if (raiz->dados.codigo < codigo)
             aux = buscar_disciplina(raiz->dir, codigo);
         else
             aux = buscar_disciplina(raiz->esq, codigo);
@@ -219,7 +218,7 @@ arv_disciplina *remove_NO(arv_disciplina *H, int valor)
     }
     else
     {
-        if (valor < H->dados->codigo)
+        if (valor < H->dados.codigo)
         {
             if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
                 H = move2EsqRED(H);
@@ -232,7 +231,7 @@ arv_disciplina *remove_NO(arv_disciplina *H, int valor)
             if (H->esq != NULL && H->esq->cor == RED)
                 H = rotacionarDireita(H);
 
-            if (valor == H->dados->codigo && (H->dir == NULL))
+            if (valor == H->dados.codigo && (H->dir == NULL))
             {
                 free(H);
                 resultado = NULL;
@@ -242,10 +241,10 @@ arv_disciplina *remove_NO(arv_disciplina *H, int valor)
                 if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
                     H = move2DirRED(H);
 
-                if (valor == H->dados->codigo)
+                if (valor == H->dados.codigo)
                 {
                     arv_disciplina *x = procuraMenor(H->dir);
-                    H->dados->codigo = x->dados->codigo;
+                    H->dados.codigo = x->dados.codigo;
                     H->dir = removerMenor(H->dir);
                 }
                 else if (H->dir != NULL)
