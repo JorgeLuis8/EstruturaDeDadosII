@@ -18,29 +18,39 @@ Aluno *criar_aluno(){
     return a;
 }
 
-Aluno *inserir_aluno(Aluno *aluno, Aluno *no){
-    if(buscar_aluno(aluno, no->matricula) != NULL){
+Aluno *inserir_aluno(Aluno *aluno, Aluno *no) {
+    // Verifica se o aluno já existe pela matrícula
+    if (buscar_aluno(aluno, no->matricula) != NULL) {
         printf("Ja existe um aluno com a matricula '%d'. Nao e possivel adicionar novamente.\n", no->matricula);
         return aluno;
     }
 
-    Aluno *retorno;
-
-    if(aluno == NULL){
-        retorno = no;
-    }else{
-        Aluno *aux = aluno;
-        while(aux->prox != NULL){
-            aux = aux->prox;
-        }
-
-        aux->prox = no;
+    // Se a lista estiver vazia, o novo aluno será o primeiro
+    if (aluno == NULL) {
         no->prox = NULL;
-
-        retorno = aluno;
+        return no;
     }
 
-    return retorno;
+    Aluno *anterior = NULL;
+    Aluno *atual = aluno;
+
+    // Percorre a lista até encontrar a posição correta com base no nome
+    while (atual != NULL && strcmp(atual->nome, no->nome) < 0) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    // Insere no início da lista (caso o nome do novo aluno seja menor)
+    if (anterior == NULL) {
+        no->prox = aluno;
+        return no;
+    }
+
+    // Insere no meio ou no final da lista
+    anterior->prox = no;
+    no->prox = atual;
+
+    return aluno;
 }
 
 Aluno *remover_aluno(Aluno *aluno, int matricula){
@@ -78,7 +88,6 @@ Aluno *buscar_aluno(Aluno *aluno, int matricula){
 
 void imprimir_alunos(Aluno *aluno){
     Aluno *aux = aluno;
-
     while(aux != NULL){
         printf("Matricula: %d\n", aux->matricula);
         printf("Nome: %s\n", aux->nome);
