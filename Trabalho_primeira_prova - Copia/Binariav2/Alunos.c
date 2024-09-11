@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-struct Aluno;
+
 
 Aluno *criar_aluno(){
     Aluno *a = (Aluno *)malloc(sizeof(Aluno));

@@ -1,5 +1,7 @@
 #ifndef ALUNOS_H
 #define ALUNOS_H
+#include "notas.h"
+#include "matricula.h"
 //#include "ArvoreNotas.h"
 //#include "ArvoreMatriculas.h"
 typedef struct aluno

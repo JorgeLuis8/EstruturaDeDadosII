@@ -1,10 +1,15 @@
-struct  arv_disciplinas
-{
+#ifndef DISCIPLINAS_H
+#define DISCIPLINAS_H
+typedef struct Arvore_disciplinas {
     int codigo;
     char nome[50];
-    int periodo;
-    arv_disciplinas *esq;
-    arv_disciplinas *dir;
-};
+    struct arvore_disciplinas *esq;
+    struct arvore_disciplinas *dir;
+}arvore_disciplinas;
 
-typedef struct arv_disciplinas Arvore_disciplinas;
+arvore_disciplinas *criar_disciplina();
+arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_disciplinas *no);
+arvore_disciplinas *buscar_disciplina(arvore_disciplinas *raiz, int codigo);
+arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo);
+void imprimir_disciplinas(arvore_disciplinas *raiz);
+#endif // DISCIPLINAS_H
