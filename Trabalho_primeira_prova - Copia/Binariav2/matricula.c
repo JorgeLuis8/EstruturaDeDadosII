@@ -1,77 +1,54 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include "notas.h"
+#include "matricula.h"
 
-struct arvore_notas;
 
-void Ler_notas(arvore_notas *no)
+struct arvore_matricula;
+
+void Ler_notas(arvore_matricula *no)
 {
     printf("Digite o codigo da disciplina: ");
     scanf(" %d", &no->codigo_disciplina);
 
-    printf("Digite o semestre cursado: ");
-    scanf(" %s", no->semestre_cursado);
-
-    printf("Digite a nota final: ");
-    scanf("%d", &no->nota_final);
 
 }
-arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
-{
-    // Se a raiz for nula, o nó inserido será a raiz
-    if (raiz == NULL)
-    {
+arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no) {
+    if (raiz == NULL) {
+        // Se a árvore estiver vazia, o novo nó se torna a raiz
         raiz = no;
-    }
-    else
-    {
-        // Se o código da disciplina do nó inserido for menor que o da raiz, o nó será inserido à esquerda
-        if (no->codigo_disciplina < raiz->codigo_disciplina)
-        {
-            if (raiz->esq == NULL)
-            {
-                raiz->esq = no;
-            }
-            else
-            {
-                raiz->esq = inserir_entrevistas(raiz->esq, no);
-            }
+    } else {
+        // Comparar o código da disciplina para decidir a posição
+        if (no->codigo_disciplina < raiz->codigo_disciplina) {
+            // Inserir à esquerda
+            raiz->esq = inserir_matriculas(raiz->esq, no);
+        } else if (no->codigo_disciplina > raiz->codigo_disciplina) {
+            // Inserir à direita
+            raiz->dir = inserir_matriculas(raiz->dir, no);
         }
-        // Se o código da disciplina do nó inserido for maior que o da raiz, o nó será inserido à direita
-        else
-        {
-            if (raiz->dir == NULL)
-            {
-                raiz->dir = no;
-            }
-            else
-            {
-                raiz->dir = inserir_entrevistas(raiz->dir, no);
-            }
-        }
+        // Se o código da disciplina for igual, você pode definir uma política para lidar com duplicatas,
+        // mas neste caso estamos assumindo que não haverá duplicatas na árvore.
     }
 
     return raiz;
 }
 
 
-void imprimir_notas(arvore_notas *raiz)
+
+void imprimir_notas(arvore_matricula *raiz)
 {
     if (raiz != NULL)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
-        printf("Semestre cursado: %s\n", raiz->semestre_cursado);
-        printf("Nota Final: %d\n", raiz->nota_final);
+
         imprimir_notas(raiz->esq);
         imprimir_notas(raiz->dir);
     }
 }
 
 
-arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
+arvore_matricula *buscar_notas(arvore_matricula *raiz, int codigo_disciplina)
 {
-    arvore_notas *aux = NULL;
+    arvore_matricula *aux = NULL;
     if (raiz != NULL)
     {
         {
@@ -96,7 +73,7 @@ arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
 }
 
 
-arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
+arvore_matricula *remover_nota(arvore_matricula *raiz, int codigo_disciplina)
 {
     if (raiz != NULL)
     {
@@ -117,19 +94,19 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
             }
             else if (raiz->esq == NULL)
             {
-                arvore_notas *aux = raiz;
+                arvore_matricula *aux = raiz;
                 raiz = raiz->dir;
                 free(aux);
             }
             else if (raiz->dir == NULL)
             {
-                arvore_notas *aux = raiz;
+                arvore_matricula *aux = raiz;
                 raiz = raiz->esq;
                 free(aux);
             }
             else
             {
-                arvore_notas *aux = raiz->esq;
+                arvore_matricula *aux = raiz->esq;
                 while (aux->dir != NULL)
                 {
                     aux = aux->dir;
