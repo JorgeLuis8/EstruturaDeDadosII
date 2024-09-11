@@ -7,9 +7,10 @@
 void exibir_menu() {
     printf("Menu:\n");
     printf("1. Cadastrar novo curso\n");
-    printf("2. Cadastrar novo aluno\n");
-    printf("3. Buscar curso por codigo\n");
-    printf("4. Sair\n");
+    printf("2. Buscar curso por codigo\n");
+    printf("3. Cadastrar novo aluno\n");
+    printf("4. Buscar aluno por matricula\n");
+    printf("5. Sair\n");
     printf("Escolha uma opcao: ");
 }
 
@@ -17,10 +18,10 @@ int main() {
     Arvore_curso *raiz_cursos = NULL;
     Aluno *raiz_alunos = NULL;
     int opcao;
-    int codigo, codigo_curso, matricula;
+    int codigo, codigo_curso, matricula, max_periodos;
     char nome[100];
-    Aluno *aluno;
     Arvore_curso *curso;
+    Aluno *aluno;
 
     while (1) {
         exibir_menu();
@@ -31,20 +32,47 @@ int main() {
                 // Cadastro de curso
                 printf("Digite o codigo do curso: ");
                 scanf("%d", &codigo);
+                if(buscar_curso(raiz_cursos, codigo) != NULL){
+                    printf("Curso ja cadastrado.\n");
+                    break;
+                }
                 printf("Digite o nome do curso: ");
                 scanf(" %[^\n]", nome);
+                printf("Digite o numero maximo de periodos do curso: ");
+                scanf("%d", &max_periodos);
 
                 curso = criar_curso();
                 curso->codigo = codigo;
                 strcpy(curso->nome, nome);
+                curso->periodo = max_periodos;
 
                 raiz_cursos = inserir_curso(raiz_cursos, curso);
                 printf("Curso cadastrado com sucesso!\n");
                 break;
 
             case 2:
+                // Buscar curso
+                printf("Digite o codigo do curso a buscar: ");
+                scanf("%d", &codigo);
+
+                curso = buscar_curso(raiz_cursos, codigo);
+                if (curso != NULL) {
+                    printf("Curso encontrado:\n");
+                    printf("Codigo: %d\n", curso->codigo);
+                    printf("Nome: %s\n", curso->nome);
+                    printf("Numero maximo de periodos: %d\n", curso->periodo);
+                } else {
+                    printf("Curso nao encontrado.\n");
+                }
+                break;
+
+            case 3:
                 // Cadastro de aluno
                 printf("Digite a matricula do aluno: ");
+                if(buscar_aluno(raiz_alunos, matricula) != NULL){
+                    printf("Aluno ja cadastrado.\n");
+                    break;
+                }
                 scanf("%d", &matricula);
                 printf("Digite o nome do aluno: ");
                 scanf(" %[^\n]", nome);
@@ -67,21 +95,23 @@ int main() {
                 printf("Aluno cadastrado com sucesso!\n");
                 break;
 
-            case 3:
-                // Buscar curso
-                printf("Digite o codigo do curso a buscar: ");
-                scanf("%d", &codigo);
-                curso = buscar_curso(raiz_cursos, codigo);
-                if (curso != NULL) {
-                    printf("Curso encontrado:\n");
-                    printf("Codigo: %d\n", curso->codigo);
-                    printf("Nome: %s\n", curso->nome);
+            case 4:
+                // Buscar aluno
+                printf("Digite a matricula do aluno a buscar: ");
+                scanf("%d", &matricula);
+
+                aluno = buscar_aluno(raiz_alunos, matricula);
+                if (aluno != NULL) {
+                    printf("Aluno encontrado:\n");
+                    printf("Matricula: %d\n", aluno->matricula);
+                    printf("Nome: %s\n", aluno->nome);
+                    printf("Codigo do curso: %d\n", aluno->codigo_curso);
                 } else {
-                    printf("Curso nao encontrado.\n");
+                    printf("Aluno nao encontrado.\n");
                 }
                 break;
 
-            case 4:
+            case 5:
                 // Finalizar programa
                 // Liberar memoria alocada, se necessario
                 // liberar_alunos(raiz_alunos);

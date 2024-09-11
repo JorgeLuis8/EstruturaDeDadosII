@@ -1,11 +1,4 @@
 {
-  "files.associations": {
-    "stdio.h": "c",
-    "string.h": "c",
-    "disciplina.h": "c",
-    "stdlib.h": "c",
-    "cwchar": "cpp"
-  },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",

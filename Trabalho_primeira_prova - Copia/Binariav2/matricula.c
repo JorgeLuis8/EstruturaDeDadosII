@@ -40,37 +40,32 @@ void imprimir_matricula(arvore_matricula *raiz)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
 
-        imprimir_notas(raiz->esq);
-        imprimir_notas(raiz->dir);
+        imprimir_matricula(raiz->esq); // Corrigido
+        imprimir_matricula(raiz->dir); // Corrigido
     }
 }
-
 
 arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina)
 {
     arvore_matricula *aux = NULL;
     if (raiz != NULL)
     {
+        if (codigo_disciplina == raiz->codigo_disciplina)
         {
-            if (codigo_disciplina == raiz->codigo_disciplina)
-            {
-                aux = raiz;
-            }
-            else
-            {
-                if (codigo_disciplina < raiz->codigo_disciplina)
-                {
-                    aux = buscar_notas(raiz->esq, codigo_disciplina);
-                }
-                else
-                {
-                    aux = buscar_notas(raiz->dir, codigo_disciplina);
-                }
-            }
+            aux = raiz;
+        }
+        else if (codigo_disciplina < raiz->codigo_disciplina)
+        {
+            aux = buscar_matricula(raiz->esq, codigo_disciplina); // Corrigido
+        }
+        else
+        {
+            aux = buscar_matricula(raiz->dir, codigo_disciplina); // Corrigido
         }
     }
     return aux;
 }
+
 
 
 arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina)
@@ -79,11 +74,11 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
     {
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
-            raiz->esq = remover_nota(raiz->esq, codigo_disciplina);
+            raiz->esq = remover_matricula(raiz->esq, codigo_disciplina); // Corrigido
         }
         else if (codigo_disciplina > raiz->codigo_disciplina)
         {
-            raiz->dir = remover_nota(raiz->dir, codigo_disciplina);
+            raiz->dir = remover_matricula(raiz->dir, codigo_disciplina); // Corrigido
         }
         else
         {
@@ -112,11 +107,10 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
                     aux = aux->dir;
                 }
                 raiz->codigo_disciplina = aux->codigo_disciplina;
-                raiz->esq = remover_nota(raiz->esq, aux->codigo_disciplina);
+                raiz->esq = remover_matricula(raiz->esq, aux->codigo_disciplina); // Corrigido
             }
         }
     }
     return raiz;
 }
-
 

@@ -8,25 +8,24 @@ struct arvore_notas;
 void Ler_notas(arvore_notas *no)
 {
     printf("Digite o codigo da disciplina: ");
-    scanf(" %d", &no->codigo_disciplina);
+    scanf("%d", &no->codigo_disciplina); // Corrigido
 
-    printf("Digite o semestre cursado: ");
-    scanf(" %s", no->semestre_cursado);
+    printf("Digite o semestre cursado (ex: 2023.1): ");
+    scanf("%s", no->semestre_cursado);  // Corrigido
 
     printf("Digite a nota final: ");
-    scanf("%d", &no->nota_final);
-
+    scanf("%d", &no->nota_final);  // Corrigido
 }
+
+
 arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
 {
-    // Se a raiz for nula, o nó inserido será a raiz
     if (raiz == NULL)
     {
         raiz = no;
     }
     else
     {
-        // Se o código da disciplina do nó inserido for menor que o da raiz, o nó será inserido à esquerda
         if (no->codigo_disciplina < raiz->codigo_disciplina)
         {
             if (raiz->esq == NULL)
@@ -35,10 +34,9 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
             }
             else
             {
-                raiz->esq = inserir_entrevistas(raiz->esq, no);
+                raiz->esq = inserir_nota(raiz->esq, no); // Corrigido
             }
         }
-        // Se o código da disciplina do nó inserido for maior que o da raiz, o nó será inserido à direita
         else
         {
             if (raiz->dir == NULL)
@@ -47,13 +45,14 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
             }
             else
             {
-                raiz->dir = inserir_entrevistas(raiz->dir, no);
+                raiz->dir = inserir_nota(raiz->dir, no); // Corrigido
             }
         }
     }
 
     return raiz;
 }
+
 
 
 void imprimir_notas(arvore_notas *raiz)

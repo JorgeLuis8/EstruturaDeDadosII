@@ -25,4 +25,4 @@ arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina
 // Função para remover uma matrícula da árvore pelo código da disciplina
 arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina);
 
-#endif // MATRÍCULA_H
+#endif // MATRICULA_H

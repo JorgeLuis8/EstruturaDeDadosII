@@ -12,7 +12,7 @@ typedef struct arvore_notas {
 
 // Funções
 void Ler_notas(arvore_notas *no);  // Função para ler os dados de um nó
-arvore_notas *inserir_entrevistas(arvore_notas *raiz, arvore_notas *no);  // Função para inserir um nó na árvore
+arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no);  // Corrigido
 void imprimir_notas(arvore_notas *raiz);  // Função para imprimir as notas em ordem
 arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina);  // Função para buscar uma nota pelo código da disciplina
 arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina);  // Função para remover uma nota pelo código da disciplina
