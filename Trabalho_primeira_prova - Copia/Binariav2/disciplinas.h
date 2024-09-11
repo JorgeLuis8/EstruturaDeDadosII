@@ -3,6 +3,8 @@
 typedef struct Arvore_disciplinas {
     int codigo;
     char nome[50];
+    int carga_horaria;
+    int periodo;
     struct arvore_disciplinas *esq;
     struct arvore_disciplinas *dir;
 }arvore_disciplinas;
