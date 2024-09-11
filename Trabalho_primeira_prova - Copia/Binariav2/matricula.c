@@ -5,7 +5,7 @@
 
 struct arvore_matricula;
 
-void Ler_notas(arvore_matricula *no)
+void Ler_matricula(arvore_matricula *no)
 {
     printf("Digite o codigo da disciplina: ");
     scanf(" %d", &no->codigo_disciplina);
@@ -34,7 +34,7 @@ arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *n
 
 
 
-void imprimir_notas(arvore_matricula *raiz)
+void imprimir_matricula(arvore_matricula *raiz)
 {
     if (raiz != NULL)
     {
@@ -46,7 +46,7 @@ void imprimir_notas(arvore_matricula *raiz)
 }
 
 
-arvore_matricula *buscar_notas(arvore_matricula *raiz, int codigo_disciplina)
+arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina)
 {
     arvore_matricula *aux = NULL;
     if (raiz != NULL)
@@ -73,7 +73,7 @@ arvore_matricula *buscar_notas(arvore_matricula *raiz, int codigo_disciplina)
 }
 
 
-arvore_matricula *remover_nota(arvore_matricula *raiz, int codigo_disciplina)
+arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina)
 {
     if (raiz != NULL)
     {

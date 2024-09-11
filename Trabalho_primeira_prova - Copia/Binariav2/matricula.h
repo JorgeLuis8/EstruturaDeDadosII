@@ -11,18 +11,18 @@ typedef struct arvore_matricula {
 // Funções para manipulação da árvore de matrícula
 
 // Função para ler os dados de um nó de matrícula
-void Ler_notas(arvore_matricula *no);
+void Ler_matricula(arvore_matricula *no);
 
 // Função para inserir um nó na árvore de matrículas
 arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no);
 
 // Função para imprimir todas as matrículas na árvore
-void imprimir_notas(arvore_matricula *raiz);
+void imprimir_matricula(arvore_matricula *raiz);
 
 // Função para buscar uma matrícula na árvore pelo código da disciplina
-arvore_matricula *buscar_notas(arvore_matricula *raiz, int codigo_disciplina);
+arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina);
 
 // Função para remover uma matrícula da árvore pelo código da disciplina
-arvore_matricula *remover_nota(arvore_matricula *raiz, int codigo_disciplina);
+arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina);
 
 #endif // MATRÍCULA_H
