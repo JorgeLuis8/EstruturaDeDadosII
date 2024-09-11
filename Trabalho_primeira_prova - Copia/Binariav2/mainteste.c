@@ -1,87 +1,88 @@
-#include "Alunos.c"
 #include <stdio.h>
+#include <stdlib.h>
+#include "notas.c"
 
+// Função menu
 void menu() {
-    printf("---- Menu ----\n");
-    printf("1. Inserir Aluno\n");
-    printf("2. Remover Aluno\n");
-    printf("3. Buscar Aluno\n");
-    printf("4. Imprimir Todos os Alunos\n");
+    printf("\n---- Menu ----\n");
+    printf("1. Inserir nota\n");
+    printf("2. Remover nota\n");
+    printf("3. Buscar nota\n");
+    printf("4. Imprimir todas as notas\n");
     printf("5. Sair\n");
     printf("Escolha uma opcao: ");
 }
 
 int main() {
-    Aluno *lista_alunos = NULL;
-    int opcao, matricula;
+    arvore_notas *raiz = NULL;
+    int opcao;
+    int codigo_disciplina;
     
-
     do {
         menu();
         scanf("%d", &opcao);
-
-        switch (opcao) {
+        
+        switch(opcao) {
             case 1: {
-                Aluno *novo_aluno = criar_aluno();
+                // Inserir nota
+                arvore_notas *novo_no = (arvore_notas *)malloc(sizeof(arvore_notas));
+                if (novo_no == NULL) {
+                    printf("Erro ao alocar memoria para novo nó.\n");
+                    exit(1);
+                }
+                
+                Ler_notas(novo_no);  // Função para ler os dados do nó
+                
+                novo_no->esq = NULL;
+                novo_no->dir = NULL;
 
-                printf("Digite a matricula do aluno: ");
-                scanf("%d", &novo_aluno->matricula);
-
-                printf("Digite o nome do aluno: ");
-                scanf(" %[^\n]", novo_aluno->nome);  // %[^\n] permite ler strings com espaços
-
-                printf("Digite o codigo do curso: ");
-                scanf("%d", &novo_aluno->codigo_curso);
-
-                lista_alunos = inserir_aluno(lista_alunos, novo_aluno);
-                printf("Aluno inserido com sucesso!\n\n");
+                raiz = inserir_entrevistas(raiz, novo_no);
+                printf("Nota inserida com sucesso!\n");
                 break;
             }
 
             case 2: {
-                printf("Digite a matricula do aluno a ser removido: ");
-                scanf("%d", &matricula);
-                if(buscar_aluno(lista_alunos, matricula) == NULL){
-                    printf("Aluno com matricula %d nao encontrado.\n", matricula);
-                    break;
-                }
-                lista_alunos = remover_aluno(lista_alunos, matricula);
-                printf("Aluno removido com sucesso!\n\n");
+                // Remover nota
+                printf("Digite o codigo da disciplina para remover: ");
+                scanf("%d", &codigo_disciplina);
+                
+                raiz = remover_nota(raiz, codigo_disciplina);
+                printf("Nota removida com sucesso!\n");
                 break;
             }
 
             case 3: {
-                printf("Digite a matricula do aluno a ser buscado: ");
-                scanf("%d", &matricula);
-
-                Aluno *aluno_encontrado = buscar_aluno(lista_alunos, matricula);
-                if (aluno_encontrado != NULL) {
-                    printf("Aluno encontrado:\n");
-                    printf("Matricula: %d\n", aluno_encontrado->matricula);
-                    printf("Nome: %s\n", aluno_encontrado->nome);
-                    printf("Codigo do curso: %d\n", aluno_encontrado->codigo_curso);
+                // Buscar nota
+                printf("Digite o codigo da disciplina para buscar: ");
+                scanf("%d", &codigo_disciplina);
+                
+                arvore_notas *nota_encontrada = buscar_notas(raiz, codigo_disciplina);
+                if (nota_encontrada != NULL) {
+                    printf("Nota encontrada:\n");
+                    printf("Codigo da disciplina: %d\n", nota_encontrada->codigo_disciplina);
+                    printf("Semestre cursado: %s\n", nota_encontrada->semestre_cursado);
+                    printf("Nota Final: %d\n", nota_encontrada->nota_final);
                 } else {
-                    printf("Aluno com matricula %d nao encontrado.\n", matricula);
+                    printf("Nota com o codigo da disciplina %d nao encontrada.\n", codigo_disciplina);
                 }
-                printf("\n");
                 break;
             }
 
             case 4: {
-                printf("Lista de todos os alunos:\n");
-                imprimir_alunos(lista_alunos);
-                printf("\n");
+                // Imprimir todas as notas
+                printf("Todas as notas:\n");
+                imprimir_notas(raiz);
                 break;
             }
 
             case 5: {
+                // Sair
                 printf("Saindo...\n");
                 break;
             }
 
-            default: {
-                printf("Opcao invalida. Tente novamente.\n\n");
-            }
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 5);
 
