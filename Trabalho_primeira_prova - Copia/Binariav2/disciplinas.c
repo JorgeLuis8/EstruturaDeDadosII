@@ -18,6 +18,13 @@ arvore_disciplinas *criar_disciplina()
 
 arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_disciplinas *no)
 {
+    if (buscar_disciplina(raiz, no->codigo) != NULL)
+    {
+        /* code */
+        printf("Disciplina ja cadastrada\n");
+    }
+    else{
+    
     if (raiz == NULL)
     {
         raiz = no;
@@ -32,6 +39,7 @@ arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_discipli
         {
             raiz->dir = inserir_disciplina(raiz->dir, no);
         }
+    }
     }
     return raiz;
 }
