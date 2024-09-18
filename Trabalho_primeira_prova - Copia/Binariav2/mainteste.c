@@ -28,7 +28,7 @@ int main()
     int opcao = -1; // Inicialização correta
     int codigo, codigo_curso, matricula_num, carga_horaria, periodo;
     float nota; // Variável para armazenar a nota
-    char nome[100];
+    char nome[100],semestre_cursado[100];
     Aluno *aluno;
     Arvore_curso *curso;
     arvore_disciplinas *disciplina;
@@ -79,7 +79,7 @@ int main()
             strcpy(aluno->nome, nome);
             aluno->codigo_curso = codigo_curso;
             aluno->raiz_matriculas = NULL; // Inicializar a árvore de matrículas
-            aluno->raiz_notas = NULL;       // Inicializar a árvore de notas
+            aluno->raiz_notas = NULL;      // Inicializar a árvore de notas
 
             raiz_alunos = inserir_aluno(raiz_alunos, aluno);
             printf("Aluno cadastrado com sucesso!\n");
@@ -197,6 +197,9 @@ int main()
                 break;
             }
 
+            printf("Digite o semestre cursado: ");
+            scanf("%s", semestre_cursado); // Adicionei a leitura do semestre cursado
+
             printf("Digite a nota da disciplina: ");
             scanf("%f", &nota);
 
@@ -204,6 +207,7 @@ int main()
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = codigo;
             nova_nota->nota_final = nota;
+            strcpy(nova_nota->semestre_cursado, semestre_cursado); // Adicionei a atribuição do semestre cursado
 
             // Inserir a nota na árvore de notas do aluno
             aluno->raiz_notas = inserir_nota(aluno->raiz_notas, nova_nota);
@@ -211,7 +215,7 @@ int main()
             // Remover a disciplina da árvore de matrículas do aluno
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
 
-            printf("Nota cadastrada com sucesso e disciplina removida das matrículas.\n");
+            printf("Nota cadastrada com sucesso e disciplina removida das matriculas.\n");
             break;
 
         case 0:
@@ -223,7 +227,7 @@ int main()
     }
 
     // Liberação de memória (opcional, mas recomendado)
-  
+
     // Implementar e chamar funções de liberação para disciplinas, matrículas e notas conforme necessário
 
     return 0;

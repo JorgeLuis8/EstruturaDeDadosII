@@ -22,7 +22,7 @@ void Ler_notas(arvore_notas *no)
     scanf("%s", no->semestre_cursado);  // Corrigido
 
     printf("Digite a nota final: ");
-    scanf("%d", &no->nota_final);  // Corrigido
+    scanf("%f", &no->nota_final);  // Corrigido
 }
 
 
@@ -69,7 +69,7 @@ void imprimir_notas(arvore_notas *raiz)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
         printf("Semestre cursado: %s\n", raiz->semestre_cursado);
-        printf("Nota Final: %d\n", raiz->nota_final);
+        printf("Nota Final: %f\n", raiz->nota_final);
         imprimir_notas(raiz->esq);
         imprimir_notas(raiz->dir);
     }

@@ -5,7 +5,7 @@
 typedef struct Arvore_notas {
     int codigo_disciplina;  // Código da disciplina
     char semestre_cursado[10];   // Semestre cursado
-    int nota_final;              // Nota final da disciplina
+    float nota_final;              // Nota final da disciplina
     struct Arvore_notas *esq;    // Ponteiro para o nó à esquerda
     struct Arvore_notas *dir;    // Ponteiro para o nó à direita
 } arvore_notas;
