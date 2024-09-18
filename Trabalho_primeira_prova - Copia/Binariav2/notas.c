@@ -5,6 +5,14 @@
 
 struct arvore_notas;
 
+
+arvore_notas *criar_nota()
+{
+    arvore_notas *no = (arvore_notas *)malloc(sizeof(arvore_notas));
+    no->esq = NULL;
+    no->dir = NULL;
+    return no;
+}
 void Ler_notas(arvore_notas *no)
 {
     printf("Digite o codigo da disciplina: ");

@@ -1,9 +1,12 @@
+// main.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "curso.c"       // Inclusão correta dos cabeçalhos
-#include "alunos.c"      // Inclusão correta dos cabeçalhos
-#include "disciplinas.c" // Inclusão correta dos cabeçalhos
+#include "curso.c"
+#include "alunos.c"
+#include "disciplinas.c"
+#include "matricula.c"
+#include "notas.c"
 
 void exibir_menu()
 {
@@ -11,7 +14,9 @@ void exibir_menu()
     printf("1. Cadastrar novo curso\n");
     printf("2. Cadastrar novo aluno\n");
     printf("3. Buscar curso por codigo\n");
-    printf("4. Cadastrar nova disciplina\n"); // Adicionado o caso 4
+    printf("4. Cadastrar nova disciplina\n");
+    printf("5. Cadastrar nova matricula\n");
+    printf("6. Cadastrar Nota\n"); // Nova opção
     printf("0. Sair\n");
     printf("Escolha uma opcao: ");
 }
@@ -21,7 +26,8 @@ int main()
     Arvore_curso *raiz_cursos = NULL;
     Aluno *raiz_alunos = NULL;
     int opcao = -1; // Inicialização correta
-    int codigo, codigo_curso, matricula, carga_horaria, periodo;
+    int codigo, codigo_curso, matricula_num, carga_horaria, periodo;
+    float nota; // Variável para armazenar a nota
     char nome[100];
     Aluno *aluno;
     Arvore_curso *curso;
@@ -54,7 +60,7 @@ int main()
         case 2:
             // Cadastro de aluno
             printf("Digite a matricula do aluno: ");
-            scanf("%d", &matricula);
+            scanf("%d", &matricula_num);
             printf("Digite o nome do aluno: ");
             scanf(" %[^\n]", nome);
             printf("Digite o codigo do curso do aluno: ");
@@ -69,9 +75,11 @@ int main()
             }
 
             aluno = criar_aluno();
-            aluno->matricula = matricula;
+            aluno->matricula = matricula_num;
             strcpy(aluno->nome, nome);
             aluno->codigo_curso = codigo_curso;
+            aluno->raiz_matriculas = NULL; // Inicializar a árvore de matrículas
+            aluno->raiz_notas = NULL;       // Inicializar a árvore de notas
 
             raiz_alunos = inserir_aluno(raiz_alunos, aluno);
             printf("Aluno cadastrado com sucesso!\n");
@@ -141,9 +149,71 @@ int main()
             curso->raiz_disciplinas = inserir_disciplina(curso->raiz_disciplinas, disciplina);
             printf("Disciplina cadastrada com sucesso.\n");
             break;
+
         case 5:
-            //cadastrar matricula
+            // Cadastro de matrícula
+            printf("Digite a matricula do aluno: ");
+            scanf("%d", &matricula_num);
+            aluno = buscar_aluno(raiz_alunos, matricula_num);
+            if (aluno == NULL)
+            {
+                printf("Matricula nao encontrada.\n");
+                break;
+            }
+
+            printf("Digite o codigo da disciplina: ");
+            scanf("%d", &codigo);
+            disciplina = buscar_disciplina(curso->raiz_disciplinas, codigo);
+            if (disciplina == NULL)
+            {
+                printf("Disciplina nao encontrada.\n");
+                break;
+            }
+
+            // Inserir a disciplina na árvore de matrículas do aluno
+            arvore_matricula *nova_matricula = criar_matricula();
+            nova_matricula->codigo_disciplina = codigo;
+            aluno->raiz_matriculas = inserir_matriculas(aluno->raiz_matriculas, nova_matricula);
+            printf("Matricula cadastrada com sucesso.\n");
             break;
+
+        case 6:
+            // Cadastrar Nota
+            printf("Digite a matricula do aluno: ");
+            scanf("%d", &matricula_num);
+            aluno = buscar_aluno(raiz_alunos, matricula_num);
+            if (aluno == NULL)
+            {
+                printf("Matricula nao encontrada.\n");
+                break;
+            }
+
+            printf("Digite o codigo da disciplina para cadastrar a nota: ");
+            scanf("%d", &codigo);
+            // Verificar se a disciplina está na árvore de matrículas do aluno
+            if (buscar_matricula(aluno->raiz_matriculas, codigo) == NULL)
+            {
+                printf("Disciplina nao matriculada pelo aluno. Cadastro da nota nao realizado.\n");
+                break;
+            }
+
+            printf("Digite a nota da disciplina: ");
+            scanf("%f", &nota);
+
+            // Criar uma nova nota
+            arvore_notas *nova_nota = criar_nota();
+            nova_nota->codigo_disciplina = codigo;
+            nova_nota->nota_final = nota;
+
+            // Inserir a nota na árvore de notas do aluno
+            aluno->raiz_notas = inserir_nota(aluno->raiz_notas, nova_nota);
+
+            // Remover a disciplina da árvore de matrículas do aluno
+            aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
+
+            printf("Nota cadastrada com sucesso e disciplina removida das matrículas.\n");
+            break;
+
         case 0:
             printf("Saindo...\n");
             break;
@@ -153,8 +223,8 @@ int main()
     }
 
     // Liberação de memória (opcional, mas recomendado)
- 
-    // Assumindo que você tenha uma função para liberar disciplinas em cada curso
+  
+    // Implementar e chamar funções de liberação para disciplinas, matrículas e notas conforme necessário
 
     return 0;
 }

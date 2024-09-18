@@ -5,6 +5,14 @@
 
 struct arvore_matricula;
 
+arvore_matricula *criar_matricula()
+{
+    arvore_matricula *no = (arvore_matricula *)malloc(sizeof(arvore_matricula));
+    no->esq = NULL;
+    no->dir = NULL;
+    return no;
+}
+
 void Ler_matricula(arvore_matricula *no)
 {
     printf("Digite o codigo da disciplina: ");
@@ -113,4 +121,3 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
     }
     return raiz;
 }
-
