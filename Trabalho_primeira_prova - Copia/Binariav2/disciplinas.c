@@ -18,12 +18,7 @@ arvore_disciplinas *criar_disciplina()
 
 arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_disciplinas *no)
 {
-    if (buscar_disciplina(raiz, no->codigo) != NULL)
-    {
-        /* code */
-        printf("Disciplina ja cadastrada\n");
-    }
-    else{
+   
     
     if (raiz == NULL)
     {
@@ -40,7 +35,7 @@ arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_discipli
             raiz->dir = inserir_disciplina(raiz->dir, no);
         }
     }
-    }
+    
     return raiz;
 }
 
@@ -133,5 +128,18 @@ void liberar_disciplinas(arvore_disciplinas *raiz)
         liberar_disciplinas(raiz->esq);
         liberar_disciplinas(raiz->dir);
         free(raiz);
+    }
+}
+void imprimir_disciplinas_periodo(arvore_disciplinas *raiz, int periodo){
+    if (raiz != NULL)
+    {
+        imprimir_disciplinas_periodo(raiz->esq, periodo);
+        if (raiz->periodo == periodo)
+        {
+            printf("Codigo: %d\n", raiz->codigo);
+            printf("Nome: %s\n", raiz->nome);
+            printf("\n");
+        }
+        imprimir_disciplinas_periodo(raiz->dir, periodo);
     }
 }

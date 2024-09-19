@@ -19,11 +19,6 @@ Aluno *criar_aluno(){
 }
 
 Aluno *inserir_aluno(Aluno *aluno, Aluno *no) {
-    // Verifica se o aluno já existe pela matrícula
-    if (buscar_aluno(aluno, no->matricula) != NULL) {
-        printf("Ja existe um aluno com a matricula '%d'. Nao e possivel adicionar novamente.\n", no->matricula);
-        return aluno;
-    }
 
     // Se a lista estiver vazia, o novo aluno será o primeiro
     if (aluno == NULL) {
@@ -86,14 +81,20 @@ Aluno *buscar_aluno(Aluno *aluno, int matricula){
     return aux;
 }
 
-void imprimir_alunos(Aluno *aluno){
+void imprimir_alunos(Aluno *aluno, int codigo_curso){
     Aluno *aux = aluno;
-    while(aux != NULL){
+    if (codigo_curso == aux->codigo_curso)
+    {
         printf("Matricula: %d\n", aux->matricula);
         printf("Nome: %s\n", aux->nome);
         printf("Codigo do curso: %d\n", aux->codigo_curso);
         printf("\n");
-
-        aux = aux->prox;
     }
+    else
+    {
+        printf("Nao ha alunos matriculados nesse curso\n");
+    }
+    imprimir_alunos(aux->prox, codigo_curso);
+    
+    
 }

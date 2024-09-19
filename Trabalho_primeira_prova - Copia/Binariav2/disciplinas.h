@@ -14,4 +14,5 @@ arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_discipli
 arvore_disciplinas *buscar_disciplina(arvore_disciplinas *raiz, int codigo);
 arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo);
 void imprimir_disciplinas(arvore_disciplinas *raiz);
+void imprimir_disciplinas_periodo(arvore_disciplinas *raiz, int periodo);
 #endif // DISCIPLINAS_H

@@ -150,3 +150,14 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
 }
 
 
+void imprimir_notas_periodo(arvore_notas* raiz_notas, int periodo){
+    if(raiz_notas != NULL){
+        imprimir_notas_periodo(raiz_notas->esq, periodo);
+        if(raiz_notas->semestre_cursado[5] == periodo + '0'){
+            printf("Codigo da disciplina: %d\n", raiz_notas->codigo_disciplina);
+            printf("Semestre cursado: %s\n", raiz_notas->semestre_cursado);
+            printf("Nota Final: %f\n", raiz_notas->nota_final);
+        }
+        imprimir_notas_periodo(raiz_notas->dir, periodo);
+    }
+}

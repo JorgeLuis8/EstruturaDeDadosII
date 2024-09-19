@@ -27,6 +27,7 @@ Aluno *remover_aluno(Aluno *aluno, int matricula);
 Aluno *buscar_aluno(Aluno *aluno, int matricula);
 
 // Função para imprimir todos os alunos
-void imprimir_alunos(Aluno *aluno);
+void imprimir_alunos(Aluno *aluno, int codigo_curso);
+
 
 #endif
