@@ -81,20 +81,15 @@ Aluno *buscar_aluno(Aluno *aluno, int matricula){
     return aux;
 }
 
-void imprimir_alunos(Aluno *aluno, int codigo_curso){
+void imprimir_alunos(Aluno *aluno,int codigo_curso){
     Aluno *aux = aluno;
-    if (codigo_curso == aux->codigo_curso)
-    {
-        printf("Matricula: %d\n", aux->matricula);
-        printf("Nome: %s\n", aux->nome);
-        printf("Codigo do curso: %d\n", aux->codigo_curso);
-        printf("\n");
+    while(aux != NULL){
+        if(aux->codigo_curso == codigo_curso){
+            printf("Matricula: %d\n", aux->matricula);
+            printf("Nome: %s\n", aux->nome);
+            printf("Codigo do curso: %d\n", aux->codigo_curso);
+        }
+        aux = aux->prox;
     }
-    else
-    {
-        printf("Nao ha alunos matriculados nesse curso\n");
-    }
-    imprimir_alunos(aux->prox, codigo_curso);
-    
-    
+
 }
