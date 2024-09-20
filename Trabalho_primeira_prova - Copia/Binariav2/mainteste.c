@@ -26,6 +26,7 @@ void exibir_menu()
     printf("13. Mostrar a nota de uma disciplina de um aluno (inclui período e carga horária)\n");
     printf("14. Remover uma disciplina de um curso (sem alunos matriculados)\n");
     printf("15. Remover uma disciplina da matrícula de um aluno\n");
+    printf("16. Mostrar o histórico de um aluno\n");
     printf("0. Sair\n");
     printf("Escolha uma opcao: ");
 }
@@ -385,6 +386,22 @@ int main()
             }
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
             printf("Disciplina removida com sucesso.\n");
+            break;
+        case 16:
+        /*
+        xv) Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva
+        nota organizadas pelo período que a disciplina está cadastrada no curso. 
+        */
+            printf("Digite a matricula do aluno: ");
+            scanf("%d", &matricula_num);
+            aluno = buscar_aluno(raiz_alunos, matricula_num);
+            if (aluno == NULL)
+            {
+                printf("Matricula nao encontrada.\n");
+                break;
+            }
+            printf("Historico do aluno %s:\n", aluno->nome);
+            imprimir_historico(aluno, raiz_cursos);
             break;
 
         case 0:

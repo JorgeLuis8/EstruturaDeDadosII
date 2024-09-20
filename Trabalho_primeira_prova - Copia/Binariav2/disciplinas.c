@@ -143,3 +143,27 @@ void imprimir_disciplinas_periodo(arvore_disciplinas *raiz, int periodo){
         imprimir_disciplinas_periodo(raiz->dir, periodo);
     }
 }
+
+void imprimir_historico_disciplinas(arvore_notas *raiz_notas, arvore_disciplinas *raiz_disciplinas)
+{
+    if (raiz_disciplinas != NULL)
+    {
+        // Imprimir as notas da disciplina
+        arvore_notas *nota = buscar_notas(raiz_notas, raiz_disciplinas->codigo);
+        if (nota != NULL)
+        {
+            printf("Disciplina: %s\n", raiz_disciplinas->nome);
+            printf("Nota: %.2f\n", nota->nota_final);
+            printf("Semestre cursado: %s\n", nota->semestre_cursado);
+            printf("Carga horaria: %d\n", raiz_disciplinas->carga_horaria);
+            printf("Periodo: %d\n", raiz_disciplinas->periodo);
+            printf("\n");
+        }
+
+        // Imprimir as disciplinas do lado esquerdo
+        imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->esq);
+
+        // Imprimir as disciplinas do lado direito
+        imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->dir);
+    }
+}

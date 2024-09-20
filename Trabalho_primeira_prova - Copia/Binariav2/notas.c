@@ -13,17 +13,7 @@ arvore_notas *criar_nota()
     no->dir = NULL;
     return no;
 }
-void Ler_notas(arvore_notas *no)
-{
-    printf("Digite o codigo da disciplina: ");
-    scanf("%d", &no->codigo_disciplina); // Corrigido
 
-    printf("Digite o semestre cursado (ex: 2023.1): ");
-    scanf("%s", no->semestre_cursado);  // Corrigido
-
-    printf("Digite a nota final: ");
-    scanf("%f", &no->nota_final);  // Corrigido
-}
 
 
 arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)

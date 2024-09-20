@@ -1,4 +1,6 @@
 #include "curso.h"
+#include "disciplinas.h"
+#include "alunos.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -132,4 +134,21 @@ Arvore_curso *remover_curso(Arvore_curso *curso, int codigo)
     return curso;
 
 
+}
+
+void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
+{
+    // Buscar o curso do aluno
+    Arvore_curso *curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
+    if (curso == NULL)
+    {
+        printf("Curso nao encontrado.\n");
+        return;
+    }
+
+    // Imprimir o nome do curso
+    printf("Curso: %s\n", curso->nome);
+
+    // Imprimir as disciplinas e notas do aluno
+    imprimir_historico_disciplinas(aluno->raiz_notas, curso->raiz_disciplinas);
 }
