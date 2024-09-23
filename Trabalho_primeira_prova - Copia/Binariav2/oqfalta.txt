@@ -24,7 +24,7 @@ viii)Mostrar todas as disciplinas de um determinado curso.OK
  
 ix) Mostrar todas as disciplinas de um determinado período de um curso. OK
 
-x) Mostrar todas as disciplinas que um determinado aluno está matriculado NAO FUNCIONA 
+x) Mostrar todas as disciplinas que um determinado aluno está matriculado OK
 
 xi) Mostrar todas as notas de disciplinas de um determinado período de um determinado aluno. NAO FUNCIONA 
 
@@ -32,9 +32,9 @@ xii)  Mostrar a nota de uma disciplina de um determinado aluno, mostrando o per�
 disciplina. OK
 
 xiii)Remover uma disciplina de um determinado curso desde que não tenha nenhum aluno matriculado na 
-mesma. REMOVENDO COM ALUNOS DENTRO, AJEITAR 
+mesma. OK
 
-xiv)Permita remover uma disciplina da árvore de matrícula de um determinado aluno. NAO FUNCIONA
+xiv)Permita remover uma disciplina da árvore de matrícula de um determinado aluno. OK
  
 xv) Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva 
 nota organizadas pelo período que a disciplina está cadastrada no curso. OK

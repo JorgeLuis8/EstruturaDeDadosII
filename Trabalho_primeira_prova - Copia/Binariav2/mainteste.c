@@ -332,9 +332,14 @@ int main()
                 printf("Nenhuma nota cadastrada para o aluno.\n");
                 break;
             }
-
-            // Function to display grades for a specific period
-            imprimir_notas_periodo(aluno->raiz_notas, periodo);
+            nova_nota = buscar_notas(aluno->raiz_notas, periodo);
+            if (nova_nota == NULL)
+            {
+                printf("Nenhuma nota cadastrada para o aluno no periodo %d.\n", periodo);
+                break;
+            }
+            printf("Notas do aluno %s no periodo %d:\n", aluno->nome, periodo);
+            imprimir_notas(nova_nota);
             break;
 
         case 12:
@@ -402,6 +407,11 @@ int main()
                 {
                     alunos_matriculados = 1;
                     break; // Um aluno matriculado encontrado
+                }
+                if(buscar_notas(a->raiz_notas, codigo) != NULL)
+                {
+                    alunos_matriculados = 1;
+                    break; // Um aluno com nota cadastrada encontrado
                 }
             }
 
