@@ -18,7 +18,6 @@ arvore_disciplinas *criar_disciplina()
 
 arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_disciplinas *no)
 {
-   
     
     if (raiz == NULL)
     {

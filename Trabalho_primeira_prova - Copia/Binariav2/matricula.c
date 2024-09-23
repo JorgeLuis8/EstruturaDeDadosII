@@ -13,13 +13,6 @@ arvore_matricula *criar_matricula()
     return no;
 }
 
-void Ler_matricula(arvore_matricula *no)
-{
-    printf("Digite o codigo da disciplina: ");
-    scanf(" %d", &no->codigo_disciplina);
-
-
-}
 arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no) {
     if (raiz == NULL) {
         // Se a árvore estiver vazia, o novo nó se torna a raiz
