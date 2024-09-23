@@ -59,7 +59,7 @@ void imprimir_notas(arvore_notas *raiz)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
         printf("Semestre cursado: %s\n", raiz->semestre_cursado);
-        printf("Nota Final: %f\n", raiz->nota_final);
+        printf("Nota Final: %.2f\n", raiz->nota_final);
         imprimir_notas(raiz->esq);
         imprimir_notas(raiz->dir);
     }
