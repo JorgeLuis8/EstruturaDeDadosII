@@ -8,6 +8,7 @@ typedef struct arvore_curso {
     int codigo;
     char nome[100];
     int periodo;
+    short altura;
     arvore_disciplinas *raiz_disciplinas; // Tipo corrigido
     struct arvore_curso *esq;
     struct arvore_curso *dir;
