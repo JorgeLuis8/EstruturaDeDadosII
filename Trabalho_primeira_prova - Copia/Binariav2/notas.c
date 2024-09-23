@@ -151,3 +151,21 @@ void imprimir_notas_periodo(arvore_notas* raiz_notas, int periodo){
         imprimir_notas_periodo(raiz_notas->dir, periodo);
     }
 }
+
+arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo)
+{
+    arvore_notas *aux = NULL;
+    if (raiz != NULL)
+    {
+        aux = buscar_nota_periodo(raiz->esq, periodo);
+        if (raiz->semestre_cursado[5] == periodo + '0')
+        {
+            aux = raiz;
+        }
+        if (aux == NULL)
+        {
+            aux = buscar_nota_periodo(raiz->dir, periodo);
+        }
+    }
+    return aux;
+}

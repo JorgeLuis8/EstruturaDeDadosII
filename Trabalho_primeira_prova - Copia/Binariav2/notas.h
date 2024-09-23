@@ -17,5 +17,5 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no);  // Corrigido
 void imprimir_notas(arvore_notas *raiz);  // Função para imprimir as notas em ordem
 arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina);  // Função para buscar uma nota pelo código da disciplina
 arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina);  // Função para remover uma nota pelo código da disciplina
-
+arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo);
 #endif

@@ -8,29 +8,28 @@
 #include "matricula.c"
 #include "notas.c"
 
+// Função para exibir o menu atualizado
 void exibir_menu()
 {
     printf("\n--- Menu ---\n");
     printf("1. Cadastrar novo curso\n");
     printf("2. Cadastrar novo aluno\n");
-    printf("3. Buscar curso por codigo\n");
-    printf("4. Cadastrar nova disciplina\n");
-    printf("5. Cadastrar nova matricula\n");
-    printf("6. Cadastrar Nota\n");
-    printf("7. Listar alunos de um curso\n");
-    printf("8. Mostrar todos os cursos\n");
-    printf("9. Mostrar todas as disciplinas de um curso\n");
-    printf("10. Mostrar todas as disciplinas de um determinado periodo\n");
-    printf("11. Mostrar todas as disciplinas que o aluno está matriculado\n");
-    printf("12. Mostrar todas as notas de disciplinas de um determinado período de um aluno\n");
-    printf("13. Mostrar a nota de uma disciplina de um aluno (inclui período e carga horária)\n");
-    printf("14. Remover uma disciplina de um curso (sem alunos matriculados)\n");
-    printf("15. Remover uma disciplina da matrícula de um aluno\n");
-    printf("16. Mostrar o histórico de um aluno\n");
+    printf("3. Cadastrar nova disciplina\n");
+    printf("4. Cadastrar nova matricula\n");
+    printf("5. Cadastrar Nota\n");
+    printf("6. Listar alunos de um curso\n");
+    printf("7. Mostrar todos os cursos\n");
+    printf("8. Mostrar todas as disciplinas de um curso\n");
+    printf("9. Mostrar todas as disciplinas de um determinado periodo\n");
+    printf("10. Mostrar todas as disciplinas que o aluno está matriculado\n");
+    printf("11. Mostrar todas as notas de disciplinas de um determinado período de um aluno\n");
+    printf("12. Mostrar a nota de uma disciplina de um aluno (inclui período e carga horária)\n");
+    printf("13. Remover uma disciplina de um curso (sem alunos matriculados)\n");
+    printf("14. Remover uma disciplina da matrícula de um aluno\n");
+    printf("15. Mostrar o histórico de um aluno\n");
     printf("0. Sair\n");
     printf("Escolha uma opcao: ");
 }
-
 
 int main()
 {
@@ -39,7 +38,7 @@ int main()
     int opcao = -1; // Inicialização correta
     int codigo, codigo_curso, matricula_num, carga_horaria, periodo;
     float nota; // Variável para armazenar a nota
-    char nome[100],semestre_cursado[100];
+    char nome[100], semestre_cursado[100];
     Aluno *aluno;
     Arvore_curso *curso;
     arvore_disciplinas *disciplina;
@@ -55,15 +54,19 @@ int main()
             // Cadastro de curso
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
-             if (buscar_curso(raiz_cursos, codigo) != NULL)
+
+            if (buscar_curso(raiz_cursos, codigo) != NULL)
             {
                 printf("Codigo de curso ja existente. Cadastro do curso nao realizado.\n");
                 break;
             }
+
             printf("Digite o nome do curso: ");
             scanf(" %[^\n]", nome);
+
             printf("Digite o periodo do curso: ");
             scanf("%d", &periodo);
+
             curso = criar_curso();
             curso->codigo = codigo;
             curso->periodo = periodo;
@@ -107,24 +110,6 @@ int main()
             break;
 
         case 3:
-            // Buscar curso
-            printf("Digite o codigo do curso a buscar: ");
-            scanf("%d", &codigo);
-            curso = buscar_curso(raiz_cursos, codigo);
-            if (curso != NULL)
-            {
-                printf("Curso encontrado:\n");
-                printf("Codigo: %d\n", curso->codigo);
-                printf("Nome: %s\n", curso->nome);
-                printf("Periodo: %d\n", curso->periodo);
-            }
-            else
-            {
-                printf("Curso nao encontrado.\n");
-            }
-            break;
-
-        case 4:
             // Cadastro de disciplina
             printf("Digite o codigo do curso da disciplina: ");
             scanf("%d", &codigo_curso);
@@ -142,7 +127,7 @@ int main()
                 printf("Codigo de disciplina ja existente. Cadastro da disciplina nao realizado.\n");
                 break;
             }
-            
+
             printf("Digite o nome da disciplina: ");
             scanf(" %[^\n]", nome);
             printf("Digite a carga horaria da disciplina: ");
@@ -177,7 +162,7 @@ int main()
             printf("Disciplina cadastrada com sucesso.\n");
             break;
 
-        case 5:
+        case 4:
             // Cadastro de matrícula
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
@@ -185,6 +170,14 @@ int main()
             if (aluno == NULL)
             {
                 printf("Matricula nao encontrada.\n");
+                break;
+            }
+
+            // Buscar o curso do aluno para verificar as disciplinas
+            curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
+            if (curso == NULL)
+            {
+                printf("Curso do aluno nao encontrado.\n");
                 break;
             }
 
@@ -197,6 +190,13 @@ int main()
                 break;
             }
 
+            // Verificar se a disciplina já está matriculada
+            if (buscar_matricula(aluno->raiz_matriculas, codigo) != NULL)
+            {
+                printf("Disciplina já matriculada.\n");
+                break;
+            }
+
             // Inserir a disciplina na árvore de matrículas do aluno
             arvore_matricula *nova_matricula = criar_matricula();
             nova_matricula->codigo_disciplina = codigo;
@@ -204,7 +204,7 @@ int main()
             printf("Matricula cadastrada com sucesso.\n");
             break;
 
-        case 6:
+        case 5:
             // Cadastrar Nota
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
@@ -225,7 +225,7 @@ int main()
             }
 
             printf("Digite o semestre cursado: ");
-            scanf("%s", semestre_cursado); // Adicionei a leitura do semestre cursado
+            scanf("%s", semestre_cursado); // Leitura do semestre cursado
 
             printf("Digite a nota da disciplina: ");
             scanf("%f", &nota);
@@ -234,7 +234,7 @@ int main()
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = codigo;
             nova_nota->nota_final = nota;
-            strcpy(nova_nota->semestre_cursado, semestre_cursado); // Adicionei a atribuição do semestre cursado
+            strcpy(nova_nota->semestre_cursado, semestre_cursado); // Atribuição do semestre cursado
 
             // Inserir a nota na árvore de notas do aluno
             aluno->raiz_notas = inserir_nota(aluno->raiz_notas, nova_nota);
@@ -244,26 +244,36 @@ int main()
 
             printf("Nota cadastrada com sucesso e disciplina removida das matriculas.\n");
             break;
-        case 7:
-           //Mostrar todos os alunos de um determinado curso. 
+
+        case 6:
+            // Mostrar todos os alunos de um determinado curso
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
+
             curso = buscar_curso(raiz_cursos, codigo);
             if (curso == NULL)
             {
                 printf("Curso nao encontrado.\n");
                 break;
             }
+
             printf("Alunos do curso %s:\n", curso->nome);
-            imprimir_alunos(raiz_alunos, codigo);
+            imprimir_alunos(raiz_alunos, codigo); // Certifique-se que esta função filtra alunos pelo código do curso
             break;
-        case 8:
-            //mostrar todos os cursos
+
+        case 7:
+            // Mostrar todos os cursos
+            if(raiz_cursos == NULL)
+            {
+                printf("Nenhum curso cadastrado.\n");
+                break;
+            }
             printf("Cursos cadastrados:\n");
             imprimir_cursos(raiz_cursos);
             break;
-        case 9:
-            //mostrar todas as disciplinas de um determinado curso
+
+        case 8:
+            // Mostrar todas as disciplinas de um curso
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -275,8 +285,9 @@ int main()
             printf("Disciplinas do curso %s:\n", curso->nome);
             imprimir_disciplinas(curso->raiz_disciplinas);
             break;
-        case 10:
-            //Mostrar todas as disciplinas de um determinado período de um curso
+
+        case 9:
+            // Mostrar todas as disciplinas de um determinado período
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -287,11 +298,12 @@ int main()
             }
             printf("Digite o periodo: ");
             scanf("%d", &periodo);
-            printf("Disciplinas do curso %s no periodo %d:\n", curso->nome, periodo);
+            printf("Disciplinas do curso %s do periodo %d:\n", curso->nome, periodo);
             imprimir_disciplinas_periodo(curso->raiz_disciplinas, periodo);
             break;
-        case 11:
-            //Mostrar todas as disciplinas que um determinado aluno está matriculado 
+
+        case 10:
+            // Mostrar todas as disciplinas que o aluno está matriculado
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -303,8 +315,8 @@ int main()
             printf("Disciplinas do aluno %s:\n", aluno->nome);
             imprimir_matricula(aluno->raiz_matriculas);
             break;
-        case 12: 
-            //Mostrar todas as notas de disciplinas de um determinado período de um determinado aluno. 
+        case 11:
+            // Mostrar todas as notas de disciplinas de um determinado período de um aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -315,11 +327,18 @@ int main()
             }
             printf("Digite o periodo: ");
             scanf("%d", &periodo);
-            printf("Notas do aluno %s no periodo %d:\n", aluno->nome, periodo);
+            if (aluno->raiz_notas == NULL)
+            {
+                printf("Nenhuma nota cadastrada para o aluno.\n");
+                break;
+            }
+
+            // Function to display grades for a specific period
             imprimir_notas_periodo(aluno->raiz_notas, periodo);
             break;
-        case 13:
-            //Mostrar a nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da  disciplina. 
+
+        case 12:
+            // Mostrar a nota de uma disciplina de um aluno (inclui período e carga horária)
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -330,16 +349,32 @@ int main()
             }
             printf("Digite o codigo da disciplina: ");
             scanf("%d", &codigo);
-            arvore_notas *nota = buscar_notas(aluno->raiz_notas, codigo);
-            if (nota == NULL)
+            arvore_notas *nota_busca = buscar_notas(aluno->raiz_notas, codigo);
+            if (nota_busca == NULL)
             {
                 printf("Disciplina nao encontrada.\n");
                 break;
             }
-            printf("Nota do aluno %s na disciplina %d: %.2f\n", aluno->nome, nota->codigo_disciplina, nota->nota_final);
+            // Buscar a disciplina para obter o período e carga horária
+            curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
+            if (curso == NULL)
+            {
+                printf("Curso do aluno nao encontrado.\n");
+                break;
+            }
+            disciplina = buscar_disciplina(curso->raiz_disciplinas, codigo);
+            if (disciplina == NULL)
+            {
+                printf("Disciplina nao encontrada no curso.\n");
+                break;
+            }
+            printf("Nota do aluno %s na disciplina %d: %.2f\n", aluno->nome, nota_busca->codigo_disciplina, nota_busca->nota_final);
+            printf("Periodo: %d\n", disciplina->periodo);
+            printf("Carga Horaria: %d\n", disciplina->carga_horaria);
             break;
-        case 14:
-            //Remover uma disciplina de um determinado curso desde que não tenha nenhum aluno matriculado na mesma
+
+        case 13:
+            // Remover uma disciplina de um curso (sem alunos matriculados)
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -348,26 +383,41 @@ int main()
                 printf("Curso nao encontrado.\n");
                 break;
             }
+
             printf("Digite o codigo da disciplina: ");
             scanf("%d", &codigo);
-            arvore_disciplinas *disciplina = buscar_disciplina(curso->raiz_disciplinas, codigo);
-            if (disciplina == NULL)
+            arvore_disciplinas *disciplina_remover = buscar_disciplina(curso->raiz_disciplinas, codigo);
+            if (disciplina_remover == NULL)
             {
                 printf("Disciplina nao encontrada.\n");
                 break;
             }
-            if (disciplina->esq == NULL && disciplina->dir == NULL)
+
+            // Verificar se algum aluno está matriculado na disciplina
+            int alunos_matriculados = 0;
+            // Percorrer a lista de alunos e verificar se algum está matriculado na disciplina
+            for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
+            {
+                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL)
+                {
+                    alunos_matriculados = 1;
+                    break; // Um aluno matriculado encontrado
+                }
+            }
+
+            if (alunos_matriculados)
+            {
+                printf("Disciplina nao pode ser removida pois ha alunos matriculados.\n");
+            }
+            else
             {
                 curso->raiz_disciplinas = remover_disciplina(curso->raiz_disciplinas, codigo);
                 printf("Disciplina removida com sucesso.\n");
             }
-            else
-            {
-                printf("Disciplina nao pode ser removida pois ha alunos matriculados.\n");
-            }
             break;
-        case 15:
-            //Permita remover uma disciplina da árvore de matrícula de um determinado aluno. 
+
+        case 14:
+            // Remover uma disciplina da árvore de matrícula de um determinado aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -381,17 +431,15 @@ int main()
             arvore_matricula *matricula = buscar_matricula(aluno->raiz_matriculas, codigo);
             if (matricula == NULL)
             {
-                printf("Disciplina nao encontrada.\n");
+                printf("Disciplina nao encontrada na matricula do aluno.\n");
                 break;
             }
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
-            printf("Disciplina removida com sucesso.\n");
+            printf("Disciplina removida com sucesso da matricula do aluno.\n");
             break;
-        case 16:
-        /*
-        xv) Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva
-        nota organizadas pelo período que a disciplina está cadastrada no curso. 
-        */
+
+        case 15:
+            // Mostrar o histórico de um aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -405,18 +453,13 @@ int main()
             break;
 
         case 0:
-
             printf("Saindo...\n");
             break;
+
         default:
             printf("Opcao invalida. Tente novamente.\n");
         }
     }
 
-    // Liberação de memória (opcional, mas recomendado)
-
-    // Implementar e chamar funções de liberação para disciplinas, matrículas e notas conforme necessário
-
     return 0;
 }
-

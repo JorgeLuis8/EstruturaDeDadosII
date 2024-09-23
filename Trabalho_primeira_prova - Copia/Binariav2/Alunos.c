@@ -93,3 +93,18 @@ void imprimir_alunos(Aluno *aluno,int codigo_curso){
     }
 
 }
+
+int verificar_matricula_disciplinas(Aluno *raiz_alunos, int codigo_disciplina) {
+    int encontrado = 0;
+
+    for (Aluno *atual = raiz_alunos; atual != NULL; atual = atual->prox) {
+        // Verifica a matrícula do aluno atual
+        arvore_matricula *matricula = buscar_matricula(atual->raiz_matriculas, codigo_disciplina);
+        if (matricula != NULL) {
+            encontrado = 1; // Define como encontrado
+        }
+    }
+
+    return encontrado;
+}
+

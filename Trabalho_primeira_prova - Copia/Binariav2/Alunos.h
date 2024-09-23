@@ -29,5 +29,5 @@ Aluno *buscar_aluno(Aluno *aluno, int matricula);
 // Função para imprimir todos os alunos
 void imprimir_alunos(Aluno *aluno, int codigo_curso);
 
-
+int verificar_matricula_disciplinas(Aluno *raiz_alunos, int codigo_disciplina);
 #endif
