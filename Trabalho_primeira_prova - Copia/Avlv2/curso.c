@@ -133,6 +133,8 @@ Arvore_curso *remover_curso(Arvore_curso *curso, int codigo)
             }
         }
     }
+    curso->altura = maior_no_curso(altura_do_no_curso(curso->esq), altura_do_no_curso(curso->dir)) + 1;
+    curso = balancear_arvore_curso(curso);
     return curso;
 
 
