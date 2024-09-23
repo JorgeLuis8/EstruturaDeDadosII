@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "podcast.c"
-#include "entrevistas.c"
-#include "temas.c"
-#include "plataforma.c"
+#include "podcast.c"     
+#include "entrevistas.c" 
+#include "temas.c"       
+#include "plataforma.c"  
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
         printf("8. Remover Plataforma\n");
         printf("9. Mostrar todos os nomes dos Podcasts em ordem alfabetica de uma plataforma\n");
         printf("10. Mostrar todos os temas de um Podcast de uma plataforma\n");
-        printf("11. Mostrar todos os titulos das entrevistas de um tema de um Podcast de uma plataforma\n");
+        printf("11. Mostrar todos os ttulos das entrevistas de um tema de um Podcast de uma plataforma\n");
         printf("12. Mostrar todos os dados de uma entrevista de um Podcast de uma determinada plataforma, tema e titulo da entrevista\n");
         printf("13. Mostrar todos os entrevistados de um determinado tema de um Podcast de uma plataforma\n");
         printf("0. Sair\n");
@@ -70,22 +70,25 @@ int main()
             printf("Adicionar um novo tema a um podcast em uma plataforma:\n");
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_tema[50];
-            scanf(" %[^\n]", nome_plataforma_tema); 
+            scanf(" %[^\n]", nome_plataforma_tema); // Ler o nome da plataforma
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_encontrada_tema = buscar_plataforma(lista_plataformas, nome_plataforma_tema);
             if (plataforma_encontrada_tema != NULL)
             {
                 printf("Digite o nome do podcast: ");
                 char nome_podcast_tema[50];
-                scanf(" %[^\n]", nome_podcast_tema);
+                scanf(" %[^\n]", nome_podcast_tema); // Ler o nome do podcast
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_encontrado_tema = Busca_arv_podcast(plataforma_encontrada_tema->raiz_podcast, nome_podcast_tema);
                 if (podcast_encontrado_tema != NULL)
                 {
-
+                    // Criar um novo nó de tema
                     Arvore_temas *novo_tema = criar_arvore_temas();
                     lerDados(novo_tema);
 
+                    // Inserir o tema na árvore de temas do podcast encontrado
                     podcast_encontrado_tema->raiz_temas = inserir_temas(podcast_encontrado_tema->raiz_temas, novo_tema);
 
                     printf("Tema '%s' adicionado ao podcast '%s' na plataforma '%s' com sucesso.\n", novo_tema->tema, nome_podcast_tema, nome_plataforma_tema);
@@ -107,6 +110,7 @@ int main()
             char nome_plataforma_entrevista[50];
             scanf(" %[^\n]", nome_plataforma_entrevista);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_entrevista = buscar_plataforma(lista_plataformas, nome_plataforma_entrevista);
             if (plataforma_entrevista != NULL)
             {
@@ -114,6 +118,7 @@ int main()
                 char nome_podcast_entrevista[50];
                 scanf(" %[^\n]", nome_podcast_entrevista);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_entrevista = Busca_arv_podcast(plataforma_entrevista->raiz_podcast, nome_podcast_entrevista);
                 if (podcast_entrevista != NULL)
                 {
@@ -121,12 +126,15 @@ int main()
                     char nome_tema_entrevista[50];
                     scanf(" %[^\n]", nome_tema_entrevista);
 
+                    // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_entrevista = Busca_arv(podcast_entrevista->raiz_temas, nome_tema_entrevista);
                     if (tema_entrevista != NULL)
                     {
+                        // Criar uma nova entrevista
                         Arvore_entrevistas *nova_entrevista = criar_arvore_entrevistas();
                         Ler_dados_de_insercao_entrevistas(nova_entrevista);
 
+                        // Inserir a nova entrevista na árvore de entrevistas do tema encontrado
                         tema_entrevista->entrevistas = inserir_entrevistas(tema_entrevista->entrevistas, nova_entrevista);
                         printf("Entrevista adicionada ao tema '%s' do podcast '%s' na plataforma '%s' com sucesso.\n", nome_tema_entrevista, nome_podcast_entrevista, nome_plataforma_entrevista);
                     }
@@ -152,6 +160,7 @@ int main()
             char nome_plataforma_remover_entrevista[50];
             scanf(" %[^\n]", nome_plataforma_remover_entrevista);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_remover_entrevista = buscar_plataforma(lista_plataformas, nome_plataforma_remover_entrevista);
             if (plataforma_remover_entrevista != NULL)
             {
@@ -159,6 +168,7 @@ int main()
                 char nome_podcast_remover_entrevista[50];
                 scanf(" %[^\n]", nome_podcast_remover_entrevista);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_remover_entrevista = Busca_arv_podcast(plataforma_remover_entrevista->raiz_podcast, nome_podcast_remover_entrevista);
                 if (podcast_remover_entrevista != NULL)
                 {
@@ -166,6 +176,7 @@ int main()
                     char nome_tema_remover_entrevista[50];
                     scanf(" %[^\n]", nome_tema_remover_entrevista);
 
+                    // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_remover_entrevista = Busca_arv(podcast_remover_entrevista->raiz_temas, nome_tema_remover_entrevista);
                     if (tema_remover_entrevista != NULL)
                     {
@@ -173,17 +184,9 @@ int main()
                         char titulo_entrevista_remover[100];
                         scanf(" %[^\n]", titulo_entrevista_remover);
 
-                        if (tema_remover_entrevista->entrevistas != NULL)
-                        {
-                            printf("Removendo entrevista...\n");
-                            tema_remover_entrevista->entrevistas = remover_entrevista(tema_remover_entrevista->entrevistas, titulo_entrevista_remover);
-                            printf("Entrevista removida.\n");
-                            printf("Entrevista '%s' removida do tema '%s' do podcast '%s' na plataforma '%s' com sucesso.\n", titulo_entrevista_remover, nome_tema_remover_entrevista, nome_podcast_remover_entrevista, nome_plataforma_remover_entrevista);
-                        }
-                        else
-                        {
-                            printf("Nenhuma entrevista encontrada no tema '%s' do podcast '%s' na plataforma '%s'.\n", nome_tema_remover_entrevista, nome_podcast_remover_entrevista, nome_plataforma_remover_entrevista);
-                        }
+                        // Remover a entrevista do tema encontrado
+                        tema_remover_entrevista->entrevistas = remover_entrevista(tema_remover_entrevista->entrevistas, titulo_entrevista_remover);
+                        printf("Entrevista '%s' removida do tema '%s' do podcast '%s' na plataforma '%s' com sucesso.\n", titulo_entrevista_remover, nome_tema_remover_entrevista, nome_podcast_remover_entrevista, nome_plataforma_remover_entrevista);
                     }
                     else
                     {
@@ -207,6 +210,7 @@ int main()
             char nome_plataforma_remover_tema[50];
             scanf(" %[^\n]", nome_plataforma_remover_tema);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_remover_tema = buscar_plataforma(lista_plataformas, nome_plataforma_remover_tema);
             if (plataforma_remover_tema != NULL)
             {
@@ -214,6 +218,7 @@ int main()
                 char nome_podcast_remover_tema[50];
                 scanf(" %[^\n]", nome_podcast_remover_tema);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_remover_tema = Busca_arv_podcast(plataforma_remover_tema->raiz_podcast, nome_podcast_remover_tema);
                 if (podcast_remover_tema != NULL)
                 {
@@ -221,15 +226,18 @@ int main()
                     char nome_tema_remover[50];
                     scanf(" %[^\n]", nome_tema_remover);
 
+                    // Verificar se o tema existe na árvore de temas do podcast
                     Arvore_temas *tema_remover = Busca_arv(podcast_remover_tema->raiz_temas, nome_tema_remover);
                     if (tema_remover != NULL)
                     {
+                        // Verificar se o tema possui entrevistas associadas
                         if (tema_remover->entrevistas != NULL)
                         {
                             printf("O tema '%s' possui entrevistas associadas e nao pode ser removido.\n", nome_tema_remover);
                         }
                         else
                         {
+                            // Remover o tema do podcast encontrado
                             podcast_remover_tema->raiz_temas = remover_tema(podcast_remover_tema->raiz_temas, nome_tema_remover);
                             printf("Tema '%s' removido do podcast '%s' na plataforma '%s' com sucesso.\n", nome_tema_remover, nome_podcast_remover_tema, nome_plataforma_remover_tema);
                         }
@@ -256,6 +264,7 @@ int main()
             char nome_plataforma_remover_podcast[50];
             scanf(" %[^\n]", nome_plataforma_remover_podcast);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_remover_podcast = buscar_plataforma(lista_plataformas, nome_plataforma_remover_podcast);
             if (plataforma_remover_podcast != NULL)
             {
@@ -263,15 +272,18 @@ int main()
                 char nome_podcast_remover[50];
                 scanf(" %[^\n]", nome_podcast_remover);
 
+                // Verificar se o podcast existe na plataforma
                 Arvore_podCast *podcast_remover = Busca_arv_podcast(plataforma_remover_podcast->raiz_podcast, nome_podcast_remover);
                 if (podcast_remover != NULL)
                 {
+                    // Verificar se há temas associados a este podcast
                     if (podcast_remover->raiz_temas != NULL)
                     {
                         printf("Este podcast possui temas associados e não pode ser removido.\n");
                     }
                     else
                     {
+                        // Remover o podcast da plataforma
                         plataforma_remover_podcast->raiz_podcast = remover_podcast(plataforma_remover_podcast->raiz_podcast, nome_podcast_remover);
                         printf("Podcast '%s' removido da plataforma '%s' com sucesso.\n", nome_podcast_remover, nome_plataforma_remover_podcast);
                     }
@@ -292,15 +304,18 @@ int main()
             char nome_plataforma_remover[50];
             scanf(" %[^\n]", nome_plataforma_remover);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_remover = buscar_plataforma(lista_plataformas, nome_plataforma_remover);
             if (plataforma_remover != NULL)
             {
+                // Verificar se há podcasts associados a esta plataforma
                 if (plataforma_remover->raiz_podcast != NULL)
                 {
                     printf("Esta plataforma possui podcasts associados e não pode ser removida.\n");
                 }
                 else
                 {
+                    // Remover a plataforma da lista de plataformas
                     lista_plataformas = remover_plataforma(lista_plataformas, nome_plataforma_remover);
                     printf("Plataforma '%s' removida com sucesso.\n", nome_plataforma_remover);
                 }
@@ -312,10 +327,12 @@ int main()
             break;
 
         case 9:
+            // Caso para mostrar todos os nomes dos podcasts em ordem alfabética de uma plataforma
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_podcasts_ordem[50];
             scanf(" %[^\n]", nome_plataforma_podcasts_ordem);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_podcasts_ordem = buscar_plataforma(lista_plataformas, nome_plataforma_podcasts_ordem);
             if (plataforma_podcasts_ordem != NULL)
             {
@@ -328,10 +345,12 @@ int main()
             }
             break;
         case 10:
+            // Caso para mostrar todos os temas de um podcast de uma plataforma
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_temas[50];
             scanf(" %[^\n]", nome_plataforma_temas);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_temas = buscar_plataforma(lista_plataformas, nome_plataforma_temas);
             if (plataforma_temas != NULL)
             {
@@ -339,6 +358,7 @@ int main()
                 char nome_podcast_temas[50];
                 scanf(" %[^\n]", nome_podcast_temas);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_temas = Busca_arv_podcast(plataforma_temas->raiz_podcast, nome_podcast_temas);
                 if (podcast_temas != NULL && podcast_temas->raiz_temas != NULL)
                 {
@@ -356,10 +376,12 @@ int main()
             }
             break;
         case 11:
+            // Caso para mostrar todos os títulos das entrevistas de um tema de um podcast de uma plataforma
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_titulos[50];
             scanf(" %[^\n]", nome_plataforma_titulos);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_titulos = buscar_plataforma(lista_plataformas, nome_plataforma_titulos);
             if (plataforma_titulos != NULL)
             {
@@ -367,6 +389,7 @@ int main()
                 char nome_podcast_titulos[50];
                 scanf(" %[^\n]", nome_podcast_titulos);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_titulos = Busca_arv_podcast(plataforma_titulos->raiz_podcast, nome_podcast_titulos);
                 if (podcast_titulos != NULL)
                 {
@@ -374,6 +397,7 @@ int main()
                     char nome_tema_titulos[50];
                     scanf(" %[^\n]", nome_tema_titulos);
 
+                    // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_titulos = Busca_arv(podcast_titulos->raiz_temas, nome_tema_titulos);
                     if (tema_titulos != NULL && tema_titulos->entrevistas != NULL)
                     {
@@ -397,10 +421,12 @@ int main()
             break;
 
         case 12:
+            // Mostrar todos os dados de uma entrevista de um podcast de uma determinada plataforma, tema e título da entrevista
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_entrevista_dados[50];
             scanf(" %[^\n]", nome_plataforma_entrevista_dados);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_entrevista_dados = buscar_plataforma(lista_plataformas, nome_plataforma_entrevista_dados);
             if (plataforma_entrevista_dados != NULL)
             {
@@ -408,6 +434,7 @@ int main()
                 char nome_podcast_entrevista_dados[50];
                 scanf(" %[^\n]", nome_podcast_entrevista_dados);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_entrevista_dados = Busca_arv_podcast(plataforma_entrevista_dados->raiz_podcast, nome_podcast_entrevista_dados);
                 if (podcast_entrevista_dados != NULL)
                 {
@@ -415,6 +442,7 @@ int main()
                     char nome_tema_entrevista_dados[50];
                     scanf(" %[^\n]", nome_tema_entrevista_dados);
 
+                    // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_entrevista_dados = Busca_arv(podcast_entrevista_dados->raiz_temas, nome_tema_entrevista_dados);
                     if (tema_entrevista_dados != NULL)
                     {
@@ -422,6 +450,7 @@ int main()
                         char titulo_entrevista_dados[100];
                         scanf(" %[^\n]", titulo_entrevista_dados);
 
+                        // Buscar a entrevista na árvore de entrevistas do tema
                         Arvore_entrevistas *entrevista_dados = buscar_entrevistas(tema_entrevista_dados->entrevistas, titulo_entrevista_dados);
                         if (entrevista_dados != NULL)
                         {
@@ -431,6 +460,7 @@ int main()
                             printf("Data: %s\n", entrevista_dados->data);
                             printf("Duracao: %d minutos\n", entrevista_dados->duracao);
                             printf("Especialidade: %s\n", entrevista_dados->especialidade_convidado);
+                            // Adicione mais campos conforme necessário
                         }
                         else
                         {
@@ -454,10 +484,12 @@ int main()
             break;
 
         case 13:
+            // Mostrar todos os entrevistados de um determinado tema de um podcast de uma plataforma
             printf("Digite o nome da plataforma: ");
             char nome_plataforma_entrevistados[50];
             scanf(" %[^\n]", nome_plataforma_entrevistados);
 
+            // Buscar a plataforma na lista de plataformas
             Plataforma *plataforma_entrevistados = buscar_plataforma(lista_plataformas, nome_plataforma_entrevistados);
             if (plataforma_entrevistados != NULL)
             {
@@ -465,6 +497,7 @@ int main()
                 char nome_podcast_entrevistados[50];
                 scanf(" %[^\n]", nome_podcast_entrevistados);
 
+                // Buscar o podcast dentro da plataforma
                 Arvore_podCast *podcast_entrevistados = Busca_arv_podcast(plataforma_entrevistados->raiz_podcast, nome_podcast_entrevistados);
                 if (podcast_entrevistados != NULL)
                 {
@@ -472,6 +505,7 @@ int main()
                     char nome_tema_entrevistados[50];
                     scanf(" %[^\n]", nome_tema_entrevistados);
 
+                    // Buscar o tema na árvore de temas do podcast
                     Arvore_temas *tema_entrevistados = Busca_arv(podcast_entrevistados->raiz_temas, nome_tema_entrevistados);
                     if (tema_entrevistados != NULL && tema_entrevistados->entrevistas != NULL)
                     {

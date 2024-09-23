@@ -21,36 +21,22 @@ Plataforma *criar_plataforma()
 
 Plataforma *inserir_plataforma(Plataforma *plataforma, Plataforma *no)
 {
-    // Verifica se a plataforma já existe
-    if (buscar_plataforma(plataforma, no->nome) != NULL)
-    {
-        printf("Ja existe uma plataforma com o nome '%s'. Nao e possivel adicionar novamente.\n", no->nome);
-        return plataforma;
-    }
-
-    Plataforma *retorno;
-
     if (plataforma == NULL)
     {
-        retorno = no;
+        return no;
     }
-    else
+
+    Plataforma *aux = plataforma;
+    while (aux->prox != NULL)
     {
-        Plataforma *aux = plataforma;
-        while (aux->prox != NULL)
-        {
-            aux = aux->prox;
-        }
-
-        aux->prox = no;
-        no->prox = NULL;
-
-        retorno = plataforma;
+        aux = aux->prox;
     }
 
-    return retorno;
-}
+    aux->prox = no;
+    no->prox = NULL;
 
+    return plataforma;
+}
 
 Plataforma *remover_plataforma(Plataforma *plataforma, char *nome)
 {
