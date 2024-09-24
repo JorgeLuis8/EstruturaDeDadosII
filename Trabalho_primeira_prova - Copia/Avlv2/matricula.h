@@ -3,7 +3,8 @@
 
 // Definição da estrutura da árvore de matrícula
 typedef struct arvore_matricula {
-    int codigo_disciplina;   // Código da disciplina
+    int codigo_disciplina;  
+    short altura; // Código da disciplina
     struct arvore_matricula *esq;  // Ponteiro para o filho esquerdo
     struct arvore_matricula *dir;  // Ponteiro para o filho direito
 } arvore_matricula;

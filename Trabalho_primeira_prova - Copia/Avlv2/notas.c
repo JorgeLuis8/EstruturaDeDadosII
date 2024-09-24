@@ -3,14 +3,104 @@
 #include <stdlib.h>
 #include "notas.h"
 
-struct arvore_notas;
 
+
+short maior_no_nota(short a, short b)
+{
+    return (a > b) ? a : b;
+}
+
+short altura_do_no_nota(arvore_notas *no)
+{
+    if (no == NULL)
+    {
+        return -1;
+    }
+    return no->altura;
+}
+
+short fator_balanceamento_nota(arvore_notas *no)
+{
+    if (no == NULL)
+    {
+        return 0;
+    }
+    return altura_do_no_nota(no->esq) - altura_do_no_nota(no->dir);
+}
+
+ arvore_notas *rotar_esquerda_nota(arvore_notas *no)
+{
+    arvore_notas *aux, *aux1;
+
+    aux = no->dir;
+    aux1 = aux->esq;
+
+    aux->esq = no;
+    no->dir = aux1;
+
+    no->altura = maior_no_nota(altura_do_no_nota(no->esq), altura_do_no_nota(no->dir)) + 1;
+    aux->altura = maior_no_nota(altura_do_no_nota(aux->esq), altura_do_no_nota(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_notas *rotar_direita_nota(arvore_notas *no)
+{
+    arvore_notas *aux, *aux1;
+
+    aux = no->esq;
+    aux1 = aux->dir;
+
+    aux->dir = no;
+    no->esq = aux1;
+
+    no->altura = maior_no_nota(altura_do_no_nota(no->esq), altura_do_no_nota(no->dir)) + 1;
+    aux->altura = maior_no_nota(altura_do_no_nota(aux->esq), altura_do_no_nota(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_notas *rotar_direita_esquerda_nota(arvore_notas *no)
+{
+    no->dir = rotar_direita_nota(no->dir);
+    return rotar_esquerda_nota(no);
+}
+
+ arvore_notas *rotar_esquerda_direita_nota(arvore_notas *no)
+{
+    no->esq = rotar_esquerda_nota(no->esq);
+    return rotar_direita_nota(no);
+}
+
+arvore_notas *balencar_arvore_nota(arvore_notas *raiz)
+{
+    short fb = fator_balanceamento_nota(raiz);
+
+    if (fb < -1 && fator_balanceamento_nota(raiz->dir) <= 0)
+    {
+        raiz = rotar_esquerda_nota(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_nota(raiz->esq) >= 0)
+    {
+        raiz = rotar_direita_nota(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_nota(raiz->esq) < 0)
+    {
+        raiz = rotar_esquerda_direita_nota(raiz);
+    }
+    else if (fb < -1 && fator_balanceamento_nota(raiz->dir) > 0)
+    {
+        raiz = rotar_direita_esquerda_nota(raiz);
+    }
+    return raiz;
+}
 
 arvore_notas *criar_nota()
 {
     arvore_notas *no = (arvore_notas *)malloc(sizeof(arvore_notas));
     no->esq = NULL;
     no->dir = NULL;
+    no->altura = 0;
     return no;
 }
 
@@ -47,7 +137,8 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
             }
         }
     }
-
+    raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
+    raiz = balencar_arvore_nota(raiz);
     return raiz;
 }
 
@@ -136,6 +227,8 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
             }
         }
     }
+    raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
+    raiz = balencar_arvore_nota(raiz);
     return raiz;
 }
 

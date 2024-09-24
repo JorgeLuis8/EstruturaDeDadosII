@@ -2,7 +2,8 @@
 #define CURSO_H
 
 #include "disciplinas.h" // Inclusão correta do cabeçalho
-#include "Alunos.h"
+#include "Alunos.h"      // Verifique se o nome está correto (maiúsculas/minúsculas)
+
 // Estrutura que representa um curso
 typedef struct arvore_curso {
     int codigo;
@@ -32,5 +33,7 @@ Arvore_curso *buscar_curso(Arvore_curso *raiz, int codigo);
 // Função para remover um curso da árvore pelo código
 Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo);
 
+// Função para imprimir o histórico de um aluno
 void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos);
+
 #endif // CURSO_H

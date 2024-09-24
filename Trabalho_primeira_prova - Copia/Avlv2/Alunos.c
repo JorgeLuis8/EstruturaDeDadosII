@@ -68,7 +68,6 @@ Aluno *remover_aluno(Aluno *aluno, int matricula){
     }
 
     free(aux);
-    
     return aluno;
 }
 
@@ -108,5 +107,4 @@ int verificar_matricula_disciplinas(Aluno *raiz_alunos, int codigo_disciplina) {
 
     return encontrado;
 }
-
 

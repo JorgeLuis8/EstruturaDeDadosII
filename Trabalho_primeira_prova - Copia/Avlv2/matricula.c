@@ -3,13 +3,103 @@
 #include "matricula.h"
 
 
-struct arvore_matricula;
+short maior_no_mat(short a, short b)
+{
+    return (a > b) ? a : b;
+}
+
+short altura_do_no_mat(arvore_matricula *no)
+{
+    if (no == NULL)
+    {
+        return -1;
+    }
+    return no->altura;
+}
+
+short fator_balanceamento_mat(arvore_matricula *no)
+{
+    if (no == NULL)
+    {
+        return 0;
+    }
+    return altura_do_no_mat(no->esq) - altura_do_no_mat(no->dir);
+}
+
+ arvore_matricula *rotar_esquerda_mat(arvore_matricula *no)
+{
+    arvore_matricula *aux, *aux1;
+
+    aux = no->dir;
+    aux1 = aux->esq;
+
+    aux->esq = no;
+    no->dir = aux1;
+
+    no->altura = maior_no_mat(altura_do_no_mat(no->esq), altura_do_no_mat(no->dir)) + 1;
+    aux->altura = maior_no_mat(altura_do_no_mat(aux->esq), altura_do_no_mat(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_matricula *rotar_direita_mat(arvore_matricula *no)
+{
+    arvore_matricula *aux, *aux1;
+
+    aux = no->esq;
+    aux1 = aux->dir;
+
+    aux->dir = no;
+    no->esq = aux1;
+
+    no->altura = maior_no_mat(altura_do_no_mat(no->esq), altura_do_no_mat(no->dir)) + 1;
+    aux->altura = maior_no_mat(altura_do_no_mat(aux->esq), altura_do_no_mat(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_matricula *rotar_direita_esquerda_mat(arvore_matricula *no)
+{
+    no->dir = rotar_direita_mat(no->dir);
+    return rotar_esquerda_mat(no);
+}
+
+ arvore_matricula *rotar_esquerda_direita_mat(arvore_matricula *no)
+{
+    no->esq = rotar_esquerda_mat(no->esq);
+    return rotar_direita_mat(no);
+}
+
+arvore_matricula *balencar_arvore_mat(arvore_matricula *raiz)
+{
+    short fb = fator_balanceamento_mat(raiz);
+
+    if (fb < -1 && fator_balanceamento_mat(raiz->dir) <= 0)
+    {
+        raiz = rotar_esquerda_mat(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_mat(raiz->esq) >= 0)
+    {
+        raiz = rotar_direita_mat(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_mat(raiz->esq) < 0)
+    {
+        raiz = rotar_esquerda_direita_mat(raiz);
+    }
+    else if (fb < -1 && fator_balanceamento_mat(raiz->dir) > 0)
+    {
+        raiz = rotar_direita_esquerda_mat(raiz);
+    }
+    return raiz;
+}
+
 
 arvore_matricula *criar_matricula()
 {
     arvore_matricula *no = (arvore_matricula *)malloc(sizeof(arvore_matricula));
     no->esq = NULL;
     no->dir = NULL;
+    no->altura = 0;
     return no;
 }
 
@@ -30,6 +120,9 @@ arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *n
         // mas neste caso estamos assumindo que não haverá duplicatas na árvore.
     }
 
+    // Atualizar a altura do nó atual
+    raiz->altura = maior_no_mat(altura_do_no_mat(raiz->esq), altura_do_no_mat(raiz->dir)) + 1;
+    raiz = balencar_arvore_mat(raiz); // Balancear a árvore
     return raiz;
 }
 
@@ -112,5 +205,7 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
             }
         }
     }
+    raiz->altura = maior_no_mat(altura_do_no_mat(raiz->esq), altura_do_no_mat(raiz->dir)) + 1;
+    raiz = balencar_arvore_mat(raiz);
     return raiz;
 }

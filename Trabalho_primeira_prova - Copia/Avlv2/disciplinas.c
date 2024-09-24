@@ -3,6 +3,96 @@
 #include <stdlib.h>
 
 
+short maior_no_disc(short a, short b)
+{
+    return (a > b) ? a : b;
+}
+
+short altura_do_no_disc(arvore_disciplinas *no)
+{
+    if (no == NULL)
+    {
+        return -1;
+    }
+    return no->altura;
+}
+
+short fator_balanceamento_disc(arvore_disciplinas *no)
+{
+    if (no == NULL)
+    {
+        return 0;
+    }
+    return altura_do_no_disc(no->esq) - altura_do_no_disc(no->dir);
+}
+
+ arvore_disciplinas *rotar_esquerda_disc(arvore_disciplinas *no)
+{
+    arvore_disciplinas *aux, *aux1;
+
+    aux = no->dir;
+    aux1 = aux->esq;
+
+    aux->esq = no;
+    no->dir = aux1;
+
+    no->altura = maior_no_disc(altura_do_no_disc(no->esq), altura_do_no_disc(no->dir)) + 1;
+    aux->altura = maior_no_disc(altura_do_no_disc(aux->esq), altura_do_no_disc(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_disciplinas *rotar_direita_disc(arvore_disciplinas *no)
+{
+    arvore_disciplinas *aux, *aux1;
+
+    aux = no->esq;
+    aux1 = aux->dir;
+
+    aux->dir = no;
+    no->esq = aux1;
+
+    no->altura = maior_no_disc(altura_do_no_disc(no->esq), altura_do_no_disc(no->dir)) + 1;
+    aux->altura = maior_no_disc(altura_do_no_disc(aux->esq), altura_do_no_disc(aux->dir)) + 1;
+
+    return aux;
+}
+
+arvore_disciplinas *rotar_direita_esquerda_disc(arvore_disciplinas *no)
+{
+    no->dir = rotar_direita_disc(no->dir);
+    return rotar_esquerda_disc(no);
+}
+
+ arvore_disciplinas *rotar_esquerda_direita_disc(arvore_disciplinas *no)
+{
+    no->esq = rotar_esquerda_disc(no->esq);
+    return rotar_direita_disc(no);
+}
+
+arvore_disciplinas *balencar_arvore_disc(arvore_disciplinas *raiz)
+{
+    short fb = fator_balanceamento_disc(raiz);
+
+    if (fb < -1 && fator_balanceamento_disc(raiz->dir) <= 0)
+    {
+        raiz = rotar_esquerda_disc(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_disc(raiz->esq) >= 0)
+    {
+        raiz = rotar_direita_disc(raiz);
+    }
+    else if (fb > 1 && fator_balanceamento_disc(raiz->esq) < 0)
+    {
+        raiz = rotar_esquerda_direita_disc(raiz);
+    }
+    else if (fb < -1 && fator_balanceamento_disc(raiz->dir) > 0)
+    {
+        raiz = rotar_direita_esquerda_disc(raiz);
+    }
+    return raiz;
+}
+
 arvore_disciplinas *criar_disciplina()
 {
     arvore_disciplinas *disciplina = (arvore_disciplinas *)malloc(sizeof(arvore_disciplinas));
@@ -13,6 +103,7 @@ arvore_disciplinas *criar_disciplina()
     }
     disciplina->esq = NULL;
     disciplina->dir = NULL;
+    disciplina->altura = 0;
     return disciplina;
 }
 
@@ -34,6 +125,8 @@ arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_discipli
             raiz->dir = inserir_disciplina(raiz->dir, no);
         }
     }
+    raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
+    raiz = balencar_arvore_disc(raiz);
     
     return raiz;
 }
@@ -105,6 +198,10 @@ arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo)
             }
         }
     }
+   
+        raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
+        raiz = balencar_arvore_disc(raiz);
+
     return raiz;
 }
 
