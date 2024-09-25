@@ -169,3 +169,5 @@ arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo)
     }
     return aux;
 }
+
+// Função para liberar a árvore de notas
