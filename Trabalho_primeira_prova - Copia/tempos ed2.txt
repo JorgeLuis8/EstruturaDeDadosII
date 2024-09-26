@@ -1,0 +1,50 @@
+Binaria com 1000 numeros ordenados:
+N├║meros Ordenados:
+Tempo m├®dio de inser├º├úo: 4344040 nanosegundos
+Tempo m├®dio de busca: 138686 nanosegundos
+
+Binaria com 1000 numeros ordenados do maior para o menor:
+Tempo m├®dio de inser├º├úo: 4442630 nanosegundos
+Tempo m├®dio de busca: 140636 nanosegundos
+
+Binaria com 1000 numeros aleatorios:
+Tempo m├®dio de inser├º├úo: 383623 nanosegundos
+Tempo m├®dio de busca: 9406 nanosegundos
+
+Binaria com 10000 numeros ordenados:
+Tempo m├®dio de inser├º├úo: 512590876 nanosegundos
+Tempo m├®dio de busca: 1482266 nanosegundos
+
+Binaria com 10000 numeros ordenados do maior para o menor:
+Tempo m├®dio de inser├º├úo: 4089640 nanosegundos
+Tempo m├®dio de busca: 12323 nanosegundos
+
+Binaria com 10000 numeros aleatorios:
+Tempo m├®dio de inser├º├úo: 4089640 nanosegundos
+Tempo m├®dio de busca: 12323 nanosegundos
+
+Binaria com 20000 numeros ordenados:
+Tempo m├®dio de inser├º├úo: 1646798383 nanosegundos
+Tempo m├®dio de busca: 2163523 nanosegundos
+
+Binaria com 20000 numeros ordenados do maior para o menor:
+Tempo m├®dio de inser├º├úo: 1846131496 nanosegundos
+Tempo m├®dio de busca: 3574496 nanosegundos
+
+Binaria com 20000 numeros aleatorios:
+Tempo m├®dio de inser├º├úo: 6928216 nanosegundos
+Tempo m├®dio de busca: 11730 nanosegundos
+
+
+Binaria com 30000 numeros ordenados:
+Tempo m├®dio de inser├º├úo: 4386492906 nanosegundos
+Tempo m├®dio de busca: 3989426 nanosegundos
+
+Binaria com 30000 numeros ordenados do maior para o menor:
+Tempo m├®dio de inser├º├úo: 3904637066 nanosegundos
+Tempo m├®dio de busca: 4444810 nanosegundos
+
+Binaria com 30000 numeros aleatorios:
+
+Tempo m├®dio de inser├º├úo: 11398563 nanosegundos
+Tempo m├®dio de busca: 12950 nanosegundos
