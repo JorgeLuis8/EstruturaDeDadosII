@@ -263,7 +263,7 @@ int main()
 
         case 7:
             // Mostrar todos os cursos
-            if(raiz_cursos == NULL)
+            if (raiz_cursos == NULL)
             {
                 printf("Nenhum curso cadastrado.\n");
                 break;
@@ -403,21 +403,19 @@ int main()
             // Percorrer a lista de alunos e verificar se algum está matriculado na disciplina
             for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
             {
-                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL)
+                // Verifica se o aluno está matriculado na disciplina
+                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL ||
+                    buscar_notas(a->raiz_notas, codigo) != NULL)
                 {
-                    alunos_matriculados = 1;
-                    break; // Um aluno matriculado encontrado
-                }
-                if(buscar_notas(a->raiz_notas, codigo) != NULL)
-                {
-                    alunos_matriculados = 1;
-                    break; // Um aluno com nota cadastrada encontrado
+                    alunos_matriculados = 1; // Um aluno com matrícula ou nota encontrada
+                    break;                   // Saia do loop assim que encontrar um aluno
                 }
             }
 
+            // Se algum aluno estiver matriculado ou tiver notas, não permita a remoção
             if (alunos_matriculados)
             {
-                printf("Disciplina nao pode ser removida pois ha alunos matriculados.\n");
+                printf("Disciplina nao pode ser removida pois ha alunos matriculados ou notas cadastradas.\n");
             }
             else
             {

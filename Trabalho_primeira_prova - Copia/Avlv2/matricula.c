@@ -164,48 +164,59 @@ arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina
 
 arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina)
 {
-    if (raiz != NULL)
+    // Busca o nó a ser removido
+    if (raiz != NULL) 
     {
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
-            raiz->esq = remover_matricula(raiz->esq, codigo_disciplina); // Corrigido
+            raiz->esq = remover_matricula(raiz->esq, codigo_disciplina);
         }
         else if (codigo_disciplina > raiz->codigo_disciplina)
         {
-            raiz->dir = remover_matricula(raiz->dir, codigo_disciplina); // Corrigido
+            raiz->dir = remover_matricula(raiz->dir, codigo_disciplina);
         }
-        else
+        else // Encontrou o nó a ser removido
         {
-            if (raiz->esq == NULL && raiz->dir == NULL)
+            // Caso 1: Nó com apenas um filho ou nenhum
+            if (raiz->esq == NULL) 
             {
-                free(raiz);
-                raiz = NULL;
+                arvore_matricula *temp = raiz->dir; // Salva o filho direito
+                free(raiz); // Libera a memória do nó
+                raiz = temp; // Atualiza a raiz para o filho direito
+            } 
+            else if (raiz->dir == NULL) 
+            {
+                arvore_matricula *temp = raiz->esq; // Salva o filho esquerdo
+                free(raiz); // Libera a memória do nó
+                raiz = temp; // Atualiza a raiz para o filho esquerdo
             }
-            else if (raiz->esq == NULL)
+            else // Caso 2: Nó com dois filhos
             {
-                arvore_matricula *aux = raiz;
-                raiz = raiz->dir;
-                free(aux);
-            }
-            else if (raiz->dir == NULL)
-            {
-                arvore_matricula *aux = raiz;
-                raiz = raiz->esq;
-                free(aux);
-            }
-            else
-            {
-                arvore_matricula *aux = raiz->esq;
-                while (aux->dir != NULL)
+                // Encontrar o menor nó na subárvore da direita
+                arvore_matricula *temp = raiz->dir;
+                while (temp->esq != NULL)
                 {
-                    aux = aux->dir;
+                    temp = temp->esq; // Encontra o menor nó na subárvore direita
                 }
-                raiz->codigo_disciplina = aux->codigo_disciplina;
-                raiz->esq = remover_matricula(raiz->esq, aux->codigo_disciplina); // Corrigido
+
+                // Substitui o código do nó a ser removido pelo menor nó da subárvore da direita
+                raiz->codigo_disciplina = temp->codigo_disciplina;
+
+                // Remove o menor nó da subárvore da direita
+                raiz->dir = remover_matricula(raiz->dir, temp->codigo_disciplina);
             }
+        }
+
+        // Atualizar a altura do nó atual, se raiz ainda é válida
+        if (raiz != NULL)
+        {
+            raiz->altura = maior_no_mat(altura_do_no_mat(raiz->esq), altura_do_no_mat(raiz->dir)) + 1;
+
+            // Balancear a árvore
+            raiz = balencar_arvore_mat(raiz);
         }
     }
-    raiz->altura = maior_no_mat(altura_do_no_mat(raiz->esq), altura_do_no_mat(raiz->dir)) + 1;
-    raiz = balencar_arvore_mat(raiz);
-    return raiz;
+
+    return raiz; // Retorna a raiz balanceada apenas no final
 }
+

@@ -106,41 +106,26 @@ arvore_notas *criar_nota()
 
 
 
-arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
-{
-    if (raiz == NULL)
-    {
+arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no) {
+    if (raiz == NULL) {
         raiz = no;
-    }
-    else
-    {
-        if (no->codigo_disciplina < raiz->codigo_disciplina)
-        {
-            if (raiz->esq == NULL)
-            {
-                raiz->esq = no;
-            }
-            else
-            {
-                raiz->esq = inserir_nota(raiz->esq, no); // Corrigido
-            }
-        }
-        else
-        {
-            if (raiz->dir == NULL)
-            {
-                raiz->dir = no;
-            }
-            else
-            {
-                raiz->dir = inserir_nota(raiz->dir, no); // Corrigido
-            }
+    } else {
+        if (no->codigo_disciplina < raiz->codigo_disciplina) {
+            raiz->esq = inserir_nota(raiz->esq, no);
+        } else {
+            raiz->dir = inserir_nota(raiz->dir, no);
         }
     }
-    raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
+    
+   
     raiz = balencar_arvore_nota(raiz);
+    raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
+
+  
+    
     return raiz;
 }
+
 
 
 
@@ -186,8 +171,10 @@ arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
 
 arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
 {
-    if (raiz != NULL)
+    // Procede apenas se a raiz não for NULL
+    if (raiz != NULL) 
     {
+        // Busca o nó a ser removido
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
             raiz->esq = remover_nota(raiz->esq, codigo_disciplina);
@@ -196,40 +183,50 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
         {
             raiz->dir = remover_nota(raiz->dir, codigo_disciplina);
         }
-        else
+        else // Encontrou o nó a ser removido
         {
-            if (raiz->esq == NULL && raiz->dir == NULL)
+            // Caso 1: Nó com apenas um filho ou nenhum
+            if (raiz->esq == NULL)
             {
+                arvore_notas *temp = raiz->dir;
                 free(raiz);
-                raiz = NULL;
-            }
-            else if (raiz->esq == NULL)
-            {
-                arvore_notas *aux = raiz;
-                raiz = raiz->dir;
-                free(aux);
+                raiz = temp;  // Atualiza raiz para o filho que não é NULL
             }
             else if (raiz->dir == NULL)
             {
-                arvore_notas *aux = raiz;
-                raiz = raiz->esq;
-                free(aux);
+                arvore_notas *temp = raiz->esq;
+                free(raiz);
+                raiz = temp;  // Atualiza raiz para o filho que não é NULL
             }
             else
             {
-                arvore_notas *aux = raiz->esq;
-                while (aux->dir != NULL)
+                // Caso 2: Nó com dois filhos
+                // Encontrar o menor nó na subárvore da direita
+                arvore_notas *temp = raiz->dir;
+                while (temp->esq != NULL)
                 {
-                    aux = aux->dir;
+                    temp = temp->esq;
                 }
-                raiz->codigo_disciplina = aux->codigo_disciplina;
-                raiz->esq = remover_nota(raiz->esq, aux->codigo_disciplina);
+
+                // Substitui o código do nó a ser removido pelo menor nó da subárvore da direita
+                raiz->codigo_disciplina = temp->codigo_disciplina;
+
+                // Remove o menor nó da subárvore da direita
+                raiz->dir = remover_nota(raiz->dir, temp->codigo_disciplina);
             }
         }
+
+        // Atualiza a altura do nó atual, se raiz ainda é válida
+        if (raiz != NULL) 
+        {
+            raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
+
+            // Balanceia a árvore
+            raiz = balencar_arvore_nota(raiz);
+        }
     }
-    raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
-    raiz = balencar_arvore_nota(raiz);
-    return raiz;
+
+    return raiz; // Retorna a raiz balanceada apenas no final
 }
 
 
