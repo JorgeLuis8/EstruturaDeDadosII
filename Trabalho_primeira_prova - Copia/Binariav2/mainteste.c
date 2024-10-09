@@ -408,11 +408,6 @@ int main()
                     alunos_matriculados = 1;
                     break; // Um aluno matriculado encontrado
                 }
-                if(buscar_notas(a->raiz_notas, codigo) != NULL)
-                {
-                    alunos_matriculados = 1;
-                    break; // Um aluno com nota cadastrada encontrado
-                }
             }
 
             if (alunos_matriculados)
@@ -445,7 +440,6 @@ int main()
                 break;
             }
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
-            alunos_matriculados--;
             printf("Disciplina removida com sucesso da matricula do aluno.\n");
             break;
 
