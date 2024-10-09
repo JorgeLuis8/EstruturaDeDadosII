@@ -1,40 +1,48 @@
-Numeros Ordenados | 10000: Tempo m├®dio de inser├º├úo: 939996920 nanosegundos
-			   Tempo m├®dio de busca: 2962573 nanosegundos
-
-Numeros Ordenados | 20000: Tempo m├®dio de inser├º├úo: 1965720170 nanosegundos
-			   Tempo m├®dio de busca: 2856356 nanosegundos
-
-Numeros Ordenados | 30000: Tempo m├®dio de inser├º├úo: 4631141480 nanosegundos
-			   Tempo m├®dio de busca: 4879120 nanosegundos
-
-Numeros Ordeandos | 40000: Tempo m├®dio de inser├º├úo: 10094680380 nanosegundos
-			   Tempo m├®dio de busca: 6992736 nanosegundos
+Binaria com 1000 numeros ordenados:
+N├║meros Ordenados:
 
 
-
-Numeros Decrescentes | 10000: Tempo m├®dio de inser├º├úo: 419759093 nanosegundos
-			      Tempo m├®dio de busca: 1481350 nanosegundos
-
-Numeros Decrescentes | 20000: Tempo m├®dio de inser├º├úo: 1508243880 nanosegundos
-			      Tempo m├®dio de busca: 2894410 nanosegundos
-
-Numeros Decrescentes | 30000: Tempo m├®dio de inser├º├úo: 3526775233 nanosegundos
-			      Tempo m├®dio de busca: 4323416 nanosegundos
-
-Numeros Decrescentes | 40000: Tempo m├®dio de inser├º├úo: 6733635400 nanosegundos
-			      Tempo m├®dio de busca: 7035040 nanosegundos
+Binaria com 1000 numeros ordenados do maior para o menor:
 
 
+Binaria com 1000 numeros aleatorios:
 
-Numeros Aleatorios | 10000: Tempo m├®dio de inser├º├úo: 2012620 nanosegundos
-			    Tempo m├®dio de busca: 7563 nanosegundos
 
-Numeros Aleatorios | 20000: Tempo m├®dio de inser├º├úo: 5813603 nanosegundos
-			    Tempo m├®dio de busca: 10583 nanosegundos
+Binaria com 10000 numeros ordenados:
 
-Numeros Aleatorios | 30000: Tempo m├®dio de inser├º├úo: 7449806 nanosegundos
-			    Tempo m├®dio de busca: 8876 nanosegundos
 
-Numeros Aleatorios | 40000: Tempo m├®dio de inser├º├úo: 11431816 nanosegundos
-			    Tempo m├®dio de busca: 9733 nanosegundos
-		
+Binaria com 10000 numeros ordenados do maior para o menor:
+
+
+Binaria com 10000 numeros aleatorios:
+
+
+Binaria com 20000 numeros ordenados:
+
+
+Binaria com 20000 numeros ordenados do maior para o menor:
+
+
+Binaria com 20000 numeros aleatorios:
+
+
+
+Binaria com 30000 numeros ordenados:
+
+
+Binaria com 30000 numeros ordenados do maior para o menor:
+
+
+Binaria com 30000 numeros aleatorios:
+
+ordenado:
+Tempo m├®dio de inser├º├úo: 5504953140 nanosegundos
+Tempo m├®dio de busca: 3169716 nanosegundos
+
+descrescente: 
+Tempo m├®dio de inser├º├úo: 5060105550 nanosegundos
+Tempo m├®dio de busca: 5069230 nanosegundos
+
+aleatorio:
+Tempo m├®dio de inser├º├úo: 10154960 nanosegundos
+Tempo m├®dio de busca: 8343 nanosegundos

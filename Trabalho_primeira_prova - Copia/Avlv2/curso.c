@@ -175,8 +175,9 @@ Arvore_curso *buscar_curso(Arvore_curso *raiz, int codigo)
 
 Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
 {
-    if (raiz != NULL)
+    if (raiz != NULL) // Só executa se a raiz não for NULL
     {
+        // Localiza o nó a ser removido
         if (codigo < raiz->codigo)
         {
             raiz->esq = remover_curso(raiz->esq, codigo);
@@ -185,44 +186,52 @@ Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
         {
             raiz->dir = remover_curso(raiz->dir, codigo);
         }
-        else
+        else // Encontrou o nó a ser removido
         {
+            // Caso 1: Nó folha (sem filhos)
             if (raiz->esq == NULL && raiz->dir == NULL)
             {
                 free(raiz);
-                raiz = NULL;
+                raiz = NULL; // Atualiza a raiz para NULL
             }
+            // Caso 2: Apenas o filho direito
             else if (raiz->esq == NULL)
             {
                 Arvore_curso *aux = raiz;
-                raiz = raiz->dir;
-                free(aux);
+                raiz = raiz->dir; // Atualiza a raiz para o filho direito
+                free(aux); // Libera a memória do nó
             }
+            // Caso 3: Apenas o filho esquerdo
             else if (raiz->dir == NULL)
             {
                 Arvore_curso *aux = raiz;
-                raiz = raiz->esq;
-                free(aux);
+                raiz = raiz->esq; // Atualiza a raiz para o filho esquerdo
+                free(aux); // Libera a memória do nó
             }
+            // Caso 4: Nó com dois filhos
             else
             {
                 Arvore_curso *aux = raiz->esq;
                 while (aux->dir != NULL)
                 {
-                    aux = aux->dir;
+                    aux = aux->dir; // Encontra o maior nó na subárvore esquerda
                 }
-                raiz->codigo = aux->codigo;
-                raiz->esq = remover_curso(raiz->esq, aux->codigo);
+                raiz->codigo = aux->codigo; // Substitui o código do nó a ser removido
+                raiz->esq = remover_curso(raiz->esq, aux->codigo); // Remove o nó substituto
             }
         }
+
+        // Atualiza a altura do nó atual
         if (raiz != NULL)
         {
-            raiz = balencar_arvore_curso(raiz);
             raiz->altura = maior_no_curso(altura_do_no_curso(raiz->esq), altura_do_no_curso(raiz->dir)) + 1;
+            // Balanceia a árvore
+            raiz = balencar_arvore_curso(raiz);
         }
     }
-    return raiz;
+    return raiz; // Retorna a raiz balanceada no final
 }
+
 
 void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
 {

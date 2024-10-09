@@ -157,6 +157,7 @@ arvore_disciplinas *buscar_disciplina(arvore_disciplinas *raiz, int codigo)
 
 arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo)
 {
+    // Localiza o nó a ser removido
     if (raiz != NULL)
     {
         if (codigo < raiz->codigo)
@@ -167,43 +168,53 @@ arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo)
         {
             raiz->dir = remover_disciplina(raiz->dir, codigo);
         }
-        else
+        else // Caso encontrado (nó a ser removido)
         {
-            if (raiz->esq == NULL && raiz->dir == NULL)
+            // Caso 1: Nó com apenas um filho ou nenhum
+            if (raiz->esq == NULL)
             {
-                free(raiz);
-                raiz = NULL;
-            }
-            else if (raiz->esq == NULL)
-            {
-                arvore_disciplinas *aux = raiz;
-                raiz = raiz->dir;
-                free(aux);
+                arvore_disciplinas *temp = raiz->dir; // Salva o filho direito
+                free(raiz); // Libera a memória do nó
+                raiz = temp; // Atualiza a raiz para o filho direito
             }
             else if (raiz->dir == NULL)
             {
-                arvore_disciplinas *aux = raiz;
-                raiz = raiz->esq;
-                free(aux);
+                arvore_disciplinas *temp = raiz->esq; // Salva o filho esquerdo
+                free(raiz); // Libera a memória do nó
+                raiz = temp; // Atualiza a raiz para o filho esquerdo
             }
-            else
+            else // Caso 2: Nó com dois filhos
             {
-                arvore_disciplinas *aux = raiz->esq;
-                while (aux->dir != NULL)
+                // Obter o sucessor (menor nó da subárvore direita)
+                arvore_disciplinas *temp = raiz->dir;
+                while (temp->esq != NULL)
                 {
-                    aux = aux->dir;
+                    temp = temp->esq; // Encontra o menor nó na subárvore direita
                 }
-                raiz->codigo = aux->codigo;
-                raiz->esq = remover_disciplina(raiz->esq, aux->codigo);
+
+                // Substitui o valor do nó a ser removido pelo valor do sucessor
+                raiz->codigo = temp->codigo;
+
+                // Remove o sucessor
+                raiz->dir = remover_disciplina(raiz->dir, temp->codigo);
             }
         }
-    }
-   
-        raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
-        raiz = balencar_arvore_disc(raiz);
 
-    return raiz;
+        // Atualizar a altura do nó atual
+        if (raiz != NULL) // Verifica se a raiz ainda é válida
+        {
+            raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
+
+            // Balancear a árvore
+            raiz = balencar_arvore_disc(raiz);
+        }
+    }
+
+    return raiz; // Retorna a raiz balanceada apenas no final
 }
+
+
+
 
 void imprimir_disciplinas(arvore_disciplinas *raiz)
 {
