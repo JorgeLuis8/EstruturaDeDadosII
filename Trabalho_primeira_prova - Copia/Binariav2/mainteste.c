@@ -445,6 +445,7 @@ int main()
                 break;
             }
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
+            alunos_matriculados--;
             printf("Disciplina removida com sucesso da matricula do aluno.\n");
             break;
 
