@@ -30,6 +30,7 @@ void caso_numeros_ordenados() {
     LARGE_INTEGER inicio, fim, freq;
     long long tempo_total_insercao = 0;
     long long tempo_total_busca = 0;
+    int i, j;
 
     int num_execucoes = 30;
     int num_insercoes;
@@ -38,12 +39,12 @@ void caso_numeros_ordenados() {
     printf("Quantos números deseja inserir (ordenados)? ");
     scanf("%d", &num_insercoes);
 
-    for (int j = 0; j < num_execucoes; j++) {
+    for (j = 0; j < num_execucoes; j++) {
         arvore_notas *raiz = NULL; // Reinicializa a árvore a cada iteração
         long long tempo_insercao_atual = 0;
 
         // Inserir elementos ordenados
-        for (int i = 0; i < num_insercoes; i++) {
+        for (i = 0; i < num_insercoes; i++) {
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = i; // Código em ordem crescente
             snprintf(nova_nota->semestre_cursado, sizeof(nova_nota->semestre_cursado), "2023-2"); // Exemplo de semestre
@@ -58,7 +59,7 @@ void caso_numeros_ordenados() {
         tempo_total_insercao += tempo_insercao_atual;
 
         // Buscar o mesmo elemento 30 vezes e medir o tempo
-        for (int i = 0; i < num_execucoes; i++) {
+        for (i = 0; i < num_execucoes; i++) {
             int codigo_busca = rand() % num_insercoes; // Código a ser buscado
 
             iniciar_medicao(&inicio, &freq);
@@ -85,6 +86,8 @@ void caso_numeros_decrescentes() {
     LARGE_INTEGER inicio, fim, freq;
     long long tempo_total_insercao = 0;
     long long tempo_total_busca = 0;
+    int i, j;
+
 
     int num_execucoes = 30;
     int num_insercoes;
@@ -93,12 +96,12 @@ void caso_numeros_decrescentes() {
     printf("Quantos números deseja inserir (decrescentes)? ");
     scanf("%d", &num_insercoes);
 
-    for (int j = 0; j < num_execucoes; j++) {
+    for (j = 0; j < num_execucoes; j++) {
         arvore_notas *raiz = NULL; // Reinicializa a árvore a cada iteração
         long long tempo_insercao_atual = 0;
 
         // Inserir elementos em ordem decrescente
-        for (int i = num_insercoes - 1; i >= 0; i--) {
+        for (i = num_insercoes - 1; i >= 0; i--) {
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = i; // Código em ordem decrescente
             snprintf(nova_nota->semestre_cursado, sizeof(nova_nota->semestre_cursado), "2023-2"); // Exemplo de semestre
@@ -113,7 +116,7 @@ void caso_numeros_decrescentes() {
         tempo_total_insercao += tempo_insercao_atual;
 
         // Buscar o mesmo elemento 30 vezes e medir o tempo
-        for (int i = 0; i < num_execucoes; i++) {
+        for (i = 0; i < num_execucoes; i++) {
             int codigo_busca = rand() % num_insercoes; // Código a ser buscado
 
             iniciar_medicao(&inicio, &freq);
@@ -140,6 +143,7 @@ void caso_numeros_aleatorios() {
     LARGE_INTEGER inicio, fim, freq;
     long long tempo_total_insercao = 0;
     long long tempo_total_busca = 0;
+    int i, j;
 
     int num_execucoes = 30;
     int num_insercoes;
@@ -148,12 +152,12 @@ void caso_numeros_aleatorios() {
     printf("Quantos números deseja inserir (aleatórios)? ");
     scanf("%d", &num_insercoes);
 
-    for (int j = 0; j < num_execucoes; j++) {
+    for (j = 0; j < num_execucoes; j++) {
         arvore_notas *raiz = NULL; // Reinicializa a árvore a cada iteração
         long long tempo_insercao_atual = 0;
 
         // Inserir elementos com códigos de disciplina aleatórios
-        for (int i = 0; i < num_insercoes; i++) {
+        for (i = 0; i < num_insercoes; i++) {
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = rand() % num_insercoes; // Código aleatório
             snprintf(nova_nota->semestre_cursado, sizeof(nova_nota->semestre_cursado), "2023-2"); // Exemplo de semestre
@@ -168,7 +172,7 @@ void caso_numeros_aleatorios() {
         tempo_total_insercao += tempo_insercao_atual;
 
         // Buscar o mesmo elemento 30 vezes e medir o tempo
-        for (int i = 0; i < num_execucoes; i++) {
+        for (i = 0; i < num_execucoes; i++) {
             int codigo_busca = rand() % num_insercoes; // Código a ser buscado
 
             iniciar_medicao(&inicio, &freq);
