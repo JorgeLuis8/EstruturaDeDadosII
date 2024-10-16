@@ -404,8 +404,7 @@ int main()
             for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
             {
                 // Verifica se o aluno está matriculado na disciplina
-                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL ||
-                    buscar_notas(a->raiz_notas, codigo) != NULL)
+                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL )
                 {
                     alunos_matriculados = 1; // Um aluno com matrícula ou nota encontrada
                     break;                   // Saia do loop assim que encontrar um aluno

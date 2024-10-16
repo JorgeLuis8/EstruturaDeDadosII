@@ -408,11 +408,7 @@ int main()
                     alunos_matriculados = 1;
                     break; // Um aluno matriculado encontrado
                 }
-                if(buscar_notas(a->raiz_notas, codigo) != NULL)
-                {
-                    alunos_matriculados = 1;
-                    break; // Um aluno com nota cadastrada encontrado
-                }
+
             }
 
             if (alunos_matriculados)
