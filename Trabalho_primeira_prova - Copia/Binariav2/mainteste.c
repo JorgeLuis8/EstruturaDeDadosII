@@ -408,7 +408,6 @@ int main()
                     alunos_matriculados = 1;
                     break; // Um aluno matriculado encontrado
                 }
-
             }
 
             if (alunos_matriculados)
