@@ -18,57 +18,68 @@ Aluno *criar_aluno(){
     return a;
 }
 
-Aluno *inserir_aluno(Aluno *aluno, Aluno *no) {
+Aluno *inserir_aluno(Aluno *aluno, Aluno *no)
+{
+    Aluno *aux = aluno;
 
-  
-    if (aluno == NULL) {
+    if (aluno == NULL)
+    {
         no->prox = NULL;
-        return no;
+        aux = no;
+    }
+    else
+    {
+        Aluno *anterior = NULL;
+        Aluno *atual = aluno;
+
+        while (atual != NULL && strcmp(atual->nome, no->nome) < 0)
+        {
+            anterior = atual;
+            atual = atual->prox;
+        }
+
+        if (anterior == NULL)
+        {
+            no->prox = aluno;
+            aux = no;
+        }
+        else
+        {
+            anterior->prox = no;
+            no->prox = atual;
+        }
     }
 
-    Aluno *anterior = NULL;
-    Aluno *atual = aluno;
-
-   
-    while (atual != NULL && strcmp(atual->nome, no->nome) < 0) {
-        anterior = atual;
-        atual = atual->prox;
-    }
-
-   
-    if (anterior == NULL) {
-        no->prox = aluno;
-        return no;
-    }
-
-
-    anterior->prox = no;
-    no->prox = atual;
-
-    return aluno;
+    return aux;
 }
 
-Aluno *remover_aluno(Aluno *aluno, int matricula){
+
+Aluno *remover_aluno(Aluno *aluno, int matricula)
+{
     Aluno *aux = aluno;
     Aluno *ant = NULL;
+    Aluno *resultado = aluno;  
 
-    while(aux != NULL && aux->matricula != matricula){
+    while (aux != NULL && aux->matricula != matricula)
+    {
         ant = aux;
         aux = aux->prox;
     }
 
-    if(aux == NULL){
-        return aluno;
+    if (aux != NULL)
+    {
+        if (ant == NULL)
+        {
+            resultado = aux->prox;
+        }
+        else
+        {
+            ant->prox = aux->prox;
+        }
+        free(aux);
     }
 
-    if(ant == NULL){
-        aluno = aux->prox;
-    }else{
-        ant->prox = aux->prox;
-    }
-
-    free(aux);
-    return aluno;
+    return resultado;
 }
 
 Aluno *buscar_aluno(Aluno *aluno, int matricula){
