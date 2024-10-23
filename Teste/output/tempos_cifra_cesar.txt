@@ -1,0 +1,17 @@
+Teste 1: 0.037000 segundos
+Teste 2: 0.037000 segundos
+Teste 3: 0.037000 segundos
+Teste 4: 0.037000 segundos
+Teste 5: 0.037000 segundos
+Teste 6: 0.037000 segundos
+Teste 7: 0.038000 segundos
+Teste 8: 0.038000 segundos
+Teste 9: 0.038000 segundos
+Teste 10: 0.037000 segundos
+Teste 11: 0.037000 segundos
+Teste 12: 0.038000 segundos
+Teste 13: 0.038000 segundos
+Teste 14: 0.038000 segundos
+Teste 15: 0.037000 segundos
+
+Tempo médio para Cifra de César: 0.037400 segundos

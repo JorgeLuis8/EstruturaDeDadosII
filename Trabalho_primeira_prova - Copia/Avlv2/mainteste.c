@@ -27,6 +27,7 @@ void exibir_menu()
     printf("13. Remover uma disciplina de um curso (sem alunos matriculados)\n");
     printf("14. Remover uma disciplina da matrícula de um aluno\n");
     printf("15. Mostrar o histórico de um aluno\n");
+    printf("16. contar nos \n");
     printf("0. Sair\n");
     printf("Escolha uma opcao: ");
 }
@@ -379,7 +380,7 @@ int main()
             break;
 
         case 13:
-            // Remover uma disciplina de um curso (sem alunos matriculados)
+            // Remover uma disciplina de um curso (somente se nenhum aluno estiver matriculado)
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -398,29 +399,27 @@ int main()
                 break;
             }
 
-            // Verificar se algum aluno está matriculado na disciplina
-            int alunos_matriculados = 0;
-            // Percorrer a lista de alunos e verificar se algum está matriculado na disciplina
+            // Verificar se há alunos matriculados ou notas cadastradas na disciplina
+            int disciplina_livre = 1; // Assumir que a disciplina pode ser removida
             for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
             {
-                // Verifica se o aluno está matriculado na disciplina
                 if (buscar_matricula(a->raiz_matriculas, codigo) != NULL ||
                     buscar_notas(a->raiz_notas, codigo) != NULL)
                 {
-                    alunos_matriculados = 1; // Um aluno com matrícula ou nota encontrada
-                    break;                   // Saia do loop assim que encontrar um aluno
+                    disciplina_livre = 0; // Aluno encontrado com matrícula ou nota na disciplina
+                    break;
                 }
             }
 
-            // Se algum aluno estiver matriculado ou tiver notas, não permita a remoção
-            if (alunos_matriculados)
-            {
-                printf("Disciplina nao pode ser removida pois ha alunos matriculados ou notas cadastradas.\n");
-            }
-            else
+            // Se não houver alunos matriculados, remover a disciplina
+            if (disciplina_livre)
             {
                 curso->raiz_disciplinas = remover_disciplina(curso->raiz_disciplinas, codigo);
                 printf("Disciplina removida com sucesso.\n");
+            }
+            else
+            {
+                printf("Disciplina nao pode ser removida pois ha alunos matriculados ou notas cadastradas.\n");
             }
             break;
 
@@ -434,6 +433,7 @@ int main()
                 printf("Matricula nao encontrada.\n");
                 break;
             }
+
             printf("Digite o codigo da disciplina: ");
             scanf("%d", &codigo);
             arvore_matricula *matricula = buscar_matricula(aluno->raiz_matriculas, codigo);
@@ -442,6 +442,8 @@ int main()
                 printf("Disciplina nao encontrada na matricula do aluno.\n");
                 break;
             }
+
+            // Remover a disciplina da árvore de matrículas do aluno
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
             printf("Disciplina removida com sucesso da matricula do aluno.\n");
             break;
@@ -460,6 +462,10 @@ int main()
             imprimir_historico(aluno, raiz_cursos);
             break;
 
+        case 16:
+            // Contar nos
+            printf("Quantidade de nos: %d\n", contar_nos(raiz_alunos->raiz_notas));
+            break;
         case 0:
             printf("Saindo...\n");
             break;

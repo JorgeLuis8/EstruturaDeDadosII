@@ -192,13 +192,14 @@ void caso_numeros_aleatorios() {
 
 int main() {
     int opcao;
-
+    arvore_notas *rai2z = NULL;
     do {
         // Exibir o menu
         printf("Selecionar caso de teste:\n");
         printf("1 - Números Ordenados\n");
         printf("2 - Números Decrescentes\n");
         printf("3 - Números Aleatórios\n");
+        printf("4 - Contar nos \n");
         printf("0 - Sair\n");
         printf("Opção: ");
         scanf("%d", &opcao);
@@ -214,6 +215,13 @@ int main() {
             case 3:
                 caso_numeros_aleatorios();
                 break;
+            case 4:
+                
+                printf("Quantidade de nos: %d\n", contar_nos(rai2z));
+                break;
+                printf("Contar nos\n");
+                break;
+
             case 0:
                 printf("Saindo...\n");
                 break;

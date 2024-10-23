@@ -259,3 +259,15 @@ arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo)
     }
     return aux;
 }
+int contar_nos(arvore_notas *raiz) {
+    int cont = 0;
+    // Alterada a condição para contar apenas se ambos os filhos são NULL
+    if (raiz != NULL) {  // Adicionei uma verificação para garantir que a raiz não seja NULL
+        if (raiz->esq != NULL || raiz->dir != NULL) {
+            cont++; // Conta se o nó não tem filhos
+        }
+        cont += contar_nos(raiz->dir);
+        cont += contar_nos(raiz->esq);
+    }
+    return cont;
+}
