@@ -20,7 +20,6 @@ Aluno *criar_aluno(){
 
 Aluno *inserir_aluno(Aluno *aluno, Aluno *no) {
 
-    // Se a lista estiver vazia, o novo aluno será o primeiro
     if (aluno == NULL) {
         no->prox = NULL;
         return no;
@@ -29,19 +28,15 @@ Aluno *inserir_aluno(Aluno *aluno, Aluno *no) {
     Aluno *anterior = NULL;
     Aluno *atual = aluno;
 
-    // Percorre a lista até encontrar a posição correta com base no nome
     while (atual != NULL && strcmp(atual->nome, no->nome) < 0) {
         anterior = atual;
         atual = atual->prox;
     }
 
-    // Insere no início da lista (caso o nome do novo aluno seja menor)
     if (anterior == NULL) {
         no->prox = aluno;
         return no;
     }
-
-    // Insere no meio ou no final da lista
     anterior->prox = no;
     no->prox = atual;
 
@@ -96,14 +91,12 @@ void imprimir_alunos(Aluno *aluno,int codigo_curso){
 
 int verificar_matricula_disciplinas(Aluno *raiz_alunos, int codigo_disciplina) {
     int encontrado = 0;
-    Aluno *atual = raiz_alunos;
 
+    for (Aluno *atual = raiz_alunos; atual != NULL; atual = atual->prox) {
 
-    for (atual ; atual != NULL; atual = atual->prox) {
-        // Verifica a matrícula do aluno atual
         arvore_matricula *matricula = buscar_matricula(atual->raiz_matriculas, codigo_disciplina);
         if (matricula != NULL) {
-            encontrado = 1; // Define como encontrado
+            encontrado = 1; 
         }
     }
 

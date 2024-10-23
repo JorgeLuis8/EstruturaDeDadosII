@@ -8,7 +8,6 @@
 #include "matricula.c"
 #include "notas.c"
 
-// Função para exibir o menu atualizado
 void exibir_menu()
 {
     printf("\n--- Menu ---\n");
@@ -102,15 +101,14 @@ int main()
             aluno->matricula = matricula_num;
             strcpy(aluno->nome, nome);
             aluno->codigo_curso = codigo_curso;
-            aluno->raiz_matriculas = NULL; // Inicializar a árvore de matrículas
-            aluno->raiz_notas = NULL;      // Inicializar a árvore de notas
+            aluno->raiz_matriculas = NULL;
+            aluno->raiz_notas = NULL;
 
             raiz_alunos = inserir_aluno(raiz_alunos, aluno);
             printf("Aluno cadastrado com sucesso!\n");
             break;
 
         case 3:
-            // Cadastro de disciplina
             printf("Digite o codigo do curso da disciplina: ");
             scanf("%d", &codigo_curso);
             curso = buscar_curso(raiz_cursos, codigo_curso);
@@ -133,7 +131,6 @@ int main()
             printf("Digite a carga horaria da disciplina: ");
             scanf("%d", &carga_horaria);
 
-            // Validação da carga horária
             if (carga_horaria < 30 || carga_horaria > 90 || carga_horaria % 15 != 0)
             {
                 printf("Carga horaria invalida. Cadastro da disciplina nao realizado.\n");
@@ -143,27 +140,23 @@ int main()
             printf("Digite o periodo da disciplina: ");
             scanf("%d", &periodo);
 
-            // Validação do período
             if (periodo < 1 || periodo > curso->periodo)
             {
                 printf("Periodo invalido. Cadastro da disciplina nao realizado.\n");
                 break;
             }
 
-            // Criar e preencher a disciplina
             disciplina = criar_disciplina();
             disciplina->codigo = codigo;
             strcpy(disciplina->nome, nome);
             disciplina->carga_horaria = carga_horaria;
             disciplina->periodo = periodo;
 
-            // Inserir a disciplina na árvore de disciplinas do curso
             curso->raiz_disciplinas = inserir_disciplina(curso->raiz_disciplinas, disciplina);
             printf("Disciplina cadastrada com sucesso.\n");
             break;
 
         case 4:
-            // Cadastro de matrícula
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -173,7 +166,6 @@ int main()
                 break;
             }
 
-            // Buscar o curso do aluno para verificar as disciplinas
             curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
             if (curso == NULL)
             {
@@ -190,14 +182,12 @@ int main()
                 break;
             }
 
-            // Verificar se a disciplina já está matriculada
             if (buscar_matricula(aluno->raiz_matriculas, codigo) != NULL)
             {
                 printf("Disciplina já matriculada.\n");
                 break;
             }
 
-            // Inserir a disciplina na árvore de matrículas do aluno
             arvore_matricula *nova_matricula = criar_matricula();
             nova_matricula->codigo_disciplina = codigo;
             aluno->raiz_matriculas = inserir_matriculas(aluno->raiz_matriculas, nova_matricula);
@@ -205,7 +195,6 @@ int main()
             break;
 
         case 5:
-            // Cadastrar Nota
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -217,7 +206,6 @@ int main()
 
             printf("Digite o codigo da disciplina para cadastrar a nota: ");
             scanf("%d", &codigo);
-            // Verificar se a disciplina está na árvore de matrículas do aluno
             if (buscar_matricula(aluno->raiz_matriculas, codigo) == NULL)
             {
                 printf("Disciplina nao matriculada pelo aluno. Cadastro da nota nao realizado.\n");
@@ -225,28 +213,23 @@ int main()
             }
 
             printf("Digite o semestre cursado: ");
-            scanf("%s", semestre_cursado); // Leitura do semestre cursado
+            scanf("%s", semestre_cursado);
 
             printf("Digite a nota da disciplina: ");
             scanf("%f", &nota);
 
-            // Criar uma nova nota
             arvore_notas *nova_nota = criar_nota();
             nova_nota->codigo_disciplina = codigo;
             nova_nota->nota_final = nota;
-            strcpy(nova_nota->semestre_cursado, semestre_cursado); // Atribuição do semestre cursado
-
-            // Inserir a nota na árvore de notas do aluno
+            strcpy(nova_nota->semestre_cursado, semestre_cursado);
             aluno->raiz_notas = inserir_nota(aluno->raiz_notas, nova_nota);
 
-            // Remover a disciplina da árvore de matrículas do aluno
             aluno->raiz_matriculas = remover_matricula(aluno->raiz_matriculas, codigo);
 
             printf("Nota cadastrada com sucesso e disciplina removida das matriculas.\n");
             break;
 
         case 6:
-            // Mostrar todos os alunos de um determinado curso
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
 
@@ -258,11 +241,10 @@ int main()
             }
 
             printf("Alunos do curso %s:\n", curso->nome);
-            imprimir_alunos(raiz_alunos, codigo); // Certifique-se que esta função filtra alunos pelo código do curso
+            imprimir_alunos(raiz_alunos, codigo);
             break;
 
         case 7:
-            // Mostrar todos os cursos
             if (raiz_cursos == NULL)
             {
                 printf("Nenhum curso cadastrado.\n");
@@ -273,7 +255,7 @@ int main()
             break;
 
         case 8:
-            // Mostrar todas as disciplinas de um curso
+
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -287,7 +269,7 @@ int main()
             break;
 
         case 9:
-            // Mostrar todas as disciplinas de um determinado período
+
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -303,7 +285,6 @@ int main()
             break;
 
         case 10:
-            // Mostrar todas as disciplinas que o aluno está matriculado
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -316,7 +297,6 @@ int main()
             imprimir_matricula(aluno->raiz_matriculas);
             break;
         case 11:
-            // Mostrar todas as notas de disciplinas de um determinado período de um aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -343,7 +323,6 @@ int main()
             break;
 
         case 12:
-            // Mostrar a nota de uma disciplina de um aluno (inclui período e carga horária)
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -360,7 +339,6 @@ int main()
                 printf("Disciplina nao encontrada.\n");
                 break;
             }
-            // Buscar a disciplina para obter o período e carga horária
             curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
             if (curso == NULL)
             {
@@ -379,7 +357,6 @@ int main()
             break;
 
         case 13:
-            // Remover uma disciplina de um curso (sem alunos matriculados)
             printf("Digite o codigo do curso: ");
             scanf("%d", &codigo);
             curso = buscar_curso(raiz_cursos, codigo);
@@ -398,21 +375,16 @@ int main()
                 break;
             }
 
-            // Verificar se algum aluno está matriculado na disciplina
             int alunos_matriculados = 0;
-            Aluno *a = raiz_alunos;
-            // Percorrer a lista de alunos e verificar se algum está matriculado na disciplina
-            for (a; a != NULL; a = a->prox)
+            for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
             {
-                // Verifica se o aluno está matriculado na disciplina
-                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL )
+                if (buscar_matricula(a->raiz_matriculas, codigo) != NULL)
                 {
-                    alunos_matriculados = 1; // Um aluno com matrícula ou nota encontrada
-                    break;                   // Saia do loop assim que encontrar um aluno
+                    alunos_matriculados = 1;
+                    break;
                 }
             }
 
-            // Se algum aluno estiver matriculado ou tiver notas, não permita a remoção
             if (alunos_matriculados)
             {
                 printf("Disciplina nao pode ser removida pois ha alunos matriculados ou notas cadastradas.\n");
@@ -425,7 +397,6 @@ int main()
             break;
 
         case 14:
-            // Remover uma disciplina da árvore de matrícula de um determinado aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);
@@ -447,7 +418,6 @@ int main()
             break;
 
         case 15:
-            // Mostrar o histórico de um aluno
             printf("Digite a matricula do aluno: ");
             scanf("%d", &matricula_num);
             aluno = buscar_aluno(raiz_alunos, matricula_num);

@@ -1,5 +1,5 @@
 #include "curso.h"
-#include "disciplinas.h" // Assegure-se de incluir os cabeçalhos necessários
+#include "disciplinas.h" 
 #include "Alunos.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -96,7 +96,6 @@ Arvore_curso *balencar_arvore_curso(Arvore_curso *raiz)
     return raiz;
 }
 
-// Implementações das funções públicas
 
 Arvore_curso *criar_curso()
 {
@@ -109,7 +108,7 @@ Arvore_curso *criar_curso()
     curso->raiz_disciplinas = NULL;
     curso->esq = NULL;
     curso->dir = NULL;
-    curso->altura = 0; // Inicializa a altura
+    curso->altura = 0; 
     return curso;
 }
 
@@ -175,9 +174,9 @@ Arvore_curso *buscar_curso(Arvore_curso *raiz, int codigo)
 
 Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
 {
-    if (raiz != NULL) // Só executa se a raiz não for NULL
+    if (raiz != NULL) 
     {
-        // Localiza o nó a ser removido
+       
         if (codigo < raiz->codigo)
         {
             raiz->esq = remover_curso(raiz->esq, codigo);
@@ -186,56 +185,51 @@ Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
         {
             raiz->dir = remover_curso(raiz->dir, codigo);
         }
-        else // Encontrou o nó a ser removido
+        else
         {
-            // Caso 1: Nó folha (sem filhos)
+           
             if (raiz->esq == NULL && raiz->dir == NULL)
             {
                 free(raiz);
-                raiz = NULL; // Atualiza a raiz para NULL
+                raiz = NULL; 
             }
-            // Caso 2: Apenas o filho direito
+           
             else if (raiz->esq == NULL)
             {
                 Arvore_curso *aux = raiz;
-                raiz = raiz->dir; // Atualiza a raiz para o filho direito
-                free(aux); // Libera a memória do nó
+                raiz = raiz->dir; 
+                free(aux); 
             }
-            // Caso 3: Apenas o filho esquerdo
             else if (raiz->dir == NULL)
             {
                 Arvore_curso *aux = raiz;
-                raiz = raiz->esq; // Atualiza a raiz para o filho esquerdo
-                free(aux); // Libera a memória do nó
+                raiz = raiz->esq;
+                free(aux); 
             }
-            // Caso 4: Nó com dois filhos
             else
             {
                 Arvore_curso *aux = raiz->esq;
                 while (aux->dir != NULL)
                 {
-                    aux = aux->dir; // Encontra o maior nó na subárvore esquerda
+                    aux = aux->dir; 
                 }
-                raiz->codigo = aux->codigo; // Substitui o código do nó a ser removido
-                raiz->esq = remover_curso(raiz->esq, aux->codigo); // Remove o nó substituto
+                raiz->codigo = aux->codigo; 
+                raiz->esq = remover_curso(raiz->esq, aux->codigo); 
             }
         }
 
-        // Atualiza a altura do nó atual
         if (raiz != NULL)
         {
             raiz->altura = maior_no_curso(altura_do_no_curso(raiz->esq), altura_do_no_curso(raiz->dir)) + 1;
-            // Balanceia a árvore
             raiz = balencar_arvore_curso(raiz);
         }
     }
-    return raiz; // Retorna a raiz balanceada no final
+    return raiz; 
 }
 
 
 void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
 {
-    // Buscar o curso do aluno
     Arvore_curso *curso = buscar_curso(raiz_cursos, aluno->codigo_curso);
     if (curso == NULL)
     {
@@ -243,9 +237,7 @@ void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
         return;
     }
 
-    // Imprimir o nome do curso
     printf("Curso: %s\n", curso->nome);
 
-    // Imprimir as disciplinas e notas do aluno
     imprimir_historico_disciplinas(aluno->raiz_notas, curso->raiz_disciplinas);
 }
