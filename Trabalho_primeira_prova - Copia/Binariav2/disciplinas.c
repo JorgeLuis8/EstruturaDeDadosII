@@ -147,7 +147,7 @@ void imprimir_historico_disciplinas(arvore_notas *raiz_notas, arvore_disciplinas
 {
     if (raiz_disciplinas != NULL)
     {
-        // Imprimir as notas da disciplina
+
         arvore_notas *nota = buscar_notas(raiz_notas, raiz_disciplinas->codigo);
         if (nota != NULL)
         {
@@ -159,10 +159,10 @@ void imprimir_historico_disciplinas(arvore_notas *raiz_notas, arvore_disciplinas
             printf("\n");
         }
 
-        // Imprimir as disciplinas do lado esquerdo
+
         imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->esq);
 
-        // Imprimir as disciplinas do lado direito
+ 
         imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->dir);
     }
 }

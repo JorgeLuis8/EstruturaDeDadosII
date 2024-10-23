@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "notas.h"
 
-
-
 short maior_no_nota(short a, short b)
 {
     return (a > b) ? a : b;
@@ -12,23 +10,33 @@ short maior_no_nota(short a, short b)
 
 short altura_do_no_nota(arvore_notas *no)
 {
+    short altura;
+
     if (no == NULL)
     {
-        return -1;
+        altura = -1;
     }
-    return no->altura;
+    else
+    {
+        altura = no->altura;
+    }
+
+    return altura;
 }
 
 short fator_balanceamento_nota(arvore_notas *no)
 {
-    if (no == NULL)
+    short fb = 0;
+
+    if (no != NULL)
     {
-        return 0;
+        fb = altura_do_no_nota(no->esq) - altura_do_no_nota(no->dir);
     }
-    return altura_do_no_nota(no->esq) - altura_do_no_nota(no->dir);
+
+    return fb;
 }
 
- arvore_notas *rotar_esquerda_nota(arvore_notas *no)
+arvore_notas *rotar_esquerda_nota(arvore_notas *no)
 {
     arvore_notas *aux, *aux1;
 
@@ -66,7 +74,7 @@ arvore_notas *rotar_direita_esquerda_nota(arvore_notas *no)
     return rotar_esquerda_nota(no);
 }
 
- arvore_notas *rotar_esquerda_direita_nota(arvore_notas *no)
+arvore_notas *rotar_esquerda_direita_nota(arvore_notas *no)
 {
     no->esq = rotar_esquerda_nota(no->esq);
     return rotar_direita_nota(no);
@@ -104,30 +112,29 @@ arvore_notas *criar_nota()
     return no;
 }
 
-
-
-arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no) {
-    if (raiz == NULL) {
+arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
+{
+    if (raiz == NULL)
+    {
         raiz = no;
-    } else {
-        if (no->codigo_disciplina < raiz->codigo_disciplina) {
+    }
+    else
+    {
+        if (no->codigo_disciplina < raiz->codigo_disciplina)
+        {
             raiz->esq = inserir_nota(raiz->esq, no);
-        } else {
+        }
+        else
+        {
             raiz->dir = inserir_nota(raiz->dir, no);
         }
     }
-    
-   
+
     raiz = balencar_arvore_nota(raiz);
     raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
 
-  
-    
     return raiz;
 }
-
-
-
 
 void imprimir_notas(arvore_notas *raiz)
 {
@@ -140,7 +147,6 @@ void imprimir_notas(arvore_notas *raiz)
         imprimir_notas(raiz->dir);
     }
 }
-
 
 arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
 {
@@ -168,10 +174,9 @@ arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
     return aux;
 }
 
-
 arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
 {
-    if (raiz != NULL) 
+    if (raiz != NULL)
     {
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
@@ -181,23 +186,23 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
         {
             raiz->dir = remover_nota(raiz->dir, codigo_disciplina);
         }
-        else 
+        else
         {
             if (raiz->esq == NULL)
             {
                 arvore_notas *temp = raiz->dir;
                 free(raiz);
-                raiz = temp; 
+                raiz = temp;
             }
             else if (raiz->dir == NULL)
             {
                 arvore_notas *temp = raiz->esq;
                 free(raiz);
-                raiz = temp; 
+                raiz = temp;
             }
             else
             {
-               
+
                 arvore_notas *temp = raiz->dir;
                 while (temp->esq != NULL)
                 {
@@ -210,11 +215,10 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
             }
         }
 
-        if (raiz != NULL) 
+        if (raiz != NULL)
         {
             raiz->altura = maior_no_nota(altura_do_no_nota(raiz->esq), altura_do_no_nota(raiz->dir)) + 1;
 
-        
             raiz = balencar_arvore_nota(raiz);
         }
     }
@@ -222,11 +226,13 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
     return raiz;
 }
 
-
-void imprimir_notas_periodo(arvore_notas* raiz_notas, int periodo){
-    if(raiz_notas != NULL){
+void imprimir_notas_periodo(arvore_notas *raiz_notas, int periodo)
+{
+    if (raiz_notas != NULL)
+    {
         imprimir_notas_periodo(raiz_notas->esq, periodo);
-        if(raiz_notas->semestre_cursado[5] == periodo + '0'){
+        if (raiz_notas->semestre_cursado[5] == periodo + '0')
+        {
             printf("Codigo da disciplina: %d\n", raiz_notas->codigo_disciplina);
             printf("Semestre cursado: %s\n", raiz_notas->semestre_cursado);
             printf("Nota Final: %f\n", raiz_notas->nota_final);
@@ -252,11 +258,14 @@ arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo)
     }
     return aux;
 }
-int contar_nos(arvore_notas *raiz) {
+int contar_nos(arvore_notas *raiz)
+{
     int cont = 0;
     // Alterada a condição para contar apenas se ambos os filhos são NULL
-    if (raiz != NULL) {  // Adicionei uma verificação para garantir que a raiz não seja NULL
-        if (raiz->esq != NULL || raiz->dir != NULL) {
+    if (raiz != NULL)
+    { // Adicionei uma verificação para garantir que a raiz não seja NULL
+        if (raiz->esq != NULL || raiz->dir != NULL)
+        {
             cont++; // Conta se o nó não tem filhos
         }
         cont += contar_nos(raiz->dir);

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 short maior_no_disc(short a, short b)
 {
     return (a > b) ? a : b;
@@ -10,23 +9,33 @@ short maior_no_disc(short a, short b)
 
 short altura_do_no_disc(arvore_disciplinas *no)
 {
+    short altura;
+
     if (no == NULL)
     {
-        return -1;
+        altura = -1;
     }
-    return no->altura;
+    else
+    {
+        altura = no->altura;
+    }
+
+    return altura;
 }
 
 short fator_balanceamento_disc(arvore_disciplinas *no)
 {
-    if (no == NULL)
+    short fb = 0;
+
+    if (no != NULL)
     {
-        return 0;
+        fb = altura_do_no_disc(no->esq) - altura_do_no_disc(no->dir);
     }
-    return altura_do_no_disc(no->esq) - altura_do_no_disc(no->dir);
+
+    return fb;
 }
 
- arvore_disciplinas *rotar_esquerda_disc(arvore_disciplinas *no)
+arvore_disciplinas *rotar_esquerda_disc(arvore_disciplinas *no)
 {
     arvore_disciplinas *aux, *aux1;
 
@@ -64,7 +73,7 @@ arvore_disciplinas *rotar_direita_esquerda_disc(arvore_disciplinas *no)
     return rotar_esquerda_disc(no);
 }
 
- arvore_disciplinas *rotar_esquerda_direita_disc(arvore_disciplinas *no)
+arvore_disciplinas *rotar_esquerda_direita_disc(arvore_disciplinas *no)
 {
     no->esq = rotar_esquerda_disc(no->esq);
     return rotar_direita_disc(no);
@@ -109,7 +118,7 @@ arvore_disciplinas *criar_disciplina()
 
 arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_disciplinas *no)
 {
-    
+
     if (raiz == NULL)
     {
         raiz = no;
@@ -127,7 +136,7 @@ arvore_disciplinas *inserir_disciplina(arvore_disciplinas *raiz, arvore_discipli
     }
     raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
     raiz = balencar_arvore_disc(raiz);
-    
+
     return raiz;
 }
 
@@ -167,28 +176,28 @@ arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo)
         {
             raiz->dir = remover_disciplina(raiz->dir, codigo);
         }
-        else 
+        else
         {
-            
+
             if (raiz->esq == NULL)
             {
-                arvore_disciplinas *temp = raiz->dir; 
-                free(raiz); 
-                raiz = temp; 
+                arvore_disciplinas *temp = raiz->dir;
+                free(raiz);
+                raiz = temp;
             }
             else if (raiz->dir == NULL)
             {
-                arvore_disciplinas *temp = raiz->esq; 
-                free(raiz); 
-                raiz = temp; 
+                arvore_disciplinas *temp = raiz->esq;
+                free(raiz);
+                raiz = temp;
             }
-            else 
+            else
             {
-    
+
                 arvore_disciplinas *temp = raiz->dir;
                 while (temp->esq != NULL)
                 {
-                    temp = temp->esq; 
+                    temp = temp->esq;
                 }
 
                 raiz->codigo = temp->codigo;
@@ -197,20 +206,16 @@ arvore_disciplinas *remover_disciplina(arvore_disciplinas *raiz, int codigo)
             }
         }
 
-        if (raiz != NULL) 
+        if (raiz != NULL)
         {
             raiz->altura = maior_no_disc(altura_do_no_disc(raiz->esq), altura_do_no_disc(raiz->dir)) + 1;
 
-        
             raiz = balencar_arvore_disc(raiz);
         }
     }
 
-    return raiz; 
+    return raiz;
 }
-
-
-
 
 void imprimir_disciplinas(arvore_disciplinas *raiz)
 {
@@ -233,7 +238,8 @@ void liberar_disciplinas(arvore_disciplinas *raiz)
         free(raiz);
     }
 }
-void imprimir_disciplinas_periodo(arvore_disciplinas *raiz, int periodo){
+void imprimir_disciplinas_periodo(arvore_disciplinas *raiz, int periodo)
+{
     if (raiz != NULL)
     {
         imprimir_disciplinas_periodo(raiz->esq, periodo);
@@ -251,7 +257,7 @@ void imprimir_historico_disciplinas(arvore_notas *raiz_notas, arvore_disciplinas
 {
     if (raiz_disciplinas != NULL)
     {
-        // Imprimir as notas da disciplina
+
         arvore_notas *nota = buscar_notas(raiz_notas, raiz_disciplinas->codigo);
         if (nota != NULL)
         {
@@ -263,10 +269,8 @@ void imprimir_historico_disciplinas(arvore_notas *raiz_notas, arvore_disciplinas
             printf("\n");
         }
 
-        // Imprimir as disciplinas do lado esquerdo
         imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->esq);
 
-        // Imprimir as disciplinas do lado direito
         imprimir_historico_disciplinas(raiz_notas, raiz_disciplinas->dir);
     }
 }

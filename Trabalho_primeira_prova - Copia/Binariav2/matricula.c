@@ -15,19 +15,18 @@ arvore_matricula *criar_matricula()
 
 arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no) {
     if (raiz == NULL) {
-        // Se a árvore estiver vazia, o novo nó se torna a raiz
+        
         raiz = no;
     } else {
-        // Comparar o código da disciplina para decidir a posição
+        
         if (no->codigo_disciplina < raiz->codigo_disciplina) {
-            // Inserir à esquerda
+          
             raiz->esq = inserir_matriculas(raiz->esq, no);
         } else if (no->codigo_disciplina > raiz->codigo_disciplina) {
-            // Inserir à direita
+         
             raiz->dir = inserir_matriculas(raiz->dir, no);
         }
-        // Se o código da disciplina for igual, você pode definir uma política para lidar com duplicatas,
-        // mas neste caso estamos assumindo que não haverá duplicatas na árvore.
+       
     }
 
     return raiz;
@@ -41,8 +40,8 @@ void imprimir_matricula(arvore_matricula *raiz)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
 
-        imprimir_matricula(raiz->esq); // Corrigido
-        imprimir_matricula(raiz->dir); // Corrigido
+        imprimir_matricula(raiz->esq); 
+        imprimir_matricula(raiz->dir); 
     }
 }
 
@@ -57,11 +56,11 @@ arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina
         }
         else if (codigo_disciplina < raiz->codigo_disciplina)
         {
-            aux = buscar_matricula(raiz->esq, codigo_disciplina); // Corrigido
+            aux = buscar_matricula(raiz->esq, codigo_disciplina); 
         }
         else
         {
-            aux = buscar_matricula(raiz->dir, codigo_disciplina); // Corrigido
+            aux = buscar_matricula(raiz->dir, codigo_disciplina); 
         }
     }
     return aux;
@@ -75,11 +74,11 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
     {
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
-            raiz->esq = remover_matricula(raiz->esq, codigo_disciplina); // Corrigido
+            raiz->esq = remover_matricula(raiz->esq, codigo_disciplina); 
         }
         else if (codigo_disciplina > raiz->codigo_disciplina)
         {
-            raiz->dir = remover_matricula(raiz->dir, codigo_disciplina); // Corrigido
+            raiz->dir = remover_matricula(raiz->dir, codigo_disciplina); 
         }
         else
         {
@@ -108,7 +107,7 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
                     aux = aux->dir;
                 }
                 raiz->codigo_disciplina = aux->codigo_disciplina;
-                raiz->esq = remover_matricula(raiz->esq, aux->codigo_disciplina); // Corrigido
+                raiz->esq = remover_matricula(raiz->esq, aux->codigo_disciplina); 
             }
         }
     }

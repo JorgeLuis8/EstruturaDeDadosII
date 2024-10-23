@@ -1,10 +1,8 @@
 #include "curso.h"
-#include "disciplinas.h" 
+#include "disciplinas.h"
 #include "Alunos.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-
 
 short maior_no_curso(short a, short b)
 {
@@ -13,23 +11,33 @@ short maior_no_curso(short a, short b)
 
 short altura_do_no_curso(Arvore_curso *no)
 {
+    short altura;
+
     if (no == NULL)
     {
-        return -1;
+        altura = -1;
     }
-    return no->altura;
+    else
+    {
+        altura = no->altura;
+    }
+
+    return altura;
 }
 
 short fator_balanceamento_curso(Arvore_curso *no)
 {
-    if (no == NULL)
+    short fb = 0;
+
+    if (no != NULL)
     {
-        return 0;
+        fb = altura_do_no_curso(no->esq) - altura_do_no_curso(no->dir);
     }
-    return altura_do_no_curso(no->esq) - altura_do_no_curso(no->dir);
+
+    return fb;
 }
 
- Arvore_curso *rotar_esquerda_curso(Arvore_curso *no)
+Arvore_curso *rotar_esquerda_curso(Arvore_curso *no)
 {
     Arvore_curso *aux, *aux1;
 
@@ -45,7 +53,7 @@ short fator_balanceamento_curso(Arvore_curso *no)
     return aux;
 }
 
- Arvore_curso *rotar_direita_curso(Arvore_curso *no)
+Arvore_curso *rotar_direita_curso(Arvore_curso *no)
 {
     Arvore_curso *aux, *aux1;
 
@@ -67,7 +75,7 @@ Arvore_curso *rotar_direita_esquerda_curso(Arvore_curso *no)
     return rotar_esquerda_curso(no);
 }
 
- Arvore_curso *rotar_esquerda_direita_curso(Arvore_curso *no)
+Arvore_curso *rotar_esquerda_direita_curso(Arvore_curso *no)
 {
     no->esq = rotar_esquerda_curso(no->esq);
     return rotar_direita_curso(no);
@@ -96,7 +104,6 @@ Arvore_curso *balencar_arvore_curso(Arvore_curso *raiz)
     return raiz;
 }
 
-
 Arvore_curso *criar_curso()
 {
     Arvore_curso *curso = (Arvore_curso *)malloc(sizeof(Arvore_curso));
@@ -108,10 +115,9 @@ Arvore_curso *criar_curso()
     curso->raiz_disciplinas = NULL;
     curso->esq = NULL;
     curso->dir = NULL;
-    curso->altura = 0; 
+    curso->altura = 0;
     return curso;
 }
-
 
 Arvore_curso *inserir_curso(Arvore_curso *raiz, Arvore_curso *no)
 {
@@ -174,9 +180,9 @@ Arvore_curso *buscar_curso(Arvore_curso *raiz, int codigo)
 
 Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
 {
-    if (raiz != NULL) 
+    if (raiz != NULL)
     {
-       
+
         if (codigo < raiz->codigo)
         {
             raiz->esq = remover_curso(raiz->esq, codigo);
@@ -187,34 +193,34 @@ Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
         }
         else
         {
-           
+
             if (raiz->esq == NULL && raiz->dir == NULL)
             {
                 free(raiz);
-                raiz = NULL; 
+                raiz = NULL;
             }
-           
+
             else if (raiz->esq == NULL)
             {
                 Arvore_curso *aux = raiz;
-                raiz = raiz->dir; 
-                free(aux); 
+                raiz = raiz->dir;
+                free(aux);
             }
             else if (raiz->dir == NULL)
             {
                 Arvore_curso *aux = raiz;
                 raiz = raiz->esq;
-                free(aux); 
+                free(aux);
             }
             else
             {
                 Arvore_curso *aux = raiz->esq;
                 while (aux->dir != NULL)
                 {
-                    aux = aux->dir; 
+                    aux = aux->dir;
                 }
-                raiz->codigo = aux->codigo; 
-                raiz->esq = remover_curso(raiz->esq, aux->codigo); 
+                raiz->codigo = aux->codigo;
+                raiz->esq = remover_curso(raiz->esq, aux->codigo);
             }
         }
 
@@ -224,9 +230,8 @@ Arvore_curso *remover_curso(Arvore_curso *raiz, int codigo)
             raiz = balencar_arvore_curso(raiz);
         }
     }
-    return raiz; 
+    return raiz;
 }
-
 
 void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
 {
@@ -234,7 +239,6 @@ void imprimir_historico(Aluno *aluno, Arvore_curso *raiz_cursos)
     if (curso == NULL)
     {
         printf("Curso nao encontrado.\n");
-        return;
     }
 
     printf("Curso: %s\n", curso->nome);

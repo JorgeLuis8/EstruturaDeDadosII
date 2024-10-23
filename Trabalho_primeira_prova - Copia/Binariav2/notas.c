@@ -5,7 +5,6 @@
 
 struct arvore_notas;
 
-
 arvore_notas *criar_nota()
 {
     arvore_notas *no = (arvore_notas *)malloc(sizeof(arvore_notas));
@@ -13,8 +12,6 @@ arvore_notas *criar_nota()
     no->dir = NULL;
     return no;
 }
-
-
 
 arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
 {
@@ -32,7 +29,7 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
             }
             else
             {
-                raiz->esq = inserir_nota(raiz->esq, no); // Corrigido
+                raiz->esq = inserir_nota(raiz->esq, no);
             }
         }
         else
@@ -43,15 +40,13 @@ arvore_notas *inserir_nota(arvore_notas *raiz, arvore_notas *no)
             }
             else
             {
-                raiz->dir = inserir_nota(raiz->dir, no); // Corrigido
+                raiz->dir = inserir_nota(raiz->dir, no);
             }
         }
     }
 
     return raiz;
 }
-
-
 
 void imprimir_notas(arvore_notas *raiz)
 {
@@ -64,7 +59,6 @@ void imprimir_notas(arvore_notas *raiz)
         imprimir_notas(raiz->dir);
     }
 }
-
 
 arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
 {
@@ -91,7 +85,6 @@ arvore_notas *buscar_notas(arvore_notas *raiz, int codigo_disciplina)
     }
     return aux;
 }
-
 
 arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
 {
@@ -139,11 +132,13 @@ arvore_notas *remover_nota(arvore_notas *raiz, int codigo_disciplina)
     return raiz;
 }
 
-
-void imprimir_notas_periodo(arvore_notas* raiz_notas, int periodo){
-    if(raiz_notas != NULL){
+void imprimir_notas_periodo(arvore_notas *raiz_notas, int periodo)
+{
+    if (raiz_notas != NULL)
+    {
         imprimir_notas_periodo(raiz_notas->esq, periodo);
-        if(raiz_notas->semestre_cursado[5] == periodo + '0'){
+        if (raiz_notas->semestre_cursado[5] == periodo + '0')
+        {
             printf("Codigo da disciplina: %d\n", raiz_notas->codigo_disciplina);
             printf("Semestre cursado: %s\n", raiz_notas->semestre_cursado);
             printf("Nota Final: %f\n", raiz_notas->nota_final);
@@ -169,6 +164,3 @@ arvore_notas *buscar_nota_periodo(arvore_notas *raiz, int periodo)
     }
     return aux;
 }
-
-// Função para liberar a árvore de notas
-

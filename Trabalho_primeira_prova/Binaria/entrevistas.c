@@ -11,7 +11,7 @@ Arvore_entrevistas *criar_arvore_entrevistas()
     return a;
 }
 
-// inserindo dados
+
 void Ler_dados_de_insercao_entrevistas(Arvore_entrevistas *no)
 {
     printf("Digite o titulo da entrevista: ");

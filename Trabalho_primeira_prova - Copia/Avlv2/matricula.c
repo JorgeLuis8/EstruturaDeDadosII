@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "matricula.h"
 
-
 short maior_no_mat(short a, short b)
 {
     return (a > b) ? a : b;
@@ -10,23 +9,34 @@ short maior_no_mat(short a, short b)
 
 short altura_do_no_mat(arvore_matricula *no)
 {
+    short altura;
+
     if (no == NULL)
     {
-        return -1;
+        altura = -1;
     }
-    return no->altura;
+    else
+    {
+        altura = no->altura;
+    }
+
+    ;
+    return altura;
 }
 
 short fator_balanceamento_mat(arvore_matricula *no)
 {
-    if (no == NULL)
+    short fb = 0;
+
+    if (no != NULL)
     {
-        return 0;
+        fb = altura_do_no_mat(no->esq) - altura_do_no_mat(no->dir);
     }
-    return altura_do_no_mat(no->esq) - altura_do_no_mat(no->dir);
+
+    return fb;
 }
 
- arvore_matricula *rotar_esquerda_mat(arvore_matricula *no)
+arvore_matricula *rotar_esquerda_mat(arvore_matricula *no)
 {
     arvore_matricula *aux, *aux1;
 
@@ -64,7 +74,7 @@ arvore_matricula *rotar_direita_esquerda_mat(arvore_matricula *no)
     return rotar_esquerda_mat(no);
 }
 
- arvore_matricula *rotar_esquerda_direita_mat(arvore_matricula *no)
+arvore_matricula *rotar_esquerda_direita_mat(arvore_matricula *no)
 {
     no->esq = rotar_esquerda_mat(no->esq);
     return rotar_direita_mat(no);
@@ -93,7 +103,6 @@ arvore_matricula *balencar_arvore_mat(arvore_matricula *raiz)
     return raiz;
 }
 
-
 arvore_matricula *criar_matricula()
 {
     arvore_matricula *no = (arvore_matricula *)malloc(sizeof(arvore_matricula));
@@ -103,26 +112,30 @@ arvore_matricula *criar_matricula()
     return no;
 }
 
-arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no) {
-    if (raiz == NULL) {
+arvore_matricula *inserir_matriculas(arvore_matricula *raiz, arvore_matricula *no)
+{
+    if (raiz == NULL)
+    {
         raiz = no;
-    } else {
-    
-        if (no->codigo_disciplina < raiz->codigo_disciplina) {
+    }
+    else
+    {
+
+        if (no->codigo_disciplina < raiz->codigo_disciplina)
+        {
             raiz->esq = inserir_matriculas(raiz->esq, no);
-        } else if (no->codigo_disciplina > raiz->codigo_disciplina) {
+        }
+        else if (no->codigo_disciplina > raiz->codigo_disciplina)
+        {
 
             raiz->dir = inserir_matriculas(raiz->dir, no);
         }
-       
     }
 
     raiz->altura = maior_no_mat(altura_do_no_mat(raiz->esq), altura_do_no_mat(raiz->dir)) + 1;
-    raiz = balencar_arvore_mat(raiz); 
+    raiz = balencar_arvore_mat(raiz);
     return raiz;
 }
-
-
 
 void imprimir_matricula(arvore_matricula *raiz)
 {
@@ -130,8 +143,8 @@ void imprimir_matricula(arvore_matricula *raiz)
     {
         printf("Codigo da disciplina: %d\n", raiz->codigo_disciplina);
 
-        imprimir_matricula(raiz->esq); 
-        imprimir_matricula(raiz->dir); 
+        imprimir_matricula(raiz->esq);
+        imprimir_matricula(raiz->dir);
     }
 }
 
@@ -146,21 +159,19 @@ arvore_matricula *buscar_matricula(arvore_matricula *raiz, int codigo_disciplina
         }
         else if (codigo_disciplina < raiz->codigo_disciplina)
         {
-            aux = buscar_matricula(raiz->esq, codigo_disciplina); 
+            aux = buscar_matricula(raiz->esq, codigo_disciplina);
         }
         else
         {
-            aux = buscar_matricula(raiz->dir, codigo_disciplina); 
+            aux = buscar_matricula(raiz->dir, codigo_disciplina);
         }
     }
     return aux;
 }
 
-
-
 arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplina)
 {
-    if (raiz != NULL) 
+    if (raiz != NULL)
     {
         if (codigo_disciplina < raiz->codigo_disciplina)
         {
@@ -170,27 +181,27 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
         {
             raiz->dir = remover_matricula(raiz->dir, codigo_disciplina);
         }
-        else 
+        else
         {
-            
-            if (raiz->esq == NULL) 
+
+            if (raiz->esq == NULL)
             {
-                arvore_matricula *temp = raiz->dir; 
+                arvore_matricula *temp = raiz->dir;
                 free(raiz);
                 raiz = temp;
-            } 
-            else if (raiz->dir == NULL) 
-            {
-                arvore_matricula *temp = raiz->esq; 
-                free(raiz); 
-                raiz = temp; 
             }
-            else 
+            else if (raiz->dir == NULL)
+            {
+                arvore_matricula *temp = raiz->esq;
+                free(raiz);
+                raiz = temp;
+            }
+            else
             {
                 arvore_matricula *temp = raiz->dir;
                 while (temp->esq != NULL)
                 {
-                    temp = temp->esq; 
+                    temp = temp->esq;
                 }
 
                 raiz->codigo_disciplina = temp->codigo_disciplina;
@@ -207,6 +218,5 @@ arvore_matricula *remover_matricula(arvore_matricula *raiz, int codigo_disciplin
         }
     }
 
-    return raiz; 
+    return raiz;
 }
-
