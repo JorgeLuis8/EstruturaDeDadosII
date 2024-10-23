@@ -400,8 +400,9 @@ int main()
 
             // Verificar se algum aluno está matriculado na disciplina
             int alunos_matriculados = 0;
+            Aluno *a = raiz_alunos;
             // Percorrer a lista de alunos e verificar se algum está matriculado na disciplina
-            for (Aluno *a = raiz_alunos; a != NULL; a = a->prox)
+            for (a; a != NULL; a = a->prox)
             {
                 // Verifica se o aluno está matriculado na disciplina
                 if (buscar_matricula(a->raiz_matriculas, codigo) != NULL )
