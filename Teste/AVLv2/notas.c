@@ -102,7 +102,7 @@ arvore_notas *rotar_direita_nota(arvore_notas *no)
 
     // Atualiza a altura do nó atual e do novo nó raiz após a rotação.
     no->altura = maior_no_nota(altura_do_no_nota(no->esq), altura_do_no_nota(no->dir)) + 1;
-    aux->altura = maior_no_nota(altura_do_no_nota(aux->esq), altura_do_nota(aux->dir)) + 1;
+    aux->altura = maior_no_nota(altura_do_no_nota(aux->esq), altura_do_no_nota(aux->dir)) + 1;
 
     return aux; // Retorna o novo nó raiz da subárvore.
 }
