@@ -12,7 +12,9 @@ double get_milliseconds() {
     return (double)(counter.QuadPart * 1000.0) / frequency.QuadPart;
 }
 
-// Função para carregar 30 palavras fixas na árvore 2-3
+// Função para remover acentuação de uma palavra em português
+
+// Função para carregar 30 palavras fixas na árvore 2-3, removendo acentuação
 void carregarDadosExemplo(Tree23Node **arvore) {
     Info palavra;
     const char *ingles[30] = {
@@ -20,10 +22,10 @@ void carregarDadosExemplo(Tree23Node **arvore) {
         "book", "family", "car", "road", "nature", "work", "knowledge", "science", "sport", "culture",
         "medicine", "art", "education", "math", "physics", "chemistry", "music", "movie", "city", "food"
     };
-    const char *portugues[30] = {
-        "ônibus", "inseto", "bicicleta", "ventilador", "rede", "sistema", "problema", "computador", "amizade", "telefone",
-        "livro", "família", "carro", "estrada", "natureza", "trabalho", "conhecimento", "ciência", "esporte", "cultura",
-        "medicina", "arte", "educação", "matemática", "física", "química", "música", "filme", "cidade", "comida"
+    char *portugues[30] = {
+        "onibus", "inseto", "bicicleta", "ventilador", "rede", "sistema", "problema", "computador", "amizade", "telefone",
+        "livro", "familia", "carro", "estrada", "natureza", "trabalho", "conhecimento", "ciencia", "esporte", "cultura",
+        "medicina", "arte", "educacao", "matematica", "fisica", "quimica", "musica", "filme", "cidade", "comida"
     };
 
     for (int i = 0; i < 30; i++) {
@@ -61,23 +63,21 @@ int main() {
     carregarDadosExemplo(&arvore); // Carrega a árvore com 30 palavras fixas
 
     const char *palavras[30] = {
-        "ônibus", "inseto", "bicicleta", "ventilador", "rede", 
+        "onibus", "inseto", "bicicleta", "ventilador", "rede", 
         "sistema", "problema", "computador", "amizade", "telefone", 
-        "livro", "família", "carro", "estrada", "natureza", 
-        "trabalho", "conhecimento", "ciência", "esporte", "cultura", 
-        "medicina", "arte", "educação", "matemática", "física", 
-        "química", "música", "filme", "cidade", "comida"
+        "livro", "familia", "carro", "estrada", "natureza", 
+        "trabalho", "conhecimento", "ciencia", "esporte", "cultura", 
+        "medicina", "arte", "educacao", "matematica", "fisica", 
+        "quimica", "musica", "filme", "cidade", "comida"
     };
 
     const int num_execucoes = 100000;  // Aumente significativamente para capturar tempos maiores
 
-    // Variáveis para análise do tempo em milissegundos
-    double tempos[30];
-    int niveisPercorridos[30];
+    double tempoTotalBusca = 0;
     int sucesso = 0;
 
     for (int i = 0; i < 30; i++) {
-        double tempoTotal = 0;
+        double tempoTotalPalavra = 0;
         int nivel = 0;
         Tree23Node *resultado = NULL;
 
@@ -88,20 +88,19 @@ int main() {
             resultado = buscarComCaminho(arvore, palavras[i], &nivel);
             double fim = get_milliseconds();
 
-            tempoTotal += (fim - inicio);
+            tempoTotalPalavra += (fim - inicio);
         }
 
-        double tempoMedio = tempoTotal / num_execucoes;  // Média do tempo para `num_execucoes`
-        tempos[i] = tempoMedio;
-        niveisPercorridos[i] = nivel;
+        double tempoMedioPalavra = tempoTotalPalavra / num_execucoes;  // Média do tempo para `num_execucoes`
+        tempoTotalBusca += tempoMedioPalavra;
+
+        if (resultado != NULL) sucesso++;
     }
 
-    // Exibe o caminho percorrido e o tempo médio para cada palavra
-    printf("Resultados:\n");
-    for (int i = 0; i < 30; i++) {
-        printf("Palavra: '%s', Níveis percorridos: %d, Tempo médio: %.6f ms\n", 
-               palavras[i], niveisPercorridos[i], tempos[i]);
-    }
+    // Exibe o tempo médio total de busca para todas as palavras
+    double tempoMedioTotal = tempoTotalBusca / 30.0;
+    printf("Resumo da análise:\n");
+    printf("Tempo médio total de busca: %.6f ms\n", tempoMedioTotal);
 
     limparArvore(&arvore);
 
