@@ -1,50 +1,99 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Inclua os cabeçalhos das suas árvores 2-3 e binária
 #include "arv_portugues-23.c"
 #include "arv_ingles-binaria.c"
 
-// Função auxiliar para criar uma estrutura `Info` com uma palavra em português
+void carregarArquivo(const char *nomeArquivo, Tree23Node **arvore) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
 
-// Função para imprimir as traduções em ordem com separação por vírgula
+    char linha[256];
+    int unidadeAtual = 0; // Variável para armazenar a unidade atual
+
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        // Remove a quebra de linha ao final
+        linha[strcspn(linha, "\n")] = 0;
+
+        // Verifica se é uma linha de unidade
+        if (linha[0] == '%') {
+            sscanf(linha, "%% Unidade %d", &unidadeAtual);
+        } else {
+            // Processar linha com palavra em inglês e traduções em português
+            char palavraIngles[50];
+            char traducoesPortugues[200];
+
+            if (sscanf(linha, "%[^:]: %[^\n]", palavraIngles, traducoesPortugues) == 2) {
+                // Processar cada tradução em português
+                char *traducaoPortugues = strtok(traducoesPortugues, ",;");
+                while (traducaoPortugues != NULL) {
+                    // Remove espaços em branco no início da tradução
+                    while (*traducaoPortugues == ' ') traducaoPortugues++;
+
+                    // Cria um novo Info para a tradução em português
+                    Info novoInfo = criarInfo(traducaoPortugues, unidadeAtual);
+
+                    // Adiciona a palavra em inglês na árvore binária associada
+                    adicionarTraducao(&novoInfo, palavraIngles, unidadeAtual);
+
+                    // Insere o Info (com a árvore binária preenchida) na árvore 2-3
+                    inserirValorArvore(arvore, novoInfo);
+
+                    // Próxima tradução
+                    traducaoPortugues = strtok(NULL, ",;");
+                }
+            }
+        }
+    }
+
+    fclose(arquivo);
+}
 
 
-// Função para imprimir a estrutura `Info` com unidade e suas traduções
 
+// Função para exibir os valores do arquivo
+void exibirArvore23(Tree23Node *arvore) {
+    if (arvore) {
+        // Exibe subárvore à esquerda
+        exibirArvore23(arvore->left);
 
-// Função principal para imprimir a árvore 2-3 por unidade
+        // Exibe o primeiro Info
+        printf("Palavra em Português: %s (Unidade: %d)\n", arvore->info1.portugueseWord, arvore->info1.unit);
+        printf("Traduções em Inglês:\n");
+        printBinaryTree(arvore->info1.englishTreeRoot); // Imprime a árvore binária associada
+
+        // Exibe o segundo Info, se existir
+        if (arvore->nInfos == 2) {
+            printf("Palavra em Português: %s (Unidade: %d)\n", arvore->info2.portugueseWord, arvore->info2.unit);
+            printf("Traduções em Inglês:\n");
+            printBinaryTree(arvore->info2.englishTreeRoot); // Imprime a árvore binária associada
+        }
+
+        // Exibe subárvores do meio e à direita
+        exibirArvore23(arvore->middle);
+        if (arvore->nInfos == 2) {
+            exibirArvore23(arvore->right);
+        }
+    }
+}
 
 
 int main() {
-    Tree23Node *arvore = NULL;
+    Tree23Node *arvore23 = NULL;
 
-    // Criação de exemplos para unidade 1
-    Info busInfo = criarInfo("onibus", 1);
-    adicionarTraducao(&busInfo, "Bus", 1);
-    adicionarTraducao(&busInfo, "Coach", 1); // Outra tradução
-    inserirValorArvore(&arvore, busInfo);
+    // Carregar o arquivo de palavras
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore23);
 
-    Info bugInfo = criarInfo("inseto", 1);
-    adicionarTraducao(&bugInfo, "Bug", 1);
-    inserirValorArvore(&arvore, bugInfo);
-
-    Info systemInfo = criarInfo("sistema", 1);
-    adicionarTraducao(&systemInfo, "System", 1);
-    inserirValorArvore(&arvore, systemInfo);
-
-    // Criação de exemplos para unidade 2
-    Info bikeInfo = criarInfo("bicicleta", 2);
-    adicionarTraducao(&bikeInfo, "Bicycle", 2);
-    inserirValorArvore(&arvore, bikeInfo);
-
-    // Imprime a árvore 2-3 organizada por unidade
-    imprimirArvorePorUnidade(arvore);
-
-    // Limpa a árvore e libera a memória
-    limparArvore(&arvore);
-    printf("\nA árvore foi limpa.\n");
+    // Exibir os valores da árvore 2-3
+    printf("Árvore 2-3 carregada:\n");
+    exibirArvore23(arvore23);
 
     return 0;
 }
+
+
+
+
