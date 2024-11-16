@@ -4,6 +4,7 @@
 #include "arv_portugues-23.c"
 #include "arv_ingles-binaria.c"
 
+// Função para carregar o arquivo com as palavras e traduções
 void carregarArquivo(const char *nomeArquivo, Tree23Node **arvore) {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
@@ -52,31 +53,63 @@ void carregarArquivo(const char *nomeArquivo, Tree23Node **arvore) {
     fclose(arquivo);
 }
 
-
-
-// Função para exibir os valores do arquivo
-void exibirArvore23(Tree23Node *arvore) {
+// Função auxiliar para exibir palavras de uma unidade específica
+void exibirPalavrasPorUnidade(Tree23Node *arvore, int unidade) {
     if (arvore) {
-        // Exibe subárvore à esquerda
-        exibirArvore23(arvore->left);
+        // Percorre a subárvore esquerda
+        exibirPalavrasPorUnidade(arvore->left, unidade);
 
-        // Exibe o primeiro Info
-        printf("Palavra em Português: %s (Unidade: %d)\n", arvore->info1.portugueseWord, arvore->info1.unit);
-        printf("Traduções em Inglês:\n");
-        printBinaryTree(arvore->info1.englishTreeRoot); // Imprime a árvore binária associada
-
-        // Exibe o segundo Info, se existir
-        if (arvore->nInfos == 2) {
-            printf("Palavra em Português: %s (Unidade: %d)\n", arvore->info2.portugueseWord, arvore->info2.unit);
-            printf("Traduções em Inglês:\n");
-            printBinaryTree(arvore->info2.englishTreeRoot); // Imprime a árvore binária associada
+        // Verifica e exibe palavras da unidade na info1
+        if (arvore->info1.unit == unidade) {
+            printf("%s:", arvore->info1.portugueseWord); // Exibe palavra em português
+            printBinaryTree(arvore->info1.englishTreeRoot); // Exibe traduções associadas
         }
 
-        // Exibe subárvores do meio e à direita
-        exibirArvore23(arvore->middle);
-        if (arvore->nInfos == 2) {
-            exibirArvore23(arvore->right);
+        // Verifica e exibe palavras da unidade na info2 (se existir)
+        if (arvore->nInfos == 2 && arvore->info2.unit == unidade) {
+            printf("%s:", arvore->info2.portugueseWord); // Exibe palavra em português
+            printBinaryTree(arvore->info2.englishTreeRoot); // Exibe traduções associadas
         }
+
+        // Percorre as subárvores do meio e direita
+        exibirPalavrasPorUnidade(arvore->middle, unidade);
+        if (arvore->nInfos == 2) {
+            exibirPalavrasPorUnidade(arvore->right, unidade);
+        }
+    }
+}
+
+// Função principal para exibir a árvore no formato do arquivo
+void exibirArvoreFormatoArquivo(Tree23Node *arvore) {
+    int unidade = 1;
+    while (1) {
+        // Verifica se há palavras para a unidade atual
+        int temPalavras = 0;
+
+        // Percorre a árvore para verificar se há palavras nessa unidade
+        void verificarUnidade(Tree23Node *no) {
+            if (no) {
+                if (no->info1.unit == unidade || (no->nInfos == 2 && no->info2.unit == unidade)) {
+                    temPalavras = 1;
+                }
+                verificarUnidade(no->left);
+                verificarUnidade(no->middle);
+                if (no->nInfos == 2) verificarUnidade(no->right);
+            }
+        }
+        verificarUnidade(arvore);
+
+        // Se não houver mais palavras para exibir, interrompe o loop
+        if (!temPalavras) break;
+
+        // Exibe o cabeçalho da unidade
+        printf("%% Unidade %d\n", unidade);
+
+        // Exibe as palavras da unidade atual
+        exibirPalavrasPorUnidade(arvore, unidade);
+
+        // Passa para a próxima unidade
+        unidade++;
     }
 }
 
@@ -89,11 +122,7 @@ int main() {
 
     // Exibir os valores da árvore 2-3
     printf("Árvore 2-3 carregada:\n");
-    exibirArvore23(arvore23);
+    exibirArvoreFormatoArquivo(arvore23);
 
     return 0;
 }
-
-
-
-
