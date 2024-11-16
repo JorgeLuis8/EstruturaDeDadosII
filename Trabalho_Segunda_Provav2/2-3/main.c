@@ -79,6 +79,18 @@ void exibirPalavrasPorUnidade(Tree23Node *arvore, int unidade) {
     }
 }
 
+// Função para verificar se há palavras para a unidade atual
+void verificarUnidade(Tree23Node *no, int unidade, int *temPalavras) {
+    if (no) {
+        if (no->info1.unit == unidade || (no->nInfos == 2 && no->info2.unit == unidade)) {
+            *temPalavras = 1;
+        }
+        verificarUnidade(no->left, unidade, temPalavras);
+        verificarUnidade(no->middle, unidade, temPalavras);
+        if (no->nInfos == 2) verificarUnidade(no->right, unidade, temPalavras);
+    }
+}
+
 // Função principal para exibir a árvore no formato do arquivo
 void exibirArvoreFormatoArquivo(Tree23Node *arvore) {
     int unidade = 1;
@@ -87,17 +99,7 @@ void exibirArvoreFormatoArquivo(Tree23Node *arvore) {
         int temPalavras = 0;
 
         // Percorre a árvore para verificar se há palavras nessa unidade
-        void verificarUnidade(Tree23Node *no) {
-            if (no) {
-                if (no->info1.unit == unidade || (no->nInfos == 2 && no->info2.unit == unidade)) {
-                    temPalavras = 1;
-                }
-                verificarUnidade(no->left);
-                verificarUnidade(no->middle);
-                if (no->nInfos == 2) verificarUnidade(no->right);
-            }
-        }
-        verificarUnidade(arvore);
+        verificarUnidade(arvore, unidade, &temPalavras);
 
         // Se não houver mais palavras para exibir, interrompe o loop
         if (!temPalavras) break;
