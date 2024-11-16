@@ -47,7 +47,7 @@ TreeNode* searchEnglishWord(TreeNode* root, const char* word) {
 void printBinaryTree(TreeNode* root) {
     if (root != NULL) {
         printBinaryTree(root->left);
-        printf("%s (Unit %d)\n", root->englishWord, root->unit);
+        printf("%s \n", root->englishWord);
         printBinaryTree(root->right);
     }
 }

@@ -118,7 +118,7 @@ int main() {
     Tree23Node *arvore23 = NULL;
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:/Users/PurooLight/Documents/GitHub/EstruturaDeDadosII-GRUPO/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore23);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore23);
 
     // Exibir os valores da árvore 2-3
     printf("Árvore 2-3 carregada:\n");
