@@ -115,38 +115,80 @@ void exibirArvoreFormatoArquivo(Tree23Node *arvore) {
     }
 }
 
+// Função para exibir o menu de opções
+void exibirMenu() {
+    printf("\nEscolha uma opção:\n");
+    printf("1 - Imprimir traduções por unidade\n");
+    printf("2 - Imprimir uma unidade específica e suas traduções\n");
+    printf("3 - Imprimir traduções em inglês de uma palavra em português\n");
+    printf("4 - Remover uma palavra em inglês de uma unidade\n");
+    printf("5 - Remover uma palavra em português de uma unidade\n");
+    printf("6 - Sair\n");
+    printf("Digite sua opção: ");
+}
+
 int main() {
-    Tree23Node *arvore23 = NULL;
-    char palavraIngles[50];
-    char palavraPortugues[50]; 
+    Tree23Node *arvore = NULL;
+    TreeNode *arvoreIngles = NULL;
+
+    int opcao = -1;
     int unidade;
+    char palavraPortugues[50];
+    char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/ED2-JOB2/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore23);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/ED2-JOB2/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore);
 
-    // Exibir os valores da árvore 2-3
-    printf("Árvore 2-3 carregada:\n");
-    exibirArvoreFormatoArquivo(arvore23);
+    // Loop principal do menu
+    while (opcao != 6) {
+        exibirMenu();
+        scanf("%d", &opcao);
 
-    printf("Digite a palavra em inglês: ");
-    scanf("%s", palavraIngles);
-    printf("Digite a unidade: ");
-    scanf("%d", &unidade);
-    removerPalavraIngles(&arvore23, palavraIngles, unidade);
+        switch (opcao) {
+            case 1:
+                // (i) Imprimir todas as palavras em português e traduções por unidade
+                imprimirArvorePorUnidade(arvore);
+                break;
+            case 2:
+                // (ii) Informar uma unidade específica e imprimir palavras e traduções
+                printf("Digite a unidade: ");
+                scanf("%d", &unidade);
+                imprimirPorDadaUnidadeTraducoes(arvore, unidade);
+                break;
+            case 3:
+                // (iii) Imprimir traduções em inglês de uma palavra em português
+                printf("Digite a palavra em português: ");
+                scanf("%s", palavraPortugues);
+                imprimirTraducoesEmIngles(arvore, palavraPortugues);
+                break;
+            case 4:
+                printf("Digite a palavra em inglês: ");
+                scanf("%s", palavraIngles);
+                printf("Digite a unidade: ");
+                scanf("%d", &unidade);
+                removerPalavraIngles(&arvore, palavraIngles, unidade);
+                break;
+            case 5:
+                // (v) Remover uma palavra em português de uma unidade específica
+                printf("Digite a palavra em português para remover: ");
+                printf("Digite a palavra em português para remover: ");
+                scanf("%s", palavraPortugues);
+                printf("Digite a unidade: ");
+                scanf("%d", &unidade);
 
-    printf("Digite a palavra em português para remover: ");
-    printf("Digite a palavra em português para remover: ");
-    scanf("%s", palavraPortugues);
-    printf("Digite a unidade: ");
-    scanf("%d", &unidade);
-
-    removerPalavraPortugues(&arvore23, palavraPortugues, unidade);
-
-
-    // Exibir os valores da árvore 2-3
-    printf("Árvore 2-3 após remoção:\n");
-    exibirArvoreFormatoArquivo(arvore23);
-    
+                removerPalavraPortugues(&arvore, palavraPortugues, unidade);
+                
+                break;
+            case 6:
+                // Finalizar o programa
+                limparArvore(&arvore);
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                break;
+        }
+    }
 
     return 0;
 }

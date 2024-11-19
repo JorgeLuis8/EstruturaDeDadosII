@@ -50,5 +50,9 @@ int estaNodo(Tree23Node *nodo, const char *valor);
 void imprimirArvore(Tree23Node *arvore, int nivel);
 void imprimirNodo(Tree23Node *no, int value, int nivel);
 void limparArvore(Tree23Node **arvore);
+void imprimirArvorePorUnidade(Tree23Node *arvore);
+void imprimirPorDadaUnidadeTraducoes(Tree23Node *arvore, int unidade);
+
+void removerPalavraIngles(Tree23Node** arvore, const char* palavraIngles, int unidade);
 
 #endif // ARV_PORTUGUES_23_H

@@ -26,6 +26,9 @@ TreeNode* searchEnglishWord(TreeNode* root, const char* word);
 // Função para imprimir a árvore binária em ordem alfabética
 void printBinaryTree(TreeNode* root);
 
-TreeNode* removeEnglishWord(TreeNode* root, const char* word);
+TreeNode* removeEnglishWord(TreeNode* root, const char* word, int unit);
 void imprimirTraducoes(TreeNode *node, const char *palavraPortugues, int *primeira);
+
+void limparArvoreBinaria(TreeNode** root);
+
 #endif // ARV_INGLES_BINARIA_H

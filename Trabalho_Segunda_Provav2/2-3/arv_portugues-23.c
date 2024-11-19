@@ -90,7 +90,21 @@ void inserirValorNodo(Tree23Node *nodo, Info novoInfo, Tree23Node *filho) {
     }
 }
 
-#include <string.h>
+Tree23Node** getNodoComparacao(Tree23Node *aux, Tree23Node *nodo, Tree23Node** irmao) {
+        Tree23Node **get = NULL;
+        if(nodo && aux) {
+                if(aux == nodo->left)
+                        get = &(nodo->left);
+                if(aux == nodo->middle) {
+                        get = &(nodo->middle);
+                        *irmao = nodo->left;
+                }
+                if(aux == nodo->right)
+                        get = &(nodo->right);
+        }
+        return get;
+}
+
 
 // Função para dividir a raiz inserindo um novo valor
 void dividirRaizInserindo(Tree23Node **nodo, Info novoInfo, Tree23Node *filho) {
@@ -212,7 +226,6 @@ void inserirValorArvore(Tree23Node **arvore, Info novoInfo) {
         }
     }
 }
-#include <string.h>
 
 // Função para buscar um valor na árvore 2-3
 Tree23Node** buscarValorArvore(Tree23Node **arvore, const char *valor, Tree23Node **irmao) {
@@ -437,47 +450,44 @@ Tree23Node** unirFilho(Tree23Node **remover, Tree23Node *irmao) {
     return novo;
 }
 
-#include <string.h>
-#include <stdlib.h>
 
 // Função para reconfigurar a árvore após a remoção de um valor
+// Esta funcao so e chamada se o nodo em que esta ocorrendo a remocao for folha (sem ser raiz) e nao estiver cheio
 Tree23Node** reconfigArvore(Tree23Node **remover, Tree23Node *irmao) {
-    Tree23Node **pai = NULL;
-    Tree23Node **novo = NULL;
-    Tree23Node *tio = NULL;
-
-    if (*remover) {
-        pai = &((*remover)->pai);
-
-        // Verifica se o pai não é raiz, não está cheio, e o irmão também não está cheio
-        if (!ehRaiz(*pai) && !estaCheio(*pai) && !estaCheio(irmao)) {
-            tio = (*pai)->pai->middle;
-            if (*pai == (*pai)->pai->middle)
-                tio = (*pai)->pai->left;
-
-            // Recursivamente reconfigura a árvore com o tio
-            pai = reconfigArvore(pai, tio);
+        Tree23Node **pai = NULL;
+        Tree23Node **novo = NULL;
+        Tree23Node *tio = NULL;
+        Tree23Node *aux = NULL;
+        if(*remover) {
+                pai = &((*remover)->pai);
+                if(!ehRaiz(*pai) && !estaCheio(*pai) && !estaCheio(irmao)) {
+                        tio = (*pai)->pai->middle;
+                        if(*pai == (*pai)->pai->middle)
+                                tio = (*pai)->pai->left;
+//                        printf("Nodo a remover %d: ", (*remover)->info1); endereco(*remover);
+                        aux = *remover;
+                        pai = reconfigArvore(pai, tio);
+                        remover = getNodoComparacao(aux, *pai, &irmao);
+//                        printf("Nodo a remover %d: ", (*remover)->info1); endereco(*remover);
+                }
+                novo = remover;
+                if(estaCheio(irmao)) {
+                        if(*remover == (*pai)->left)
+                                rotacionarEsq(*remover, irmao);
+                        else {
+//                                printf("Nodo a remover %d: ", (*remover)->meio->info1); endereco((*remover)->meio);
+//                                printf("Nodo irmao %d: ", irmao->info1); endereco(irmao);
+                                rotacionarDir(*remover, irmao);
+//                                printf("Nodo a remover %d: ", (*remover)->meio->info1); endereco((*remover)->meio);
+//                                printf("Nodo irmao %d: ", irmao->info1); endereco(irmao);
+                        }
+                } else if(estaCheio(*pai))
+//                        printf("Unir os nodo de remocao com seu irmao (%d e %d)\n", (*remover)->info1, irmao->info1);
+                        novo = unirFilho(remover, irmao);
+                else
+                        novo = unirPai(remover, irmao);
         }
-
-        novo = remover;
-
-        // Se o irmão está cheio, faz uma rotação
-        if (estaCheio(irmao)) {
-            if (*remover == (*pai)->left)
-                rotacionarEsq(*remover, irmao);
-            else
-                rotacionarDir(*remover, irmao);
-        }
-        // Se o pai está cheio, faz a união com o irmão
-        else if (estaCheio(*pai)) {
-            novo = unirFilho(remover, irmao);
-        }
-        // Caso contrário, faz a união com o pai
-        else {
-            novo = unirPai(remover, irmao);
-        }
-    }
-    return novo;
+        return novo;
 }
 
 // Função para remover um valor da árvore 2-3
@@ -563,7 +573,6 @@ void imprimirArvore(Tree23Node *arvore, int nivel) {
 }
 
 
-
 void imprimirInfoUnidade(Tree23Node *arvore, int unidade) {
     if (arvore) {
         // Percorre a árvore e imprime apenas as palavras da unidade especificada
@@ -594,8 +603,162 @@ void imprimirArvorePorUnidade(Tree23Node *arvore) {
 }
 
 
-
 // Função para adicionar uma tradução em inglês na árvore binária dentro de `Info`
 void adicionarTraducao(Info *info, const char *traducaoIngles, int unit) {
     info->englishTreeRoot = insertEnglishWord(info->englishTreeRoot, traducaoIngles, unit);
+}
+
+
+// informar uma unidade e então imprima todas as palavras da unidade em português seguida das equivalentes em inglês
+void imprimirPorDadaUnidadeTraducoes(Tree23Node *arvore, int unidade) {
+    printf("%% Unidade %d\n", unidade);
+
+    // Função auxiliar para percorrer a árvore e imprimir os dados formatados
+    imprimirInfoUnidadeFormatadaLinhaPorLinha(arvore, unidade);
+
+    printf("\n");
+}
+
+// Função auxiliar para imprimir informações formatadas (linha por linha)
+void imprimirInfoUnidadeFormatadaLinhaPorLinha(Tree23Node *arvore, int unidade) {
+    if (arvore != NULL) {
+        // Percorre a subárvore à esquerda
+        imprimirInfoUnidadeFormatadaLinhaPorLinha(arvore->left, unidade);
+
+        // Imprime as informações do nó, se a unidade corresponder
+        if (arvore->info1.unit == unidade) {
+            printf("- Palavra: %s\n", arvore->info1.portugueseWord);
+            printf("  Traduções:\n");
+            imprimirTraducoesLinhaPorLinha(arvore->info1.englishTreeRoot);
+        }
+        if (arvore->nInfos == 2 && arvore->info2.unit == unidade) {
+            printf("- Palavra: %s\n", arvore->info2.portugueseWord);
+            printf("  Traduções:\n");
+            imprimirTraducoesLinhaPorLinha(arvore->info2.englishTreeRoot);
+        }
+
+        // Percorre a subárvore do meio
+        imprimirInfoUnidadeFormatadaLinhaPorLinha(arvore->middle, unidade);
+
+        // Percorre a subárvore à direita, se o nó contiver duas informações
+        if (arvore->nInfos == 2) {
+            imprimirInfoUnidadeFormatadaLinhaPorLinha(arvore->right, unidade);
+        }
+    }
+}
+
+// Função para imprimir traduções da árvore binária (linha por linha)
+void imprimirTraducoesLinhaPorLinha(TreeNode *raiz) {
+    if (raiz != NULL) {
+        imprimirTraducoesLinhaPorLinha(raiz->left);  // Subárvore esquerda
+        printf("    - %s\n", raiz->englishWord);     // Palavra em inglês
+        imprimirTraducoesLinhaPorLinha(raiz->right); // Subárvore direita
+    }
+}
+
+
+void imprimirTraducoesEmIngles(Tree23Node *arvore, const char *palavraPortugues) {
+    Tree23Node **nodo = NULL;
+    Tree23Node *irmao = NULL;
+
+    nodo = buscarValorArvore(&arvore, palavraPortugues, &irmao);
+    if (*nodo) {
+        printf("Traduções em inglês para a palavra '%s':\n", palavraPortugues);
+        if ((*nodo)->nInfos == 2) {
+            printBinaryTree((*nodo)->info1.englishTreeRoot);
+            printBinaryTree((*nodo)->info2.englishTreeRoot);
+        } else {
+            printBinaryTree((*nodo)->info1.englishTreeRoot);
+        }
+    } else {
+        printf("Palavra '%s' não encontrada.\n", palavraPortugues);
+    }
+}
+
+void removerPalavraIngles(Tree23Node** arvore, const char* palavraIngles, int unidade) {
+    Tree23Node* node = *arvore;
+    int removido = 0; // Variável para indicar se a palavra foi removida
+
+    while (node != NULL && !removido) {
+        // Verifica `info1`
+        if (node->info1.englishTreeRoot != NULL) {
+            TreeNode* resultado = searchEnglishWord(node->info1.englishTreeRoot, palavraIngles);
+            if (resultado != NULL && resultado->unit == unidade) {
+                // Remove a palavra em inglês da árvore binária
+                node->info1.englishTreeRoot = removeEnglishWord(node->info1.englishTreeRoot, palavraIngles, unidade);
+
+                // Se a árvore binária ficou vazia, remover o `info1` da árvore 2-3
+                if (node->info1.englishTreeRoot == NULL) {
+                    printf("Removendo palavra '%s' da árvore 2-3.\n", node->info1.portugueseWord);
+                    removerValorArvore(arvore, node->info1.portugueseWord);
+                }
+                removido = 1; // Marca que a palavra foi removida
+            }
+        }
+
+        // Verifica `info2`, se existir
+        if (!removido && node->nInfos == 2 && node->info2.englishTreeRoot != NULL) {
+            TreeNode* resultado = searchEnglishWord(node->info2.englishTreeRoot, palavraIngles);
+            if (resultado != NULL && resultado->unit == unidade) {
+                // Remove a palavra em inglês da árvore binária
+                node->info2.englishTreeRoot = removeEnglishWord(node->info2.englishTreeRoot, palavraIngles, unidade);
+
+                // Se a árvore binária ficou vazia, remover o `info2` da árvore 2-3
+                if (node->info2.englishTreeRoot == NULL) {
+                    printf("Removendo palavra '%s' da árvore 2-3.\n", node->info2.portugueseWord);
+                    removerValorArvore(arvore, node->info2.portugueseWord);
+                }
+                removido = 1; // Marca que a palavra foi removida
+            }
+        }
+
+        // Decidir qual subárvore percorrer
+        if (!removido) {
+            if (strcmp(palavraIngles, node->info1.portugueseWord) < 0) {
+                node = node->left;
+            } else if (node->nInfos == 1 || strcmp(palavraIngles, node->info2.portugueseWord) < 0) {
+                node = node->middle;
+            } else {
+                node = node->right;
+            }
+        }
+    }
+
+    if (!removido) {
+        printf("Palavra '%s' não encontrada na unidade %d.\n", palavraIngles, unidade);
+    }
+}
+
+void removerPalavraPortugues(Tree23Node **arvore, const char *palavraPortugues, int unidade) {
+    Tree23Node **remover = NULL;
+    Tree23Node *irmao = NULL;
+
+    if (*arvore) {
+        remover = buscarValorArvore(arvore, palavraPortugues, &irmao);
+
+        while (remover && *remover) {
+            if (ehFolha(*remover)) {
+                // Verifica se a palavra pertence à unidade especificada
+                if (strcmp((*remover)->info1.portugueseWord, palavraPortugues) == 0 && (*remover)->info1.unit == unidade) {
+                    // Limpa a árvore binária associada ao `info1`
+                    limparArvoreBinaria(&((*remover)->info1.englishTreeRoot));
+                    removerValorNodo(remover, palavraPortugues);
+                } else if ((*remover)->nInfos == 2 &&
+                           strcmp((*remover)->info2.portugueseWord, palavraPortugues) == 0 &&
+                           (*remover)->info2.unit == unidade) {
+                    // Limpa a árvore binária associada ao `info2`
+                    limparArvoreBinaria(&((*remover)->info2.englishTreeRoot));
+                    removerValorNodo(remover, palavraPortugues);
+                } else {
+                    printf("Palavra '%s' não encontrada na unidade %d.\n", palavraPortugues, unidade);
+                }
+                remover = NULL;
+            } else {
+                // Caso não seja folha, troca os valores para transformar o nó em folha
+                remover = trocarValoresArvore(remover, palavraPortugues, &irmao);
+            }
+        }
+    } else {
+        printf("A árvore está vazia.\n");
+    }
 }
