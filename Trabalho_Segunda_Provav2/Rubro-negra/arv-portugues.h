@@ -3,50 +3,50 @@
 
 #define BLACK 0
 #define RED 1
+
 #include "arv-ingles-bin.c"
 
-typedef struct info
-{
+// Estrutura para armazenar os dados de cada nó
+typedef struct info {
     char portugueseWord[50];      // Palavra em português
-    TreeNode *englishTreeRoot;    // Raiz da árvore binária para traduções em inglês
+    struct arv_ingles *englishTreeRoot; // Raiz da árvore binária para traduções em inglês
     int unit;                     // Unidade correspondente
 } Info;
 
-typedef struct arv_portugues
-{
+// Estrutura para a árvore rubro-negra
+typedef struct arv_portugues {
     Info dados;
-    struct arv_portugues *esq;
-    struct arv_portugues *dir;
-    int cor;
+    struct arv_portugues *esq;    // Ponteiro para o filho esquerdo
+    struct arv_portugues *dir;    // Ponteiro para o filho direito
+    int cor;                      // Cor do nó (RED ou BLACK)
 } Arv_portugues;
 
 // Funções de criação e inserção
-void ler_dados(arv_disciplina *no, arv_curso *curso);
-arv_disciplina *cria_no();
-arv_disciplina *inserir_disciplina(arv_disciplina *raiz, arv_disciplina *no);
-arv_disciplina *inserir_rec(arv_disciplina *raiz, arv_disciplina *no);
+void ler_dados(Arv_portugues *no, struct arv_ingles *curso);
+Arv_portugues *cria_no_arv();
+Arv_portugues *inserir_no(Arv_portugues *raiz, Arv_portugues *no);
+Arv_portugues *inserir_rec_arv(Arv_portugues *raiz, Arv_portugues *no);
 
 // Funções de balanceamento e rotação
-void trocaCor(arv_disciplina *H);
-arv_disciplina *rotacionarEsquerda(arv_disciplina *A);
-arv_disciplina *rotacionarDireita(arv_disciplina *A);
-arv_disciplina *balancear(arv_disciplina *raiz);
+void trocaCor_arv(Arv_portugues *H);
+Arv_portugues *rotacionarEsquerda_arv(Arv_portugues *A);
+Arv_portugues *rotacionarDireita_arv(Arv_portugues *A);
+Arv_portugues *balancear_arv(Arv_portugues *raiz);
 
+// Funções de remoção
+Arv_portugues *removerMenor_arv(Arv_portugues *H);
+Arv_portugues *procuraMenor_arv(Arv_portugues *atual);
+Arv_portugues *remove_NO_arv(Arv_portugues *H, Arv_portugues *no);
+int remove_ArvLLRB_arv(Arv_portugues **raiz, char *palavra, int unidade);
 
-    // Funções de remoção
-    arv_disciplina *removerMenor(arv_disciplina * H);
-    arv_disciplina *procuraMenor(arv_disciplina * atual);
-    arv_disciplina *remove_NO(arv_disciplina * H, int valor);
-    int remove_ArvLLRB(arv_disciplina * *raiz, int codigo);
+// Função de busca
+Arv_portugues *buscar_palavra_portugues(Arv_portugues *raiz, char *palavra, int unidade);
 
-    // Função de busca
-    arv_disciplina *buscar_disciplina(arv_disciplina * raiz, int codigo);
+// Função de impressão
+void imprimir_disciplinas(Arv_portugues *raiz);
 
-    // Função de impressão
-    void imprimir_disciplinas(arv_disciplina * raiz);
-
-    // Funções auxiliares
-    arv_disciplina *move2EsqRED(arv_disciplina * H);
-    arv_disciplina *move2DirRED(arv_disciplina * H);
+// Funções auxiliares
+Arv_portugues *move2EsqRED_arv(Arv_portugues *H);
+Arv_portugues *move2DirRED_arv(Arv_portugues *H);
 
 #endif // DISCIPLINA_H

@@ -13,11 +13,9 @@ Arv_portugues *cria_no_arv()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
-        
     }
     return no;
 }
-
 
 void trocaCor_arv(Arv_portugues *H)
 {
@@ -91,29 +89,37 @@ Arv_portugues *balancear_arv(Arv_portugues *raiz)
 }
 
 
-Arv_portugues *buscar_palavra_portugues(Arv_portugues *raiz, char portugues, int unidade)
-{
+Arv_portugues *buscar_palavra_portugues(Arv_portugues *raiz, char *portugues, int unidade) {
     Arv_portugues *resultado = NULL;
-    if (raiz != NULL)
-    {
-        if (strcmp(portugues, raiz->dados.portugueseWord) == 0 && raiz->dados.unit == unidade)
-        {
+    if (raiz != NULL) {
+        if (strcmp(portugues, raiz->dados.portugueseWord) == 0 && raiz->dados.unit == unidade) {
             resultado = raiz;
-        }
-        else
-        {
-            if (strcmp(portugues, raiz->dados.portugueseWord) < 0)
-            {
-                resultado = buscar_palavra_portugues(raiz->esq, portugues, unidade);
-            }
-            else
-            {
-                resultado = buscar_palavra_portugues(raiz->dir, portugues, unidade);
-            }
+        } else if (strcmp(portugues, raiz->dados.portugueseWord) < 0) {
+            resultado = buscar_palavra_portugues(raiz->esq, portugues, unidade);
+        } else {
+            resultado = buscar_palavra_portugues(raiz->dir, portugues, unidade);
         }
     }
     return resultado;
 }
+
+int remove_ArvLLRB_arv(Arv_portugues **raiz, char *palavra, int unidade) {
+    int aux = 0;
+
+    // Buscar o nó correspondente
+    Arv_portugues *no = buscar_palavra_portugues(*raiz, palavra, unidade);
+    if (no != NULL) {
+        *raiz = remove_NO_arv(*raiz, no); // Passar o nó encontrado
+        if (*raiz != NULL) {
+            (*raiz)->cor = BLACK;
+        }
+        aux = 1; // Indicar sucesso
+    }
+
+    return aux; // Indicar se foi removido ou não
+}
+
+
 Arv_portugues *move2EsqRED_arv(Arv_portugues *H)
 {
     trocaCor_arv(H);
@@ -172,73 +178,36 @@ Arv_portugues *procuraMenor_arv(Arv_portugues *atual)
     return no1;
 }
 
-Arv_portugues *remove_NO_arv(Arv_portugues *H, Arv_portugues *no)
-{
-    Arv_portugues *resultado = H; // Variavel auxiliar para armazenar o resultado final
 
-    if (H == NULL)
-    {
-        resultado = NULL;
+
+Arv_portugues *remove_NO_arv(Arv_portugues *H, Arv_portugues *no) {
+    if (H == NULL) {
+        return NULL;
     }
-    else
-    {
-        if (strcmp(no->dados.portugueseWord, H->dados.portugueseWord) < 0)
-        {
-            if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK))
-                H = move2EsqRED_arv(H);
 
-            if (H->esq != NULL)
-                H->esq = remove_NO_arv(H->esq, no->dados.portugueseWord);
+    if (strcmp(no->dados.portugueseWord, H->dados.portugueseWord) < 0) {
+        if (H->esq != NULL && H->esq->cor == BLACK && (H->esq->esq == NULL || H->esq->esq->cor == BLACK)) {
+            H = move2EsqRED_arv(H);
         }
-        else
-        {
-            if (H->esq != NULL && H->esq->cor == RED)
-                H = rotacionarDireita_arv(H);
-
-            if (no->dados.portugueseWord == H->dados.portugueseWord && (H->dir == NULL))
-            {
-                free(H);
-                resultado = NULL;
-            }
-            else
-            {
-                if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK))
-                    H = move2DirRED_arv(H);
-
-                if (no->dados.portugueseWord == H->dados.portugueseWord)
-                {
-                    Arv_portugues *x = procuraMenor_arv(H->dir);
-                    H->dados.portugueseWord = x->dados.portugueseWord;
-                    H->dir = removerMenor_arv(H->dir);
-                }
-                else if (H->dir != NULL)
-                {
-                    H->dir = remove_NO_arv(H->dir, no->dados.portugueseWord);
-                }
-            }
+        H->esq = remove_NO_arv(H->esq, no);
+    } else {
+        if (H->esq != NULL && H->esq->cor == RED) {
+            H = rotacionarDireita_arv(H);
+        }
+        if (strcmp(no->dados.portugueseWord, H->dados.portugueseWord) == 0 && H->dir == NULL) {
+            free(H);
+            return NULL;
+        }
+        if (H->dir != NULL && H->dir->cor == BLACK && (H->dir->esq == NULL || H->dir->esq->cor == BLACK)) {
+            H = move2DirRED_arv(H);
+        }
+        if (strcmp(no->dados.portugueseWord, H->dados.portugueseWord) == 0) {
+            Arv_portugues *x = procuraMenor_arv(H->dir);
+            strcpy(H->dados.portugueseWord, x->dados.portugueseWord);
+            H->dir = removerMenor_arv(H->dir);
+        } else {
+            H->dir = remove_NO_arv(H->dir, no);
         }
     }
-
-    if (resultado != NULL)
-    {
-        resultado = balancear_arv(resultado);
-    }
-
-    return resultado;
+    return balancear_arv(H);
 }
-
-int remove_ArvLLRB_arv(Arv_portugues **raiz, char palavra, int unidade)
-{
-    int aux = 0;
-    if (buscar_palavra_portugues(*raiz, palavra, unidade))
-    {
-        *raiz = remove_NO_arv(*raiz, palavra);
-        if (*raiz != NULL)
-        {
-            (*raiz)->cor = BLACK;
-        }
-        aux = 1;
-    }
-    return aux;
-}
-
