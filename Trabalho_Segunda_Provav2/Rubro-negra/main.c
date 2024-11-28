@@ -5,7 +5,7 @@
 #include "arv-ingles-bin.c"
 
 // Função para carregar o arquivo com as palavras e traduções
-void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
+void carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
@@ -43,8 +43,9 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
                 novo_no->dados.unit = unidadeAtual;
                 strcpy(novo_no->dados.portugueseWord, traducaoPortugues);
                 novo_no->dados.englishTreeRoot = NULL;
+                arvore = inserir_no(arvore, novo_no);  // Correção
 
-                inserir_no(arvore, novo_no);
+                printf("Cria no");
 
                 // Info novoInfo = criaInfo(traducaoPortugues, palavraIngles, unidadeAtual);
                 // inserirArvRB(arvore, &novoInfo);
@@ -123,7 +124,7 @@ int main() {
     char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", &arvore);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", arvore);
 
     // Loop principal do menu
     while (opcao != 6) {
