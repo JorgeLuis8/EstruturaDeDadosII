@@ -56,6 +56,7 @@ Arv_portugues *inserir_no(Arv_portugues *raiz, Arv_portugues *no)
     if (raiz != NULL)
         raiz->cor = BLACK;
     return raiz;
+    printf("Inseriu");
 }
 
 Arv_portugues *inserir_rec_arv(Arv_portugues *raiz, Arv_portugues *no)

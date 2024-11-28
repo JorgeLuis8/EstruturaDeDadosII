@@ -5,13 +5,13 @@
 #include "arv-ingles-bin.c"
 
 // Função para carregar o arquivo com as palavras e traduções
-void carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
+Arv_portugues* carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
     {
         printf("Erro ao abrir o arquivo.\n");
-        return;
+        arvore = NULL;
     }
 
     char linha[256];
@@ -57,6 +57,8 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
 
     fclose(arquivo);
     printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
+    return arvore;
+
 }
 
 
@@ -124,8 +126,7 @@ int main() {
     char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", arvore);
-    printf("Passou essa bucetinha");
+    arvore = carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", arvore);
 
     // Loop principal do menu
     while (opcao != 6) {
