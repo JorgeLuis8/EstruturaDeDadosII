@@ -1,52 +1,71 @@
-#ifndef DISCIPLINA_H
-#define DISCIPLINA_H
+#ifndef ARV_PORTUGUES_H
+#define ARV_PORTUGUES_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "arv-ingles-bin.h" // Inclui a árvore binária para as traduções em inglês
 
 #define BLACK 0
 #define RED 1
 
-#include "arv-ingles-bin.c"
-
-// Estrutura para armazenar os dados de cada nó
-typedef struct info {
-    char portugueseWord[50];      // Palavra em português
-    struct arv_ingles *englishTreeRoot; // Raiz da árvore binária para traduções em inglês
-    int unit;                     // Unidade correspondente
+// Estrutura Info para armazenar informações de palavras em português
+typedef struct Info {
+    char portugueseWord[50]; // Palavra em português
+    int unit;                // Unidade
+    TreeNodeEn* englishTreeRoot; // Raiz da árvore binária de traduções em inglês
 } Info;
 
-// Estrutura para a árvore rubro-negra
-typedef struct arv_portugues {
-    Info dados;
-    struct arv_portugues *esq;    // Ponteiro para o filho esquerdo
-    struct arv_portugues *dir;    // Ponteiro para o filho direito
-    int cor;                      // Cor do nó (RED ou BLACK)
+// Estrutura para o nó da árvore vermelho-preta
+typedef struct Arv_portugues {
+    Info dados;                  // Dados armazenados no nó
+    int cor;                     // Cor do nó: RED ou BLACK
+    struct Arv_portugues* esq;   // Subárvore esquerda
+    struct Arv_portugues* dir;   // Subárvore direita
 } Arv_portugues;
 
-// Funções de criação e inserção
-void ler_dados(Arv_portugues *no, struct arv_ingles *curso);
-Arv_portugues *cria_no_arv();
-Arv_portugues *inserir_no(Arv_portugues *raiz, Arv_portugues *no);
-Arv_portugues *inserir_rec_arv(Arv_portugues *raiz, Arv_portugues *no);
+// Funções para manipulação da árvore vermelho-preta
 
-// Funções de balanceamento e rotação
-void trocaCor_arv(Arv_portugues *H);
-Arv_portugues *rotacionarEsquerda_arv(Arv_portugues *A);
-Arv_portugues *rotacionarDireita_arv(Arv_portugues *A);
-Arv_portugues *balancear_arv(Arv_portugues *raiz);
+// Cria um novo nó na árvore
+Arv_portugues* cria_no_arv();
 
-// Funções de remoção
-Arv_portugues *removerMenor_arv(Arv_portugues *H);
-Arv_portugues *procuraMenor_arv(Arv_portugues *atual);
-Arv_portugues *remove_NO_arv(Arv_portugues *H, Arv_portugues *no);
-int remove_ArvLLRB_arv(Arv_portugues **raiz, char *palavra, int unidade);
+// Troca a cor de um nó e de seus filhos
+void trocaCor_arv(Arv_portugues* H);
 
-// Função de busca
-Arv_portugues *buscar_palavra_portugues(Arv_portugues *raiz, char *palavra, int unidade);
+// Rotaciona a subárvore à esquerda
+Arv_portugues* rotacionarEsquerda_arv(Arv_portugues* A);
 
-// Função de impressão
-void imprimir_disciplinas(Arv_portugues *raiz);
+// Rotaciona a subárvore à direita
+Arv_portugues* rotacionarDireita_arv(Arv_portugues* A);
 
-// Funções auxiliares
-Arv_portugues *move2EsqRED_arv(Arv_portugues *H);
-Arv_portugues *move2DirRED_arv(Arv_portugues *H);
+// Insere um novo nó na árvore
+Arv_portugues* inserir_no(Arv_portugues* raiz, Arv_portugues* no);
 
-#endif // DISCIPLINA_H
+// Função auxiliar para inserção recursiva
+Arv_portugues* inserir_rec_arv(Arv_portugues* raiz, Arv_portugues* no);
+
+// Balanceia a árvore após inserção ou remoção
+Arv_portugues* balancear_arv(Arv_portugues* raiz);
+
+// Busca uma palavra em português na árvore
+Arv_portugues* buscar_palavra_portugues(Arv_portugues* raiz, char* portugues, int unidade);
+
+// Remove uma palavra da árvore vermelho-preta
+int remove_ArvLLRB_arv(Arv_portugues** raiz, char* palavra, int unidade);
+
+// Move a subárvore esquerda se for RED
+Arv_portugues* move2EsqRED_arv(Arv_portugues* H);
+
+// Move a subárvore direita se for RED
+Arv_portugues* move2DirRED_arv(Arv_portugues* H);
+
+// Remove o menor nó da subárvore
+Arv_portugues* removerMenor_arv(Arv_portugues* H);
+
+// Procura o menor nó na subárvore
+Arv_portugues* procuraMenor_arv(Arv_portugues* atual);
+
+// Remove um nó específico da árvore
+Arv_portugues* remove_NO_arv(Arv_portugues* H, Arv_portugues* no);
+
+#endif // ARV_PORTUGUES_H

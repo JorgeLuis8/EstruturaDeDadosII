@@ -9,7 +9,6 @@ void carregarArquivo(const char *nomeArquivo, Tree23Node **arvore) {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
-        return;
     }
 
     char linha[256];
