@@ -13,7 +13,7 @@
 typedef struct Info {
     char portugueseWord[50]; // Palavra em português
     int unit;                // Unidade
-    TreeNodeEn* englishTreeRoot; // Raiz da árvore binária de traduções em inglês
+    TreeNode* englishTreeRoot; // Raiz da árvore binária de traduções em inglês
 } Info;
 
 // Estrutura para o nó da árvore vermelho-preta

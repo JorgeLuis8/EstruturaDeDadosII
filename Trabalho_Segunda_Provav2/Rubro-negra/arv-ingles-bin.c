@@ -1,8 +1,9 @@
 #include "arv-ingles-bin.h"
 
+
 // Função para criar um novo nó na árvore binária de busca
-TreeNodeEn* createNodeEn(const char* word, int unit) {
-    TreeNodeEn* newNode = (TreeNodeEn*)malloc(sizeof(TreeNodeEn));
+TreeNode* createNode(const char* word, int unit) {
+    TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
     if (newNode != NULL) {
         strcpy(newNode->englishWord, word);
         newNode->unit = unit;
@@ -12,100 +13,124 @@ TreeNodeEn* createNodeEn(const char* word, int unit) {
 }
 
 // Função para inserir uma palavra em inglês na árvore binária de busca
-TreeNodeEn* insertEnglishWordEn(TreeNodeEn* root, const char* word, int unit) {
+TreeNode* insertEnglishWord(TreeNode* root, const char* word, int unit) {
+    TreeNode *result;
     if (root == NULL) {
-        return createNodeEn(word, unit);
+        result = createNode(word, unit);
+    } else {
+        if (strcmp(word, root->englishWord) < 0) {
+            root->left = insertEnglishWord(root->left, word, unit);
+        } else if (strcmp(word, root->englishWord) > 0) {
+            root->right = insertEnglishWord(root->right, word, unit);
+        }
+        result = root;
     }
-    if (strcmp(word, root->englishWord) < 0) {
-        root->left = insertEnglishWordEn(root->left, word, unit);
-    } else if (strcmp(word, root->englishWord) > 0) {
-        root->right = insertEnglishWordEn(root->right, word, unit);
-    }
-    return root;
+    return result;
 }
 
 // Função para buscar uma palavra em inglês na árvore binária de busca
-TreeNodeEn* searchEnglishWordEn(TreeNodeEn* root, const char* word) {
+TreeNode* searchEnglishWord(TreeNode* root, const char* word) {
+    TreeNode *result;
     if (root == NULL || strcmp(root->englishWord, word) == 0) {
-        return root;
-    }
-    if (strcmp(word, root->englishWord) < 0) {
-        return searchEnglishWordEn(root->left, word);
+        result = root;
     } else {
-        return searchEnglishWordEn(root->right, word);
+        if (strcmp(word, root->englishWord) < 0) {
+            result = searchEnglishWord(root->left, word);
+        } else {
+            result = searchEnglishWord(root->right, word);
+        }
     }
+    return result;
 }
 
 // Função para imprimir a árvore binária em ordem alfabética (simples visualização)
-void printBinaryTreeEn(TreeNodeEn* root) {
+void printBinaryTree(TreeNode* root) {
     if (root != NULL) {
-        printBinaryTreeEn(root->left);
+        printBinaryTree(root->left);
         printf("%s \n", root->englishWord);
-        printBinaryTreeEn(root->right);
+        printBinaryTree(root->right);
     }
 }
 
-// Função para remover uma palavra da árvore binária de busca
-TreeNodeEn* removeEnglishWordEn(TreeNodeEn* root, const char* word, int unit) {
+TreeNode* removeEnglishWord(TreeNode* root, const char* word, int unit) {
     if (root != NULL) {
         if (strcmp(word, root->englishWord) < 0) {
-            root->left = removeEnglishWordEn(root->left, word, unit);
+            // A palavra a ser removida está na subárvore esquerda
+            root->left = removeEnglishWord(root->left, word, unit);
         } else if (strcmp(word, root->englishWord) > 0) {
-            root->right = removeEnglishWordEn(root->right, word, unit);
+            // A palavra a ser removida está na subárvore direita
+            root->right = removeEnglishWord(root->right, word, unit);
         } else if (root->unit == unit) {
+            // Encontrou o nó a ser removido e a unidade corresponde
             if (root->left == NULL && root->right == NULL) {
+                // Caso 1: O nó é uma folha e é o único elemento na árvore
                 free(root);
-                return NULL;
+                return NULL; // Retorna NULL para indicar que a árvore está vazia
             } else if (root->left == NULL) {
-                TreeNodeEn* aux = root;
+                // Caso 2: O nó tem apenas um filho à direita
+                TreeNode* aux = root;
                 root = root->right;
                 free(aux);
             } else if (root->right == NULL) {
-                TreeNodeEn* aux = root;
+                // Caso 3: O nó tem apenas um filho à esquerda
+                TreeNode* aux = root;
                 root = root->left;
                 free(aux);
             } else {
-                TreeNodeEn* aux = root->left;
+                // Caso 4: O nó tem dois filhos
+                // Encontrar o maior elemento da subárvore esquerda (ou o menor da subárvore direita)
+                TreeNode* aux = root->left;
                 while (aux->right != NULL) {
                     aux = aux->right;
                 }
+                // Copiar o valor do maior elemento encontrado para o nó atual
                 strcpy(root->englishWord, aux->englishWord);
                 root->unit = aux->unit;
-                root->left = removeEnglishWordEn(root->left, aux->englishWord, aux->unit);
+                // Remover o nó duplicado da subárvore esquerda
+                root->left = removeEnglishWord(root->left, aux->englishWord, aux->unit);
             }
         }
     }
     return root;
 }
 
-// Função para imprimir traduções
-void imprimirTraducoesEn(TreeNodeEn* node, const char* palavraPortugues, int* primeira) {
+
+void imprimirTraducoes(TreeNode *node, const char *palavraPortugues, int *primeira) {
     if (node) {
-        imprimirTraducoesEn(node->left, palavraPortugues, primeira);
+        // Imprime o nó esquerdo
+        imprimirTraducoes(node->left, palavraPortugues, primeira);
+
+        // Imprime a palavra em inglês e a tradução em português
         if (!*primeira) {
             printf("\n");
         }
         printf("%s: %s;", node->englishWord, palavraPortugues);
         *primeira = 0;
-        imprimirTraducoesEn(node->right, palavraPortugues, primeira);
+
+        // Imprime o nó direito
+        imprimirTraducoes(node->right, palavraPortugues, primeira);
     }
 }
 
-// Função para imprimir a árvore com informações adicionais
-void printTreeEn(TreeNodeEn* root) {
+void printTree(TreeNode* root) {
     if (root != NULL) {
-        printTreeEn(root->left);
+        printTree(root->left);
         printf("Palavra: %s, Unidade: %d\n", root->englishWord, root->unit);
-        printTreeEn(root->right);
+        printTree(root->right);
     }
 }
+
 
 // Função para limpar todos os nós de uma árvore binária
-void limparArvoreBinariaEn(TreeNodeEn** root) {
+void limparArvoreBinaria(TreeNode** root) {
     if (*root != NULL) {
-        limparArvoreBinariaEn(&((*root)->left));
-        limparArvoreBinariaEn(&((*root)->right));
+        // Recursivamente limpa os nós da subárvore esquerda e direita
+        limparArvoreBinaria(&((*root)->left));
+        limparArvoreBinaria(&((*root)->right));
+
+        // Libera o nó atual
         free(*root);
-        *root = NULL;
+        *root = NULL; // Garante que o ponteiro seja definido como NULL
     }
 }
+

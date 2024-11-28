@@ -1,26 +1,34 @@
 #ifndef ARV_INGLES_BIN_H
 #define ARV_INGLES_BIN_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Definição do tipo TreeNodeEn
-typedef struct TreeNodeEn {
-    char englishWord[50];
-    int unit;
-    struct TreeNodeEn* left;
-    struct TreeNodeEn* right;
-} TreeNodeEn;
+// Definindo a estrutura para o nó da árvore binária de busca para palavras em inglês
+typedef struct TreeNode {
+    char englishWord[50];   // Palavra em inglês
+    int unit;               // Unidade à qual a palavra pertence
+    struct TreeNode *left;  // Subárvore esquerda
+    struct TreeNode *right; // Subárvore direita
+} TreeNode;
 
 // Declarações das funções
-TreeNodeEn* createNodeEn(const char* word, int unit);
-TreeNodeEn* insertEnglishWordEn(TreeNodeEn* root, const char* word, int unit);
-TreeNodeEn* searchEnglishWordEn(TreeNodeEn* root, const char* word);
-void printBinaryTreeEn(TreeNodeEn* root);
-TreeNodeEn* removeEnglishWordEn(TreeNodeEn* root, const char* word, int unit);
-void imprimirTraducoesEn(TreeNodeEn* node, const char* palavraPortugues, int* primeira);
-void printTreeEn(TreeNodeEn* root);
-void limparArvoreBinariaEn(TreeNodeEn** root);
 
-#endif // ARV_INGLES_BIN_H
+// Função para criar um novo nó na árvore binária de busca
+TreeNode* createNode(const char* word, int unit);
+
+// Função para inserir uma palavra em inglês na árvore binária de busca
+TreeNode* insertEnglishWord(TreeNode* root, const char* word, int unit);
+
+// Função para buscar uma palavra em inglês na árvore binária de busca
+TreeNode* searchEnglishWord(TreeNode* root, const char* word);
+
+// Função para imprimir a árvore binária em ordem alfabética
+void printBinaryTree(TreeNode* root);
+
+TreeNode* removeEnglishWord(TreeNode* root, const char* word, int unit);
+void imprimirTraducoes(TreeNode *node, const char *palavraPortugues, int *primeira);
+
+void limparArvoreBinaria(TreeNode** root);
+
+#endif // ARV_INGLES_BINARIA_H
