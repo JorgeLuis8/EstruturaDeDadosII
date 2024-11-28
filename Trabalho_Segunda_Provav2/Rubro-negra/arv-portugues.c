@@ -13,6 +13,7 @@ Arv_portugues *cria_no_arv()
         no->cor = RED;
         no->esq = NULL;
         no->dir = NULL;
+        no->dados.englishTreeRoot = NULL;
     }
     return no;
 }

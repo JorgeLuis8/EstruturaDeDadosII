@@ -5,45 +5,59 @@
 #include "arv-ingles-bin.c"
 
 // Função para carregar o arquivo com as palavras e traduções
-void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore) {
+void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
+{
     FILE *arquivo = fopen(nomeArquivo, "r");
-    if (arquivo == NULL) {
-        perror("Erro ao abrir o arquivo");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
         return;
     }
 
     char linha[256];
+
     int unidadeAtual = 0;
 
-    while (fgets(linha, sizeof(linha), arquivo)) {
-        linha[strcspn(linha, "\n")] = 0; // Remove quebra de linha
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
+        linha[strcspn(linha, "\n")] = 0;
 
-        if (linha[0] == '%') {
+        if (linha[0] == '%')
+        {
+            // Atualiza a unidade corretamente
             sscanf(linha, "%% Unidade %d", &unidadeAtual);
-        } else {
-            char palavraPortugues[50];
-            char traducoesIngles[200];
+        }
+        else
+        {
+            char palavraIngles[50], traducoesPortugues[200];
+            sscanf(linha, "%[^:]: %[^;]", palavraIngles, traducoesPortugues);
+            printf("Lendo: Palavra Inglês = '%s', Traduções: '%s'\n", palavraIngles, traducoesPortugues);
+            
+            char *traducaoPortugues = strtok(traducoesPortugues, ",;");
+            while(traducaoPortugues != NULL)
+            {
+                while (*traducaoPortugues == ' ') 
+                    traducaoPortugues++;
 
-            if (sscanf(linha, "%[^:]: %[^\n]", palavraPortugues, traducoesIngles) == 2) {
-                Arv_portugues *novoNo = cria_no_arv();
-                strcpy(novoNo->dados.portugueseWord, palavraPortugues);
-                novoNo->dados.unit = unidadeAtual;
+                Arv_portugues *novo_no = cria_no_arv();
+                novo_no->dados.unit = unidadeAtual;
+                strcpy(novo_no->dados.portugueseWord, traducaoPortugues);
+                novo_no->dados.englishTreeRoot = NULL;
 
-                *arvore = inserir_no(*arvore, novoNo);
+                inserir_no(arvore, novo_no);
 
-                char *traducao = strtok(traducoesIngles, ",;");
-                while (traducao != NULL) {
-                    while (*traducao == ' ') traducao++;
-                    novoNo->dados.englishTreeRoot = insertEnglishWord(
-                        novoNo->dados.englishTreeRoot, traducao, unidadeAtual);
-                    traducao = strtok(NULL, ",;");
-                }
+                // Info novoInfo = criaInfo(traducaoPortugues, palavraIngles, unidadeAtual);
+                // inserirArvRB(arvore, &novoInfo);
+                traducaoPortugues = strtok(NULL, ",;");    
             }
+            
         }
     }
 
     fclose(arquivo);
+    printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
 }
+
 
 
 // Função auxiliar para exibir palavras de uma unidade específica
@@ -109,7 +123,7 @@ int main() {
     char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:\\Users\\jorge\\OneDrive\\Documentos\\GitHub\\EstruturaDeDadosII\\Trabalho_Segunda_Provav2\\Rubro-negra\\vocabulario1.txt", &arvore);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", &arvore);
 
     // Loop principal do menu
     while (opcao != 6) {
@@ -179,25 +193,3 @@ int main() {
     return 0;
 }
 
-
-// int main() {
-//     Arv_portugues *arvore = NULL;
-//     Arv_portugues *novoNo = cria_no_arv();
-//     if (novoNo == NULL) {
-//         printf("Erro ao criar nó.\n");
-//         return 1;
-//     }
-
-//     strcpy(novoNo->dados.portugueseWord, "teste");
-//     novoNo->dados.unit = 1;
-
-//     arvore = inserir_no(arvore, novoNo);
-
-//     if (arvore) {
-//         printf("Palavra inserida: %s, Unidade: %d\n", arvore->dados.portugueseWord, arvore->dados.unit);
-//     } else {
-//         printf("Erro ao inserir nó.\n");
-//     }
-
-//     return 0;
-// }

@@ -55,4 +55,13 @@ void imprimirPorDadaUnidadeTraducoes(Tree23Node *arvore, int unidade);
 
 void removerPalavraIngles(Tree23Node** arvore, const char* palavraIngles, int unidade);
 
+// Função para imprimir as palavras e traduções de uma unidade específica
+void imprimirPorDadaUnidadeTraducoes(Tree23Node *arvore, int unidade);
+
+// Função auxiliar para imprimir as informações de uma unidade formatadas, linha por linha
+void imprimirInfoUnidadeFormatadaLinhaPorLinha(Tree23Node *arvore, int unidade);
+
+// Função para imprimir as traduções da árvore binária de traduções, linha por linha
+void imprimirTraducoesLinhaPorLinha(TreeNode *raiz);
+
 #endif // ARV_PORTUGUES_23_H
