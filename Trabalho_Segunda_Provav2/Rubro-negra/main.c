@@ -31,7 +31,7 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
         {
             char palavraIngles[50], traducoesPortugues[200];
             sscanf(linha, "%[^:]: %[^;]", palavraIngles, traducoesPortugues);
-            printf("Lendo: Palavra Inglês = '%s', Traduções: '%s'\n", palavraIngles, traducoesPortugues);
+           
             
             char *traducaoPortugues = strtok(traducoesPortugues, ",;");
             while(traducaoPortugues != NULL)
@@ -44,8 +44,8 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
                 strcpy(novo_no->dados.portugueseWord, traducaoPortugues);
                 novo_no->dados.englishTreeRoot = NULL;
                 arvore = inserir_no(arvore, novo_no);  // Correção
+                
 
-                printf("Cria no");
 
                 // Info novoInfo = criaInfo(traducaoPortugues, palavraIngles, unidadeAtual);
                 // inserirArvRB(arvore, &novoInfo);
@@ -125,6 +125,7 @@ int main() {
 
     // Carregar o arquivo de palavras
     carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", arvore);
+    printf("Passou essa bucetinha");
 
     // Loop principal do menu
     while (opcao != 6) {
