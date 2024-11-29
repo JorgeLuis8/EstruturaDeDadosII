@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define RED 1
+#define BLACK 0
 Info criaInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
@@ -260,7 +262,7 @@ void BuscarPalavraIngles(PortuguesRB **raiz, char *palavraIngles, int unidade)
     {
         BuscarPalavraIngles(&(*raiz)->esq, palavraIngles, unidade);
 
-        if ((*raiz)->info.palavraIngles != NULL && (*raiz)->info.palavraIngles.unidade == unidade)
+        if ((*raiz)->info.palavraIngles != NULL && (*raiz)->info.palavraIngles->unidade == unidade)
             removerPalavraIngles(&(*raiz)->info.palavraIngles, palavraIngles);
         BuscarPalavraIngles(&(*raiz)->dir, palavraIngles, unidade);
     }

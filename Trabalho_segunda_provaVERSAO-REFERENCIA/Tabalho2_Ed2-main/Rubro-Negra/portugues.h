@@ -4,10 +4,10 @@
 #include "ingles.h"
 
 // Definição da estrutura que irá armazenar a informação de uma palavra e suas traduções
-typedef struct info {
-    char *palavraPortugues;
-    char *palavraIngles;
-    int unidade;
+typedef struct Info
+{
+  Inglesbin *palavraIngles;
+  char *palavraPortugues;
 } Info;
 
 // Definição da estrutura do nó da árvore rubro-negra
@@ -17,9 +17,7 @@ typedef struct portuguesRB {
     struct portuguesRB *esq, *dir; // Filhos esquerdo e direito
 } PortuguesRB;
 
-// Cores
-#define RED 1
-#define BLACK 0
+
 
 // Funções para manipulação da árvore rubro-negra
 Info criaInfo(char *palavra, char *palavraIngles, int unidade); // Cria a estrutura Info
