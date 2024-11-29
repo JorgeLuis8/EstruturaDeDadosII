@@ -286,7 +286,7 @@ PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues)
 //         printf("Palavra (PT): %s", raiz->info.palavraPortugues);
 //         if (raiz->info.palavraIngles != NULL && raiz->info.palavraIngles->palavraIngles != NULL)
 //         {
-//             printBinaryTree(raiz->info.palavraIngles);
+//             (raiz->info.palavraIngles);
 //             printf("\n");
 //         }
 //         exibir_tree23(raiz->cent);

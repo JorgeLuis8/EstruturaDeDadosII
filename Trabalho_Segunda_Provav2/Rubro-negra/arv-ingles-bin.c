@@ -13,19 +13,15 @@ TreeNode* createNode(const char* word, int unit) {
 }
 
 // Função para inserir uma palavra em inglês na árvore binária de busca
-TreeNode* insertEnglishWord(TreeNode* root, const char* word, int unit) {
-    TreeNode *result;
+TreeNode* insertEnglishWord(TreeNode* root, const char* word, int unidade) {
     if (root == NULL) {
-        result = createNode(word, unit);
+        root = createNode(word, unidade);
+    } else if (strcmp(word, root->englishWord) < 0) {
+        root->left = insertEnglishWord(root->left, word, unidade);
     } else {
-        if (strcmp(word, root->englishWord) < 0) {
-            root->left = insertEnglishWord(root->left, word, unit);
-        } else if (strcmp(word, root->englishWord) > 0) {
-            root->right = insertEnglishWord(root->right, word, unit);
-        }
-        result = root;
+        root->right = insertEnglishWord(root->right, word, unidade);
     }
-    return result;
+    return root;
 }
 
 // Função para buscar uma palavra em inglês na árvore binária de busca
@@ -46,11 +42,17 @@ TreeNode* searchEnglishWord(TreeNode* root, const char* word) {
 // Função para imprimir a árvore binária em ordem alfabética (simples visualização)
 void printBinaryTree(TreeNode* root) {
     if (root != NULL) {
+        // Percorre à esquerda
         printBinaryTree(root->left);
+        
+        // Imprime a palavra em inglês
         printf("%s \n", root->englishWord);
+        
+        // Percorre à direita
         printBinaryTree(root->right);
     }
 }
+
 
 TreeNode* removeEnglishWord(TreeNode* root, const char* word, int unit) {
     if (root != NULL) {
@@ -95,22 +97,7 @@ TreeNode* removeEnglishWord(TreeNode* root, const char* word, int unit) {
 }
 
 
-void imprimirTraducoes(TreeNode *node, const char *palavraPortugues, int *primeira) {
-    if (node) {
-        // Imprime o nó esquerdo
-        imprimirTraducoes(node->left, palavraPortugues, primeira);
 
-        // Imprime a palavra em inglês e a tradução em português
-        if (!*primeira) {
-            printf("\n");
-        }
-        printf("%s: %s;", node->englishWord, palavraPortugues);
-        *primeira = 0;
-
-        // Imprime o nó direito
-        imprimirTraducoes(node->right, palavraPortugues, primeira);
-    }
-}
 
 void printTree(TreeNode* root) {
     if (root != NULL) {

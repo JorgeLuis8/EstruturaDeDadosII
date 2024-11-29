@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arv-ingles-bin.c"
-#include "arv-portugues.c"
+#include "portugues.c"
+#include "ingles.c"
 // #include "arvbin.h"
 
 int inserirPalavraPortugues(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
@@ -79,7 +79,7 @@ int main()
 
     PortuguesRB *raiz = NULL;
 
-    carregarArquivo("/mnt/c/Users/Rayssa Alves/Documents/trabalho_ed2/Tabalho2_Ed2/trabalhoEd2.txt", &raiz);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", &raiz);
 
     // Info info1 = criaInfo("casa", 1);
     // Info info2 = criaInfo("livro", 2);
