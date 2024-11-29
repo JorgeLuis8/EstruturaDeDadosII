@@ -7,7 +7,8 @@
     "cwchar": "cpp",
     "disciplinas.h": "c",
     "curso.h": "c",
-    "arv-portugues.h": "c"
+    "arv-portugues.h": "c",
+    "ingles.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

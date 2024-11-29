@@ -6,26 +6,26 @@
 #include "ingles.c"
 // #include "arvbin.h"
 
-int inserirPalavraPortugues(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
+int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
     int inseriu = 0;
 
     // Busca a palavra na árvore
-    PortuguesRB *noExistente = NULL;
+    Arv_portugues *noExistente = NULL;
     noExistente =  BuscarPalavra(arvore, palavraPortugues);
 
     if (noExistente != NULL) {
         printf("A palavra já existe. Adicionando tradução...\n");
-        adicionarTraducaoEmIngles(noExistente, palavraIngles, unidade);
+        AdicionarTraducaoEN(noExistente, palavraIngles, unidade);
         inseriu = 1;
     } else {
-        Info novoInfo = criaInfo(palavraPortugues, palavraIngles, unidade);
-        inserirArvRB(arvore, &novoInfo);
+        Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
+        inserirArvRec(arvore, &novoInfo);
         inseriu = 1;
     }
     return inseriu;
 }
 
-void carregarArquivo(const char *nomeArquivo, PortuguesRB **arvore)
+void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
@@ -77,7 +77,7 @@ void carregarArquivo(const char *nomeArquivo, PortuguesRB **arvore)
 int main()
 {
 
-    PortuguesRB *raiz = NULL;
+    Arv_portugues *raiz = NULL;
 
     carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", &raiz);
 
@@ -94,7 +94,7 @@ int main()
     exibirArvore(raiz);
     printf("\n--------------------------------------------------------------- \n");
 
-    removerNoArvVP(&raiz, "bicicleta");
+    RemoverNo(&raiz, "bicicleta");
     printf("\n--------------------------------------------------------------- \n");
 
     exibirArvore(raiz);

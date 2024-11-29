@@ -18,7 +18,7 @@ int inserirPalavraPortugues(PortuguesRB **arvore, char *palavraPortugues, char *
         adicionarTraducaoEmIngles(noExistente, palavraIngles, unidade);
         inseriu = 1;
     } else {
-        Info novoInfo = criaInfo(palavraPortugues, palavraIngles, unidade);
+        Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
         inserirArvRB(arvore, &novoInfo);
         inseriu = 1;
     }

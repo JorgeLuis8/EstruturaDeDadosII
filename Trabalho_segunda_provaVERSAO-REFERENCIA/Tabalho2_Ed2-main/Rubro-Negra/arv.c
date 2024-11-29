@@ -41,7 +41,7 @@ Inglesbin *insertpalavraIngles(Inglesbin *root, char *palavraIngles, int unidade
     return result;
 }
 
-Info criaInfo(char *palavra, char *palavraIngles, int unidade)
+Info CriarInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 
@@ -278,92 +278,6 @@ PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues)
     return atual;
 }
 
-// void exibir_tree23(const Portugues23 *raiz)
-// {
-//     if (raiz != NULL)
-//     {
-//         exibir_tree23(raiz->esq);
-//         printf("Palavra (PT): %s", raiz->info.palavraPortugues);
-//         if (raiz->info.palavraIngles != NULL && raiz->info.palavraIngles->palavraIngles != NULL)
-//         {
-//             (raiz->info.palavraIngles);
-//             printf("\n");
-//         }
-//         exibir_tree23(raiz->cent);
-//         // Se houver o segundo elemento (nInfos == 2), exibe o segundo filho
-//         if (raiz->nInfos == 2)
-//         {
-//             printf("Palavra (PT): %s", raiz->info2.palavraPortugues);
-
-//             // Exibir a tradução em inglês, se houver
-//             if (raiz->info2.palavraIngles != NULL && raiz->info2.palavraIngles->palavraIngles != NULL)
-//                 printBinaryTree(raiz->info2.palavraIngles);
-//             printf("\n");
-//         }
-
-//         if (raiz->nInfos == 2)
-//         {
-//             exibir_tree23(raiz->dir);
-//         }
-//     }
-// }
-
-// void imprimirInfoUnidade(Portugues23 *arvore, int unidade)
-// {
-//     if (arvore)
-//     {
-//         imprimirInfoUnidade(arvore->esq, unidade);
-//         imprimirTraducoes(arvore->info.palavraIngles, unidade, arvore->info.palavraPortugues);
-
-//         imprimirInfoUnidade(arvore->cent, unidade);
-//         if (arvore->nInfos == 2)
-//         {
-//             imprimirTraducoes(arvore->info2.palavraIngles, unidade, arvore->info2.palavraPortugues);
-//         }
-//         imprimirInfoUnidade(arvore->dir, unidade);
-//     }
-// }
-
-// void imprimirTraducoes(Inglesbin *node, int unidade, const char *palavraPortuguês)
-// {
-//     if (node)
-//     {
-//         if (node->unidade == unidade)
-//         {
-//             printf("Palavra em Português: %s\n", palavraPortuguês);
-//             printf("Palavra em inglês: %s\n", node->palavraIngles);
-//         }
-//         imprimirTraducoes(node->esq, unidade, palavraPortuguês);
-//         imprimirTraducoes(node->dir, unidade, palavraPortuguês);
-//     }
-// }
-
-// void exibir_traducao_Portugues(Portugues23 **raiz, const char *palavraPortugues)
-// {
-//     Portugues23 *resultado = NULL;
-//     if (raiz != NULL)
-//     {
-//         resultado = BuscarPalavra(raiz, palavraPortugues);
-//         if (resultado)
-//         {
-//             printf("Traduções em inglês para a palavra '%s':\n", palavraPortugues);
-
-//             if (strcmp(palavraPortugues, resultado->info.palavraPortugues) == 0)
-//             {
-//                 printBinaryTree(resultado->info.palavraIngles);
-//             }
-//             else
-//             {
-//                 printBinaryTree(resultado->info2.palavraIngles);
-//             }
-
-//         }
-//         else
-//         {
-//             printf("A palavra '%s' não foi encontrada na árvore.\n", palavraPortugues);
-//         }
-//     }
-// }
 
 void printBinaryTree(Inglesbin *root)
 {

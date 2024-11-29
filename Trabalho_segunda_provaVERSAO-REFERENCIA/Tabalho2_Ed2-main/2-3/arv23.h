@@ -21,7 +21,7 @@ Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Por
 void freeTree(Portugues23 *no);
 void exibir_tree23(const Portugues23 *raiz);
 void adicionarTraducaoEmIngles(Info *info, const char *palavraIng, int unidade);
-Info criaInfo(char *palavra, char *palavraIngles, int unidade);
+Info CriarInfo(char *palavra, char *palavraIngles, int unidade);
 
 
 void imprimirInfoUnidade(Portugues23 *arvore, int unidade);

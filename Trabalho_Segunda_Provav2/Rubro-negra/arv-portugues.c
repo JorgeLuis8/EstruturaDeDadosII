@@ -41,7 +41,7 @@ Inglesbin *insertpalavraIngles(Inglesbin *root, char *palavraIngles, int unidade
     return result;
 }
 
-Info criaInfo(char *palavra, char *palavraIngles, int unidade)
+Info CriarInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 

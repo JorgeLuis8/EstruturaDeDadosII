@@ -19,7 +19,7 @@ int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *
         adicionarTraducao(noExistente, palavraPortugues, palavraIngles, unidade);
         inseriu = 1;
     } else {
-        Info novoInfo = criaInfo(palavraPortugues, palavraIngles, unidade);
+        Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
         inserirArv23(arvore, &novoInfo, &promove, &pai);
         inseriu = 0;
     }

@@ -6,7 +6,8 @@
 
 #define RED 1
 #define BLACK 0
-Info criaInfo(char *palavra, char *palavraIngles, int unidade)
+
+Info CriarInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 
@@ -18,16 +19,16 @@ Info criaInfo(char *palavra, char *palavraIngles, int unidade)
     return info;
 }
 
-PortuguesRB *criaNo(Info *informacao)
+Arv_portugues*criaNo(Info *informacao)
 {
-    PortuguesRB *novo = (PortuguesRB *)malloc(sizeof(PortuguesRB));
+    Arv_portugues *novo = (Arv_portugues *)malloc(sizeof(Arv_portugues));
     novo->info = *informacao;
     novo->cor = 1;
     novo->esq = NULL;
     novo->dir = NULL;
     return novo;
 }
-int cor(PortuguesRB *raiz)
+int cor_no(Arv_portugues *raiz)
 {
     int cor;
 
@@ -39,7 +40,7 @@ int cor(PortuguesRB *raiz)
     return cor;
 }
 
-void troca_cor(PortuguesRB **raiz)
+void trocar_cor(Arv_portugues **raiz)
 {
     (*raiz)->cor = !(*raiz)->cor;
     if ((*raiz)->esq)
@@ -48,9 +49,9 @@ void troca_cor(PortuguesRB **raiz)
         (*raiz)->dir->cor = !(*raiz)->dir->cor;
 }
 
-void rotacao_direita(PortuguesRB **raiz)
+void rotar_direita(Arv_portugues **raiz)
 {
-    PortuguesRB *aux = (*raiz)->esq;
+    Arv_portugues *aux = (*raiz)->esq;
     (*raiz)->esq = aux->dir;
     aux->dir = *raiz;
     aux->cor = (*raiz)->cor;
@@ -58,9 +59,9 @@ void rotacao_direita(PortuguesRB **raiz)
     (*raiz) = aux;
 }
 
-void rotacao_esquerda(PortuguesRB **raiz)
+void rotar_esquerda(Arv_portugues **raiz)
 {
-    PortuguesRB *aux = (*raiz)->dir;
+    Arv_portugues *aux = (*raiz)->dir;
     (*raiz)->dir = aux->esq;
     aux->esq = *raiz;
     aux->cor = (*raiz)->cor;
@@ -68,20 +69,20 @@ void rotacao_esquerda(PortuguesRB **raiz)
     (*raiz) = aux;
 }
 
-void balancear(PortuguesRB **raiz)
+void balancear(Arv_portugues **raiz)
 {
     if (*raiz)
     {
-        if (cor((*raiz)->dir) == RED && cor((*raiz)->esq) == BLACK)
-            rotacao_esquerda(raiz);
-        if (cor((*raiz)->esq) == RED && cor((*raiz)->esq->esq) == RED)
-            rotacao_direita(raiz);
-        if (cor((*raiz)->esq) == RED && cor((*raiz)->dir) == RED)
-            troca_cor(raiz);
+        if (cor_no((*raiz)->dir) == RED && cor_no((*raiz)->esq) == BLACK)
+            rotar_esquerda(raiz);
+        if (cor_no((*raiz)->esq) == RED && cor_no((*raiz)->esq->esq) == RED)
+            rotar_direita(raiz);
+        if (cor_no((*raiz)->esq) == RED && cor_no((*raiz)->dir) == RED)
+            trocar_cor(raiz);
     }
 }
 
-int inserirRB(PortuguesRB **raiz, Info *informacao)
+int inserir_arv(Arv_portugues **raiz, Info *informacao)
 {
 
     int inseriu = 1;
@@ -93,11 +94,11 @@ int inserirRB(PortuguesRB **raiz, Info *informacao)
     {
         if (strcmp(informacao->palavraPortugues, (*raiz)->info.palavraPortugues) < 0)
         {
-            inseriu = inserirRB(&(*raiz)->esq, informacao);
+            inseriu = inserir_arv(&(*raiz)->esq, informacao);
         }
         else
         {
-            inseriu = inserirRB(&(*raiz)->dir, informacao);
+            inseriu = inserir_arv(&(*raiz)->dir, informacao);
         }
         balancear(&(*raiz));
     }
@@ -105,9 +106,9 @@ int inserirRB(PortuguesRB **raiz, Info *informacao)
     return inseriu;
 }
 
-int inserirArvRB(PortuguesRB **raiz, Info *informacao)
+int inserirArvRec(Arv_portugues **raiz, Info *informacao)
 {
-    int inseriu = inserirRB(raiz, informacao);
+    int inseriu = inserir_arv(raiz, informacao);
     if (inseriu)
     {
         (*raiz)->cor = BLACK;
@@ -115,30 +116,30 @@ int inserirArvRB(PortuguesRB **raiz, Info *informacao)
     return inseriu;
 }
 
-void moveEsqVermelha(PortuguesRB **raiz)
+void move2EsqVermelha(Arv_portugues **raiz)
 {
-    troca_cor(raiz);
+    trocar_cor(raiz);
 
-    if ((*raiz)->dir && cor((*raiz)->dir->esq) == RED)
+    if ((*raiz)->dir && cor_no((*raiz)->dir->esq) == RED)
     {
-        rotacao_direita(&(*raiz)->dir);
-        rotacao_esquerda((raiz));
-        troca_cor(raiz);
+        rotar_direita(&(*raiz)->dir);
+        rotar_esquerda((raiz));
+        trocar_cor(raiz);
     }
 }
 
-void moveDirVermelha(PortuguesRB **raiz)
+void move2DirVermelha(Arv_portugues **raiz)
 {
-    troca_cor(raiz);
+    trocar_cor(raiz);
 
-    if ((*raiz)->esq && cor((*raiz)->esq->esq) == RED)
+    if ((*raiz)->esq && cor_no((*raiz)->esq->esq) == RED)
     {
-        rotacao_direita(raiz);
-        troca_cor(raiz);
+        rotar_direita(raiz);
+        trocar_cor(raiz);
     }
 }
 
-void removeMenor(PortuguesRB **raiz)
+void RemoverMenor(Arv_portugues **raiz)
 {
     if (!((*raiz)->esq))
     {
@@ -147,27 +148,27 @@ void removeMenor(PortuguesRB **raiz)
     }
     else
     {
-        if (cor((*raiz)->esq) == BLACK && cor((*raiz)->esq->esq) == BLACK)
-            moveEsqVermelha(raiz);
+        if (cor_no((*raiz)->esq) == BLACK && cor_no((*raiz)->esq->esq) == BLACK)
+            move2EsqVermelha(raiz);
 
-        removeMenor(&(*raiz)->esq);
+        RemoverMenor(&(*raiz)->esq);
         balancear(raiz);
     }
 }
 
-PortuguesRB *procuraMenor(PortuguesRB *raiz)
+Arv_portugues *ProcurarMenor(Arv_portugues *raiz)
 {
-    PortuguesRB *menor;
+    Arv_portugues *menor;
     menor = raiz;
 
     if (raiz)
         if (raiz->esq)
-            menor = procuraMenor(raiz->esq);
+            menor = ProcurarMenor(raiz->esq);
 
     return menor;
 }
 
-int removerNoArvVP(PortuguesRB **raiz, char *valor)
+int RemoverNo(Arv_portugues **raiz, char *valor)
 {
     int existe = 0;
     printf("\nEntrou \n");
@@ -176,15 +177,15 @@ int removerNoArvVP(PortuguesRB **raiz, char *valor)
     {
         if (strcmp(valor, (*raiz)->info.palavraPortugues) < 0)
         {
-            if ((*raiz)->esq && cor((*raiz)->esq) == BLACK && cor((*raiz)->esq->esq) == BLACK)
-                moveEsqVermelha(raiz);
+            if ((*raiz)->esq && cor_no((*raiz)->esq) == BLACK && cor_no((*raiz)->esq->esq) == BLACK)
+                move2EsqVermelha(raiz);
 
-            existe = removerNoArvVP(&(*raiz)->esq, valor);
+            existe = RemoverNo(&(*raiz)->esq, valor);
         }
         else
         {
-            if (cor((*raiz)->esq) == RED)
-                rotacao_direita(raiz);
+            if (cor_no((*raiz)->esq) == RED)
+                rotar_direita(raiz);
 
             if (strcmp(valor, (*raiz)->info.palavraPortugues) == 0 && (*raiz)->dir == NULL)
             {
@@ -193,21 +194,21 @@ int removerNoArvVP(PortuguesRB **raiz, char *valor)
 
                 existe = 1;
             }else{
-                if ((*raiz)->dir && cor((*raiz)->dir) == BLACK && cor((*raiz)->dir->esq) == BLACK)
-                moveDirVermelha(raiz);
+                if ((*raiz)->dir && cor_no((*raiz)->dir) == BLACK && cor_no((*raiz)->dir->esq) == BLACK)
+                move2DirVermelha(raiz);
 
                 if (strcmp(valor, (*raiz)->info.palavraPortugues) == 0)
                 {
-                    PortuguesRB *aux;
-                    aux = procuraMenor((*raiz)->dir);
+                    Arv_portugues *aux;
+                    aux = ProcurarMenor((*raiz)->dir);
                     (*raiz)->info = aux->info;
-                    removeMenor(&(*raiz)->dir);
+                    RemoverMenor(&(*raiz)->dir);
 
                     existe = 1;
                 }
                 else
                 {
-                    existe = removerNoArvVP(&(*raiz)->dir, valor);
+                    existe = RemoverNo(&(*raiz)->dir, valor);
                 }
             }
         }
@@ -216,14 +217,14 @@ int removerNoArvVP(PortuguesRB **raiz, char *valor)
     return existe;
 }
 
-void adicionarTraducaoEmIngles(PortuguesRB *raiz, char *palavraIng, int unidade)
+void AdicionarTraducaoEN(Arv_portugues *raiz, char *palavraIng, int unidade)
 {
     raiz->info.palavraIngles = insertpalavraIngles(raiz->info.palavraIngles, palavraIng, unidade);
 }
 
-PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues)
+Arv_portugues *BuscarPalavra(Arv_portugues **arvore, char *palavraPortugues)
 {
-    PortuguesRB *atual = NULL;
+    Arv_portugues *atual = NULL;
 
     if (*arvore != NULL)
     {
@@ -243,7 +244,7 @@ PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues)
     return atual;
 }
 
-void exibirArvore(PortuguesRB *raiz)
+void exibirArvore(Arv_portugues *raiz)
 {
     if (raiz)
     {
@@ -256,7 +257,7 @@ void exibirArvore(PortuguesRB *raiz)
     }
 }
 
-void BuscarPalavraIngles(PortuguesRB **raiz, char *palavraIngles, int unidade)
+void BuscarPalavraIngles(Arv_portugues **raiz, char *palavraIngles, int unidade)
 {
     if (*raiz != NULL)
     {

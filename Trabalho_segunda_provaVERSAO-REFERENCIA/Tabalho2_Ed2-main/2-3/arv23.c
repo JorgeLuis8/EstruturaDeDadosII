@@ -43,7 +43,7 @@ Inglesbin *insertpalavraIngles(Inglesbin *root, const char *palavraIngles, int u
 
 
 /* (pre-itens) funções necessarias para que os itens i, ii, iii e iv possam ocorrer */
-Info criaInfo(char *palavra, char *palavraIngles, int unidade)
+Info CriarInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 
