@@ -4,6 +4,7 @@
 #include "arv-portugues.c"
 #include "arv-ingles-bin.c"
 
+#define CAMINHO_ARQUIVO "C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt"
 // Função para carregar o arquivo com as palavras e traduções
 Arv_portugues* carregarArquivo(const char *nomeArquivo, Arv_portugues *arvore)
 {
@@ -80,15 +81,6 @@ void exibirPalavrasPorUnidade(Arv_portugues *arvore, int unidade) {
 }
 
 // Função para verificar se há palavras para a unidade atual
-void verificarUnidade(Arv_portugues *arvore, int unidade, int *temPalavras) {
-    if (arvore != NULL) {
-        if (arvore->dados.unit == unidade) {
-            *temPalavras = 1;
-        }
-        verificarUnidade(arvore->esq, unidade, temPalavras);
-        verificarUnidade(arvore->dir, unidade, temPalavras);
-    }
-}
 
 // Função principal para exibir a árvore no formato do arquivo
 void exibirArvoreFormatoArquivo(Arv_portugues *arvore) {
@@ -126,7 +118,7 @@ int main() {
     char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    arvore = carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", arvore);
+    arvore = carregarArquivo(CAMINHO_ARQUIVO, arvore);
 
     // Loop principal do menu
     while (opcao != 6) {

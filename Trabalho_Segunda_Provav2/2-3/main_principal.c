@@ -3,7 +3,7 @@
 #include <string.h>
 #include "arv_portugues-23.c"
 #include "arv_ingles-binaria.c"
-
+#define CAMINHO_ARQUIVO "C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt"
 // Função para carregar o arquivo com as palavras e traduções
 void carregarArquivo(const char *nomeArquivo, Tree23Node **arvore) {
     FILE *arquivo = fopen(nomeArquivo, "r");
@@ -136,7 +136,7 @@ int main() {
     char palavraIngles[50];
 
     // Carregar o arquivo de palavras
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/ED2-JOB2/Trabalho_Segunda_Provav2/2-3/vocabulario.txt", &arvore);
+    carregarArquivo(CAMINHO_ARQUIVO, &arvore);
 
     // Loop principal do menu
     while (opcao != 6) {
