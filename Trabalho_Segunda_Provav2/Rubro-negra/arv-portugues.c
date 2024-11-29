@@ -214,18 +214,3 @@ Arv_portugues *remove_NO_arv(Arv_portugues *H, Arv_portugues *no) {
     return balancear_arv(H);
 }
 
-// Função para verificar se existe palavras na unidade especificada
-void verificarUnidade(Arv_portugues *arvore, int unidade, int *temPalavras) {
-    if (arvore == NULL) {
-        return;
-    }
-
-    // Verifica se a palavra da unidade corresponde
-    if (arvore->dados.unit == unidade) {
-        *temPalavras = 1;  // Encontrou palavras na unidade
-    }
-
-    // Percorre recursivamente as subárvores esquerda e direita
-    verificarUnidade(arvore->esq, unidade, temPalavras);
-    verificarUnidade(arvore->dir, unidade, temPalavras);
-}
