@@ -1,5 +1,5 @@
 % Unidade 1 
-Bus: ônibus, barramento; 
+Bus: onibus, barramento; 
 Bug: inseto, problema; 
 Bike: bicicleta;  
 Coller: ventilador; 

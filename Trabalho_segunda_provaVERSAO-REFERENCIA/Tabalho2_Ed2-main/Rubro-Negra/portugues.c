@@ -268,3 +268,33 @@ void BuscarPalavraIngles(Arv_portugues **raiz, char *palavraIngles, int unidade)
         BuscarPalavraIngles(&(*raiz)->dir, palavraIngles, unidade);
     }
 }
+
+
+void exibirPalavrasPorUnidade(Arv_portugues *raiz, int unidade)
+{
+    // Verifica se a árvore não está vazia
+    if (raiz != NULL)
+    {
+        // Primeiro, verifica se a palavra em português tem traduções na unidade especificada
+        if (raiz->info.palavraIngles != NULL)
+        {
+            Inglesbin *traducao = raiz->info.palavraIngles;
+            // Percorre a lista de traduções para verificar a unidade
+            while (traducao != NULL)
+            {
+                if (traducao->unidade == unidade)
+                {
+                    // Imprime a palavra em português e a tradução em inglês
+                    printf("Palavra em Português: %s\n", raiz->info.palavraPortugues);
+                    printf("Tradução em Inglês: %s (Unidade %d)\n", traducao->palavraIngles, traducao->unidade);
+                }
+                traducao = traducao->dir; // Passa para a próxima tradução em inglês
+            }
+        }
+
+        // Recursivamente, percorre a árvore à esquerda e à direita
+        exibirPalavrasPorUnidade(raiz->esq, unidade);
+        exibirPalavrasPorUnidade(raiz->dir, unidade);
+    }
+}
+
