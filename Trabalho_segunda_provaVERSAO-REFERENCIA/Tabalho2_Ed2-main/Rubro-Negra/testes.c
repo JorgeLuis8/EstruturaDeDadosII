@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "portugues.c"
 #include "ingles.c"
+#include <windows.h>
+#include <stdio.h>
+#include <string.h>
 
 int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
     int inseriu = 0;
@@ -58,9 +61,7 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore) {
     fclose(arquivo);
     printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
 }
-#include <windows.h>
-#include <stdio.h>
-#include <string.h>
+
 // Função para buscar uma palavra em português e registrar o caminho percorrido
 int buscarPalavraComCaminho(Arv_portugues *arvore, char *palavraPortugues, char *caminho) {
     if (arvore == NULL) {
@@ -131,3 +132,5 @@ void realizarExperimento(Arv_portugues *arvore, char palavras[30][50]) {
 
     return 0;
 }
+
+

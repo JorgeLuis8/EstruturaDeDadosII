@@ -6,22 +6,29 @@
 #include <string.h>
 
 int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
-    int inseriu = 0;
-
-    // Busca a palavra na árvore
-    Arv_portugues *noExistente = NULL;
-    noExistente =  BuscarPalavra(arvore, palavraPortugues);
+    Arv_portugues *noExistente = BuscarPalavra(arvore, palavraPortugues);
 
     if (noExistente != NULL) {
-        printf("A palavra já existe. Adicionando tradução...\n");
+        // Verifica se já existe a mesma tradução na mesma unidade
+        Inglesbin *traducao = noExistente->info.palavraIngles;
+        while (traducao != NULL) {
+            if (strcmp(traducao->palavraIngles, palavraIngles) == 0 && traducao->unidade == unidade) {
+                printf("A tradução '%s' para '%s' já existe na unidade %d. Ignorando.\n",
+                       palavraIngles, palavraPortugues, unidade);
+                return 0; // Já existe, não insere novamente
+            }
+            traducao = traducao->dir;
+        }
+
+        // Adiciona nova tradução na lista
         AdicionarTraducaoEN(noExistente, palavraIngles, unidade);
-        inseriu = 1;
+        return 1;
     } else {
+        // Cria nova entrada para a palavra
         Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
         inserirArvRec(arvore, &novoInfo);
-        inseriu = 1;
+        return 1;
     }
-    return inseriu;
 }
 
 void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore) {
@@ -66,16 +73,20 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore) {
 void imprimirPalavrasPorUnidade(Arv_portugues *arvore, int unidade) {
     if (arvore == NULL) return;
 
-    // Se a unidade da palavra for igual à unidade fornecida, imprime a tradução
-    if (arvore->info.palavraIngles->unidade == unidade) {
-        printf("%s: %s;\n", 
-               arvore->info.palavraPortugues, arvore->info.palavraIngles->palavraIngles);
+    // Percorre a lista de traduções e imprime todas as palavras e traduções para a unidade
+    Inglesbin *traducao = arvore->info.palavraIngles;
+    while (traducao != NULL) {
+        if (traducao->unidade == unidade) {
+            printf("%s: %s;\n", arvore->info.palavraPortugues, traducao->palavraIngles);
+        }
+        traducao = traducao->dir; // Avança para a próxima tradução
     }
 
-    // Recursivamente imprime as palavras da subárvore esquerda e direita
+    // Recursivamente percorre as subárvores
     imprimirPalavrasPorUnidade(arvore->esq, unidade);
     imprimirPalavrasPorUnidade(arvore->dir, unidade);
 }
+
 
 // Função para imprimir todas as traduções em inglês de uma palavra em português
 void imprimirTraducoesIngles(Arv_portugues *arvore, char *palavraPortugues) {
@@ -92,71 +103,46 @@ void imprimirTraducoesIngles(Arv_portugues *arvore, char *palavraPortugues) {
     imprimirTraducoesIngles(arvore->dir, palavraPortugues);
 }
 
-// Função para remover uma palavra em português e sua tradução correspondente na mesma unidade
-void removerPalavraPortuguesEIngles(Arv_portugues **arvore, char *palavraPortugues, int unidade) {
-    if (*arvore == NULL) return;
-
-    // Busca a palavra em português na árvore Rubro-Negra
-    Arv_portugues *no = BuscarPalavra(arvore, palavraPortugues);
-
-    if (no != NULL) {
-        // Remove todas as palavras em inglês da árvore binária correspondente à unidade
-        Inglesbin *raizIngles = no->info.palavraIngles;
-        int traducaoRemovida = 0;
-
-        if (raizIngles != NULL) {
-            Inglesbin *temp = raizIngles;
-
-            while (temp != NULL) {
-                if (temp->unidade == unidade) {
-                    removerPalavraIngles(&raizIngles, temp->palavraIngles);
-                    traducaoRemovida = 1;
-                    break;
-                }
-                temp = temp->dir; // Percorre para o próximo nó
-            }
-        }
-
-        // Atualiza a árvore binária no nó
-        no->info.palavraIngles = raizIngles;
-
-        if (traducaoRemovida) {
-            printf("A tradução na unidade %d foi removida.\n", unidade);
-
-            // Se a árvore binária ficou vazia, remove o nó da árvore Rubro-Negra
-            if (no->info.palavraIngles == NULL) {
-                printf("A palavra '%s' não possui mais traduções e será removida da árvore principal.\n", palavraPortugues);
-                RemoverNo(arvore, palavraPortugues);
-            }
-        } else {
-            printf("Nenhuma tradução encontrada para a palavra '%s' na unidade %d.\n", palavraPortugues, unidade);
-        }
-    } else {
-        printf("A palavra '%s' não foi encontrada na árvore.\n", palavraPortugues);
-    }
-}
 
 
-// Função para remover uma palavra em inglês e suas referências nas árvores binárias e Rubro-Negra
+// Função para remover uma palavra em inglês e atualizar as árvores
 void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, int unidade) {
     if (*arvore == NULL) return;
 
-    // Percorre a árvore Rubro-Negra
+    // Remoção na subárvore esquerda
     removerPalavraInglesEArvore(&(*arvore)->esq, palavraIngles, unidade);
 
-    if ((*arvore)->info.palavraIngles != NULL) {
-        // Remove a palavra em inglês da árvore binária correspondente
-        int removida = removerPalavraIngles(&(*arvore)->info.palavraIngles, palavraIngles);
+    if (*arvore != NULL && (*arvore)->info.palavraIngles != NULL) {
+        Inglesbin *raizIngles = (*arvore)->info.palavraIngles;
+        int removida = 0;
 
-        // Se a palavra foi removida e a árvore binária ficou vazia, remover o nó da árvore Rubro-Negra
+        // Percorre a árvore binária de traduções e remove a palavra correspondente à unidade
+        Inglesbin *temp = raizIngles;
+        while (temp != NULL) {
+            if (strcmp(temp->palavraIngles, palavraIngles) == 0 && temp->unidade == unidade) {
+                removida = removerPalavraIngles(&(*arvore)->info.palavraIngles, palavraIngles);
+                printf("Debug: A palavra '%s' na unidade %d foi removida.\n", palavraIngles, unidade);
+                break;
+            }
+            temp = temp->dir; // Avança para o próximo nó
+        }
+
+        // Verifica se a árvore binária ficou vazia após a remoção
         if (removida && (*arvore)->info.palavraIngles == NULL) {
-            printf("A palavra '%s' foi a única na árvore e será removida da árvore principal.\n", palavraIngles);
+            printf("Debug: A palavra '%s' era a única tradução. Removendo nó correspondente na árvore principal.\n", palavraIngles);
             RemoverNo(arvore, (*arvore)->info.palavraPortugues);
+
+            // Interrompe a execução aqui, pois o nó atual foi removido
+            
         }
     }
 
-    removerPalavraInglesEArvore(&(*arvore)->dir, palavraIngles, unidade);
+    // Remoção na subárvore direita
+    if (*arvore != NULL) {
+        removerPalavraInglesEArvore(&(*arvore)->dir, palavraIngles, unidade);
+    }
 }
+
 
 int main() {
     Arv_portugues *arvore = NULL;
@@ -170,9 +156,8 @@ int main() {
         printf("\nMENU\n");
         printf("1. Imprimir palavras de uma unidade\n");
         printf("2. Imprimir traduções em inglês para uma palavra em português\n");
-        printf("3. Remover palavra em inglês de todas as árvores\n");
-        printf("4. Remover palavra em português e suas traduções\n");
-        printf("5. Sair\n");
+        printf("3. Remover palavra em inglês e suas referências\n");
+        printf("4. Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -196,7 +181,7 @@ int main() {
 
             case 2:
                 printf("Informe a palavra em português: ");
-                scanf(" %[^\n]", palavraPortugues); // Lê a palavra com espaços
+                scanf(" %[^\n]", palavraPortugues);  // Lê a palavra com espaços
                 printf("Traduções em inglês para '%s':\n", palavraPortugues);
                 imprimirTraducoesIngles(arvore, palavraPortugues);
                 break;
@@ -211,15 +196,6 @@ int main() {
                 break;
 
             case 4:
-                printf("Informe a palavra em português: ");
-                scanf(" %[^\n]", palavraPortugues);
-                printf("Informe a unidade: ");
-                scanf("%d", &unidade);
-
-                removerPalavraPortuguesEIngles(&arvore, palavraPortugues, unidade);
-                break;
-
-            case 5:
                 printf("Saindo do programa...\n");
                 exit(0);
 

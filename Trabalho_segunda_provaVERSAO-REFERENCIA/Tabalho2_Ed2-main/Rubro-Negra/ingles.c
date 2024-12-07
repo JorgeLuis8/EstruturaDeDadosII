@@ -73,48 +73,39 @@ Inglesbin *menorFilho(Inglesbin *raiz)
     return aux;
 }
 
-int removerPalavraIngles(Inglesbin **raiz, char *palavra)
-{
-    Inglesbin *endFilho;
-    int existe = 0;
+int removerPalavraIngles(Inglesbin **raiz, char *palavra) {
+    if (*raiz == NULL) return 0; // Palavra não encontrada
 
-    if (*raiz)
-    {
-        if (strcmp(palavra, (*raiz)->palavraIngles) == 0)
-        {
-            existe = 1;
-            printf("removendo palavra: %s\n", palavra);
-            Inglesbin *aux = *raiz;
-            if (ehFolhas(*raiz))
-            {
-                free(aux);
-                *raiz = NULL;
-            }
-            else if ((endFilho = soUmFilho(*raiz)) != NULL)
-            {
-                free(aux);
-                *raiz = endFilho;
-            }
-            else
-            {
-                endFilho = menorFilho((*raiz)->dir);
-                strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
-                (*raiz)->unidade = endFilho->unidade;
+    if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
+        return removerPalavraIngles(&(*raiz)->esq, palavra);
+    } else if (strcmp(palavra, (*raiz)->palavraIngles) > 0) {
+        return removerPalavraIngles(&(*raiz)->dir, palavra);
+    } else {
+        // Palavra encontrada
+        Inglesbin *temp = *raiz;
 
-                removerPalavraIngles(&(*raiz)->dir, endFilho->palavraIngles);
-            }
+        if ((*raiz)->esq == NULL && (*raiz)->dir == NULL) {
+            // Caso 1: Nó sem filhos
+            *raiz = NULL;
+        } else if ((*raiz)->esq == NULL) {
+            // Caso 2: Apenas filho à direita
+            *raiz = (*raiz)->dir;
+        } else if ((*raiz)->dir == NULL) {
+            // Caso 2: Apenas filho à esquerda
+            *raiz = (*raiz)->esq;
+        } else {
+            // Caso 3: Nó com dois filhos
+            Inglesbin *menor = menorFilho((*raiz)->dir);
+            strcpy((*raiz)->palavraIngles, menor->palavraIngles);
+            (*raiz)->unidade = menor->unidade;
+            removerPalavraIngles(&(*raiz)->dir, menor->palavraIngles);
         }
-        else if (strcmp(palavra, (*raiz)->palavraIngles) < 0)
-        {
-            existe = removerPalavraIngles(&(*raiz)->esq, palavra);
-        }
-        else
-        {
-            existe = removerPalavraIngles(&(*raiz)->dir, palavra);
-        }
+
+        free(temp); // Libera memória do nó removido
+        return 1;   // Removido com sucesso
     }
 
-    return existe;
+    return 0; // Palavra não encontrada
 }
 
 

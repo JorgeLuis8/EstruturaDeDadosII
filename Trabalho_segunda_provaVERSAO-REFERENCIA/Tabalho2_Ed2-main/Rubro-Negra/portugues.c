@@ -270,31 +270,26 @@ void BuscarPalavraIngles(Arv_portugues **raiz, char *palavraIngles, int unidade)
 }
 
 
-void exibirPalavrasPorUnidade(Arv_portugues *raiz, int unidade)
-{
+void exibirPalavrasPorUnidade1(Arv_portugues *raiz, int unidade) {
     // Verifica se a árvore não está vazia
-    if (raiz != NULL)
-    {
-        // Primeiro, verifica se a palavra em português tem traduções na unidade especificada
-        if (raiz->info.palavraIngles != NULL)
-        {
+    if (raiz != NULL) {
+        // Primeiro, processa a subárvore esquerda
+        exibirPalavrasPorUnidade1(raiz->esq, unidade);
+
+        // Processa o nó atual
+        if (raiz->info.palavraIngles != NULL) {
             Inglesbin *traducao = raiz->info.palavraIngles;
-            // Percorre a lista de traduções para verificar a unidade
-            while (traducao != NULL)
-            {
-                if (traducao->unidade == unidade)
-                {
-                    // Imprime a palavra em português e a tradução em inglês
-                    printf("Palavra em Português: %s\n", raiz->info.palavraPortugues);
-                    printf("Tradução em Inglês: %s (Unidade %d)\n", traducao->palavraIngles, traducao->unidade);
+
+            // Percorre todas as traduções e imprime todas as palavras para a unidade fornecida
+            while (traducao != NULL) {
+                if (traducao->unidade == unidade) {
+                    printf("%s: %s;\n", raiz->info.palavraPortugues, traducao->palavraIngles);
                 }
-                traducao = traducao->dir; // Passa para a próxima tradução em inglês
+                traducao = traducao->dir; // Avança para a próxima tradução
             }
         }
 
-        // Recursivamente, percorre a árvore à esquerda e à direita
-        exibirPalavrasPorUnidade(raiz->esq, unidade);
-        exibirPalavrasPorUnidade(raiz->dir, unidade);
+        // Por último, processa a subárvore direita
+        exibirPalavrasPorUnidade1(raiz->dir, unidade);
     }
 }
-

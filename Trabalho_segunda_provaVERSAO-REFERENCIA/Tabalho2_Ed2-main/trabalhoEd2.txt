@@ -1,4 +1,5 @@
 % Unidade 1 
+Car: carro, teste;
 Bus: onibus, barramento; 
 Bug: inseto, problema; 
 Bike: bicicleta;  
