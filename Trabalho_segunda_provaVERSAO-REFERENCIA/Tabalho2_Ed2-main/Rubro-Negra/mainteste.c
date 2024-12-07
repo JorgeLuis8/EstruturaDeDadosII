@@ -136,6 +136,28 @@ void removerPalavraPortuguesEIngles(Arv_portugues **arvore, char *palavraPortugu
     }
 }
 
+
+// Função para remover uma palavra em inglês e suas referências nas árvores binárias e Rubro-Negra
+void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, int unidade) {
+    if (*arvore == NULL) return;
+
+    // Percorre a árvore Rubro-Negra
+    removerPalavraInglesEArvore(&(*arvore)->esq, palavraIngles, unidade);
+
+    if ((*arvore)->info.palavraIngles != NULL) {
+        // Remove a palavra em inglês da árvore binária correspondente
+        int removida = removerPalavraIngles(&(*arvore)->info.palavraIngles, palavraIngles);
+
+        // Se a palavra foi removida e a árvore binária ficou vazia, remover o nó da árvore Rubro-Negra
+        if (removida && (*arvore)->info.palavraIngles == NULL) {
+            printf("A palavra '%s' foi a única na árvore e será removida da árvore principal.\n", palavraIngles);
+            RemoverNo(arvore, (*arvore)->info.palavraPortugues);
+        }
+    }
+
+    removerPalavraInglesEArvore(&(*arvore)->dir, palavraIngles, unidade);
+}
+
 int main() {
     Arv_portugues *arvore = NULL;
     int opcao, unidade;
@@ -185,7 +207,7 @@ int main() {
                 printf("Informe a unidade: ");
                 scanf("%d", &unidade);
 
-                removerPalavraPortuguesEIngles (&arvore, palavraIngles, unidade);
+                removerPalavraInglesEArvore(&arvore, palavraIngles, unidade);
                 break;
 
             case 4:
