@@ -74,38 +74,35 @@ Arv_ingles *menorFilho(Arv_ingles *raiz)
 }
 
 int removerPalavraIngles(Arv_ingles **raiz, char *palavra) {
-    if (*raiz == NULL) return 0; // Palavra não encontrada
+    int resultado = 0; 
 
-    if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
-        return removerPalavraIngles(&(*raiz)->esq, palavra);
+    if (*raiz == NULL) {
+        resultado = 0;
+    } else if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
+        resultado = removerPalavraIngles(&(*raiz)->esq, palavra);
     } else if (strcmp(palavra, (*raiz)->palavraIngles) > 0) {
-        return removerPalavraIngles(&(*raiz)->dir, palavra);
+        resultado = removerPalavraIngles(&(*raiz)->dir, palavra);
     } else {
-        // Palavra encontrada
         Arv_ingles *temp = *raiz;
 
         if ((*raiz)->esq == NULL && (*raiz)->dir == NULL) {
-            // Caso 1: Nó sem filhos
             *raiz = NULL;
         } else if ((*raiz)->esq == NULL) {
-            // Caso 2: Apenas filho à direita
             *raiz = (*raiz)->dir;
         } else if ((*raiz)->dir == NULL) {
-            // Caso 2: Apenas filho à esquerda
             *raiz = (*raiz)->esq;
         } else {
-            // Caso 3: Nó com dois filhos
             Arv_ingles *menor = menorFilho((*raiz)->dir);
             strcpy((*raiz)->palavraIngles, menor->palavraIngles);
             (*raiz)->unidade = menor->unidade;
             removerPalavraIngles(&(*raiz)->dir, menor->palavraIngles);
         }
 
-        free(temp); // Libera memória do nó removido
-        return 1;   // Removido com sucesso
+        free(temp); 
+        resultado = 1; 
     }
 
-    return 0; // Palavra não encontrada
+    return resultado; 
 }
 
 
@@ -113,11 +110,10 @@ void printBinaryTree(Arv_ingles *root)
 {
     if (root != NULL)
     {
-        printBinaryTree(root->esq); // Percorre a árvore à esquerda
+        printBinaryTree(root->esq); 
         printf("\n");
-        // Imprime a tradução de inglês associada à palavra em português
         printf("Palavra em Inglês: %s = Unidade: %d\n", root->palavraIngles, root->unidade);
-        printBinaryTree(root->dir); // Percorre a árvore à direita
+        printBinaryTree(root->dir); 
     }
 }
 

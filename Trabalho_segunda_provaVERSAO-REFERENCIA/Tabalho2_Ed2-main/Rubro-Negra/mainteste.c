@@ -7,35 +7,41 @@
 
 int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char *palavraIngles, int unidade)
 {
+    int resultado = 0; 
+
     Arv_portugues *noExistente = BuscarPalavra(arvore, palavraPortugues);
 
     if (noExistente != NULL)
     {
-        // Verifica se já existe a mesma tradução na mesma unidade
         Arv_ingles *traducao = noExistente->info.palavraIngles;
         while (traducao != NULL)
         {
             if (strcmp(traducao->palavraIngles, palavraIngles) == 0 && traducao->unidade == unidade)
             {
-                printf("A tradução '%s' para '%s' já existe na unidade %d. Ignorando.\n",
+                printf("A traducao '%s' para '%s' ja existe na unidade %d. Ignorando.\n",
                        palavraIngles, palavraPortugues, unidade);
-                return 0; // Já existe, não insere novamente
+                resultado = 0; 
+                break;
             }
             traducao = traducao->dir;
         }
 
-        // Adiciona nova tradução na lista
-        AdicionarTraducaoEN(noExistente, palavraIngles, unidade);
-        return 1;
+        if (traducao == NULL) 
+        {
+            AdicionarTraducaoEN(noExistente, palavraIngles, unidade);
+            resultado = 1;
+        }
     }
     else
     {
-        // Cria nova entrada para a palavra
         Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
         inserirArvRec(arvore, &novoInfo);
-        return 1;
+        resultado = 1;
     }
+
+    return resultado; 
 }
+
 
 void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
 {
@@ -51,11 +57,10 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
 
     while (fgets(linha, sizeof(linha), arquivo))
     {
-        linha[strcspn(linha, "\n")] = 0; // Remover o \n no final da linha
+        linha[strcspn(linha, "\n")] = 0; 
 
         if (linha[0] == '%')
         {
-            // Atualiza a unidade corretamente
             sscanf(linha, "%% Unidade %d", &unidadeAtual);
         }
         else
@@ -67,7 +72,7 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
             while (traducaoPortugues != NULL)
             {
                 while (*traducaoPortugues == ' ')
-                    traducaoPortugues++; // Ignorar espaços extras
+                    traducaoPortugues++; 
 
                 if (strlen(traducaoPortugues) > 0)
                 {
@@ -83,53 +88,54 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
     printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
 }
 
-// Função para imprimir palavras de uma unidade específica
+
 void imprimirPalavrasPorUnidade(Arv_portugues *arvore, int unidade)
 {
-    if (arvore == NULL)
-        return;
-
-    // Percorre a lista de traduções e imprime todas as palavras e traduções para a unidade
-    Arv_ingles *traducao = arvore->info.palavraIngles;
-    while (traducao != NULL)
+    if (arvore != NULL)
     {
-        if (traducao->unidade == unidade)
+        Arv_ingles *traducao = arvore->info.palavraIngles;
+        while (traducao != NULL)
         {
-            printf("%s: %s;\n", arvore->info.palavraPortugues, traducao->palavraIngles);
+            if (traducao->unidade == unidade)
+            {
+                printf("%s: %s;\n", arvore->info.palavraPortugues, traducao->palavraIngles);
+            }
+            traducao = traducao->dir; 
         }
-        traducao = traducao->dir; // Avança para a próxima tradução
-    }
 
-    // Recursivamente percorre as subárvores
-    imprimirPalavrasPorUnidade(arvore->esq, unidade);
-    imprimirPalavrasPorUnidade(arvore->dir, unidade);
+
+        imprimirPalavrasPorUnidade(arvore->esq, unidade);
+        imprimirPalavrasPorUnidade(arvore->dir, unidade);
+    }
 }
 
-// Função para imprimir todas as traduções em inglês de uma palavra em português
+
+
 void imprimirTraducoesIngles(Arv_portugues *arvore, char *palavraPortugues)
 {
-    if (arvore == NULL)
-        return;
-
-    // Se a palavra portuguesa da árvore for igual à palavra fornecida, imprime as traduções
-    if (strcmp(arvore->info.palavraPortugues, palavraPortugues) == 0)
+    if (arvore != NULL)
     {
-        printf("Traduções em Inglês para '%s': %s\n",
-               arvore->info.palavraPortugues, arvore->info.palavraIngles->palavraIngles);
-    }
+     
+        if (strcmp(arvore->info.palavraPortugues, palavraPortugues) == 0)
+        {
+            printf("Traducoes em Ingles para '%s': %s\n",
+                   arvore->info.palavraPortugues, arvore->info.palavraIngles->palavraIngles);
+        }
 
-    // Recursivamente busca nas subárvores esquerda e direita
-    imprimirTraducoesIngles(arvore->esq, palavraPortugues);
-    imprimirTraducoesIngles(arvore->dir, palavraPortugues);
+        
+        imprimirTraducoesIngles(arvore->esq, palavraPortugues);
+        imprimirTraducoesIngles(arvore->dir, palavraPortugues);
+    }
 }
 
-// Função para remover uma palavra em inglês e atualizar as árvores
+
+
 void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, int unidade)
 {
     if (*arvore != NULL)
     {
 
-        // Remoção na subárvore esquerda
+       
         removerPalavraInglesEArvore(&(*arvore)->esq, palavraIngles, unidade);
 
         if (*arvore != NULL && (*arvore)->info.palavraIngles != NULL)
@@ -137,7 +143,7 @@ void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, in
             Arv_ingles *raizIngles = (*arvore)->info.palavraIngles;
             int removida = 0;
 
-            // Percorre a árvore binária de traduções e remove a palavra correspondente à unidade
+            
             Arv_ingles *temp = raizIngles;
             while (temp != NULL)
             {
@@ -147,10 +153,10 @@ void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, in
                     printf("Debug: A palavra '%s' na unidade %d foi removida.\n", palavraIngles, unidade);
                     break;
                 }
-                temp = temp->dir; // Avança para o próximo nó
+                temp = temp->dir; 
             }
 
-            // Verifica se a árvore binária ficou vazia após a remoção
+            
             if (removida && (*arvore)->info.palavraIngles == NULL)
             {
                 printf("Debug: A palavra '%s' era a única tradução. Removendo nó correspondente na árvore principal.\n", palavraIngles);
@@ -166,57 +172,58 @@ void removerPalavraInglesEArvore(Arv_portugues **arvore, char *palavraIngles, in
 
 void removerPalavraPortuguesEUnidade(Arv_portugues **arvore, char *palavraPortugues, int unidade)
 {
-    if (*arvore == NULL)
-        return;
-
-    // Localiza o nó correspondente à palavra em português
-    Arv_portugues *no = BuscarPalavra(arvore, palavraPortugues);
-
-    if (no != NULL)
+    if (*arvore != NULL)
     {
-        // Remove as traduções associadas à unidade fornecida
-        Arv_ingles *raizIngles = no->info.palavraIngles;
-        int traducaoRemovida = 0;
+        
+        Arv_portugues *no = BuscarPalavra(arvore, palavraPortugues);
 
-        if (raizIngles != NULL)
+        if (no != NULL)
         {
-            Arv_ingles *temp = raizIngles;
+            
+            Arv_ingles *raizIngles = no->info.palavraIngles;
+            int traducaoRemovida = 0;
 
-            while (temp != NULL)
+            if (raizIngles != NULL)
             {
-                if (temp->unidade == unidade)
+                Arv_ingles *temp = raizIngles;
+
+                while (temp != NULL)
                 {
-                    traducaoRemovida = removerPalavraIngles(&raizIngles, temp->palavraIngles);
-                    break;
+                    if (temp->unidade == unidade)
+                    {
+                        traducaoRemovida = removerPalavraIngles(&raizIngles, temp->palavraIngles);
+                        break;
+                    }
+                    temp = temp->dir; 
                 }
-                temp = temp->dir; // Avança para a próxima tradução
             }
-        }
 
-        // Atualiza a árvore binária no nó
-        no->info.palavraIngles = raizIngles;
+            
+            no->info.palavraIngles = raizIngles;
 
-        if (traducaoRemovida)
-        {
-            printf("A tradução na unidade %d foi removida.\n", unidade);
-
-            // Se a árvore binária ficou vazia, remove o nó da árvore Rubro-Negra
-            if (no->info.palavraIngles == NULL)
+            if (traducaoRemovida)
             {
-                printf("A palavra '%s' não possui mais traduções e será removida da árvore principal.\n", palavraPortugues);
-                RemoverNo(arvore, palavraPortugues);
+                printf("A traducao na unidade %d foi removida.\n", unidade);
+
+                
+                if (no->info.palavraIngles == NULL)
+                {
+                    printf("A palavra '%s' nao possui mais traducoes e sera removida da arvore principal.\n", palavraPortugues);
+                    RemoverNo(arvore, palavraPortugues);
+                }
+            }
+            else
+            {
+                printf("Nenhuma traducao encontrada para a palavra '%s' na unidade %d.\n", palavraPortugues, unidade);
             }
         }
         else
         {
-            printf("Nenhuma tradução encontrada para a palavra '%s' na unidade %d.\n", palavraPortugues, unidade);
+            printf("A palavra '%s' nao foi encontrada na arvore.\n", palavraPortugues);
         }
     }
-    else
-    {
-        printf("A palavra '%s' não foi encontrada na árvore.\n", palavraPortugues);
-    }
 }
+
 
 int main()
 {
@@ -224,7 +231,7 @@ int main()
     int opcao, unidade;
     char palavraPortugues[50], palavraIngles[50];
 
-    // Carregar o arquivo
+    
     carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_segunda_provaVERSAO-REFERENCIA/Tabalho2_Ed2-main/trabalhoEd2.txt", &arvore);
 
     while (1)
@@ -240,55 +247,104 @@ int main()
         scanf("%d", &opcao);
         switch (opcao)
         {
-        case 1:
-            printf("Informe a unidade: ");
-            while (1)
+        case 1: 
+        {
+            int continuar = 1; 
+            do
             {
+                printf("Informe a unidade (1 a 2): ");
                 scanf("%d", &unidade);
 
-                // Valida a unidade
-                if (unidade < 1)
+                
+                if (unidade < 1 || unidade > 2)
                 {
-                    printf("Unidade invalida. Tente novamente: ");
+                    printf("Unidade invalida.\n");
+                    printf("Deseja digitar a unidade novamente ou voltar ao menu principal?\n");
+                    printf("Digite 1 para tentar novamente ou 0 para voltar ao menu principal: ");
+                    scanf("%d", &continuar);
                 }
                 else
                 {
-                    break;
+                   
+                    printf("Palavras da unidade %d:\n", unidade);
+                    imprimirPalavrasPorUnidade(arvore, unidade);
+                    continuar = 0; 
                 }
-            }
-            // Imprime as palavras da unidade fornecida
-            printf("Palavras da unidade %d:\n", unidade);
-            imprimirPalavrasPorUnidade(arvore, unidade);
-            break;
+            } while (continuar == 1);
+        }
+        break;
 
-        case 2:
+        case 2: 
+        {
             printf("Informe a palavra em portugues: ");
-            scanf(" %[^\n]", palavraPortugues); // Lê a palavra com espaços
+            scanf(" %[^\n]", palavraPortugues); 
             printf("Traducoes em ingles para '%s':\n", palavraPortugues);
             imprimirTraducoesIngles(arvore, palavraPortugues);
-            break;
+        }
+        break;
 
-        case 3:
+        case 3: 
+        {
             printf("Informe a palavra em ingles: ");
             scanf(" %[^\n]", palavraIngles);
-            printf("Informe a unidade: ");
-            scanf("%d", &unidade);
 
-            removerPalavraInglesEArvore(&arvore, palavraIngles, unidade);
-            break;
+            int continuar = 1; 
+            do
+            {
+                printf("Informe a unidade (1 a 2): ");
+                scanf("%d", &unidade);
 
-        case 4:
+               
+                if (unidade < 1 || unidade > 2)
+                {
+                    printf("Unidade invalida.\n");
+                    printf("Deseja digitar a unidade novamente ou voltar ao menu principal?\n");
+                    printf("Digite 1 para tentar novamente ou 0 para voltar ao menu principal: ");
+                    scanf("%d", &continuar);
+                }
+                else
+                {
+                    removerPalavraInglesEArvore(&arvore, palavraIngles, unidade);
+                    continuar = 0; 
+                }
+            } while (continuar == 1);
+        }
+        break;
+
+        case 4: 
+        {
             printf("Informe a palavra em portugues: ");
             scanf(" %[^\n]", palavraPortugues);
-            printf("Informe a unidade: ");
-            scanf("%d", &unidade);
 
-            removerPalavraPortuguesEUnidade(&arvore, palavraPortugues, unidade);
-            break;
+            int continuar = 1; 
+            do
+            {
+                printf("Informe a unidade (1 a 2): ");
+                scanf("%d", &unidade);
 
-        case 5:
+               
+                if (unidade < 1 || unidade > 2)
+                {
+                    printf("Unidade invalida.\n");
+                    printf("Deseja digitar a unidade novamente ou voltar ao menu principal?\n");
+                    printf("Digite 1 para tentar novamente ou 0 para voltar ao menu principal: ");
+                    scanf("%d", &continuar);
+                }
+                else
+                {
+                    removerPalavraPortuguesEUnidade(&arvore, palavraPortugues, unidade);
+                    continuar = 0; 
+                }
+            } while (continuar == 1);
+        }
+        break;
+
+        case 5: 
+        {
             printf("Saindo do programa...\n");
             exit(0);
+        }
+        break;
 
         default:
             printf("Opcao invalida. Tente novamente.\n");
@@ -297,3 +353,4 @@ int main()
 
     return 0;
 }
+

@@ -3,7 +3,6 @@
 
 
 
-/*-----------------------------------------------------------------------------------------------------*/
 
 #include "ingles_arv.h"
 
@@ -22,9 +21,7 @@ typedef struct Arv_pt{
 } Arv_pt;
 
 
-/*-----------------------------------------------------------------------------------------------------*/
 
-/* FUNÇÕES ADICIONAIS */
 
 Arv_pt *CriarNoArvore23(const Info *informacao, Arv_pt *filhoesq, Arv_pt *filhocen);
 Arv_pt *AdicionarInfo(Arv_pt *no, const Info *informacao, Arv_pt *filho);
@@ -43,7 +40,6 @@ Arv_pt *BuscarNoPorPalavra(Arv_pt **no, const char *palavraPortugues);
 
 Arv_en* createNode(const char* word, int unit);
 
-// Função para inserir uma palavra em inglês na árvore binária de busca
 
 
 void MostrarTraducoesUnidade(Arv_en *node, int unidade, const char *palavraPortugues);

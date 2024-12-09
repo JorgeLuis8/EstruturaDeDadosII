@@ -4,12 +4,11 @@
 #include <string.h>
 #include "portugues.c"
 #include "ingles.c"
-// #include "arvbin.h"
 
 int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
     int inseriu = 0;
 
-    // Busca a palavra na árvore
+    
     Arv_portugues *noExistente = NULL;
     noExistente =  BuscarPalavra(arvore, palavraPortugues);
 
@@ -44,7 +43,6 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
 
         if (linha[0] == '%')
         {
-            // Atualiza a unidade corretamente
             sscanf(linha, "%% Unidade %d", &unidadeAtual);
         }
         else
@@ -60,9 +58,6 @@ void carregarArquivo(const char *nomeArquivo, Arv_portugues **arvore)
                     traducaoPortugues++;
 
                 inserirPalavraPortugues(arvore, traducaoPortugues, palavraIngles, unidadeAtual);
-
-                // Info novoInfo = criaInfo(traducaoPortugues, palavraIngles, unidadeAtual);
-                // inserirArvRB(arvore, &novoInfo);
                 traducaoPortugues = strtok(NULL, ",;");    
             }
             

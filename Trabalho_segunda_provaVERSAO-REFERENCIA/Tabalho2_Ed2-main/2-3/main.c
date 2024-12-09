@@ -70,48 +70,65 @@ void carregarArquivo(const char *nomeArquivo, Arv_pt **arvore)
 }
 
 
-
 void menu(Arv_pt *raiz)
 {
     int opcao;
     do
     {
-        printf("\nMenu de Opções:\n");
-        printf("1. Informar uma unidade e listar palavras em português e suas traduções\n");
-        printf("2. Informar uma palavra em português e listar traduções em inglês\n");
+        printf("\nMenu de Opcoes:\n");
+        printf("1. Informar uma unidade e listar palavras em portugues e suas traducoes\n");
+        printf("2. Informar uma palavra em portugues e listar traducoes em ingles\n");
         printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao)
         {
-            case 1:
+            case 1: // Informar unidade e listar palavras e traduções
+            {
+                int unidade;
+                int continuar = 1; // Controla se o usuário deseja continuar digitando
+                do
                 {
-                    int unidade;
-                    printf("Informe o número da unidade: ");
+                    printf("Informe o numero da unidade: ");
                     scanf("%d", &unidade);
-                    printf("\nPalavras da unidade %d:\n", unidade);
-                    ImprimirPorUnidade(raiz, unidade);
-                    printf("\n");
-                }
-                break;
 
-            case 2:
-                {
-                    char palavraPortugues[100];
-                    printf("Informe a palavra em português: ");
-                    scanf(" %[^\n]s", palavraPortugues); // Lê a linha inteira, incluindo espaços
-                    printf("\nTraduções em inglês para '%s':\n", palavraPortugues);
-                    ExibirTraducoesPortugues(&raiz, palavraPortugues);
-                }
-                break;
+                    // Valida a unidade
+                    if (unidade < 1 || unidade > 2) // Ajuste para suportar 1 a 2 unidades
+                    {
+                        printf("Unidade invalida.\n");
+                        printf("Deseja digitar a unidade novamente ou voltar ao menu principal?\n");
+                        printf("Digite 1 para tentar novamente ou 0 para voltar ao menu principal: ");
+                        scanf("%d", &continuar);
+                    }
+                    else
+                    {
+                        // Exibe as palavras e traduções para a unidade fornecida
+                        printf("\nPalavras da unidade %d:\n", unidade);
+                        ImprimirPorUnidade(raiz, unidade);
+                        printf("\n");
+                        continuar = 0; // Encerra a repetição
+                    }
+                } while (continuar == 1);
+            }
+            break;
 
-            case 0:
+            case 2: // Informar palavra em português e listar traduções em inglês
+            {
+                char palavraPortugues[100];
+                printf("Informe a palavra em portugues: ");
+                scanf(" %[^\n]s", palavraPortugues); // Lê a palavra com espaços
+                printf("\nTraducoes em ingles para '%s':\n", palavraPortugues);
+                ExibirTraducoesPortugues(&raiz, palavraPortugues);
+            }
+            break;
+
+            case 0: // Sair do programa
                 printf("Saindo do programa...\n");
                 break;
 
-            default:
-                printf("Opção inválida. Tente novamente.\n");
+            default: // Opção inválida
+                printf("Opcao invalida. Tente novamente.\n");
                 break;
         }
     } while (opcao != 0);
@@ -126,7 +143,6 @@ int main() {
     // Carregar o arquivo com palavras e traduções
     carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_segunda_provaVERSAO-REFERENCIA/Tabalho2_Ed2-main/trabalhoEd2.txt", &raiz);
 
-    printf("\nÁrvore carregada com sucesso!\n");
 
     // Chamar o menu interativo
     menu(raiz);
