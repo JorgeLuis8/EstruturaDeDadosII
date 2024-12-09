@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ingles_arv.h"
-#include "arv23.h"
+#include "portugues_arv.h"
 Arv_en *createNode(const char *palavraIngles, int unidade)
 {
     Arv_en *novoNo = (Arv_en *)malloc(sizeof(Arv_en));

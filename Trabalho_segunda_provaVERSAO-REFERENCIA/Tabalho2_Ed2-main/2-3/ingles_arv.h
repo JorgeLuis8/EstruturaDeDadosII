@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arv23.h" // Certifique-se de que este arquivo define Arv_pt e Info
+#include "portugues_arv.h" // Certifique-se de que este arquivo define Arv_pt e Info
 
 // Estrutura da árvore binária
 typedef struct Arv_en {

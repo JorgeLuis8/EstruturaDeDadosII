@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arv23.c"
+#include "portugues_arv.c"
 #include "ingles_arv.c"
 // #include "arvbin.h"
 
