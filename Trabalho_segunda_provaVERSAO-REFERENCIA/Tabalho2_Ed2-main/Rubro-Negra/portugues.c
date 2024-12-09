@@ -171,7 +171,7 @@ Arv_portugues *ProcurarMenor(Arv_portugues *raiz)
 int RemoverNo(Arv_portugues **raiz, char *valor)
 {
     int existe = 0;
-    printf("\nEntrou \n");
+
 
     if (*raiz)
     {
@@ -278,7 +278,7 @@ void exibirPalavrasPorUnidade1(Arv_portugues *raiz, int unidade) {
 
         // Processa o nó atual
         if (raiz->info.palavraIngles != NULL) {
-            Inglesbin *traducao = raiz->info.palavraIngles;
+            Arv_ingles *traducao = raiz->info.palavraIngles;
 
             // Percorre todas as traduções e imprime todas as palavras para a unidade fornecida
             while (traducao != NULL) {

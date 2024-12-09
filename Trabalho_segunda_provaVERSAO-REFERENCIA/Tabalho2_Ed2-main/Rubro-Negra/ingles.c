@@ -4,9 +4,9 @@
 #include "ingles.h"
 #include "portugues.h"
 
-Inglesbin *createNode(char *palavraIngles, int unidade)
+Arv_ingles *createNode(char *palavraIngles, int unidade)
 {
-    Inglesbin *novoNo = (Inglesbin *)malloc(sizeof(Inglesbin));
+    Arv_ingles *novoNo = (Arv_ingles *)malloc(sizeof(Arv_ingles));
     if (novoNo != NULL)
     {
         strcpy(novoNo->palavraIngles, palavraIngles);
@@ -16,9 +16,9 @@ Inglesbin *createNode(char *palavraIngles, int unidade)
     return novoNo;
 }
 
-Inglesbin *insertpalavraIngles(Inglesbin *root, char *palavraIngles, int unidade)
+Arv_ingles *insertpalavraIngles(Arv_ingles *root, char *palavraIngles, int unidade)
 {
-    Inglesbin *result;
+    Arv_ingles *result;
     if (root == NULL)
     {
         result = createNode(palavraIngles, unidade);
@@ -37,14 +37,14 @@ Inglesbin *insertpalavraIngles(Inglesbin *root, char *palavraIngles, int unidade
     }
     return result;
 }
-int ehFolhas(Inglesbin *raiz)
+int ehFolhas(Arv_ingles *raiz)
 {
     return (raiz->esq == NULL && raiz->dir == NULL);
 }
 
-Inglesbin *soUmFilho(Inglesbin *raiz)
+Arv_ingles *soUmFilho(Arv_ingles *raiz)
 {
-    Inglesbin *aux;
+    Arv_ingles *aux;
     aux = NULL;
 
     if (raiz->dir == NULL)
@@ -59,9 +59,9 @@ Inglesbin *soUmFilho(Inglesbin *raiz)
     return aux;
 }
 
-Inglesbin *menorFilho(Inglesbin *raiz)
+Arv_ingles *menorFilho(Arv_ingles *raiz)
 {
-    Inglesbin *aux;
+    Arv_ingles *aux;
     aux = raiz;
 
     if (raiz)
@@ -73,7 +73,7 @@ Inglesbin *menorFilho(Inglesbin *raiz)
     return aux;
 }
 
-int removerPalavraIngles(Inglesbin **raiz, char *palavra) {
+int removerPalavraIngles(Arv_ingles **raiz, char *palavra) {
     if (*raiz == NULL) return 0; // Palavra não encontrada
 
     if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
@@ -82,7 +82,7 @@ int removerPalavraIngles(Inglesbin **raiz, char *palavra) {
         return removerPalavraIngles(&(*raiz)->dir, palavra);
     } else {
         // Palavra encontrada
-        Inglesbin *temp = *raiz;
+        Arv_ingles *temp = *raiz;
 
         if ((*raiz)->esq == NULL && (*raiz)->dir == NULL) {
             // Caso 1: Nó sem filhos
@@ -95,7 +95,7 @@ int removerPalavraIngles(Inglesbin **raiz, char *palavra) {
             *raiz = (*raiz)->esq;
         } else {
             // Caso 3: Nó com dois filhos
-            Inglesbin *menor = menorFilho((*raiz)->dir);
+            Arv_ingles *menor = menorFilho((*raiz)->dir);
             strcpy((*raiz)->palavraIngles, menor->palavraIngles);
             (*raiz)->unidade = menor->unidade;
             removerPalavraIngles(&(*raiz)->dir, menor->palavraIngles);
@@ -109,7 +109,7 @@ int removerPalavraIngles(Inglesbin **raiz, char *palavra) {
 }
 
 
-void printBinaryTree(Inglesbin *root)
+void printBinaryTree(Arv_ingles *root)
 {
     if (root != NULL)
     {

@@ -119,7 +119,7 @@ void realizarExperimento(Arv_portugues *arvore, char palavras[30][50]) {
 
     // Palavras para o experimento
      char palavras[30][50] = {
-        "ônibus", "barramento", "inseto", "bicicleta", "ventilador", 
+        "onibus", "barramento", "inseto", "bicicleta", "ventilador", 
         "casa", "livro", "escola", "tempo", "sol", 
         "lua", "estrela", "amigo", "carro", "felicidade", 
         "amizade", "trabalho", "lazer", "computador", "árvore",

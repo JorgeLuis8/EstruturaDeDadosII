@@ -3,30 +3,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include "arv23.c"
+#include "ingles_arv.c"
 // #include "arvbin.h"
 
-int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
+int inserirPalavraPortugues(Arv_pt **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
     Info promove;
-    Portugues23 *pai = NULL;
+    Arv_pt *pai = NULL;
     int inseriu;
 
     // Busca a palavra na árvore
-    Portugues23 *noExistente = NULL;
-    noExistente =  BuscarPalavra(arvore, palavraPortugues);
+    Arv_pt *noExistente = NULL;
+    noExistente =  BuscarNoPorPalavra(arvore, palavraPortugues);
 
     if (noExistente != NULL) {
         printf("A palavra já existe. Adicionando tradução...\n");
-        adicionarTraducao(noExistente, palavraPortugues, palavraIngles, unidade);
+        AdicionarTraducaoNo(noExistente, palavraPortugues, palavraIngles, unidade);
         inseriu = 1;
     } else {
         Info novoInfo = CriarInfo(palavraPortugues, palavraIngles, unidade);
-        inserirArv23(arvore, &novoInfo, &promove, &pai);
+        InserirInfoArvore23(arvore, &novoInfo, &promove, &pai);
         inseriu = 0;
     }
     return inseriu;
 }
 
-void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
+void carregarArquivo(const char *nomeArquivo, Arv_pt **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
@@ -74,33 +75,33 @@ void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
 
 int main()
 {
-    Portugues23 *raiz = NULL;
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_Segunda_Provav2/Rubro-negra/vocabulario1.txt", &raiz);
+    Arv_pt *raiz = NULL;
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_segunda_provaVERSAO-REFERENCIA/Tabalho2_Ed2-main/trabalhoEd2.txt", &raiz);
     
     printf("\n--------------------------------------------------------------- \n");
     printf("Árvore 2-3 carregada:\n");
-    exibir_tree23(raiz);
+    ExibirArvore23(raiz);
 
     printf("\n--------------------------------------------------------------- \n");
     printf("\nPalavras da unidade 1: \n");
-    imprimirInfoUnidade(raiz, 1);
+    ImprimirPorUnidade(raiz, 1);
 
     printf("\n--------------------------------------------------------------- \n");
 
 
-    exibir_traducao_Portugues(&raiz, "bicicleta");
+    ExibirTraducoesPortugues(&raiz, "bicicleta");
 
     printf("\n--------------------------------------------------------------- \n");
 
-    BuscarPalavraIngles(&raiz, "Coller", 1);
+    RemoverTraducoesInglesNaUnidade(&raiz, "Coller", 1);
    
     printf("\n--------------------------------------------------------------- \n");
 
-    removerElemento(&raiz, "bicicleta");
+    RemoverPalavraArvore23(&raiz, "bicicleta");
 
     printf("\nPalavras apos remoção: \n\n");
 
-    exibir_tree23(raiz);
+    ExibirArvore23(raiz);
 
 
 

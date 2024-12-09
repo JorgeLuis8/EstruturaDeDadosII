@@ -6,7 +6,7 @@
 // Definição da estrutura que irá armazenar a informação de uma palavra e suas traduções
 typedef struct Info
 {
-  Inglesbin *palavraIngles;
+  Arv_ingles *palavraIngles;
   char *palavraPortugues;
 } Info;
 

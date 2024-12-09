@@ -1,55 +1,63 @@
 #ifndef arv23_H
 #define arv23_H
 
-#include "structs.h"
+
 
 /*-----------------------------------------------------------------------------------------------------*/
 
-/* ESTRUTAS DAS ÁRVORES E DEMAIS */
+#include "ingles_arv.h"
 
+typedef struct info {
+    char *palavraPortugues;
+    Arv_en *palavraIngles;
+} Info;
+
+typedef struct Arv_pt{
+    Info info1;
+    Info info2;
+    struct Arv_pt *cent;
+    struct Arv_pt *dir;
+    struct Arv_pt *esq;
+    int nInfos;
+} Arv_pt;
 
 
 /*-----------------------------------------------------------------------------------------------------*/
 
 /* FUNÇÕES ADICIONAIS */
 
-Portugues23 *criaNo(const Info *informacao, Portugues23 *filhoesq, Portugues23 *filhocen);
-Portugues23 *adicionaChave(Portugues23 *no, const Info *informacao, Portugues23 *filho);
-Portugues23 *quebraNo(Portugues23 **no, const Info *informacao, Info *promove, Portugues23 **filho);
-int ehFolha(const Portugues23 *no);
-Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Portugues23 **pai);
-void freeTree(Portugues23 *no);
-void exibir_tree23(const Portugues23 *raiz);
-void adicionarTraducaoEmIngles(Info *info, const char *palavraIng, int unidade);
+Arv_pt *CriarNoArvore23(const Info *informacao, Arv_pt *filhoesq, Arv_pt *filhocen);
+Arv_pt *AdicionarInfo(Arv_pt *no, const Info *informacao, Arv_pt *filho);
+Arv_pt *QuebrarNo23(Arv_pt **no, const Info *informacao, Info *promove, Arv_pt **filho);
+int NoEhFolha(const Arv_pt *no);
+Arv_pt *InserirInfoArvore23(Arv_pt **no, Info *informacao, Info *promove, Arv_pt **pai);
+void LiberarArvore23(Arv_pt *no);
+void ExibirArvore23(const Arv_pt *raiz);
+void InserirTraducaoIngles(Info *info, const char *palavraIng, int unidade);
 Info CriarInfo(char *palavra, char *palavraIngles, int unidade);
 
 
-void imprimirInfoUnidade(Portugues23 *arvore, int unidade);
-void exibir_traducao_Portugues(Portugues23 **raiz, const char *palavraPortugues);
-Portugues23 *BuscarPalavra(Portugues23 **no, const char *palavraPortugues);
+void ImprimirPorUnidade(Arv_pt *arvore, int unidade);
+void ExibirTraducoesPortugues(Arv_pt **raiz, const char *palavraPortugues);
+Arv_pt *BuscarNoPorPalavra(Arv_pt **no, const char *palavraPortugues);
 
-Inglesbin* createNode(const char* word, int unit);
+Arv_en* createNode(const char* word, int unit);
 
 // Função para inserir uma palavra em inglês na árvore binária de busca
-Inglesbin* insertpalavraIngles(Inglesbin* root, const char* word, int unit);
-void printBinaryTree(Inglesbin* root);
 
-void imprimirTraducoes(Inglesbin *node, int unidade, const char *palavraPortugues);
-void adicionarTraducao(Portugues23 *no, const char *palavraPortugues, const char *palavraIngles, int unidade);
 
-int removerPalavraIngles(Inglesbin **raiz, char *palavra);
+void MostrarTraducoesUnidade(Arv_en *node, int unidade, const char *palavraPortugues);
+void AdicionarTraducaoNo(Arv_pt *no, const char *palavraPortugues, const char *palavraIngles, int unidade);
 
-void BuscarPalavraIngles(Portugues23 **raiz, char *palavraIngles, int unidade);
+int removerPalavraIngles(Arv_en **raiz, char *palavra);
 
-int ehFolhas(Inglesbin *raiz);
+void RemoverTraducoesInglesNaUnidade(Arv_pt **raiz, char *palavraIngles, int unidade);
 
-Inglesbin *soUmFilho(Inglesbin *raiz);
 
-Inglesbin *menorFilho(Inglesbin *raiz);
 
-int removerArv23(Portugues23 **raiz, const char *info, const Portugues23 *pai, Portugues23 **ref);
+int RemoverElementoArvore23(Arv_pt **raiz, const char *info, const Arv_pt *pai, Arv_pt **ref);
 
-void removerElemento(Portugues23 **raiz, const char *palavra);
+void RemoverPalavraArvore23(Arv_pt **raiz, const char *palavra);
 
 
 #endif
