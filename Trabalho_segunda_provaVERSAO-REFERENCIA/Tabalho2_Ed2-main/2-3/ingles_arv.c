@@ -42,12 +42,11 @@ void printBinaryTree(Arv_en *root)
     if (root != NULL)
     {
         printBinaryTree(root->esq); // Percorre a árvore à esquerda
-        printf("\n");
-        // Imprime a tradução de inglês associada à palavra em português
-        printf("Palavra em Inglês: %s = Unidade: %d\n", root->palavraIngles, root->unidade);
+        printf("%s\n", root->palavraIngles); // Imprime a palavra em inglês
         printBinaryTree(root->dir); // Percorre a árvore à direita
     }
 }
+
 
 int ehFolhas(Arv_en *raiz){
     return (raiz->esq == NULL && raiz->dir == NULL);

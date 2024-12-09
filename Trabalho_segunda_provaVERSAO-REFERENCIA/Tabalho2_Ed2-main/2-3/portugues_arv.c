@@ -278,13 +278,14 @@ void MostrarTraducoesUnidade(Arv_en *node, int unidade, const char *palavraPortu
     {
         if (node->unidade == unidade)
         {
-            printf("Palavra em Português: %s\n", palavraPortugues);
-            printf("Palavra em inglês: %s\n", node->palavraIngles);
+            printf("%s: %s;\n", palavraPortugues, node->palavraIngles);
         }
         MostrarTraducoesUnidade(node->esq, unidade, palavraPortugues);
         MostrarTraducoesUnidade(node->dir, unidade, palavraPortugues);
     }
 }
+
+
 
 void ExibirTraducoesPortugues(Arv_pt **raiz, const char *palavraPortugues)
 {
@@ -294,7 +295,7 @@ void ExibirTraducoesPortugues(Arv_pt **raiz, const char *palavraPortugues)
         resultado = BuscarNoPorPalavra(raiz, palavraPortugues);
         if (resultado)
         {
-            printf("Traduções em inglês para a palavra '%s':\n", palavraPortugues);
+            printf("Traduções em inglês para '%s':\n", palavraPortugues);
 
             if (strcmp(palavraPortugues, resultado->info1.palavraPortugues) == 0)
             {
@@ -304,7 +305,6 @@ void ExibirTraducoesPortugues(Arv_pt **raiz, const char *palavraPortugues)
             {
                 printBinaryTree(resultado->info2.palavraIngles);
             }
-            
         }
         else
         {
@@ -560,25 +560,3 @@ void RemoverPalavraArvore23(Arv_pt **raiz, const char *palavra) {
         printf("Elemento '%s' nao encontrado.\n", palavra);
 }
 
-/*-----------------------------------------------------------------------------------------------------*/
-
-/* (i) informar uma unidade e então imprima todas as palavras da unidade em português seguida das
-equivalentes em inglês */
-
-/*-----------------------------------------------------------------------------------------------------*/
-
-/* (ii) informar uma palavraPortugues em português e então imprima todas as palavras em inglês equivalente à palavraPortugues em
-português dada, independente da unidade */
-
-/*-----------------------------------------------------------------------------------------------------*/
-
-/* (iii) informar uma palavraPortugues em inglês e a unidade a qual a mesma pertence removÊ-la das arvores binarias
-das quais ela pertence. Caso ela seja a única palavraPortugues em uma das arvores binarias, remover tambem da
-arvore 2-3 */
-
-/*-----------------------------------------------------------------------------------------------------*/
-
-/* (iv)informar uma palavraPortugues em português e a unidade a qual a mesma pertence e então removê-la, para isto
-deve remover a palavraPortugues em inglês da arvore binaria correspondente a palavraPortugues em português da mesma
-unidade. Caso ela seja a única palavraPortugues na arvore binaria, a palavraPortugues em português deve ser removida da
-arvore 2-3 */

@@ -16,7 +16,6 @@ int inserirPalavraPortugues(Arv_pt **arvore, char *palavraPortugues, char *palav
     noExistente =  BuscarNoPorPalavra(arvore, palavraPortugues);
 
     if (noExistente != NULL) {
-        printf("A palavra já existe. Adicionando tradução...\n");
         AdicionarTraducaoNo(noExistente, palavraPortugues, palavraIngles, unidade);
         inseriu = 1;
     } else {
@@ -53,7 +52,6 @@ void carregarArquivo(const char *nomeArquivo, Arv_pt **arvore)
         {
             char palavraIngles[50], traducoesPortugues[200];
             sscanf(linha, "%[^:]: %[^;]", palavraIngles, traducoesPortugues);
-            printf("Lendo: Palavra Inglês = '%s', Traduções: '%s'\n", palavraIngles, traducoesPortugues);
             
             char *traducaoPortugues = strtok(traducoesPortugues, ",;");
             while(traducaoPortugues != NULL)
@@ -69,43 +67,86 @@ void carregarArquivo(const char *nomeArquivo, Arv_pt **arvore)
     }
 
     fclose(arquivo);
-    printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
 }
 
 
-int main()
+
+void menu(Arv_pt *raiz)
 {
+    int opcao;
+    do
+    {
+        printf("\nMenu de Opções:\n");
+        printf("1. Informar uma unidade e listar palavras em português e suas traduções\n");
+        printf("2. Informar uma palavra em português e listar traduções em inglês\n");
+        printf("3. Informar uma palavra em inglês e a unidade para removê-la\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao)
+        {
+            case 1:
+                {
+                    int unidade;
+                    printf("Informe o número da unidade: ");
+                    scanf("%d", &unidade);
+                    printf("\nPalavras da unidade %d:\n", unidade);
+                    ImprimirPorUnidade(raiz, unidade);
+                    printf("\n");
+                }
+                break;
+
+            case 2:
+                {
+                    char palavraPortugues[100];
+                    printf("Informe a palavra em português: ");
+                    scanf(" %[^\n]s", palavraPortugues); // Lê a linha inteira, incluindo espaços
+                    printf("\nTraduções em inglês para '%s':\n", palavraPortugues);
+                    ExibirTraducoesPortugues(&raiz, palavraPortugues);
+                }
+                break;
+
+            case 3:
+                {
+                    char palavraIngles[100];
+                    int unidade;
+                    printf("Informe a palavra em inglês: ");
+                    scanf(" %[^\n]s", palavraIngles); // Lê a linha inteira
+                    printf("Informe a unidade: ");
+                    scanf("%d", &unidade);
+                    printf("\nRemovendo a palavra '%s' da unidade %d...\n", palavraIngles, unidade);
+                    RemoverPalavraInglesDaUnidade(&raiz, palavraIngles, unidade);
+                }
+                break;
+
+            case 0:
+                printf("Saindo do programa...\n");
+                break;
+
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+                break;
+        }
+    } while (opcao != 0);
+}
+
+
+
+
+int main() {
     Arv_pt *raiz = NULL;
+
+    // Carregar o arquivo com palavras e traduções
     carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_segunda_provaVERSAO-REFERENCIA/Tabalho2_Ed2-main/trabalhoEd2.txt", &raiz);
-    
-    printf("\n--------------------------------------------------------------- \n");
-    printf("Árvore 2-3 carregada:\n");
-    ExibirArvore23(raiz);
 
-    printf("\n--------------------------------------------------------------- \n");
-    printf("\nPalavras da unidade 1: \n");
-    ImprimirPorUnidade(raiz, 1);
+    printf("\nÁrvore carregada com sucesso!\n");
 
-    printf("\n--------------------------------------------------------------- \n");
+    // Chamar o menu interativo
+    menu(raiz);
 
-
-    ExibirTraducoesPortugues(&raiz, "bicicleta");
-
-    printf("\n--------------------------------------------------------------- \n");
-
-    RemoverTraducoesInglesNaUnidade(&raiz, "Coller", 1);
-   
-    printf("\n--------------------------------------------------------------- \n");
-
-    RemoverPalavraArvore23(&raiz, "bicicleta");
-
-    printf("\nPalavras apos remoção: \n\n");
-
-    ExibirArvore23(raiz);
-
-
-
-    // freeTree(raiz);
+    // Liberar memória alocada para a árvore
+    LiberarArvore23(raiz);
 
     return 0;
 }
