@@ -1,105 +1,255 @@
+#include "arv-23.c"
 #include <stdio.h>
 #include <stdlib.h>
-#include "arv-23.c" // Supondo que contém as funções fornecidas
+#include <locale.h>
 
-Memory *root = NULL; // Raiz da árvore
-int flag = 0;
+#define MEMORY_SIZE (1024 * 1024) // Tamanho total da memoria (1MB por bloco)
 
-// Função para cadastrar nós na árvore
-void cadastrarNos() {
-    int start, end, status;
-    printf("Cadastro de Nós:\n");
-    printf("Informe o status do primeiro nó (1 para Livre, 0 para Ocupado): ");
+// Declaracao das funcoes utilizadas
+void concatenar_nos(Memory **root);
+void alocar_nos(Memory **root, int quantidade_blocos);
+void cadastrar_nos(Memory **root);
+void exibir_estado(Memory *root);
+
+// Funcao para concatenar nos adjacentes do mesmo status
+void concatenar_nos(Memory **root)
+{
+    if (!root || !(*root))
+    {
+        return;
+    }
+
+    Memory *node = *root;
+    if (isLeaf(node))
+    {
+        // Concatenar nos em folhas
+        if (node->numKeys == 2)
+        {
+            if (node->info1->status == node->info2->status)
+            {
+                // Mesclar os dois nos
+                node->info1->end = node->info2->end;
+                free(node->info2);
+                node->info2 = NULL;
+                node->numKeys = 1;
+            }
+        }
+    }
+    else
+    {
+        // Concatenar recursivamente nos filhos
+        concatenar_nos(&node->left);
+        concatenar_nos(&node->center);
+        if (node->numKeys == 2)
+        {
+            concatenar_nos(&node->right);
+        }
+    }
+}
+
+// Funcao para cadastrar os nos da arvore
+void cadastrar_nos(Memory **root)
+{
+    int start = 0, end, status;
+
+    // Cadastro do primeiro no
+    printf("Informe o status do primeiro no (1 para Livre, 0 para Ocupado): ");
     scanf("%d", &status);
-    printf("Informe o início e o final do nó (em blocos): ");
-    scanf("%d %d", &start, &end);
 
-    Insert23(&root, NULL, NULL, start, end, status, &flag);
+    printf("Informe o endereco inicial do primeiro no: ");
+    scanf("%d", &start);
 
-    while (1) {
-        printf("Informe o final do próximo nó (ou -1 para terminar): ");
+    printf("Informe o endereco final do primeiro no (maximo %d): ", MEMORY_SIZE);
+    scanf("%d", &end);
+
+    if (end < start || end > MEMORY_SIZE)
+    {
+        printf("Endereco final invalido. O programa sera encerrado.\n");
+        return;
+    }
+
+    // Criar o primeiro no
+    Info *info = CreateInfo(start, end, status);
+    if (!info)
+    {
+        printf("Erro ao alocar memoria para o no inicial.\n");
+        return;
+    }
+
+    *root = createNode(info, NULL, NULL);
+    if (!*root)
+    {
+        printf("Erro ao criar o no inicial.\n");
+        free(info);
+        return;
+    }
+
+    // Cadastro dos nos subsequentes
+    while (end < MEMORY_SIZE)
+    {
+        start = end + 1; // Proximo bloco comeca logo apos o final do anterior
+        printf("Informe o endereco final do proximo no (maximo %d para terminar): ", MEMORY_SIZE);
         scanf("%d", &end);
-        if (end == -1) break;
 
-        start = root->info2 ? root->info2->end + 1 : root->info1->end + 1;
-        printf("Informe o status do nó atual (1 para Livre, 0 para Ocupado): ");
-        scanf("%d", &status);
-        Insert23(&root, NULL, NULL, start, end, status, &flag);
-    }
-}
+        if (end < start || end > MEMORY_SIZE)
+        {
+            printf("Endereco final invalido.\n");
+            int escolha;
+            printf("Deseja tentar novamente (1) ou voltar ao menu principal (2)? ");
+            scanf("%d", &escolha);
+            if (escolha == 2)
+            {
+                break; // Voltar ao menu principal
+            }
+            else
+            {
+                continue; // Tentar novamente
+            }
+        }
 
-// Função para alocar nós
-void alocarNos() {
-    int requiredSpace;
-    printf("Informe a quantidade de blocos necessários: ");
-    scanf("%d", &requiredSpace);
+        // Alternar status entre Livre e Ocupado
+        status = (status == FREE) ? OCCUPIED : FREE;
 
-    Memory *found = SourceSpace(root, requiredSpace);
-    if (found) {
-        printf("Espaço encontrado: Começo: %d, Fim: %d\n",
-               found->info1->start, found->info1->end);
-        found->info1->status = OCCUPIED;
-    } else {
-        printf("Nenhum espaço disponível.\n");
-    }
-}
-
-// Função para liberar nós
-void liberarNos() {
-    int start, end;
-    printf("Informe o intervalo de blocos para liberar (começo e fim): ");
-    scanf("%d %d", &start, &end);
-
-    // Localizar e liberar nós
-    Memory *current = root;
-    while (current) {
-        if (current->info1->start == start && current->info1->end == end) {
-            current->info1->status = FREE;
+        // Criar o novo no
+        info = CreateInfo(start, end, status);
+        if (!info)
+        {
+            printf("Erro ao alocar memoria para o proximo no.\n");
             break;
         }
-        if (current->info2 && current->info2->start == start && current->info2->end == end) {
-            current->info2->status = FREE;
+
+        // Inserir na arvore 2-3
+        int flag = 0;
+        Insert23(root, NULL, NULL, start, end, status, &flag);
+        if (!flag)
+        {
+            printf("Erro ao inserir no na arvore.\n");
+            free(info);
             break;
         }
-        current = (start < current->info1->start) ? current->left : current->center;
+
+        if (end == MEMORY_SIZE)
+        {
+            printf("Cadastro de nos concluido.\n");
+            break;
+        }
     }
-    printf("Blocos liberados.\n");
 }
 
-// Menu principal
-int main() {
-    int option;
+// Funcao para alocar nos
+void alocar_nos(Memory **root, int quantidade_blocos)
+{
+    if (!root || !(*root))
+    {
+        printf("Erro: Nenhuma memoria cadastrada.\n");
+        return;
+    }
 
-    do {
-        printf("\nGerenciador de Memória - Árvore 4-5\n");
-        printf("1. Cadastrar Nós\n");
-        printf("2. Alocar Nós\n");
-        printf("3. Liberar Nós\n");
-        printf("4. Exibir Nós\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opção: ");
-        scanf("%d", &option);
+    // Buscar um nó que tenha espaço suficiente
+    Memory *node = FindSpace(*root, quantidade_blocos);
+    if (!node)
+    {
+        printf("Erro: Nao ha blocos livres suficientes para alocar.\n");
+        return;
+    }
 
-        switch (option) {
+    // Determinar qual bloco será alocado
+    Info *targetInfo = NULL;
+    if (node->info1->status == FREE && (node->info1->end - node->info1->start + 1) >= quantidade_blocos)
+    {
+        targetInfo = node->info1;
+    }
+    else if (node->numKeys == 2 && node->info2->status == FREE &&
+             (node->info2->end - node->info2->start + 1) >= quantidade_blocos)
+    {
+        targetInfo = node->info2;
+    }
+
+    if (!targetInfo)
+    {
+        printf("Erro interno: Não foi possível encontrar um bloco adequado.\n");
+        return;
+    }
+
+    // Atualizar o bloco encontrado
+    int espacoDisponivel = targetInfo->end - targetInfo->start + 1;
+    if (espacoDisponivel > quantidade_blocos)
+    {
+        // Caso o nó tenha mais espaço do que o necessário, dividir
+        int novo_inicio = targetInfo->start + quantidade_blocos;
+
+        // Criar um novo bloco livre para os blocos restantes
+        Info *novo_info = CreateInfo(novo_inicio, targetInfo->end, FREE);
+        targetInfo->end = novo_inicio - 1;
+
+        // Inserir o novo bloco na árvore
+        AddInfo(root, novo_info, NULL);
+    }
+
+    // Alterar o status do nó alocado para "Ocupado"
+    targetInfo->status = OCCUPIED;
+
+    printf("Blocos alocados: Inicio = %d, Fim = %d\n", targetInfo->start, targetInfo->end);
+
+    // Concatenar nós adjacentes, se necessário
+    concatenar_nos(root);
+}
+
+// Funcao para exibir o estado da memoria
+void exibir_estado(Memory *root)
+{
+    printf("\nEstado atual da memoria:\n");
+    if (root)
+    {
+        DisplayInfos(root);
+    }
+    else
+    {
+        printf("Nenhum no cadastrado.\n");
+    }
+}
+
+// Funcao principal com menu interativo
+int main()
+{
+    setlocale(LC_ALL, "");
+    Memory *root = NULL;
+    int opcao;
+
+    while (1)
+    {
+        printf("\nMenu de Cadastro de Nos:\n");
+        printf("1. Cadastrar nos\n");
+        printf("2. Exibir estado da memoria\n");
+        printf("3. Alocar blocos\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao)
+        {
         case 1:
-            cadastrarNos();
+            cadastrar_nos(&root);
             break;
         case 2:
-            alocarNos();
+            exibir_estado(root);
             break;
         case 3:
-            liberarNos();
+        {
+            printf("Informe a quantidade de blocos a alocar: ");
+            int quantidade_blocos;
+            scanf("%d", &quantidade_blocos);
+            alocar_nos(&root, quantidade_blocos);
             break;
-        case 4:
-            DisplayInfos(root);
-            break;
-        case 0:
-            printf("Saindo do programa...\n");
-            break;
-        default:
-            printf("Opção inválida. Tente novamente.\n");
         }
-    } while (option != 0);
+
+        case 4:
+            printf("Saindo do programa...\n");
+            return 0;
+        default:
+            printf("Opcao invalida, tente novamente.\n");
+        }
+    }
 
     return 0;
 }
