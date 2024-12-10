@@ -177,28 +177,43 @@ void Insert23(Memory **root, Memory *parent, Info **promote, int start, int end,
 
 Memory *FindSpace(Memory *root, int requiredSpace)
 {
+    Memory *result = NULL;
+
     if (root != NULL)
     {
         if (isLeaf(root))
         {
-            int espacoDisponivel1 = root->info1->end - root->info1->start;
-            int espacoDisponivel2 = (root->numKeys == 2) ? root->info2->end - root->info2->start : 0;
+            // Calcula o espaço disponível para os blocos
+            int espacoDisponivel1 = root->info1->end - root->info1->start + 1;
+            int espacoDisponivel2 = (root->numKeys == 2) ? root->info2->end - root->info2->start + 1 : 0;
 
+            // Verifica se o primeiro bloco atende à necessidade
             if (root->info1->status == FREE && espacoDisponivel1 >= requiredSpace)
-                return root;
-            if (root->numKeys == 2 && root->info2->status == FREE && espacoDisponivel2 >= requiredSpace)
-                return root;
+            {
+                result = root;
+            }
+            // Verifica se o segundo bloco (se existir) atende à necessidade
+            else if (root->numKeys == 2 && root->info2->status == FREE && espacoDisponivel2 >= requiredSpace)
+            {
+                result = root;
+            }
         }
         else
         {
-            Memory *found = FindSpace(root->left, requiredSpace);
-            if (!found) found = FindSpace(root->center, requiredSpace);
-            if (!found && root->numKeys == 2) found = FindSpace(root->right, requiredSpace);
-            return found;
+            // Busca recursivamente nos filhos
+            result = FindSpace(root->left, requiredSpace);
+            if (!result)
+                result = FindSpace(root->center, requiredSpace);
+            if (!result && root->numKeys == 2)
+                result = FindSpace(root->right, requiredSpace);
         }
     }
-    return NULL;
+
+    return result;
 }
+
+
+
 
 Memory *SourceSpace(Memory *root, int requiredSpace)
 {
