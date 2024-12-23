@@ -1,15 +1,4 @@
 {
-  "files.associations": {
-    "stdio.h": "c",
-    "string.h": "c",
-    "disciplina.h": "c",
-    "stdlib.h": "c",
-    "cwchar": "cpp",
-    "disciplinas.h": "c",
-    "curso.h": "c",
-    "arv-portugues.h": "c",
-    "ingles.h": "c"
-  },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",
@@ -66,6 +55,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "C_Cpp.errorSquiggles": "enabled"
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }
