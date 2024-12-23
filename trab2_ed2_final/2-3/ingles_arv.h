@@ -10,8 +10,13 @@
 typedef struct Arv_en {
     char palavraIngles[50];
     struct Arv_en *dir, *esq;
-    int unidade;
+    ListUnit unidade;
 } Arv_en;
+
+typedef struct listUnit {
+    int unidade;
+    struct ListUnit *prox;
+}ListUnit;
 
 
 Arv_en *createNode(const char *palavraIngles, int unidade);
