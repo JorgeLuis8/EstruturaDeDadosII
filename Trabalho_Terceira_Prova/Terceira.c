@@ -1,78 +1,136 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#define MAX 100
+#include <math.h>
+#include <float.h>
+
+#define MAX_VERTICES 100
+#define INF DBL_MAX
 
 typedef struct {
-    int destino;
-    double confiabilidade;
-} Aresta;
+    int v;
+    double weight;
+} Edge;
 
 typedef struct {
-    Aresta arestas[MAX];
-    int tamanho;
-} ListaAdjacencia;
+    Edge edges[MAX_VERTICES][MAX_VERTICES];
+    int numVertices;
+    int numEdges;
+} Graph;
 
-ListaAdjacencia grafo[MAX];
-int num_vertices; // Numero de vertices no grafo
-
-void adicionarAresta(int origem, int destino, double confiabilidade) {
-    grafo[origem].arestas[grafo[origem].tamanho].destino = destino;
-    grafo[origem].arestas[grafo[origem].tamanho].confiabilidade = confiabilidade;
-    grafo[origem].tamanho++;
+void initGraph(Graph *g, int numVertices) {
+    g->numVertices = numVertices;
+    g->numEdges = 0;
+    for (int i = 0; i < numVertices; i++) {
+        for (int j = 0; j < numVertices; j++) {
+            g->edges[i][j].weight = (i == j) ? 0.0 : INF;
+        }
+    }
 }
 
-double dijkstra(int inicio, int fim) {
-    double confiabilidades[MAX];
-    int visitado[MAX] = {0};
-    for (int i = 0; i < num_vertices; i++) {
-        confiabilidades[i] = 0.0;
+void addEdge(Graph *g, int u, int v, double reliability) {
+    if (reliability <= 0 || reliability > 1) {
+        printf("Erro: Confiabilidade deve estar no intervalo (0, 1].\n");
+        exit(1);
     }
-    confiabilidades[inicio] = 1.0;
+    g->edges[u][v].v = v;
+    g->edges[u][v].weight = -log(reliability);
+    g->numEdges++;
+}
 
-    for (int i = 0; i < num_vertices; i++) {
-        double max_confiabilidade = 0.0;
-        int atual = -1;
+void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
+    double dist[MAX_VERTICES];
+    int prev[MAX_VERTICES];
+    int visited[MAX_VERTICES] = {0};
+    int n = g->numVertices;
 
-        for (int j = 0; j < num_vertices; j++) {
-            if (!visitado[j] && confiabilidades[j] > max_confiabilidade) {
-                max_confiabilidade = confiabilidades[j];
-                atual = j;
+    for (int i = 0; i < n; i++) {
+        dist[i] = INF;
+        prev[i] = -1;
+    }
+    dist[start] = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        double minDist = INF;
+        int u = -1;
+        for (int j = 0; j < n; j++) {
+            if (!visited[j] && dist[j] < minDist) {
+                minDist = dist[j];
+                u = j;
             }
         }
 
-        if (atual == -1) break;
-        visitado[atual] = 1;
+        if (u == -1) break;
+        visited[u] = 1;
 
-        for (int j = 0; j < grafo[atual].tamanho; j++) {
-            int vizinho = grafo[atual].arestas[j].destino;
-            double confiabilidade = grafo[atual].arestas[j].confiabilidade;
-
-            if (!visitado[vizinho] && confiabilidades[atual] * confiabilidade > confiabilidades[vizinho]) {
-                confiabilidades[vizinho] = confiabilidades[atual] * confiabilidade;
+        for (int v = 0; v < n; v++) {
+            if (!visited[v] && g->edges[u][v].weight < INF) {
+                double newDist = dist[u] + g->edges[u][v].weight;
+                if (newDist < dist[v]) {
+                    dist[v] = newDist;
+                    prev[v] = u;
+                }
             }
         }
     }
 
-    return confiabilidades[fim];
+    int current = end;
+    int pathIndex = 0;
+    while (current != -1) {
+        path[pathIndex++] = current;
+        current = prev[current];
+    }
+
+    *probability = exp(-dist[end]);
+
+    for (int i = 0; i < pathIndex / 2; i++) {
+        int temp = path[i];
+        path[i] = path[pathIndex - 1 - i];
+        path[pathIndex - 1 - i] = temp;
+    }
+
+    path[pathIndex] = -1;
 }
 
 int main() {
-    num_vertices = 5; // Numero de vertices
-    adicionarAresta(0, 1, 0.9);
-    adicionarAresta(0, 2, 0.5);
-    adicionarAresta(1, 3, 0.7);
-    adicionarAresta(2, 3, 0.8);
-    adicionarAresta(3, 4, 0.6);
-
-    int inicio = 0, fim = 4;
-    double confiabilidade = dijkstra(inicio, fim);
-
-    if (confiabilidade > 0) {
-        printf("A confiabilidade maxima entre %d e %d e: %.6f\n", inicio, fim, confiabilidade);
-    } else {
-        printf("Nao ha caminho entre %d e %d.\n", inicio, fim);
+    int n, m;
+    printf("Digite o número de vértices e arestas: ");
+    if (scanf("%d %d", &n, &m) != 2 || n <= 0 || m < 0 || n > MAX_VERTICES) {
+        printf("Erro: Entrada inválida para vértices ou arestas.\n");
+        return 1;
     }
+
+    Graph g;
+    initGraph(&g, n);
+
+    printf("Digite as arestas no formato (u v r):\n");
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        double r;
+        if (scanf("%d %d %lf", &u, &v, &r) != 3 || u < 0 || v < 0 || u >= n || v >= n) {
+            printf("Erro: Entrada inválida para arestas.\n");
+            return 1;
+        }
+        addEdge(&g, u, v, r);
+    }
+
+    int start, end;
+    printf("Digite os vértices de origem e destino: ");
+    if (scanf("%d %d", &start, &end) != 2 || start < 0 || end < 0 || start >= n || end >= n) {
+        printf("Erro: Entrada inválida para origem ou destino.\n");
+        return 1;
+    }
+
+    int path[MAX_VERTICES];
+    double probability;
+    dijkstra(&g, start, end, path, &probability);
+
+    printf("Caminho mais confiável: ");
+    for (int i = 0; path[i] != -1; i++) {
+        printf("%d ", path[i]);
+    }
+
+    // Exibir a probabilidade formatada com 2 casas decimais e como porcentagem
+    printf("\nProbabilidade de sucesso total: %.2lf (%.2lf%%)\n", probability, probability * 100);
 
     return 0;
 }
