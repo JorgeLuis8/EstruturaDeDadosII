@@ -545,4 +545,3 @@ void RemoverPalavraArvore23(Arv_pt **raiz, const char *palavra) {
     else
         printf("Elemento '%s' nao encontrado.\n", palavra);
 }
-

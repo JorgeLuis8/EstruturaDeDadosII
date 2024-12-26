@@ -8,8 +8,9 @@ Arv_en *createNode(const char *palavraIngles, int unidade)
     if (novoNo != NULL)
     {
         strcpy(novoNo->palavraIngles, palavraIngles);
-        novoNo->unidade = unidade;
+        novoNo->unidade.unidade = unidade;
         novoNo->esq = novoNo->dir = NULL;
+        novoNo->unidade.prox = NULL;
     }
     return novoNo;
 }
@@ -108,4 +109,3 @@ int removerPalavraIngles(Arv_en **raiz, char *palavra) {
 
     return existe;
 }
-

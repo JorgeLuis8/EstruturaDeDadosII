@@ -232,7 +232,7 @@ int main()
     char palavraPortugues[50], palavraIngles[50];
 
     
-    carregarArquivo("C:/Users/purolight/Documents/GitHub/ED2-JOB2/Trabalho_segunda_provaVERSAO-REFERENCIA/trabalhoEd2.txt", &arvore);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &arvore);
 
     while (1)
     {
