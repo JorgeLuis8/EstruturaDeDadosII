@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include <stdint.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -15,23 +15,6 @@
 typedef struct {
     int disks[4]; // 4 discos, cada posição indica o pino (0, 1 ou 2)
 } Configuration;
-
-// Função para medir o tempo com alta precisão
-#ifdef _WIN32
-double getTime() {
-    LARGE_INTEGER frequency, start;
-    QueryPerformanceFrequency(&frequency); // Frequência do contador
-    QueryPerformanceCounter(&start);       // Contagem atual
-    return (double)start.QuadPart / frequency.QuadPart * 1e9; // Em nanosegundos
-}
-#else
-#include <sys/time.h>
-double getTime() {
-    struct timespec time;
-    clock_gettime(CLOCK_MONOTONIC, &time);
-    return (double)time.tv_sec * 1e9 + time.tv_nsec; // Em nanosegundos
-}
-#endif
 
 // Função para gerar todas as configurações possíveis
 void generateConfigurations(Configuration *configs) {
@@ -92,10 +75,11 @@ void buildGraph(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], Configuration
     }
 }
 
-// Implementação do Algoritmo de Dijkstra com caminho
-void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int end, Configuration *configs) {
-    int dist[MAX_CONFIGURATIONS], prev[MAX_CONFIGURATIONS], visited[MAX_CONFIGURATIONS] = {0};
-    int i, j, v, at;
+// Implementação do Algoritmo de Bellman-Ford
+void bellmanFord(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int end, Configuration *configs) {
+    int dist[MAX_CONFIGURATIONS], prev[MAX_CONFIGURATIONS];
+    int i, j, u, v;
+    int at;
 
     for (i = 0; i < MAX_CONFIGURATIONS; i++) {
         dist[i] = INF;
@@ -103,21 +87,13 @@ void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int 
     }
     dist[start] = 0;
 
-    for (i = 0; i < MAX_CONFIGURATIONS; i++) {
-        int minDist = INF, u = -1;
-        for (j = 0; j < MAX_CONFIGURATIONS; j++) {
-            if (!visited[j] && dist[j] < minDist) {
-                minDist = dist[j];
-                u = j;
-            }
-        }
-        if (u == -1) break;
-        visited[u] = 1;
-
-        for (v = 0; v < MAX_CONFIGURATIONS; v++) {
-            if (graph[u][v] != INF && dist[u] + graph[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph[u][v];
-                prev[v] = u;
+    for (i = 0; i < MAX_CONFIGURATIONS - 1; i++) {
+        for (u = 0; u < MAX_CONFIGURATIONS; u++) {
+            for (v = 0; v < MAX_CONFIGURATIONS; v++) {
+                if (graph[u][v] != INF && dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                    prev[v] = u;
+                }
             }
         }
     }
@@ -140,11 +116,25 @@ void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int 
     }
 }
 
+#ifdef _WIN32
+long long getNanoseconds() {
+    LARGE_INTEGER frequency, start;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter(&start);
+    return (start.QuadPart * 1000000000LL) / frequency.QuadPart;
+}
+#endif
+
 int main() {
     Configuration configs[MAX_CONFIGURATIONS];
     int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS];
     int choice, start, end;
-    double startTime, endTime;
+
+#ifdef _WIN32
+    long long startTime, endTime;
+#else
+    struct timespec startTime, endTime;
+#endif
 
     generateConfigurations(configs);
     buildGraph(graph, configs);
@@ -168,11 +158,25 @@ int main() {
                 printf("Digite a configuração final (0 a 80): ");
                 scanf("%d", &end);
 
-                startTime = getTime();
-                dijkstra(graph, start, end, configs);
-                endTime = getTime();
+#ifdef _WIN32
+                startTime = getNanoseconds();
+                bellmanFord(graph, start, end, configs);
+                endTime = getNanoseconds();
+                printf("Tempo gasto: %lld nanosegundos\n", endTime - startTime);
+#else
+                clock_gettime(CLOCK_MONOTONIC, &startTime);
+                bellmanFord(graph, start, end, configs);
+                clock_gettime(CLOCK_MONOTONIC, &endTime);
 
-                printf("Tempo gasto: %.2lf nanosegundos\n", endTime - startTime);
+                long seconds = endTime.tv_sec - startTime.tv_sec;
+                long nanoseconds = endTime.tv_nsec - startTime.tv_nsec;
+                if (nanoseconds < 0) {
+                    seconds -= 1;
+                    nanoseconds += 1000000000;
+                }
+
+                printf("Tempo gasto: %ld segundos e %ld nanosegundos\n", seconds, nanoseconds);
+#endif
                 break;
             case 3:
                 printf("Saindo...\n");

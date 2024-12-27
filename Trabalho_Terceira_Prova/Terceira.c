@@ -92,45 +92,51 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
 }
 
 int main() {
-    int n, m;
-    printf("Digite o número de vértices e arestas: ");
-    if (scanf("%d %d", &n, &m) != 2 || n <= 0 || m < 0 || n > MAX_VERTICES) {
-        printf("Erro: Entrada inválida para vértices ou arestas.\n");
-        return 1;
-    }
-
-    Graph g;
-    initGraph(&g, n);
-
-    printf("Digite as arestas no formato (u v r):\n");
-    for (int i = 0; i < m; i++) {
-        int u, v;
-        double r;
-        if (scanf("%d %d %lf", &u, &v, &r) != 3 || u < 0 || v < 0 || u >= n || v >= n) {
-            printf("Erro: Entrada inválida para arestas.\n");
+    int repeat;
+    do {
+        int n, m;
+        printf("Digite o numero de vertices e arestas: ");
+        if (scanf("%d %d", &n, &m) != 2 || n <= 0 || m < 0 || n > MAX_VERTICES) {
+            printf("Erro: Entrada invalida para vertices ou arestas.\n");
             return 1;
         }
-        addEdge(&g, u, v, r);
-    }
 
-    int start, end;
-    printf("Digite os vértices de origem e destino: ");
-    if (scanf("%d %d", &start, &end) != 2 || start < 0 || end < 0 || start >= n || end >= n) {
-        printf("Erro: Entrada inválida para origem ou destino.\n");
-        return 1;
-    }
+        Graph g;
+        initGraph(&g, n);
 
-    int path[MAX_VERTICES];
-    double probability;
-    dijkstra(&g, start, end, path, &probability);
+        printf("Digite as arestas no formato (u v r):\n");
+        for (int i = 0; i < m; i++) {
+            int u, v;
+            double r;
+            if (scanf("%d %d %lf", &u, &v, &r) != 3 || u < 0 || v < 0 || u >= n || v >= n) {
+                printf("Erro: Entrada invalida para arestas.\n");
+                return 1;
+            }
+            addEdge(&g, u, v, r);
+        }
 
-    printf("Caminho mais confiável: ");
-    for (int i = 0; path[i] != -1; i++) {
-        printf("%d ", path[i]);
-    }
+        int start, end;
+        printf("Digite os vertices de origem e destino: ");
+        if (scanf("%d %d", &start, &end) != 2 || start < 0 || end < 0 || start >= n || end >= n) {
+            printf("Erro: Entrada invalida para origem ou destino.\n");
+            return 1;
+        }
 
-    // Exibir a probabilidade formatada com 2 casas decimais e como porcentagem
-    printf("\nProbabilidade de sucesso total: %.2lf (%.2lf%%)\n", probability, probability * 100);
+        int path[MAX_VERTICES];
+        double probability;
+        dijkstra(&g, start, end, path, &probability);
+
+        printf("Caminho mais confiavel: ");
+        for (int i = 0; path[i] != -1; i++) {
+            printf("%d ", path[i]);
+        }
+
+        printf("\nProbabilidade de sucesso total: %.2lf (%.2lf%%)\n", probability, probability * 100);
+
+        printf("\nDeseja calcular novamente? (1 - Sim / 0 - Nao): ");
+        scanf("%d", &repeat);
+
+    } while (repeat == 1);
 
     return 0;
 }
