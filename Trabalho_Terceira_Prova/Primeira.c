@@ -24,28 +24,29 @@ void generateConfigurations(Configuration *configs) {
 int isValidMove(Configuration a, Configuration b) {
     int diffCount = 0;  // Conta as diferenças entre as configurações
     int from = -1, to = -1;  // Torres de origem e destino do disco movido
-    int smallestDisk = -1;  // Disco mais pequeno que foi movido
+    int smallestDisk = -1;  // Índice do menor disco que foi movido
 
+    // Verificar diferenças entre as configurações
     for (int i = 0; i < 4; i++) {
         if (a.disks[i] != b.disks[i]) {
             diffCount++;
-            if (diffCount > 1) return 0;  // Mais de um disco mudou de posição
+            if (diffCount > 1) return 0;  // Mais de um disco foi movido, inválido
 
-            // Armazena as torres de origem e destino
+            // Armazena o disco movido e sua origem/destino
             from = a.disks[i];
             to = b.disks[i];
-            smallestDisk = i;  // O índice do disco menor que foi movido
+            smallestDisk = i;  // Índice do menor disco que foi movido
         }
     }
 
-    // Se nenhum disco foi movido ou mais de um foi movido, movimento inválido
+    // Se nenhum disco foi movido ou mais de um disco foi movido, é inválido
     if (diffCount != 1) return 0;
 
-    // Verificar se o movimento segue as regras do jogo
+    // Verificar as regras de empilhamento
     for (int i = 0; i < smallestDisk; i++) {
-        // Se algum disco menor está abaixo do disco movido na origem, é inválido
+        // Se um disco menor está abaixo do disco movido na origem, movimento inválido
         if (a.disks[i] == from) return 0;
-        // Se algum disco menor está abaixo do disco movido no destino, é inválido
+        // Se um disco menor está abaixo do disco movido no destino, movimento inválido
         if (b.disks[i] == to) return 0;
     }
 
@@ -57,10 +58,34 @@ int isValidMove(Configuration a, Configuration b) {
 void buildGraph(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], Configuration *configs) {
     for (int i = 0; i < MAX_CONFIGURATIONS; i++) {
         for (int j = 0; j < MAX_CONFIGURATIONS; j++) {
-            graph[i][j] = isValidMove(configs[i], configs[j]) ? 1 : INF;
+            if (isValidMove(configs[i], configs[j])) {
+                graph[i][j] = 1;  // Conexão válida
+            } else {
+                graph[i][j] = INF;  // Sem conexão
+            }
         }
     }
 }
+
+void printAdjacencyMatrixCompact(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS]) {
+    printf("Matriz de Adjacência (configurações conectadas):\n");
+    for (int i = 0; i < MAX_CONFIGURATIONS; i++) {
+        printf("Configuração %2d conecta-se a: ", i);
+        int count = 0;
+        for (int j = 0; j < MAX_CONFIGURATIONS; j++) {
+            if (graph[i][j] == 1) {  // Mostra apenas conexões reais
+                printf("%d ", j);
+                count++;
+            }
+            if (count >= 10) {  // Limite de 10 conexões por linha para manter legibilidade
+                printf("... ");
+                break;
+            }
+        }
+        printf("\n");
+    }
+}
+
 
 // Implementação do Algoritmo de Dijkstra com caminho
 void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int end, Configuration *configs) {
@@ -120,6 +145,9 @@ int main() {
 
     // Construir o grafo
     buildGraph(graph, configs);
+
+    // Exibir a matriz de adjacência
+    //printAdjacencyMatrixCompact(graph);
 
     // Executar Dijkstra e calcular tempo
     startTime = clock();
