@@ -1,7 +1,7 @@
 #include <time.h>
 #include <stdio.h>
-#include "portugues.c"
-#include "ingles.c"
+#include "arv23.c"
+#include "arvbin.c"
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
