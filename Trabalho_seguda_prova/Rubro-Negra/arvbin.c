@@ -38,7 +38,7 @@ BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int
     return result;
 }
 
-void addEnglishTranslation(PortuguesRB *raiz, char *palavraIng, int unidade)
+void addEnglishTranslation(RedBlackTreePT *raiz, char *palavraIng, int unidade)
 {
     raiz->info.englishWordNode = insertEnglishWord(raiz->info.englishWordNode, palavraIng, unidade);
 }
@@ -136,7 +136,7 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra)
     return existe;
 }
 
-void FindEnglishTerm(PortuguesRB **raiz, char *palavraIngles, int unidade)
+void FindEnglishTerm(RedBlackTreePT **raiz, char *palavraIngles, int unidade)
 {
     if (*raiz != NULL)
     {

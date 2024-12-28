@@ -9,13 +9,13 @@ typedef struct EnglishBinaryTree
   struct EnglishBinaryTree *rigth;
 } BinaryTreeNode;
 
-typedef struct  PortuguesRB  PortuguesRB;
+typedef struct  RedBlackTreePT  RedBlackTreePT;
 BinaryTreeNode *initializeBinaryTreeNode(char *palavraIngles, int unidade);
 
 // Função para inserir uma palavra em inglês na arvore binaria de busca
 BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int unidade);
 
-void addEnglishTranslation(PortuguesRB *raiz, char *palavraIng, int unidade);
+void addEnglishTranslation(RedBlackTreePT *raiz, char *palavraIng, int unidade);
 
 int isLeafNodes(BinaryTreeNode *raiz);
 
@@ -26,6 +26,6 @@ BinaryTreeNode *minimumChildNode(BinaryTreeNode *raiz);
 void printBinaryTree(BinaryTreeNode *root);
 
 int removeEnglishWord(BinaryTreeNode **raiz, char *palavra);
-void FindEnglishTerm(PortuguesRB **raiz, char *palavraIngles, int unidade);
+void FindEnglishTerm(RedBlackTreePT **raiz, char *palavraIngles, int unidade);
 
 #endif
