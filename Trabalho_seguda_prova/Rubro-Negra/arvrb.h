@@ -3,16 +3,16 @@
 
 typedef struct Info
 {
-  BinaryTreeNode *palavraIngles;
-  char *palavraPortugues;
+  BinaryTreeNode *englishWordNode;
+  char *portugueseWord;
 } Info;
 
 typedef struct PortuguesRB
 {
   Info info;
-  int cor;
-  struct PortuguesRB *esq;
-  struct PortuguesRB *dir;
+  int color;
+  struct PortuguesRB *left;
+  struct PortuguesRB *right;
 } PortuguesRB;
 
 int insertPortugueseWord(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade);

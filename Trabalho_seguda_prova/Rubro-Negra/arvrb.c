@@ -27,11 +27,11 @@ Info createInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 
-    info.palavraPortugues = malloc(strlen(palavra) + 1);
-    strcpy(info.palavraPortugues, palavra);
+    info.portugueseWord = malloc(strlen(palavra) + 1);
+    strcpy(info.portugueseWord, palavra);
 
-    info.palavraIngles = NULL;
-    info.palavraIngles = insertEnglishWord(info.palavraIngles, palavraIngles, unidade);
+    info.englishWordNode = NULL;
+    info.englishWordNode = insertEnglishWord(info.englishWordNode, palavraIngles, unidade);
     return info;
 }
 
@@ -39,9 +39,9 @@ PortuguesRB *createNode(Info *informacao)
 {
     PortuguesRB *novo = (PortuguesRB *)malloc(sizeof(PortuguesRB));
     novo->info = *informacao;
-    novo->cor = 1;
-    novo->esq = NULL;
-    novo->dir = NULL;
+    novo->color = 1;
+    novo->left = NULL;
+    novo->right = NULL;
     return novo;
 }
 int getNodeColor(PortuguesRB *raiz)
@@ -51,37 +51,37 @@ int getNodeColor(PortuguesRB *raiz)
     if (raiz == NULL)
         cor = BLACK;
     else
-        cor = raiz->cor;
+        cor = raiz->color;
 
     return cor;
 }
 
 void switch_node_color(PortuguesRB **raiz)
 {
-    (*raiz)->cor = !(*raiz)->cor;
-    if ((*raiz)->esq)
-        (*raiz)->esq->cor = !(*raiz)->esq->cor;
-    if ((*raiz)->dir)
-        (*raiz)->dir->cor = !(*raiz)->dir->cor;
+    (*raiz)->color = !(*raiz)->color;
+    if ((*raiz)->left)
+        (*raiz)->left->color = !(*raiz)->left->color;
+    if ((*raiz)->right)
+        (*raiz)->right->color = !(*raiz)->right->color;
 }
 
 void rotate_right(PortuguesRB **raiz)
 {
-    PortuguesRB *aux = (*raiz)->esq;
-    (*raiz)->esq = aux->dir;
-    aux->dir = *raiz;
-    aux->cor = (*raiz)->cor;
-    (*raiz)->cor = RED;
+    PortuguesRB *aux = (*raiz)->left;
+    (*raiz)->left = aux->right;
+    aux->right = *raiz;
+    aux->color = (*raiz)->color;
+    (*raiz)->color = RED;
     (*raiz) = aux;
 }
 
 void left_rotate(PortuguesRB **raiz)
 {
-    PortuguesRB *aux = (*raiz)->dir;
-    (*raiz)->dir = aux->esq;
-    aux->esq = *raiz;
-    aux->cor = (*raiz)->cor;
-    (*raiz)->cor = RED;
+    PortuguesRB *aux = (*raiz)->right;
+    (*raiz)->right = aux->left;
+    aux->left = *raiz;
+    aux->color = (*raiz)->color;
+    (*raiz)->color = RED;
     (*raiz) = aux;
 }
 
@@ -89,11 +89,11 @@ void balanceTree(PortuguesRB **raiz)
 {
     if (*raiz)
     {
-        if (getNodeColor((*raiz)->dir) == RED && getNodeColor((*raiz)->esq) == BLACK)
+        if (getNodeColor((*raiz)->right) == RED && getNodeColor((*raiz)->left) == BLACK)
             left_rotate(raiz);
-        if (getNodeColor((*raiz)->esq) == RED && getNodeColor((*raiz)->esq->esq) == RED)
+        if (getNodeColor((*raiz)->left) == RED && getNodeColor((*raiz)->left->left) == RED)
             rotate_right(raiz);
-        if (getNodeColor((*raiz)->esq) == RED && getNodeColor((*raiz)->dir) == RED)
+        if (getNodeColor((*raiz)->left) == RED && getNodeColor((*raiz)->right) == RED)
             switch_node_color(raiz);
     }
 }
@@ -108,13 +108,13 @@ int insertRedBlackNode(PortuguesRB **raiz, Info *informacao)
     }
     else
     {
-        if (strcmp(informacao->palavraPortugues, (*raiz)->info.palavraPortugues) < 0)
+        if (strcmp(informacao->portugueseWord, (*raiz)->info.portugueseWord) < 0)
         {
-            inseriu = insertRedBlackNode(&(*raiz)->esq, informacao);
+            inseriu = insertRedBlackNode(&(*raiz)->left, informacao);
         }
         else
         {
-            inseriu = insertRedBlackNode(&(*raiz)->dir, informacao);
+            inseriu = insertRedBlackNode(&(*raiz)->right, informacao);
         }
         balanceTree(&(*raiz));
     }
@@ -127,7 +127,7 @@ int insertRedBlackTree(PortuguesRB **raiz, Info *informacao)
     int inseriu = insertRedBlackNode(raiz, informacao);
     if (inseriu)
     {
-        (*raiz)->cor = BLACK;
+        (*raiz)->color = BLACK;
     }
     return inseriu;
 }
@@ -136,9 +136,9 @@ void shiftLeftRed(PortuguesRB **raiz)
 {
     switch_node_color(raiz);
 
-    if ((*raiz)->dir && getNodeColor((*raiz)->dir->esq) == RED)
+    if ((*raiz)->right && getNodeColor((*raiz)->right->left) == RED)
     {
-        rotate_right(&(*raiz)->dir);
+        rotate_right(&(*raiz)->right);
         left_rotate((raiz));
         switch_node_color(raiz);
     }
@@ -148,7 +148,7 @@ void rotateRedRight(PortuguesRB **raiz)
 {
     switch_node_color(raiz);
 
-    if ((*raiz)->esq && getNodeColor((*raiz)->esq->esq) == RED)
+    if ((*raiz)->left && getNodeColor((*raiz)->left->left) == RED)
     {
         rotate_right(raiz);
         switch_node_color(raiz);
@@ -157,17 +157,17 @@ void rotateRedRight(PortuguesRB **raiz)
 
 void removeMinimum(PortuguesRB **raiz)
 {
-    if (!((*raiz)->esq))
+    if (!((*raiz)->left))
     {
         free(*raiz);
         *raiz = NULL;
     }
     else
     {
-        if (getNodeColor((*raiz)->esq) == BLACK && getNodeColor((*raiz)->esq->esq) == BLACK)
+        if (getNodeColor((*raiz)->left) == BLACK && getNodeColor((*raiz)->left->left) == BLACK)
             shiftLeftRed(raiz);
 
-        removeMinimum(&(*raiz)->esq);
+        removeMinimum(&(*raiz)->left);
         balanceTree(raiz);
     }
 }
@@ -178,8 +178,8 @@ PortuguesRB *findMinimum(PortuguesRB *raiz)
     menor = raiz;
 
     if (raiz)
-        if (raiz->esq)
-            menor = findMinimum(raiz->esq);
+        if (raiz->left)
+            menor = findMinimum(raiz->left);
 
     return menor;
 }
@@ -190,40 +190,40 @@ int removeNodeFromRBTree(PortuguesRB **raiz, char *valor)
 
     if (*raiz)
     {
-        if (strcmp(valor, (*raiz)->info.palavraPortugues) < 0)
+        if (strcmp(valor, (*raiz)->info.portugueseWord) < 0)
         {
-            if ((*raiz)->esq && getNodeColor((*raiz)->esq) == BLACK && getNodeColor((*raiz)->esq->esq) == BLACK)
+            if ((*raiz)->left && getNodeColor((*raiz)->left) == BLACK && getNodeColor((*raiz)->left->left) == BLACK)
                 shiftLeftRed(raiz);
 
-            existe = removeNodeFromRBTree(&(*raiz)->esq, valor);
+            existe = removeNodeFromRBTree(&(*raiz)->left, valor);
         }
         else
         {
-            if (getNodeColor((*raiz)->esq) == RED)
+            if (getNodeColor((*raiz)->left) == RED)
                 rotate_right(raiz);
 
-            if (strcmp(valor, (*raiz)->info.palavraPortugues) == 0 && (*raiz)->dir == NULL)
+            if (strcmp(valor, (*raiz)->info.portugueseWord) == 0 && (*raiz)->right == NULL)
             {
                 free(*raiz);
                 *raiz = NULL;
 
                 existe = 1;
             }else{
-                if ((*raiz)->dir && getNodeColor((*raiz)->dir) == BLACK && getNodeColor((*raiz)->dir->esq) == BLACK)
+                if ((*raiz)->right && getNodeColor((*raiz)->right) == BLACK && getNodeColor((*raiz)->right->left) == BLACK)
                 rotateRedRight(raiz);
 
-                if (strcmp(valor, (*raiz)->info.palavraPortugues) == 0)
+                if (strcmp(valor, (*raiz)->info.portugueseWord) == 0)
                 {
                     PortuguesRB *aux;
-                    aux = findMinimum((*raiz)->dir);
+                    aux = findMinimum((*raiz)->right);
                     (*raiz)->info = aux->info;
-                    removeMinimum(&(*raiz)->dir);
+                    removeMinimum(&(*raiz)->right);
 
                     existe = 1;
                 }
                 else
                 {
-                    existe = removeNodeFromRBTree(&(*raiz)->dir, valor);
+                    existe = removeNodeFromRBTree(&(*raiz)->right, valor);
                 }
             }
         }
@@ -237,7 +237,7 @@ int removeRBTreeNode(PortuguesRB **raiz, char *valor)
     int removeu = removeNodeFromRBTree(raiz, valor);
     if (removeu)
     {
-        (*raiz)->cor = BLACK;
+        (*raiz)->color = BLACK;
     }
     return removeu;
 }
@@ -249,17 +249,17 @@ PortuguesRB *SearchWordInTree(PortuguesRB **arvore, char *palavraPortugues)
 
     if (*arvore != NULL)
     {
-        if (strcmp(palavraPortugues, (*arvore)->info.palavraPortugues) == 0)
+        if (strcmp(palavraPortugues, (*arvore)->info.portugueseWord) == 0)
         {
             atual = *arvore;
         }
-        else if (strcmp(palavraPortugues, (*arvore)->info.palavraPortugues) < 0)
+        else if (strcmp(palavraPortugues, (*arvore)->info.portugueseWord) < 0)
         {
-            atual = SearchWordInTree(&(*arvore)->esq, palavraPortugues);
+            atual = SearchWordInTree(&(*arvore)->left, palavraPortugues);
         }
         else
         {
-            atual = SearchWordInTree(&(*arvore)->dir, palavraPortugues);
+            atual = SearchWordInTree(&(*arvore)->right, palavraPortugues);
         }
     }
     return atual;
@@ -270,9 +270,9 @@ void printWordsByUnit(PortuguesRB *arvore, int unidade)
 {
     if (arvore)
     {
-        printWordsByUnit(arvore->esq, unidade);
-        printTranslations(arvore->info.palavraIngles, unidade, arvore->info.palavraPortugues);
-        printWordsByUnit(arvore->dir, unidade);
+        printWordsByUnit(arvore->left, unidade);
+        printTranslations(arvore->info.englishWordNode, unidade, arvore->info.portugueseWord);
+        printWordsByUnit(arvore->right, unidade);
     }
 }
 
@@ -280,13 +280,13 @@ void printTranslations(BinaryTreeNode *node, int unidade, char *palavraPortugues
 {
     if (node)
     {
-        if (node->unidade == unidade)
+        if (node->unitValue == unidade)
         {
             printf("Palavra em Português: %s\n", palavraPortugues);
-            printf("Palavra em inglês: %s\n", node->palavraIngles);
+            printf("Palavra em inglês: %s\n", node->englishWord);
         }
-        printTranslations(node->esq, unidade, palavraPortugues);
-        printTranslations(node->dir, unidade, palavraPortugues);
+        printTranslations(node->left, unidade, palavraPortugues);
+        printTranslations(node->rigth, unidade, palavraPortugues);
     }
 }
 
@@ -300,9 +300,9 @@ void showPortugueseTranslation(PortuguesRB **raiz, char *palavraPortugues)
         {
             printf("Traduções em inglês para a palavra '%s':\n", palavraPortugues);
 
-            if (strcmp(palavraPortugues, resultado->info.palavraPortugues) == 0)
+            if (strcmp(palavraPortugues, resultado->info.portugueseWord) == 0)
             {
-                printBinaryTree(resultado->info.palavraIngles);
+                printBinaryTree(resultado->info.englishWordNode);
             }
 
         }
@@ -313,11 +313,11 @@ void showRedBlackTree(PortuguesRB *raiz)
 {
     if (raiz)
     {
-        showRedBlackTree(raiz->esq);
-        printf("Cor - %d\n", raiz->cor);
-        printf("Palavra em Português - %s\n", raiz->info.palavraPortugues);
-        printBinaryTree(raiz->info.palavraIngles);
+        showRedBlackTree(raiz->left);
+        printf("Cor - %d\n", raiz->color);
+        printf("Palavra em Português - %s\n", raiz->info.portugueseWord);
+        printBinaryTree(raiz->info.englishWordNode);
         printf("\n");
-        showRedBlackTree(raiz->dir);
+        showRedBlackTree(raiz->right);
     }
 }

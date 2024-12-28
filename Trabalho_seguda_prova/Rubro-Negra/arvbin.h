@@ -3,10 +3,10 @@
 
 typedef struct EnglishBinaryTree
 {
-  char palavraIngles[50];
-  int unidade;
-  struct EnglishBinaryTree *esq;
-  struct EnglishBinaryTree *dir;
+  char englishWord[50];
+  int unitValue;
+  struct EnglishBinaryTree *left;
+  struct EnglishBinaryTree *rigth;
 } BinaryTreeNode;
 
 typedef struct  PortuguesRB  PortuguesRB;

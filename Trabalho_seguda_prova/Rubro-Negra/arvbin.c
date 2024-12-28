@@ -8,9 +8,9 @@ BinaryTreeNode *initializeBinaryTreeNode(char *palavraIngles, int unidade)
     BinaryTreeNode *novoNo = (BinaryTreeNode *)malloc(sizeof(BinaryTreeNode));
     if (novoNo != NULL)
     {
-        strcpy(novoNo->palavraIngles, palavraIngles);
-        novoNo->unidade = unidade;
-        novoNo->esq = novoNo->dir = NULL;
+        strcpy(novoNo->englishWord, palavraIngles);
+        novoNo->unitValue = unidade;
+        novoNo->left = novoNo->rigth = NULL;
     }
     return novoNo;
 }
@@ -25,13 +25,13 @@ BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int
     }
     else
     {
-        if (strcmp(palavraIngles, root->palavraIngles) < 0)
+        if (strcmp(palavraIngles, root->englishWord) < 0)
         {
-            root->esq = insertEnglishWord(root->esq, palavraIngles, unidade);
+            root->left = insertEnglishWord(root->left, palavraIngles, unidade);
         }
-        else if (strcmp(palavraIngles, root->palavraIngles) > 0)
+        else if (strcmp(palavraIngles, root->englishWord) > 0)
         {
-            root->dir = insertEnglishWord(root->dir, palavraIngles, unidade);
+            root->rigth = insertEnglishWord(root->rigth, palavraIngles, unidade);
         }
         result = root;
     }
@@ -40,7 +40,7 @@ BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int
 
 void addEnglishTranslation(PortuguesRB *raiz, char *palavraIng, int unidade)
 {
-    raiz->info.palavraIngles = insertEnglishWord(raiz->info.palavraIngles, palavraIng, unidade);
+    raiz->info.englishWordNode = insertEnglishWord(raiz->info.englishWordNode, palavraIng, unidade);
 }
 
 
@@ -48,17 +48,17 @@ void printBinaryTree(BinaryTreeNode *root)
 {
     if (root != NULL)
     {
-        printBinaryTree(root->esq); // Percorre a árvore à esquerda
+        printBinaryTree(root->left); // Percorre a árvore à esquerda
         printf("\n");
         // Imprime a tradução de inglês associada à palavra em português
-        printf("Palavra em Inglês: %s = Unidade: %d\n", root->palavraIngles, root->unidade);
-        printBinaryTree(root->dir); // Percorre a árvore à direita
+        printf("Palavra em Inglês: %s = Unidade: %d\n", root->englishWord, root->unitValue);
+        printBinaryTree(root->rigth); // Percorre a árvore à direita
     }
 }
 
 int isLeafNodes(BinaryTreeNode *raiz)
 {
-    return (raiz->esq == NULL && raiz->dir == NULL);
+    return (raiz->left == NULL && raiz->rigth == NULL);
 }
 
 BinaryTreeNode *singleChildNode(BinaryTreeNode *raiz)
@@ -66,13 +66,13 @@ BinaryTreeNode *singleChildNode(BinaryTreeNode *raiz)
     BinaryTreeNode *aux;
     aux = NULL;
 
-    if (raiz->dir == NULL)
+    if (raiz->rigth == NULL)
     {
-        aux = raiz->esq;
+        aux = raiz->left;
     }
-    else if (raiz->esq == NULL)
+    else if (raiz->left == NULL)
     {
-        aux = raiz->dir;
+        aux = raiz->rigth;
     }
 
     return aux;
@@ -85,8 +85,8 @@ BinaryTreeNode *minimumChildNode(BinaryTreeNode *raiz)
 
     if (raiz)
     {
-        if (raiz->esq)
-            aux = minimumChildNode(raiz->esq);
+        if (raiz->left)
+            aux = minimumChildNode(raiz->left);
     }
 
     return aux;
@@ -99,7 +99,7 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra)
 
     if (*raiz)
     {
-        if (strcmp(palavra, (*raiz)->palavraIngles) == 0)
+        if (strcmp(palavra, (*raiz)->englishWord) == 0)
         {
             existe = 1;
             printf("removendo palavra: %s\n", palavra);
@@ -116,20 +116,20 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra)
             }
             else
             {
-                endFilho = minimumChildNode((*raiz)->dir);
-                strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
-                (*raiz)->unidade = endFilho->unidade;
+                endFilho = minimumChildNode((*raiz)->rigth);
+                strcpy((*raiz)->englishWord, endFilho->englishWord);
+                (*raiz)->unitValue = endFilho->unitValue;
 
-                removeEnglishWord(&(*raiz)->dir, endFilho->palavraIngles);
+                removeEnglishWord(&(*raiz)->rigth, endFilho->englishWord);
             }
         }
-        else if (strcmp(palavra, (*raiz)->palavraIngles) < 0)
+        else if (strcmp(palavra, (*raiz)->englishWord) < 0)
         {
-            existe = removeEnglishWord(&(*raiz)->esq, palavra);
+            existe = removeEnglishWord(&(*raiz)->left, palavra);
         }
         else
         {
-            existe = removeEnglishWord(&(*raiz)->dir, palavra);
+            existe = removeEnglishWord(&(*raiz)->rigth, palavra);
         }
     }
 
@@ -140,10 +140,10 @@ void FindEnglishTerm(PortuguesRB **raiz, char *palavraIngles, int unidade)
 {
     if (*raiz != NULL)
     {
-        FindEnglishTerm(&(*raiz)->esq, palavraIngles, unidade);
+        FindEnglishTerm(&(*raiz)->left, palavraIngles, unidade);
 
-        if ((*raiz)->info.palavraIngles != NULL && (*raiz)->info.palavraIngles->unidade == unidade)
-            removeEnglishWord(&(*raiz)->info.palavraIngles, palavraIngles);
-        FindEnglishTerm(&(*raiz)->dir, palavraIngles, unidade);
+        if ((*raiz)->info.englishWordNode != NULL && (*raiz)->info.englishWordNode->unitValue == unidade)
+            removeEnglishWord(&(*raiz)->info.englishWordNode, palavraIngles);
+        FindEnglishTerm(&(*raiz)->right, palavraIngles, unidade);
     }
 }

@@ -63,14 +63,14 @@ void menu()
 int main()
 {
 
-    PortuguesRB *raiz = NULL;
+    PortuguesRB *rootNode = NULL;
 
-    loadFile("C:/Users/PurooLight/Documents/GitHub/ED2-JOB2/ray-ed2/questao_2/trabalhoEd2.txt", &raiz);
+    loadFile("C:/Users/PurooLight/Documents/GitHub/ED2-JOB2/ray-ed2/questao_2/trabalhoEd2.txt", &rootNode);
 
     int op;
-    char palavra[50];
-    int unidade;
-    int removido;
+    char word[50];
+    int unit;
+    int removedNode;
     do
     {
         menu();
@@ -81,39 +81,39 @@ int main()
         case 1:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a unidade que deseja imprimir as palavras: ");
-            scanf("%d", &unidade);
-            printWordsByUnit(raiz, unidade);
+            scanf("%d", &unit);
+            printWordsByUnit(rootNode, unit);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 2:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em portugues que deseja imprimir as palavras em ingles: ");
-            scanf("%s", palavra);
-            showPortugueseTranslation(&raiz, palavra);
+            scanf("%s", word);
+            showPortugueseTranslation(&rootNode, word);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 3:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em ingles que deseja remover: ");
-            scanf("%s", palavra);
+            scanf("%s", word);
             printf("Insira a unidade da palavra que deseja remover: ");
-            scanf("%d", &unidade);
-            FindEnglishTerm(&raiz, palavra, unidade);
+            scanf("%d", &unit);
+            FindEnglishTerm(&rootNode, word, unit);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 4:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em portugues que deseja remover: ");
             setbuf(stdin, NULL);
-            scanf("%[^\n]", palavra);
-            removido = removeRBTreeNode(&raiz, palavra);
-            if (removido)
-                printf("A palavra %s foi removida com sucesso!\n\n", palavra);
+            scanf("%[^\n]", word);
+            removedNode = removeRBTreeNode(&rootNode, word);
+            if (removedNode)
+                printf("A palavra %s foi removida com sucesso!\n\n", word);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 5:
             printf("\n--------------------------------------------------------------- \n");
-            showRedBlackTree(raiz);
+            showRedBlackTree(rootNode);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 0:
