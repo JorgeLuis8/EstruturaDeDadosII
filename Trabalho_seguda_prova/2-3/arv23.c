@@ -64,14 +64,14 @@ int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *
         adicionarTraducao(noExistente, palavraPortugues, palavraIngles, unidade);
         inseriu = 1;
     } else {
-        Info novoInfo = criaInfo(palavraPortugues, palavraIngles, unidade);
+        Info novoInfo = createInfo(palavraPortugues, palavraIngles, unidade);
         inserirArv23(arvore, &novoInfo, &promove, &pai);
         inseriu = 0;
     }
     return inseriu;
 }
 
-Info criaInfo(char *palavra, char *palavraIngles, int unidade)
+Info createInfo(char *palavra, char *palavraIngles, int unidade)
 {
     Info info;
 

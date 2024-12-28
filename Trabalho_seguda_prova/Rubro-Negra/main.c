@@ -5,7 +5,7 @@
 #include "arvbin.c"
 #include "arvrb.c"
 
-void carregarArquivo(const char *nomeArquivo, PortuguesRB **arvore)
+void loadFile(const char *nomeArquivo, PortuguesRB **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo != NULL)
@@ -34,7 +34,7 @@ void carregarArquivo(const char *nomeArquivo, PortuguesRB **arvore)
                     while (*traducaoPortugues == ' ')
                         traducaoPortugues++;
 
-                    inserirPalavraPortugues(arvore, traducaoPortugues, palavraIngles, unidadeAtual);
+                    insertPortugueseWord(arvore, traducaoPortugues, palavraIngles, unidadeAtual);
 
                     traducaoPortugues = strtok(NULL, ",;");
                 }
@@ -65,7 +65,7 @@ int main()
 
     PortuguesRB *raiz = NULL;
 
-    carregarArquivo("C:/Users/PurooLight/Documents/GitHub/ED2-JOB2/ray-ed2/questao_2/trabalhoEd2.txt", &raiz);
+    loadFile("C:/Users/PurooLight/Documents/GitHub/ED2-JOB2/ray-ed2/questao_2/trabalhoEd2.txt", &raiz);
 
     int op;
     char palavra[50];
@@ -82,14 +82,14 @@ int main()
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a unidade que deseja imprimir as palavras: ");
             scanf("%d", &unidade);
-            imprimirPalavrasUnidade(raiz, unidade);
+            printWordsByUnit(raiz, unidade);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 2:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em portugues que deseja imprimir as palavras em ingles: ");
             scanf("%s", palavra);
-            exibir_traducao_Portugues(&raiz, palavra);
+            showPortugueseTranslation(&raiz, palavra);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 3:
@@ -98,7 +98,7 @@ int main()
             scanf("%s", palavra);
             printf("Insira a unidade da palavra que deseja remover: ");
             scanf("%d", &unidade);
-            BuscarPalavraIngles(&raiz, palavra, unidade);
+            FindEnglishTerm(&raiz, palavra, unidade);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 4:
@@ -106,14 +106,14 @@ int main()
             printf("Insira a palavra em portugues que deseja remover: ");
             setbuf(stdin, NULL);
             scanf("%[^\n]", palavra);
-            removido = removerArvRB(&raiz, palavra);
+            removido = removeRBTreeNode(&raiz, palavra);
             if (removido)
                 printf("A palavra %s foi removida com sucesso!\n\n", palavra);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 5:
             printf("\n--------------------------------------------------------------- \n");
-            exibirArvore(raiz);
+            showRedBlackTree(raiz);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 0:

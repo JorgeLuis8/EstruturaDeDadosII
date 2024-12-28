@@ -3,7 +3,7 @@
 
 typedef struct Info
 {
-  Inglesbin *palavraIngles;
+  BinaryTreeNode *palavraIngles;
   char *palavraPortugues;
 } Info;
 
@@ -15,46 +15,46 @@ typedef struct PortuguesRB
   struct PortuguesRB *dir;
 } PortuguesRB;
 
-int inserirPalavraPortugues(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade);
+int insertPortugueseWord(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade);
 
-Info criaInfo(char *palavra, char *palavraIngles, int unidade);
+Info createInfo(char *palavra, char *palavraIngles, int unidade);
 
-PortuguesRB *criaNo(Info *informacao);
-int cor(PortuguesRB *raiz);
+PortuguesRB *createNode(Info *informacao);
+int getNodeColor(PortuguesRB *raiz);
 
-void troca_cor(PortuguesRB **raiz);
+void switch_node_color(PortuguesRB **raiz);
 
-void rotacao_direita(PortuguesRB **raiz);
+void rotate_right(PortuguesRB **raiz);
 
-void rotacao_esquerda(PortuguesRB **raiz);
+void left_rotate(PortuguesRB **raiz);
 
-void balancear(PortuguesRB **raiz);
+void balanceTree(PortuguesRB **raiz);
 
-int inserirRB(PortuguesRB **raiz, Info *informacao);
+int insertRedBlackNode(PortuguesRB **raiz, Info *informacao);
 
-int inserirArvRB(PortuguesRB **raiz, Info *informacao);
+int insertRedBlackTree(PortuguesRB **raiz, Info *informacao);
 
-void moveEsqVermelha(PortuguesRB **raiz);
+void shiftLeftRed(PortuguesRB **raiz);
 
-void moveDirVermelha(PortuguesRB **raiz);
+void rotateRedRight(PortuguesRB **raiz);
 
-void removeMenor(PortuguesRB **raiz);
+void removeMinimum(PortuguesRB **raiz);
 
-PortuguesRB *procuraMenor(PortuguesRB *raiz);
+PortuguesRB *findMinimum(PortuguesRB *raiz);
 
-int removerNoArvVP(PortuguesRB **raiz, char *valor);
+int removeNodeFromRBTree(PortuguesRB **raiz, char *valor);
 
-int removerArvRB(PortuguesRB **raiz, char *valor);
+int removeRBTreeNode(PortuguesRB **raiz, char *valor);
 
-PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues);
+PortuguesRB *SearchWordInTree(PortuguesRB **arvore, char *palavraPortugues);
 
-void imprimirPalavrasUnidade(PortuguesRB *arvore, int unidade);
+void printWordsByUnit(PortuguesRB *arvore, int unidade);
 
-void exibir_traducao_Portugues(PortuguesRB **raiz, char *palavraPortugues);
+void showPortugueseTranslation(PortuguesRB **raiz, char *palavraPortugues);
 
-void imprimirTraducoes(Inglesbin *node, int unidade, char *palavraPortugues);
+void printTranslations(BinaryTreeNode *node, int unidade, char *palavraPortugues);
 
-void exibirArvore(PortuguesRB *raiz);
+void showRedBlackTree(PortuguesRB *raiz);
 
 
 // void freeTree(PortuguesRB *no);

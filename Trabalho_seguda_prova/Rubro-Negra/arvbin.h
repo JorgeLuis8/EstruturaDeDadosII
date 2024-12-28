@@ -1,30 +1,31 @@
 #ifndef ARVBIN_H
 #define ARVBIN_H
 
-typedef struct InglesBin
+typedef struct EnglishBinaryTree
 {
   char palavraIngles[50];
   int unidade;
-  struct InglesBin *esq;
-  struct InglesBin *dir;
-} Inglesbin;
+  struct EnglishBinaryTree *esq;
+  struct EnglishBinaryTree *dir;
+} BinaryTreeNode;
+
 typedef struct  PortuguesRB  PortuguesRB;
-Inglesbin *createNode(char *palavraIngles, int unidade);
+BinaryTreeNode *initializeBinaryTreeNode(char *palavraIngles, int unidade);
 
 // Função para inserir uma palavra em inglês na arvore binaria de busca
-Inglesbin *insertpalavraIngles(Inglesbin *root, char *palavraIngles, int unidade);
+BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int unidade);
 
-void adicionarTraducaoEmIngles(PortuguesRB *raiz, char *palavraIng, int unidade);
+void addEnglishTranslation(PortuguesRB *raiz, char *palavraIng, int unidade);
 
-int ehFolhas(Inglesbin *raiz);
+int isLeafNodes(BinaryTreeNode *raiz);
 
-Inglesbin *soUmFilho(Inglesbin *raiz);
+BinaryTreeNode *singleChildNode(BinaryTreeNode *raiz);
 
-Inglesbin *menorFilho(Inglesbin *raiz);
+BinaryTreeNode *minimumChildNode(BinaryTreeNode *raiz);
 
-void printBinaryTree(Inglesbin *root);
+void printBinaryTree(BinaryTreeNode *root);
 
-int removerPalavraIngles(Inglesbin **raiz, char *palavra);
-void BuscarPalavraIngles(PortuguesRB **raiz, char *palavraIngles, int unidade);
+int removeEnglishWord(BinaryTreeNode **raiz, char *palavra);
+void FindEnglishTerm(PortuguesRB **raiz, char *palavraIngles, int unidade);
 
 #endif

@@ -11,7 +11,7 @@ int inserirPalavraPortugues(Arv_portugues **arvore, char *palavraPortugues, char
 
     // Busca a palavra na árvore
     Arv_portugues *noExistente = NULL;
-    noExistente =  BuscarPalavra(arvore, palavraPortugues);
+    noExistente =  SearchWordInTree(arvore, palavraPortugues);
 
     if (noExistente != NULL) {
         printf("A palavra já existe. Adicionando tradução...\n");

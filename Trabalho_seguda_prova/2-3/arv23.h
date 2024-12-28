@@ -21,7 +21,7 @@ Portugues23 *BuscarPalavra(Portugues23 **no, const char *palavraPortugues);
 int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *palavraIngles, int unidade);
 void adicionarTraducaoEmIngles(Info *info, const char *palavraIng, int unidade);
 
-Info criaInfo(char *palavra, char *palavraIngles, int unidade);
+Info createInfo(char *palavra, char *palavraIngles, int unidade);
 Portugues23 *criaNo(const Info *informacao, Portugues23 *filhoesq, Portugues23 *filhocen);
 Portugues23 *adicionaChave(Portugues23 *no, const Info *informacao, Portugues23 *filho);
 Portugues23 *quebraNo(Portugues23 **no, const Info *informacao, Info *promove, Portugues23 **filho);
