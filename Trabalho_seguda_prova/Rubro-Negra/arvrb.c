@@ -321,32 +321,33 @@ void showRedBlackTree(RedBlackTreePT *raiz)
         showRedBlackTree(raiz->right);
     }
 }
-
 RedBlackTreePT *SearchEnglishWordInRBTree(RedBlackTreePT *raiz, char *palavraIngles, int unidade) {
-    if (raiz == NULL) {
-        return NULL;
-    }
+    RedBlackTreePT *result = NULL; // Variável para armazenar o resultado
 
-    // Verifica o nó atual da árvore vermelho-preto
-    BinaryTreeNode *currentNode = raiz->info.englishWordNode;
-    while (currentNode != NULL) {
-        printf("Verificando palavra: '%s' na unidade %d\n", currentNode->englishWord, currentNode->unitValue);
-        if (currentNode->unitValue == unidade && strcmp(currentNode->englishWord, palavraIngles) == 0) {
-            printf("Palavra encontrada na árvore binária associada ao nó português: '%s'\n", raiz->info.portugueseWord);
-            return raiz; // Retorna o nó vermelho-preto
+    if (raiz != NULL) {
+        // Verifica na árvore binária associada ao nó atual
+        BinaryTreeNode *currentNode = raiz->info.englishWordNode;
+        while (currentNode != NULL) {
+            if (currentNode->unitValue == unidade && strcmp(currentNode->englishWord, palavraIngles) == 0) {
+                result = raiz; // Palavra encontrada na árvore binária
+                break; // Sai do loop
+            }
+
+            if (strcmp(palavraIngles, currentNode->englishWord) < 0) {
+                currentNode = currentNode->left;
+            } else {
+                currentNode = currentNode->rigth;
+            }
         }
 
-        if (strcmp(palavraIngles, currentNode->englishWord) < 0) {
-            currentNode = currentNode->left;
-        } else {
-            currentNode = currentNode->rigth;
+        // Se não encontrada no nó atual, busca nos filhos
+        if (result == NULL) {
+            result = SearchEnglishWordInRBTree(raiz->left, palavraIngles, unidade);
+            if (result == NULL) {
+                result = SearchEnglishWordInRBTree(raiz->right, palavraIngles, unidade);
+            }
         }
     }
 
-    // Percorre os nós à esquerda e à direita da árvore vermelho-preto
-    RedBlackTreePT *found = SearchEnglishWordInRBTree(raiz->left, palavraIngles, unidade);
-    if (found != NULL) {
-        return found;
-    }
-    return SearchEnglishWordInRBTree(raiz->right, palavraIngles, unidade);
+    return result; // Retorna o resultado final
 }
