@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "arvrb.h"
 Inglesbin *createNode(char *palavraIngles, int unidade)
 {
     Inglesbin *novoNo = (Inglesbin *)malloc(sizeof(Inglesbin));

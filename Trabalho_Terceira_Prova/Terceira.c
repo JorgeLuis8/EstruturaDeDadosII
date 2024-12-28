@@ -42,6 +42,7 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
     int prev[MAX_VERTICES];
     int visited[MAX_VERTICES] = {0};
     int n = g->numVertices;
+    int continueLoop = 1; // Variável para controlar o loop principal
 
     for (int i = 0; i < n; i++) {
         dist[i] = INF;
@@ -49,9 +50,11 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
     }
     dist[start] = 0.0;
 
-    for (int i = 0; i < n; i++) {
+    int i = 0;
+    while (i < n && continueLoop) { // Substitui o for com um controle adicional
         double minDist = INF;
         int u = -1;
+
         for (int j = 0; j < n; j++) {
             if (!visited[j] && dist[j] < minDist) {
                 minDist = dist[j];
@@ -59,18 +62,22 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
             }
         }
 
-        if (u == -1) break;
-        visited[u] = 1;
+        if (u == -1) {
+            continueLoop = 0; // Atualiza o controle para encerrar o loop
+        } else {
+            visited[u] = 1;
 
-        for (int v = 0; v < n; v++) {
-            if (!visited[v] && g->edges[u][v].weight < INF) {
-                double newDist = dist[u] + g->edges[u][v].weight;
-                if (newDist < dist[v]) {
-                    dist[v] = newDist;
-                    prev[v] = u;
+            for (int v = 0; v < n; v++) {
+                if (!visited[v] && g->edges[u][v].weight < INF) {
+                    double newDist = dist[u] + g->edges[u][v].weight;
+                    if (newDist < dist[v]) {
+                        dist[v] = newDist;
+                        prev[v] = u;
+                    }
                 }
             }
         }
+        i++;
     }
 
     int current = end;
@@ -82,14 +89,16 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
 
     *probability = exp(-dist[end]);
 
+    // Inverte o caminho para a ordem correta
     for (int i = 0; i < pathIndex / 2; i++) {
         int temp = path[i];
         path[i] = path[pathIndex - 1 - i];
         path[pathIndex - 1 - i] = temp;
     }
 
-    path[pathIndex] = -1;
+    path[pathIndex] = -1; // Marca o final do caminho
 }
+
 
 int main() {
     int repeat;

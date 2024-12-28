@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#ifdef _WIN32
+
 #include <windows.h>
-#else
 #include <time.h>
-#endif
+
 
 #define MAX_CONFIGURATIONS 81
 #define INF 1000000
@@ -17,21 +16,14 @@ typedef struct {
 } Configuration;
 
 // Função para medir o tempo com alta precisão
-#ifdef _WIN32
+
 double getTime() {
     LARGE_INTEGER frequency, start;
     QueryPerformanceFrequency(&frequency); // Frequência do contador
     QueryPerformanceCounter(&start);       // Contagem atual
     return (double)start.QuadPart / frequency.QuadPart * 1e9; // Em nanosegundos
 }
-#else
-#include <sys/time.h>
-double getTime() {
-    struct timespec time;
-    clock_gettime(CLOCK_MONOTONIC, &time);
-    return (double)time.tv_sec * 1e9 + time.tv_nsec; // Em nanosegundos
-}
-#endif
+
 
 // Função para gerar todas as configurações possíveis
 void generateConfigurations(Configuration *configs) {
@@ -60,27 +52,37 @@ void displayConfigurations(Configuration *configs) {
 int isValidMove(Configuration a, Configuration b) {
     int diffCount = 0;
     int from = -1, to = -1, smallestDisk = -1;
+    int isValid = 1; // Inicializa como válido
     int i;
 
     for (i = 0; i < 4; i++) {
         if (a.disks[i] != b.disks[i]) {
             diffCount++;
-            if (diffCount > 1) return 0;
-
-            from = a.disks[i];
-            to = b.disks[i];
-            smallestDisk = i;
+            if (diffCount > 1) {
+                isValid = 0; // Atualiza a validade para inválida
+            } else {
+                from = a.disks[i];
+                to = b.disks[i];
+                smallestDisk = i;
+            }
         }
     }
 
-    if (diffCount != 1) return 0;
-
-    for (i = 0; i < smallestDisk; i++) {
-        if (a.disks[i] == from || b.disks[i] == to) return 0;
+    if (diffCount != 1) {
+        isValid = 0;
     }
 
-    return 1;
+    i = 0;
+    while (i < smallestDisk && isValid) { 
+        if (a.disks[i] == from || b.disks[i] == to) {
+            isValid = 0; 
+        }
+        i++;
+    }
+
+    return isValid;
 }
+
 
 // Constrói a matriz de adjacência do grafo
 void buildGraph(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], Configuration *configs) {
@@ -96,40 +98,57 @@ void buildGraph(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], Configuration
 void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int end, Configuration *configs) {
     int dist[MAX_CONFIGURATIONS], prev[MAX_CONFIGURATIONS], visited[MAX_CONFIGURATIONS] = {0};
     int i, j, v, at;
+    int loopControl = 1; // Controle para o loop principal
 
+    // Inicializa distâncias e predecessores
     for (i = 0; i < MAX_CONFIGURATIONS; i++) {
         dist[i] = INF;
         prev[i] = -1;
     }
     dist[start] = 0;
 
-    for (i = 0; i < MAX_CONFIGURATIONS; i++) {
+    // Loop principal
+    i = 0;
+    while (i < MAX_CONFIGURATIONS && loopControl) {
         int minDist = INF, u = -1;
+
+        // Encontra o próximo vértice com a menor distância
         for (j = 0; j < MAX_CONFIGURATIONS; j++) {
             if (!visited[j] && dist[j] < minDist) {
                 minDist = dist[j];
                 u = j;
             }
         }
-        if (u == -1) break;
-        visited[u] = 1;
 
-        for (v = 0; v < MAX_CONFIGURATIONS; v++) {
-            if (graph[u][v] != INF && dist[u] + graph[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph[u][v];
-                prev[v] = u;
+        // Se não houver vértices restantes, encerra o loop
+        if (u == -1) {
+            loopControl = 0; // Atualiza o controle do loop para sair
+        } else {
+            visited[u] = 1;
+
+            // Atualiza as distâncias dos vizinhos
+            for (v = 0; v < MAX_CONFIGURATIONS; v++) {
+                if (graph[u][v] != INF && dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                    prev[v] = u;
+                }
             }
         }
+        i++;
     }
 
+    // Exibe o menor caminho
     printf("Menor caminho do início ao final: %d movimentos\n", dist[end]);
     printf("Caminho:\n");
 
     int path[MAX_CONFIGURATIONS], pathIndex = 0;
+
+    // Reconstrói o caminho
     for (at = end; at != -1; at = prev[at]) {
         path[pathIndex++] = at;
     }
 
+    // Exibe o caminho na ordem correta
     for (i = pathIndex - 1; i >= 0; i--) {
         printf("Configuração %d: [", path[i]);
         for (j = 0; j < 4; j++) {

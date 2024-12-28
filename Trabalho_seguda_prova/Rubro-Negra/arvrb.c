@@ -1,8 +1,8 @@
-#include "arvrb.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "arvbin.h"
+#include "arvrb.h"
 #define RED 1
 #define BLACK 0
 
@@ -187,7 +187,6 @@ PortuguesRB *procuraMenor(PortuguesRB *raiz)
 int removerNoArvVP(PortuguesRB **raiz, char *valor)
 {
     int existe = 0;
-    printf("\nEntrou \n");
 
     if (*raiz)
     {
@@ -231,6 +230,16 @@ int removerNoArvVP(PortuguesRB **raiz, char *valor)
     }
     balancear(raiz);
     return existe;
+}
+
+int removerArvRB(PortuguesRB **raiz, char *valor)
+{
+    int removeu = removerNoArvVP(raiz, valor);
+    if (removeu)
+    {
+        (*raiz)->cor = BLACK;
+    }
+    return removeu;
 }
 
 
@@ -297,10 +306,6 @@ void exibir_traducao_Portugues(PortuguesRB **raiz, char *palavraPortugues)
             }
 
         }
-        else
-        {
-            printf("A palavra '%s' não foi encontrada na árvore.\n", palavraPortugues);
-        }
     }
 }
 
@@ -310,7 +315,7 @@ void exibirArvore(PortuguesRB *raiz)
     {
         exibirArvore(raiz->esq);
         printf("Cor - %d\n", raiz->cor);
-        printf("Valor - %s\n", raiz->info.palavraPortugues);
+        printf("Palavra em Português - %s\n", raiz->info.palavraPortugues);
         printBinaryTree(raiz->info.palavraIngles);
         printf("\n");
         exibirArvore(raiz->dir);

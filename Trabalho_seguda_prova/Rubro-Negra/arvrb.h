@@ -1,6 +1,19 @@
 #ifndef ARVRB_H
 #define ARVRB_H
-#include "structs.h"
+
+typedef struct Info
+{
+  Inglesbin *palavraIngles;
+  char *palavraPortugues;
+} Info;
+
+typedef struct PortuguesRB
+{
+  Info info;
+  int cor;
+  struct PortuguesRB *esq;
+  struct PortuguesRB *dir;
+} PortuguesRB;
 
 int inserirPalavraPortugues(PortuguesRB **arvore, char *palavraPortugues, char *palavraIngles, int unidade);
 
@@ -30,6 +43,8 @@ void removeMenor(PortuguesRB **raiz);
 PortuguesRB *procuraMenor(PortuguesRB *raiz);
 
 int removerNoArvVP(PortuguesRB **raiz, char *valor);
+
+int removerArvRB(PortuguesRB **raiz, char *valor);
 
 PortuguesRB *BuscarPalavra(PortuguesRB **arvore, char *palavraPortugues);
 

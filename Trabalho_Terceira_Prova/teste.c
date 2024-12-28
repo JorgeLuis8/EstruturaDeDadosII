@@ -8,7 +8,7 @@
 #define MAX_FUNCIONARIOS 1000
 
 typedef struct {
-    char matricula[7];
+    char matricula[7];  // Tamanho ajustado para 6 + 1 (terminador nulo)
     char nome[50];
     char funcao[20];
     int salario;
@@ -18,30 +18,33 @@ typedef struct {
 // Função para realizar a rotação à esquerda
 void rotacao_esquerda(char *matricula) {
     char temp = matricula[0];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {  // Rotação ajustada para tamanho 6
         matricula[i] = matricula[i + 1];
     }
-    matricula[5] = temp;
+    matricula[5] = temp;  // Colocar o primeiro dígito na última posição
 }
 
 // Função de hashing personalizada: Rotação e Extração
 int funcao_hashing_rotacao(char *matricula, int tamanho_tabela) {
     rotacao_esquerda(matricula);
-    int d2 = matricula[1] - '0';
-    int d4 = matricula[3] - '0';
-    int d6 = matricula[5] - '0';
-    return (d2 + d4 + d6) % tamanho_tabela;
+    int d2 = matricula[1] - '0';  // Segundo dígito
+    int d4 = matricula[3] - '0';  // Quarto dígito
+    int d6 = matricula[5] - '0';  // Sexto dígito
+    int resultado = (d2 + d4 + d6) % tamanho_tabela;
+    return resultado;
 }
 
 // Função de hashing: Fold Shift
 int funcao_hashing_fold_shift(char *matricula, int tamanho_tabela) {
     int grupo1 = (matricula[0] - '0') * 100 + (matricula[2] - '0') * 10 + (matricula[5] - '0');
     int grupo2 = (matricula[1] - '0') * 100 + (matricula[3] - '0') * 10 + (matricula[4] - '0');
-    return (grupo1 + grupo2) % tamanho_tabela;
+    int resultado = (grupo1 + grupo2) % tamanho_tabela;
+    return resultado;
 }
 
 // Inserção com colisões tratadas por substituição
 bool inserir(Funcionario *tabela, Funcionario funcionario, int tamanho_tabela, int (*hash_func)(char *, int), int *colisoes) {
+    bool sucesso = false;
     int indice = hash_func(funcionario.matricula, tamanho_tabela);
     int primeiro_digito = funcionario.matricula[0] - '0';
 
@@ -51,16 +54,20 @@ bool inserir(Funcionario *tabela, Funcionario funcionario, int tamanho_tabela, i
         if (!tabela[posicao].ocupado) {
             tabela[posicao] = funcionario;
             tabela[posicao].ocupado = true;
-            return true;
+            sucesso = true;
+            break;
         }
 
         (*colisoes)++;
     }
 
     // Substituir a primeira posição se todas as tentativas falharem
-    tabela[0] = funcionario;
-    tabela[0].ocupado = true;
-    return false;
+    if (!sucesso) {
+        tabela[0] = funcionario;
+        tabela[0].ocupado = true;
+    }
+
+    return sucesso;
 }
 
 // Inicializar tabela
@@ -70,10 +77,10 @@ void inicializar_tabela(Funcionario *tabela, int tamanho_tabela) {
     }
 }
 
-// Função para gerar dados fictícios
+
 void gerar_dados(Funcionario *dados, int total) {
     for (int i = 0; i < total; i++) {
-        sprintf(dados[i].matricula, "%06d", rand() % 1000000);
+        sprintf(dados[i].matricula, "%06d", rand() % 1000000);  
         sprintf(dados[i].nome, "Funcionario_%d", i);
         sprintf(dados[i].funcao, "Funcao_%d", i % 4);
         dados[i].salario = 3000 + rand() % 20000;
@@ -81,25 +88,25 @@ void gerar_dados(Funcionario *dados, int total) {
     }
 }
 
-// Imprimir tabela hash
+
 void imprimir_tabela_hash(Funcionario *tabela, int tamanho_tabela) {
-    printf("+--------+------------+------------+-------------------+-------------+\n");
-    printf("| Indice | Matricula  | Nome       | Funcao            | Salario     |\n");
-    printf("+--------+------------+------------+-------------------+-------------+\n");
+    printf("+--------+------------+------------------+-------------------+-------------+\n");
+    printf("| Indice | Matricula  | Nome             | Funcao            | Salario     |\n");
+    printf("+--------+------------+------------------+-------------------+-------------+\n");
     for (int i = 0; i < tamanho_tabela; i++) {
         if (tabela[i].ocupado) {
-            printf("| %6d | %-10s | %-10s | %-17s | %11d |\n",
+            printf("| %6d | %-10s | %-16s | %-17s | %11d |\n",
                    i, tabela[i].matricula, tabela[i].nome,
                    tabela[i].funcao, tabela[i].salario);
         } else {
-            printf("| %6d | %-10s | %-10s | %-17s | %-11s |\n",
+            printf("| %6d | %-10s | %-16s | %-17s | %-11s |\n",
                    i, "Vazio", "Vazio", "Vazio", "Vazio");
         }
     }
-    printf("+--------+------------+------------+-------------------+-------------+\n");
+    printf("+--------+------------+------------------+-------------------+-------------+\n");
 }
 
-// Função principal
+
 int main() {
     Funcionario tabela1[TAMANHO_TABELA1], tabela2[TAMANHO_TABELA2];
     Funcionario dados[MAX_FUNCIONARIOS];

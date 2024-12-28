@@ -15,7 +15,6 @@ typedef struct {
     bool ocupado;
 } Funcionario;
 
-// Função para realizar a rotação à esquerda
 void rotacao_esquerda(char *matricula) {
     char temp = matricula[0];
     for (int i = 0; i < 5; i++) {
@@ -24,7 +23,6 @@ void rotacao_esquerda(char *matricula) {
     matricula[5] = temp;
 }
 
-// Função de hashing personalizada: Rotação e Extração
 int funcao_hashing_rotacao(char *matricula, int tamanho_tabela) {
     rotacao_esquerda(matricula);
     int d2 = matricula[1] - '0';
@@ -33,14 +31,12 @@ int funcao_hashing_rotacao(char *matricula, int tamanho_tabela) {
     return (d2 + d4 + d6) % tamanho_tabela;
 }
 
-// Função de hashing: Fold Shift
 int funcao_hashing_fold_shift(char *matricula, int tamanho_tabela) {
     int grupo1 = (matricula[0] - '0') * 100 + (matricula[2] - '0') * 10 + (matricula[5] - '0');
     int grupo2 = (matricula[1] - '0') * 100 + (matricula[3] - '0') * 10 + (matricula[4] - '0');
     return (grupo1 + grupo2) % tamanho_tabela;
 }
 
-// Inserção com colisões tratadas por substituição
 bool inserir(Funcionario *tabela, Funcionario funcionario, int tamanho_tabela, int (*hash_func)(char *, int), int *colisoes) {
     int indice = hash_func(funcionario.matricula, tamanho_tabela);
     int primeiro_digito = funcionario.matricula[0] - '0';
@@ -57,20 +53,20 @@ bool inserir(Funcionario *tabela, Funcionario funcionario, int tamanho_tabela, i
         (*colisoes)++;
     }
 
-    // Substituir a primeira posição se todas as tentativas falharem
+
     tabela[0] = funcionario;
     tabela[0].ocupado = true;
     return false;
 }
 
-// Inicializar tabela
+
 void inicializar_tabela(Funcionario *tabela, int tamanho_tabela) {
     for (int i = 0; i < tamanho_tabela; i++) {
         tabela[i].ocupado = false;
     }
 }
 
-// Função para gerar dados fictícios
+
 void gerar_dados(Funcionario *dados, int total) {
     for (int i = 0; i < total; i++) {
         sprintf(dados[i].matricula, "%06d", rand() % 1000000);
@@ -81,7 +77,7 @@ void gerar_dados(Funcionario *dados, int total) {
     }
 }
 
-// Imprimir tabela hash
+
 void imprimir_tabela_hash(Funcionario *tabela, int tamanho_tabela) {
     printf("+--------+------------+------------+-------------------+-------------+\n");
     printf("| Indice | Matricula  | Nome       | Funcao            | Salario     |\n");
@@ -99,7 +95,7 @@ void imprimir_tabela_hash(Funcionario *tabela, int tamanho_tabela) {
     printf("+--------+------------+------------+-------------------+-------------+\n");
 }
 
-// Função principal
+
 int main() {
     Funcionario tabela1[TAMANHO_TABELA1], tabela2[TAMANHO_TABELA2];
     Funcionario dados[MAX_FUNCIONARIOS];
