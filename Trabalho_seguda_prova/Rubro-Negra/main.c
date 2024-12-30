@@ -134,66 +134,14 @@ int main()
 
         case 4:
             printf("\n---------------------------------------------------------------\n");
-            printf("Insira a palavra em português que deseja remover\n");
+            printf("Insira a palavra em portugues que deseja remover\n");
             setbuf(stdin, NULL);
             scanf("%[^\n]", word);
-
-            printf("Insira a unidade à qual a palavra pertence\n");
-            int unit;
-            scanf("%d", &unit);
-
-            // Buscar a palavra em português na árvore rubro-negra
-            RedBlackTreePT *node = SearchWordInTree(&rootNode, word);
-
-            if (node != NULL)
-            {
-                printf("Palavra em português encontrada: %s\n", node->info.portugueseWord);
-
-                // Verificar se a árvore binária correspondente está inicializada
-                if (node->info.englishWordNode != NULL)
-                {
-                    printf("Árvore binária de palavras em inglês encontrada.\n");
-
-                    // Remover a palavra em inglês na unidade especificada
-                    int removed = removeEnglishWord(&(node->info.englishWordNode), word);
-
-                    if (removed)
-                    {
-                        printf("A palavra %s foi removida com sucesso da unidade %d\n", word, unit);
-
-                        // Verificar se a árvore binária ficou vazia
-                        if (node->info.englishWordNode == NULL)
-                        {
-                            // Remove o nó da palavra em português na árvore rubro-negra
-                            int removedPortuguese = removeRBTreeNode(&rootNode, word);
-
-                            if (removedPortuguese)
-                            {
-                                printf("A palavra em português %s foi removida da árvore rubro-negra, pois não possui mais traduções.\n", word);
-                            }
-                            else
-                            {
-                                printf("Erro ao remover a palavra em português %s da árvore rubro-negra.\n", word);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        printf("Erro ao remover a palavra %s da unidade %d.\n", word, unit);
-                    }
-                }
-                else
-                {
-                    printf("A palavra em português %s não possui traduções em inglês.\n", word);
-                }
-            }
-            else
-            {
-                printf("A palavra em português %s não foi encontrada na árvore rubro-negra.\n", word);
-            }
+            removedNode = removeRBTreeNode(&rootNode, word);
+            if (removedNode)
+                printf("A palavra %s foi removida com sucesso\n\n", word);
             printf("\n---------------------------------------------------------------\n");
             break;
-
         case 5:
             printf("\n---------------------------------------------------------------\n");
             showRedBlackTree(rootNode);
