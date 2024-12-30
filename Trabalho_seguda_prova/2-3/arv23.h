@@ -4,7 +4,7 @@
 
 #include "arvbin.h"
 typedef struct info {
-    char *palavraPortugues;
+    char *portugueseWord;
     Inglesbin *palavraIngles;
 } Info;
 

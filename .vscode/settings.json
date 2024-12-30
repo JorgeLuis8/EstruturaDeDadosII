@@ -59,6 +59,7 @@
   "files.associations": {
     "string.h": "c",
     "stdlib.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "arv23.h": "c"
   }
 }

@@ -99,7 +99,7 @@ Portugues23 *criaNo(const Info *informacao, Portugues23 *filhoesq, Portugues23 *
 
 Portugues23 *adicionaChave(Portugues23 *no, const Info *informacao, Portugues23 *filho)
 {
-    if (strcmp(informacao->palavraPortugues, no->info1.portugueseWord) > 0)
+    if (strcmp(informacao->portugueseWord, no->info1.portugueseWord) > 0)
     {
         no->info2 = *informacao;
         no->dir = filho;
@@ -119,7 +119,7 @@ Portugues23 *quebraNo(Portugues23 **no, const Info *informacao, Info *promove, P
 {
     Portugues23 *maior;
 
-    if (strcmp(informacao->palavraPortugues, (*no)->info2.portugueseWord) > 0)
+    if (strcmp(informacao->portugueseWord, (*no)->info2.portugueseWord) > 0)
     {
         *promove = (*no)->info2;
         if(filho)
@@ -127,7 +127,7 @@ Portugues23 *quebraNo(Portugues23 **no, const Info *informacao, Info *promove, P
         else
             maior = criaNo(informacao, (*no)->dir, NULL);
     }
-    else if (strcmp(informacao->palavraPortugues, (*no)->info1.portugueseWord) > 0)
+    else if (strcmp(informacao->portugueseWord, (*no)->info1.portugueseWord) > 0)
     {
         *promove = *informacao;
         if(filho)
@@ -188,11 +188,11 @@ Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Por
         else
         { // Nó não e folha
             // Navega para o filho apropriado
-            if (strcmp(informacao->palavraPortugues, (*no)->info1.portugueseWord) < 0)
+            if (strcmp(informacao->portugueseWord, (*no)->info1.portugueseWord) < 0)
             {
                 maiorNo = inserirArv23(&((*no)->esq), informacao, promove, no);
             }
-            else if ((*no)->nInfos == 1 || strcmp(informacao->palavraPortugues, (*no)->info2.portugueseWord) < 0)
+            else if ((*no)->nInfos == 1 || strcmp(informacao->portugueseWord, (*no)->info2.portugueseWord) < 0)
             {
                 maiorNo = inserirArv23(&((*no)->cent), informacao, promove, no);
             }
@@ -546,7 +546,7 @@ int remover23(Portugues23 **Pai, Portugues23 **Raiz, char *valor)
 void freeInfo2_3(Info *info)
 {
   free_arvore_binaria(info->palavraIngles);
-  free(info->palavraPortugues);
+  free(info->portugueseWord);
 }
 
 void freeTree(Portugues23 *no)

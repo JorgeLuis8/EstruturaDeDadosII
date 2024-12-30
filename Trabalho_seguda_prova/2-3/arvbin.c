@@ -147,7 +147,7 @@ void BuscarPalavraIngles(Portugues23 **raiz, char *palavraIngles, int unidade, P
                 printf("A palavra %s foi removida com sucesso!\n\n", palavraIngles);
             if ((*raiz)->info1.palavraIngles == NULL)
             {
-                removeu = remover23(pai, raiz, (*raiz)->info1.palavraPortugues);
+                removeu = remover23(pai, raiz, (*raiz)->info1.portugueseWord);
                 if(removeu) printf("Removido\n\n");
             }
         }
@@ -161,7 +161,7 @@ void BuscarPalavraIngles(Portugues23 **raiz, char *palavraIngles, int unidade, P
                 printf("A palavra %s foi removida com sucesso!\n\n", palavraIngles);
             if ((*raiz)->info2.palavraIngles == NULL)
             {
-                removeu = remover23(pai, raiz, (*raiz)->info2.palavraPortugues);
+                removeu = remover23(pai, raiz, (*raiz)->info2.portugueseWord);
                 if(removeu) printf("Removido\n\n");
             }
         }
