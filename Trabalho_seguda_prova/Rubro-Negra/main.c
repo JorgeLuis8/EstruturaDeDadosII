@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "arvbin.c"
@@ -47,16 +48,16 @@ void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore)
 
 void menu()
 {
-    printf("\n-------------------------------------------------------------------------------------------------\n");
-    printf("\nMenu de opcoes\n");
-    printf("1 - Informar uma unidade e imprimir todas as palavras em portugues e as equivalentes em ingles\n");
-    printf("2 - Informar uma palavra em portugues e imprimir todas as palavras em ingles equivalentes\n");
-    printf("3 - Informar uma palavra em ingles e a unidade remove-la da arvore binaria e da arvore 2-3\n");
-    printf("4 - Informar uma palavra em portugues e a unidade remove-la da arvore binaria e da arvore 2-3\n");
+    printf("\n------------------------------------------------------------------------------------------------- \n");
+    printf("\nMenu de opções:\n");
+    printf("1 - Informar uma unidade e imprimir todas as palavras em português e as equivalentes em inglês.\n");
+    printf("2 - Informar uma palavra em português e imprimir todas as palavras em inglês equivalentes.\n");
+    printf("3 - Informar uma palavra em inglês e a unidade, removê-la da árvore binária e da árvore 2-3.\n");
+    printf("4 - Informar uma palavra em português e a unidade, removê-la da árvore binária e da árvore 2-3.\n");
     printf("5 - Imprimir a arvore completa\n");
     printf("0 - Sair\n");
-    printf("Escolha uma opcao\n");
-    printf("\n-------------------------------------------------------------------------------------------------\n");
+    printf("Escolha uma opção: \n");
+    printf("\n------------------------------------------------------------------------------------------------- \n");
 }
 
 int main()
@@ -78,82 +79,81 @@ int main()
         switch (op)
         {
         case 1:
-            printf("\n---------------------------------------------------------------\n");
-            printf("Insira a unidade que deseja imprimir as palavras\n");
+            printf("\n--------------------------------------------------------------- \n");
+            printf("Insira a unidade que deseja imprimir as palavras: ");
             scanf("%d", &unit);
             printWordsByUnit(rootNode, unit);
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
             break;
         case 2:
-            printf("\n---------------------------------------------------------------\n");
-            printf("Insira a palavra em portugues que deseja imprimir as palavras em ingles\n");
+            printf("\n--------------------------------------------------------------- \n");
+            printf("Insira a palavra em portugues que deseja imprimir as palavras em ingles: ");
             scanf("%s", word);
             showPortugueseTranslation(&rootNode, word);
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
             break;
         case 3:
-            printf("\n---------------------------------------------------------------\n");
-            printf("Insira a palavra em ingles que deseja remover\n");
+            printf("\n--------------------------------------------------------------- \n");
+            printf("Insira a palavra em inglês que deseja remover: ");
             scanf("%s", word);
-
-            printf("Insira a unidade da palavra que deseja remover\n");
+            printf("Insira a unidade da palavra que deseja remover: ");
             scanf("%d", &unit);
 
-            // Busca o no correspondente na Arvore Vermelho-Preto
+            // Busca o nó correspondente na Árvore Vermelho-Preto
             RedBlackTreePT *nodeToRemove = SearchEnglishWordInRBTree(rootNode, word, unit);
 
             if (nodeToRemove != NULL)
             {
-                printf("No encontrado Palavra em portugues %s\n", nodeToRemove->info.portugueseWord);
+                printf("Nó vermelho-preto encontrado: Palavra em português: '%s'\n", nodeToRemove->info.portugueseWord);
 
-                // Remover a palavra da arvore binaria associada
+                // Remover a palavra da árvore binária associada
                 int removed = removeEnglishWord(&nodeToRemove->info.englishWordNode, word);
 
                 if (removed)
                 {
-                    printf("Palavra %s da unidade %d removida da arvore binaria\n", word, unit);
+                    printf("Palavra '%s' da unidade %d removida da árvore binária.\n", word, unit);
 
-                    // Verificar se a arvore binaria associada ficou vazia
+                    // Se a árvore binária ficar vazia, remover o nó da Árvore Vermelho-Preto
                     if (nodeToRemove->info.englishWordNode == NULL)
                     {
                         removeRBTreeNode(&rootNode, nodeToRemove->info.portugueseWord);
-                        printf("O no correspondente a palavra %s foi removido da arvore Vermelho-Preto\n", word);
+                        printf("O nó correspondente à palavra '%s' foi removido da árvore vermelho-preto.\n", word);
                     }
                 }
                 else
                 {
-                    printf("A palavra %s nao foi encontrada na arvore binaria associada a unidade %d\n", word, unit);
+                    printf("A palavra '%s' não foi encontrada na árvore binária associada à unidade %d.\n", word, unit);
                 }
             }
             else
             {
-                printf("A palavra %s nao foi encontrada na arvore Vermelho-Preto\n", word);
+                printf("A palavra '%s' não foi encontrada na árvore vermelho-preto.\n", word);
             }
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
             break;
 
         case 4:
-            printf("\n---------------------------------------------------------------\n");
-            printf("Insira a palavra em portugues que deseja remover\n");
+            printf("\n--------------------------------------------------------------- \n");
+            printf("Insira a palavra em portugues que deseja remover: ");
             setbuf(stdin, NULL);
             scanf("%[^\n]", word);
             removedNode = removeRBTreeNode(&rootNode, word);
             if (removedNode)
-                printf("A palavra %s foi removida com sucesso\n\n", word);
-            printf("\n---------------------------------------------------------------\n");
+                printf("A palavra %s foi removida com sucesso!\n\n", word);
+            printf("\n--------------------------------------------------------------- \n");
             break;
         case 5:
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
             showRedBlackTree(rootNode);
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
             break;
         case 0:
-            printf("\n---------------------------------------------------------------\n");
-            printf("\nSaindo do programa\n");
-            printf("\n---------------------------------------------------------------\n");
+            printf("\n--------------------------------------------------------------- \n");
+            printf("\nSaindo do programa...\n");
+            printf("\n--------------------------------------------------------------- \n");
             break;
         default:
-            printf("Insira um valor valido\n");
+            printf("Insira um valor válido. \n");
             break;
         }
     } while (op != 0);
