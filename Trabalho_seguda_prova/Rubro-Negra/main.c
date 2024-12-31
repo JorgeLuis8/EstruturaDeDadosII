@@ -7,22 +7,23 @@
 #include "unidade.c"
 #include <ctype.h>
 
-
-
 // Função para limpar caracteres indesejados
-void clearCharacters(char *str) {
+void clearCharacters(char *str)
+{
     char *end;
 
     // Remove espaços e caracteres indesejados do final
     end = str + strlen(str) - 1;
-    while (end > str && (isspace((unsigned char)*end) || *end == ';' || *end == ',')) {
+    while (end > str && (isspace((unsigned char)*end) || *end == ';' || *end == ','))
+    {
         *end = '\0';
         end--;
     }
 
     // Remove espaços do início
     char *start = str;
-    while (*start && isspace((unsigned char)*start)) {
+    while (*start && isspace((unsigned char)*start))
+    {
         start++;
     }
 
@@ -30,9 +31,11 @@ void clearCharacters(char *str) {
     memmove(str, start, strlen(start) + 1);
 }
 
-void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore) {
+void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore)
+{
     FILE *arquivo = fopen(nomeArquivo, "r");
-    if (arquivo == NULL) {
+    if (arquivo == NULL)
+    {
         perror("Erro ao abrir o arquivo");
         return;
     }
@@ -40,24 +43,30 @@ void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore) {
     char linha[256];
     int unidadeAtual = 0;
 
-    while (fgets(linha, sizeof(linha), arquivo)) {
+    while (fgets(linha, sizeof(linha), arquivo))
+    {
         // Remove o caractere de nova linha
         linha[strcspn(linha, "\n")] = 0;
 
-        if (linha[0] == '%') {
+        if (linha[0] == '%')
+        {
             // Atualiza a unidade atual
             sscanf(linha, "%% Unidade %d", &unidadeAtual);
-        } else {
+        }
+        else
+        {
             char palavraIngles[50], traducoesPortugues[200];
 
             // Separa a palavra em inglês e suas traduções em português
-            if (sscanf(linha, "%[^:]: %[^\n]", palavraIngles, traducoesPortugues) == 2) {
+            if (sscanf(linha, "%[^:]: %[^\n]", palavraIngles, traducoesPortugues) == 2)
+            {
                 // Limpa a palavra em inglês
                 clearCharacters(palavraIngles);
 
                 // Divide as traduções em português
                 char *traducaoPortugues = strtok(traducoesPortugues, ",;");
-                while (traducaoPortugues != NULL) {
+                while (traducaoPortugues != NULL)
+                {
                     // Limpa cada tradução em português
                     clearCharacters(traducaoPortugues);
 
@@ -74,8 +83,6 @@ void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore) {
     fclose(arquivo);
     printf("Arquivo '%s' carregado com sucesso!\n", nomeArquivo);
 }
-
-
 
 void menu()
 {
@@ -131,25 +138,27 @@ int main()
             printf("Insira a unidade da palavra que deseja remover: ");
             scanf("%d", &unit);
 
-            // Busca o nó correspondente na Árvore Vermelho-Preto
+            // Busca o nó correspondente na Árvore Rubro-Negra
+            printf("[DEBUG] Buscando a palavra em inglês '%s' na unidade %d.\n", word, unit);
             RedBlackTreePT *nodeToRemove = SearchEnglishWordInRBTree(rootNode, word, unit);
 
             if (nodeToRemove != NULL)
             {
-                printf("Nó vermelho-preto encontrado: Palavra em português: '%s'\n", nodeToRemove->info.portugueseWord);
+                printf("[DEBUG] Nó encontrado na Árvore Rubro-Negra. Palavra em português: '%s'\n", nodeToRemove->info.portugueseWord);
 
-                // Remover a palavra da árvore binária associada
+                // Remove a palavra da árvore binária associada
                 int removed = removeEnglishWord(&nodeToRemove->info.englishWordNode, word);
 
                 if (removed)
                 {
                     printf("Palavra '%s' da unidade %d removida da árvore binária.\n", word, unit);
 
-                    // Se a árvore binária ficar vazia, remover o nó da Árvore Vermelho-Preto
+                    // Se a árvore binária ficar vazia, remover o nó da Árvore Rubro-Negra
                     if (nodeToRemove->info.englishWordNode == NULL)
                     {
+                        printf("[DEBUG] Árvore binária associada está vazia. Removendo nó da Árvore Rubro-Negra.\n");
                         removeRBTreeNode(&rootNode, nodeToRemove->info.portugueseWord);
-                        printf("O nó correspondente à palavra '%s' foi removido da árvore vermelho-preto.\n", word);
+                        printf("O nó correspondente à palavra '%s' foi removido da Árvore Rubro-Negra.\n", nodeToRemove->info.portugueseWord);
                     }
                 }
                 else
@@ -159,8 +168,9 @@ int main()
             }
             else
             {
-                printf("A palavra '%s' não foi encontrada na árvore vermelho-preto.\n", word);
+                printf("A palavra '%s' não foi encontrada na Árvore Rubro-Negra.\n", word);
             }
+
             printf("\n--------------------------------------------------------------- \n");
             break;
 
