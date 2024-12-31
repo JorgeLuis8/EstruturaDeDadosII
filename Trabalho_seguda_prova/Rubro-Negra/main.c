@@ -130,7 +130,6 @@ int main()
             showPortugueseTranslation(&rootNode, word);
             printf("\n--------------------------------------------------------------- \n");
             break;
-
         case 3:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em inglês que deseja remover: ");
@@ -138,37 +137,19 @@ int main()
             printf("Insira a unidade da palavra que deseja remover: ");
             scanf("%d", &unit);
 
-            // Busca o nó correspondente na Árvore Rubro-Negra
-            printf("[DEBUG] Buscando a palavra em inglês '%s' na unidade %d.\n", word, unit);
-            RedBlackTreePT *nodeToRemove = SearchEnglishWordInRBTree(rootNode, word, unit);
+            // Inicializa o contador de remoções
+            int totalRemovido = 0;
 
-            if (nodeToRemove != NULL)
+            // Chama a função para remover a palavra na unidade informada
+            removeWordByUnit(&rootNode, word, unit, &totalRemovido, &rootNode);
+
+            if (totalRemovido > 0)
             {
-                printf("[DEBUG] Nó encontrado na Árvore Rubro-Negra. Palavra em português: '%s'\n", nodeToRemove->info.portugueseWord);
-
-                // Remove a palavra da árvore binária associada
-                int removed = removeEnglishWord(&nodeToRemove->info.englishWordNode, word);
-
-                if (removed)
-                {
-                    printf("Palavra '%s' da unidade %d removida da árvore binária.\n", word, unit);
-
-                    // Se a árvore binária ficar vazia, remover o nó da Árvore Rubro-Negra
-                    if (nodeToRemove->info.englishWordNode == NULL)
-                    {
-                        printf("[DEBUG] Árvore binária associada está vazia. Removendo nó da Árvore Rubro-Negra.\n");
-                        removeRBTreeNode(&rootNode, nodeToRemove->info.portugueseWord);
-                        printf("O nó correspondente à palavra '%s' foi removido da Árvore Rubro-Negra.\n", nodeToRemove->info.portugueseWord);
-                    }
-                }
-                else
-                {
-                    printf("A palavra '%s' não foi encontrada na árvore binária associada à unidade %d.\n", word, unit);
-                }
+                printf("Palavra '%s' na unidade %d removida de %d ocorrência(s) e os nós correspondentes da Árvore Rubro-Negra foram tratados, se necessário.\n", word, unit, totalRemovido);
             }
             else
             {
-                printf("A palavra '%s' não foi encontrada na Árvore Rubro-Negra.\n", word);
+                printf("A palavra '%s' na unidade %d não foi encontrada em nenhuma árvore.\n", word, unit);
             }
 
             printf("\n--------------------------------------------------------------- \n");
