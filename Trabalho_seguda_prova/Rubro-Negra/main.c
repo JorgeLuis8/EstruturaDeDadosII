@@ -7,12 +7,12 @@
 #include "unidade.c"
 #include <ctype.h>
 
-// Função para limpar caracteres indesejados
+// Funcao para limpar caracteres indesejados
 void clearCharacters(char *str)
 {
     char *end;
 
-    // Remove espaços e caracteres indesejados do final
+    // Remove espacos e caracteres indesejados do final
     end = str + strlen(str) - 1;
     while (end > str && (isspace((unsigned char)*end) || *end == ';' || *end == ','))
     {
@@ -20,14 +20,14 @@ void clearCharacters(char *str)
         end--;
     }
 
-    // Remove espaços do início
+    // Remove espacos do inicio
     char *start = str;
     while (*start && isspace((unsigned char)*start))
     {
         start++;
     }
 
-    // Copia a string limpa para o início
+    // Copia a string limpa para o inicio
     memmove(str, start, strlen(start) + 1);
 }
 
@@ -57,23 +57,23 @@ void loadFile(const char *nomeArquivo, RedBlackTreePT **arvore)
         {
             char palavraIngles[50], traducoesPortugues[200];
 
-            // Separa a palavra em inglês e suas traduções em português
+            // Separa a palavra em ingles e suas traducoes em portugues
             if (sscanf(linha, "%[^:]: %[^\n]", palavraIngles, traducoesPortugues) == 2)
             {
-                // Limpa a palavra em inglês
+                // Limpa a palavra em ingles
                 clearCharacters(palavraIngles);
 
-                // Divide as traduções em português
+                // Divide as traducoes em portugues
                 char *traducaoPortugues = strtok(traducoesPortugues, ",;");
                 while (traducaoPortugues != NULL)
                 {
-                    // Limpa cada tradução em português
+                    // Limpa cada traducao em portugues
                     clearCharacters(traducaoPortugues);
 
-                    // Insere a palavra na árvore
+                    // Insere a palavra na arvore
                     insertPortugueseWord(arvore, traducaoPortugues, palavraIngles, unidadeAtual);
 
-                    // Próxima tradução
+                    // Proxima traducao
                     traducaoPortugues = strtok(NULL, ",;");
                 }
             }
@@ -89,15 +89,15 @@ void exibirMenu() {
     printf("\n=================================================================\n");
     printf("                  SISTEMA DE GERENCIAMENTO DE PALAVRAS          \n");
     printf("=================================================================\n");
-    printf("1 - Consultar palavras por unidade (Português e Inglês).\n");
-    printf("2 - Buscar traduções em inglês para uma palavra em português.\n");
-    printf("3 - Remover uma palavra em inglês de uma unidade específica.\n");
-    printf("4 - Excluir uma palavra em português e suas traduções.\n");
-    printf("5 - Exibir toda a estrutura da Árvore 2-3.\n");
-    printf("6 - Mostrar a Árvore Binária de uma palavra em português.\n");
+    printf("1 - Consultar palavras por unidade (Portugues e Ingles).\n");
+    printf("2 - Buscar traducoes em ingles para uma palavra em portugues.\n");
+    printf("3 - Remover uma palavra em ingles de uma unidade especifica.\n");
+    printf("4 - Excluir uma palavra em portugues e suas traducoes.\n");
+    printf("5 - Exibir toda a estrutura da Arvore 2-3.\n");
+    printf("6 - Mostrar a Arvore Binaria de uma palavra em portugues.\n");
     printf("0 - Encerrar o programa.\n");
     printf("=================================================================\n");
-    printf("Escolha uma opção: ");
+    printf("Escolha uma opcao: ");
 }
 
 int main() {
@@ -119,23 +119,23 @@ int main() {
         switch (opcao) {
             case 1:
                 printf("\n>>> Consultar palavras por unidade <<<\n");
-                printf("Informe o número da unidade desejada: ");
+                printf("Informe o numero da unidade desejada: ");
                 scanf("%d", &unidade);
                 printf("\nResultado:\n");
                 printWordsByUnit(rootNode, unidade);
                 break;
 
             case 2:
-                printf("\n>>> Buscar traduções em inglês <<<\n");
-                printf("Digite uma palavra em português: ");
+                printf("\n>>> Buscar traducoes em ingles <<<\n");
+                printf("Digite uma palavra em portugues: ");
                 scanf(" %[^]", palavra);
-                printf("\nTraduções encontradas:\n");
+                printf("\nTraducoes encontradas:\n");
                 showPortugueseTranslation(&rootNode, palavra);
                 break;
 
             case 3:
-                printf("\n>>> Remover palavra em inglês de uma unidade <<<\n");
-                printf("Digite a palavra em inglês: ");
+                printf("\n>>> Remover palavra em ingles de uma unidade <<<\n");
+                printf("Digite a palavra em ingles: ");
                 scanf("%s", palavra);
                 printf("Informe a unidade: ");
                 scanf("%d", &unidade);
@@ -146,34 +146,34 @@ int main() {
                 if (totalRemovido > 0) {
                     printf("\nPalavra '%s' removida com sucesso da unidade %d.\n", palavra, unidade);
                 } else {
-                    printf("\nA palavra '%s' não foi encontrada na unidade %d.\n", palavra, unidade);
+                    printf("\nA palavra '%s' nao foi encontrada na unidade %d.\n", palavra, unidade);
                 }
                 break;
 
             case 4:
-                printf("\n>>> Excluir palavra em português e traduções <<<\n");
-                printf("Digite a palavra em português: ");
+                printf("\n>>> Excluir palavra em portugues e traducoes <<<\n");
+                printf("Digite a palavra em portugues: ");
                 scanf(" %[^]", palavra);
 
                 resultadoRemocao = removeRBTreeNode(&rootNode, palavra);
                 if (resultadoRemocao) {
-                    printf("\nPalavra '%s' e suas traduções foram removidas com sucesso.\n", palavra);
+                    printf("\nPalavra '%s' e suas traducoes foram removidas com sucesso.\n", palavra);
                 } else {
-                    printf("\nA palavra '%s' não foi encontrada.\n", palavra);
+                    printf("\nA palavra '%s' nao foi encontrada.\n", palavra);
                 }
                 break;
 
             case 5:
-                printf("\n>>> Estrutura completa da Árvore 2-3 <<<\n");
-                printf("\nÁrvore Atual:\n");
+                printf("\n>>> Estrutura completa da Arvore 2-3 <<<\n");
+                printf("\nArvore Atual:\n");
                 showRedBlackTree(rootNode);
                 break;
 
             case 6:
-                printf("\n>>> Mostrar Árvore Binária de uma palavra <<<\n");
-                printf("Digite a palavra em português: ");
+                printf("\n>>> Mostrar Arvore Binaria de uma palavra <<<\n");
+                printf("Digite a palavra em portugues: ");
                 scanf("%s", palavra);
-                printf("\nEstrutura da Árvore Binária:\n");
+                printf("\nEstrutura da Arvore Binaria:\n");
                 exibir_arvorebianria_dada_palavra_portuguesa(rootNode, palavra);
                 break;
 
@@ -182,7 +182,7 @@ int main() {
                 break;
 
             default:
-                printf("\nOpção inválida! Tente novamente.\n");
+                printf("\nOpcao invalida! Tente novamente.\n");
                 break;
         }
 
@@ -190,7 +190,7 @@ int main() {
 
     } while (opcao != 0);
 
-    // Liberação de memória das árvores
+    // Liberacao de memoria das arvores
     //freeTree(rootNode);
 
     return 0;
