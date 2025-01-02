@@ -105,7 +105,7 @@ int main()
     RedBlackTreePT *rootNode = NULL;
 
     // Carregar os dados iniciais do arquivo
-    loadFile("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &rootNode);
+    loadFile("", &rootNode);
 
     int opcao;
     char palavra[50];

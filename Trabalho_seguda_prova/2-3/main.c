@@ -23,7 +23,7 @@ void clearCharacters(char *str)
     }
 }
 
-void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, Portugues23 **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
@@ -102,7 +102,7 @@ int main()
     char palavra[50];
     int unidade;
     int removido;
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &raiz);
+    loadFile("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &raiz);
     int op;
     do
     {
@@ -151,9 +151,9 @@ int main()
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em portugues que deseja remover: ");
             scanf("%s", palavra);
-            removido = remover23(&pai, &raiz, palavra);
-            if (removido)
-                printf("A palavra %s foi removida com sucesso!\n\n", palavra);
+            printf("Insira a unidade da palavra que deseja remover: ");
+            scanf("%d", &unidade);
+            removerTraducaoPortugues(&raiz, palavra, unidade, &pai);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 5:

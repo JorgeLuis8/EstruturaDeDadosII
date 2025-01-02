@@ -5,7 +5,7 @@
 #include "arvbin.c"
 #include "unidade.c"
 
-void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, Portugues23 **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
