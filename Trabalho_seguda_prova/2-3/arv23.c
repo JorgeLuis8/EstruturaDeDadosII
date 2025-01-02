@@ -613,7 +613,6 @@ int remover23(Portugues23 **Pai, Portugues23 **Raiz, char *valor)
     return removeu;
 }
 
-/*#########################################FREE#######################################################*/
 
 void freeInfo2_3(Info *info)
 {
