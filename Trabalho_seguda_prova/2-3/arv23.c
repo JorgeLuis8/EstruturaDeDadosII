@@ -636,3 +636,57 @@ void freeTree(Portugues23 *no)
     }
 }
 
+void removerTraducaoIngles(Portugues23 **raiz23, char *palavraIngles, int unidade, Portugues23 **pai) {
+    if (*raiz23 == NULL) {
+        return; // Árvore 2-3 vazia
+    }
+
+    // Verifica na subárvore esquerda
+    removerTraducaoIngles(&(*raiz23)->esq, palavraIngles, unidade, pai);
+
+    // Verifica o primeiro elemento do nó
+    if ((*raiz23)->info1.palavraIngles != NULL) {
+        Inglesbin *traducaoEncontrada = buscarPalavraIngles((*raiz23)->info1.palavraIngles, palavraIngles);
+        if (traducaoEncontrada != NULL) {
+            // Remove a unidade associada
+            (*raiz23)->info1.palavraIngles->unidades = remover_unidade((*raiz23)->info1.palavraIngles->unidades, unidade);
+
+            // Se a lista de unidades estiver vazia, remova o nó correspondente da árvore binária
+            if ((*raiz23)->info1.palavraIngles->unidades == NULL) {
+                removerPalavraIngles(&(*raiz23)->info1.palavraIngles, palavraIngles, unidade);
+
+                // Se a árvore binária estiver completamente vazia, remova o nó da árvore 2-3
+                if ((*raiz23)->info1.palavraIngles == NULL) {
+                    remover23(pai, raiz23, (*raiz23)->info1.portugueseWord);
+                    return; // Removido da árvore 2-3
+                }
+            }
+        }
+    }
+
+    // Verifica o segundo elemento do nó, se existir
+    if ((*raiz23)->nInfos == 2 && (*raiz23)->info2.palavraIngles != NULL) {
+        Inglesbin *traducaoEncontrada = buscarPalavraIngles((*raiz23)->info2.palavraIngles, palavraIngles);
+        if (traducaoEncontrada != NULL) {
+            // Remove a unidade associada
+            (*raiz23)->info2.palavraIngles->unidades = remover_unidade((*raiz23)->info2.palavraIngles->unidades, unidade);
+
+            // Se a lista de unidades estiver vazia, remova o nó correspondente da árvore binária
+            if ((*raiz23)->info2.palavraIngles->unidades == NULL) {
+                removerPalavraIngles(&(*raiz23)->info2.palavraIngles, palavraIngles, unidade);
+
+                // Se a árvore binária estiver completamente vazia, remova o nó da árvore 2-3
+                if ((*raiz23)->info2.palavraIngles == NULL) {
+                    remover23(pai, raiz23, (*raiz23)->info2.portugueseWord);
+                    return; // Removido da árvore 2-3
+                }
+            }
+        }
+    }
+
+    // Verifica nas subárvores central e direita, se aplicável
+    removerTraducaoIngles(&(*raiz23)->cent, palavraIngles, unidade, raiz23);
+    if ((*raiz23)->nInfos == 2) {
+        removerTraducaoIngles(&(*raiz23)->dir, palavraIngles, unidade, raiz23);
+    }
+}
