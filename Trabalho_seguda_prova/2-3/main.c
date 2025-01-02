@@ -17,7 +17,6 @@ void clearCharacters(char *str)
         end--;
     }
 
-
     while (*str && isspace((unsigned char)*str))
     {
         str++;
@@ -33,44 +32,40 @@ void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
         return;
     }
 
-    char linha[256];      
+    char linha[256];
     int unidadeAtual = 0;
 
     while (fgets(linha, sizeof(linha), arquivo))
     {
-        linha[strcspn(linha, "\n")] = 0; 
+        linha[strcspn(linha, "\n")] = 0;
 
-        if (linha[0] == '%') 
+        if (linha[0] == '%')
         {
-          
+
             if (sscanf(linha, "%% Unidade %d", &unidadeAtual) != 1)
             {
                 printf("Erro ao interpretar a unidade na linha: %s\n", linha);
             }
         }
-        else 
+        else
         {
             char palavraIngles[50], traducoesPortugues[200];
 
-            
             if (sscanf(linha, "%[^:]: %[^\n]", palavraIngles, traducoesPortugues) == 2)
             {
-               
+
                 clearCharacters(palavraIngles);
 
                 char *traducaoPortugues = strtok(traducoesPortugues, ",");
                 while (traducaoPortugues != NULL)
                 {
-                    
+
                     while (*traducaoPortugues == ' ')
                         traducaoPortugues++;
 
-                    
                     clearCharacters(traducaoPortugues);
 
-
                     inserirPalavraPortugues(arvore, traducaoPortugues, palavraIngles, unidadeAtual);
-
 
                     traducaoPortugues = strtok(NULL, ",");
                 }
@@ -140,13 +135,17 @@ int main()
 
         case 3:
             printf("\n--------------------------------------------------------------- \n");
-            printf("Insira a palavra em ingles que deseja remover: ");
+            printf("Insira a palavra em inglês que deseja remover: ");
             scanf("%s", palavra);
             printf("Insira a unidade da palavra que deseja remover: ");
             scanf("%d", &unidade);
-            BuscarPalavraIngles(&raiz, palavra, unidade, &pai);
+
+            // Verifica e remove a palavra em inglês da árvore binária
+            removerTraducaoIngles(&raiz, palavra, unidade, &pai);
+
             printf("\n--------------------------------------------------------------- \n");
             break;
+
         case 4:
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em portugues que deseja remover: ");
