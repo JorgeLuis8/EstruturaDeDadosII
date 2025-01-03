@@ -43,47 +43,44 @@ Portugues23 *BuscarPalavra(Portugues23 **no, const char *palavraPortugues)
     return resultado;
 }
 
-void adicionarTraducao(Portugues23 *no, const char *palavraPortugues, const char *palavraIngles, int unidade)
-{
-    if (strcmp(palavraPortugues, (no)->info1.portugueseWord) == 0)
-    {
-        // Adiciona a tradução e associa a unidade como uma lista
+void adicionarTraducao(Portugues23 *no, const char *palavraPortugues, const char *palavraIngles, int unidade) {
+    // Verifica se a palavra portuguesa está na primeira posição do nó
+    if (strcmp(palavraPortugues, no->info1.portugueseWord) == 0) {
+        // Adiciona a tradução na árvore binária de palavras em inglês
         no->info1.palavraIngles = insertpalavraIngles(no->info1.palavraIngles, palavraIngles, unidade);
+        printf("Unidade %d adicionada para a palavra '%s' (PT).\n", unidade, palavraPortugues);
     }
-    else if (no->nInfos == 2 && strcmp(palavraPortugues, no->info2.portugueseWord) == 0)
-    {
-        // Adiciona a tradução e associa a unidade como uma lista
+    // Verifica se a palavra portuguesa está na segunda posição do nó (se existir)
+    else if (no->nInfos == 2 && strcmp(palavraPortugues, no->info2.portugueseWord) == 0) {
+        // Adiciona a tradução na árvore binária de palavras em inglês
         no->info2.palavraIngles = insertpalavraIngles(no->info2.palavraIngles, palavraIngles, unidade);
+        printf("Unidade %d adicionada para a palavra '%s' (PT).\n", unidade, palavraPortugues);
     }
 }
 
-int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *palavraIngles, int unidade)
-{
+
+
+int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *palavraIngles, int unidade) {
     Info promove;
     Portugues23 *pai = NULL;
-    int inseriu;
 
-    // Busca a palavra na árvore
+    // Busca a palavra em português na árvore
     Portugues23 *noExistente = BuscarPalavra(arvore, palavraPortugues);
 
-    if (noExistente != NULL)
-    {
-        printf("A palavra já existe. Adicionando tradução...\n");
-        // Adiciona a nova tradução em inglês e a unidade associada
+    if (noExistente != NULL) {
+        // Se a palavra em português já existe, adiciona a tradução e a unidade
         adicionarTraducao(noExistente, palavraPortugues, palavraIngles, unidade);
-        inseriu = 1;
-    }
-    else
-    {
-        // Cria um novo Info com a tradução e a unidade associada
+        return 1; // Indica que foi atualizado
+    } else {
+        // Cria uma nova entrada para a palavra em português
         Info novoInfo = createInfo(palavraPortugues, palavraIngles, unidade);
-        // Insere o novo Info na árvore 2-3
         inserirArv23(arvore, &novoInfo, &promove, &pai);
-        inseriu = 0;
+        printf("Nova palavra '%s' adicionada com unidade %d.\n", palavraPortugues, unidade);
+        return 0; // Indica que foi inserido como novo
     }
-
-    return inseriu;
 }
+
+
 
 Info createInfo(char *palavraPortugues, char *palavraIngles, int unidade)
 {
@@ -649,17 +646,11 @@ void removerTraducaoIngles(Portugues23 **raiz23, char *palavraIngles, int unidad
         Inglesbin *traducaoEncontrada = buscarPalavraIngles((*raiz23)->info1.palavraIngles, palavraIngles);
         if (traducaoEncontrada != NULL) {
             // Remove a unidade associada
-            (*raiz23)->info1.palavraIngles->unidades = remover_unidade((*raiz23)->info1.palavraIngles->unidades, unidade);
+            int unidadeRemovida = removerPalavraIngles(&(*raiz23)->info1.palavraIngles, palavraIngles, unidade);
 
-            // Se a lista de unidades estiver vazia, remova o nó correspondente da árvore binária
-            if ((*raiz23)->info1.palavraIngles->unidades == NULL) {
-                removerPalavraIngles(&(*raiz23)->info1.palavraIngles, palavraIngles, unidade);
-
-                // Se a árvore binária estiver completamente vazia, remova o nó da árvore 2-3
-                if ((*raiz23)->info1.palavraIngles == NULL) {
-                    remover23(pai, raiz23, (*raiz23)->info1.portugueseWord);
-                    return; // Removido da árvore 2-3
-                }
+            // Se a árvore binária estiver vazia, remove a palavra da árvore 2-3
+            if (unidadeRemovida && (*raiz23)->info1.palavraIngles == NULL) {
+                remover23(pai, raiz23, (*raiz23)->info1.portugueseWord);
             }
         }
     }
@@ -669,75 +660,71 @@ void removerTraducaoIngles(Portugues23 **raiz23, char *palavraIngles, int unidad
         Inglesbin *traducaoEncontrada = buscarPalavraIngles((*raiz23)->info2.palavraIngles, palavraIngles);
         if (traducaoEncontrada != NULL) {
             // Remove a unidade associada
-            (*raiz23)->info2.palavraIngles->unidades = remover_unidade((*raiz23)->info2.palavraIngles->unidades, unidade);
+            int unidadeRemovida = removerPalavraIngles(&(*raiz23)->info2.palavraIngles, palavraIngles, unidade);
 
-            // Se a lista de unidades estiver vazia, remova o nó correspondente da árvore binária
-            if ((*raiz23)->info2.palavraIngles->unidades == NULL) {
-                removerPalavraIngles(&(*raiz23)->info2.palavraIngles, palavraIngles, unidade);
-
-                // Se a árvore binária estiver completamente vazia, remova o nó da árvore 2-3
-                if ((*raiz23)->info2.palavraIngles == NULL) {
-                    remover23(pai, raiz23, (*raiz23)->info2.portugueseWord);
-                    return; // Removido da árvore 2-3
-                }
+            // Se a árvore binária estiver vazia, remove a palavra da árvore 2-3
+            if (unidadeRemovida && (*raiz23)->info2.palavraIngles == NULL) {
+                remover23(pai, raiz23, (*raiz23)->info2.portugueseWord);
             }
         }
     }
 
-    // Verifica nas subárvores central e direita, se aplicável
+    // Verifica na subárvore central e direita
     removerTraducaoIngles(&(*raiz23)->cent, palavraIngles, unidade, raiz23);
     if ((*raiz23)->nInfos == 2) {
         removerTraducaoIngles(&(*raiz23)->dir, palavraIngles, unidade, raiz23);
     }
 }
 
-void removerTraducaoPortugues(Portugues23 **raiz, char *palavraPortugues, int unidade, Portugues23 **pai) {
-    int removeu = 0;
 
+void removerTraducaoPortugues(Portugues23 **raiz, char *palavraPortugues, int unidade, Portugues23 **pai) {
     if (*raiz == NULL) {
-        printf("Debug: Árvore vazia, nada a remover.\n");
+        printf("A árvore está vazia. Nenhuma palavra foi removida.\n");
         return;
     }
 
-    // Percorre subárvores
+    // Percorre a subárvore esquerda
     removerTraducaoPortugues(&(*raiz)->esq, palavraPortugues, unidade, pai);
-    removerTraducaoPortugues(&(*raiz)->cent, palavraPortugues, unidade, pai);
-    if ((*raiz)->nInfos == 2) {
-        removerTraducaoPortugues(&(*raiz)->dir, palavraPortugues, unidade, pai);
+
+    // Verifica no primeiro elemento do nó
+    if ((*raiz)->info1.portugueseWord && strcmp((*raiz)->info1.portugueseWord, palavraPortugues) == 0) {
+        printf("Removendo a palavra '%s' da unidade %d\n", palavraPortugues, unidade);
+
+        // Remove a unidade da palavra em inglês associada
+        if ((*raiz)->info1.palavraIngles) {
+            Inglesbin *palavraInglesAtual = (*raiz)->info1.palavraIngles;
+            while (palavraInglesAtual) {
+                removerPalavraIngles(&(palavraInglesAtual), palavraInglesAtual->palavraIngles, unidade);
+                palavraInglesAtual = palavraInglesAtual->dir; // Continue com as próximas traduções
+            }
+        }
+
+        // Se a palavra não está associada a mais nenhuma unidade, remova-a da árvore 2-3
+        remover23(pai, raiz, palavraPortugues);
     }
 
-    // Verifica e remove a palavra portuguesa se estiver associada à unidade
-    if (strcmp((*raiz)->info1.portugueseWord, palavraPortugues) == 0) {
-        printf("Debug: Encontrada palavra %s no primeiro elemento.\n", palavraPortugues);
-        // Remover a unidade específica
-        Unidade *novaLista = remover_unidade((*raiz)->info1.palavraIngles->unidades, unidade);
+    // Verifica o segundo elemento do nó, se existir
+    if ((*raiz)->nInfos == 2 && (*raiz)->info2.portugueseWord && strcmp((*raiz)->info2.portugueseWord, palavraPortugues) == 0) {
+        printf("Removendo a palavra '%s' da unidade %d\n", palavraPortugues, unidade);
 
-        // Se não há mais unidades associadas, remova completamente
-        if (novaLista == NULL) {
-            printf("Debug: Sem unidades restantes, removendo a palavra completamente.\n");
-            removeu = remover23(pai, raiz, palavraPortugues);
-            if (removeu) {
-                printf("A palavra %s foi removida com sucesso da árvore!\n", palavraPortugues);
+        // Remove a unidade da palavra em inglês associada
+        if ((*raiz)->info2.palavraIngles) {
+            Inglesbin *palavraInglesAtual = (*raiz)->info2.palavraIngles;
+            while (palavraInglesAtual) {
+                removerPalavraIngles(&(palavraInglesAtual), palavraInglesAtual->palavraIngles, unidade);
+                palavraInglesAtual = palavraInglesAtual->dir; // Continue com as próximas traduções
             }
-        } else {
-            (*raiz)->info1.palavraIngles->unidades = novaLista;
-            printf("Debug: Unidade %d removida da palavra %s, mas ainda associada a outras unidades.\n", unidade, palavraPortugues);
         }
-    } else if ((*raiz)->nInfos == 2 && strcmp((*raiz)->info2.portugueseWord, palavraPortugues) == 0) {
-        printf("Debug: Encontrada palavra %s no segundo elemento.\n", palavraPortugues);
-        // Remover a unidade específica
-        Unidade *novaLista = remover_unidade((*raiz)->info2.palavraIngles->unidades, unidade);
 
-        // Se não há mais unidades associadas, remova completamente
-        if (novaLista == NULL) {
-            printf("Debug: Sem unidades restantes, removendo a palavra completamente.\n");
-            removeu = remover23(pai, raiz, palavraPortugues);
-            if (removeu) {
-                printf("A palavra %s foi removida com sucesso da árvore!\n", palavraPortugues);
-            }
-        } else {
-            (*raiz)->info2.palavraIngles->unidades = novaLista;
-            printf("Debug: Unidade %d removida da palavra %s, mas ainda associada a outras unidades.\n", unidade, palavraPortugues);
-        }
+        // Se a palavra não está associada a mais nenhuma unidade, remova-a da árvore 2-3
+        remover23(pai, raiz, palavraPortugues);
+    }
+
+    // Percorre a subárvore central
+    removerTraducaoPortugues(&(*raiz)->cent, palavraPortugues, unidade, raiz);
+
+    // Percorre a subárvore direita, se existir
+    if ((*raiz)->nInfos == 2) {
+        removerTraducaoPortugues(&(*raiz)->dir, palavraPortugues, unidade, raiz);
     }
 }

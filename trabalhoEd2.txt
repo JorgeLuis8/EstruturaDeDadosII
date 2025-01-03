@@ -21,3 +21,15 @@ Bug: inseto;
 Bike: bicicleta;
 Cooler: ventilador;
 Network: rede de computadores;
+% Unidade 5
+Bike: bicicleta;
+Cooler: ventilador;
+Network: rede de computadores;
+% Unidade 6
+Bike: bicicleta;
+Cooler: ventilador;
+Network: rede de computadores;
+% Unidade 7
+Bike: bicicleta;
+Cooler: ventilador;
+Network: rede de computadores;
