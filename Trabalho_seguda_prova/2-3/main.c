@@ -267,6 +267,39 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
         }
     }
 }
+void testeAutomatizadoRemocao(Portugues23 **raiz, Portugues23 **pai)
+{
+    char *palavrasIngles[] = {
+        "Bus", "Bike", "Bug", "Bus", "Bug", "Network", "System", "Coller"};
+    int numPalavras = sizeof(palavrasIngles) / sizeof(palavrasIngles[0]);
+
+    // Lista de unidades que existem na árvore
+    int unidades[100] = {0};
+    int numUnidades = 0;
+    imprimirUnidadesExistentes(*raiz, unidades, &numUnidades);
+
+    printf("\n### Iniciando Teste Automático ###\n");
+
+    // Percorre cada palavra em inglês e tenta removê-la de todas as unidades
+    for (int i = 0; i < numPalavras; i++)
+    {
+        printf("\nRemovendo a palavra '%s' de todas as unidades...\n", palavrasIngles[i]);
+
+        for (int j = 0; j < numUnidades; j++)
+        {
+            int unidade = unidades[j];
+
+            printf("Tentando remover '%s' da unidade %d...\n", palavrasIngles[i], unidade);
+            removerTraducaoIngles(raiz, palavrasIngles[i], unidade, pai);
+        }
+    }
+
+    printf("\n### Teste Automático Concluído ###\n");
+
+    // Exibe a árvore após o teste
+    printf("\n### Estado da Árvore Após Remoções ###\n");
+    exibir_tree23(*raiz);
+}
 
 void menu()
 {
@@ -292,8 +325,7 @@ int main()
 
     char palavra[50];
     int unidade;
-    int removido;
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &raiz);
+    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/text.txt", &raiz);
     int op;
     int unidadeImpressa = 0;
     do
@@ -397,6 +429,12 @@ int main()
                 printf("Nenhuma palavra em inglês encontrada para a unidade %d.\n", unidade);
             }
 
+            printf("\n--------------------------------------------------------------- \n");
+            break;
+        case 9:
+            printf("\n--------------------------------------------------------------- \n");
+            printf("Executando teste automático de remoção...\n");
+            testeAutomatizadoRemocao(&raiz, &pai);
             printf("\n--------------------------------------------------------------- \n");
             break;
         case 0:
