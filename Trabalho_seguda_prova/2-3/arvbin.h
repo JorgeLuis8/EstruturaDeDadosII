@@ -29,7 +29,7 @@ Inglesbin *menorFilho(Inglesbin *raiz);
 
 void printBinaryTree(Inglesbin *root);
 
-int removerPalavraIngles(Inglesbin **raiz, const char *palavra, int unidade);
+int removerPalavraIngles(Inglesbin **raiz, const char *palavra);
 Inglesbin *buscarPalavraIngles(Inglesbin *raiz, const char *palavraIngles);
 
 void free_arvore_binaria(Inglesbin *raiz);

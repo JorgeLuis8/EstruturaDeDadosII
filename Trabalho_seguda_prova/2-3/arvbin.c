@@ -3,20 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "unidade.h"
-Inglesbin *createNode(const char *palavraIngles, int unidade) {
+
+Inglesbin *createNode(const char *palavraIng, int unidade) {
     Inglesbin *novoNo = (Inglesbin *)malloc(sizeof(Inglesbin));
-    if (novoNo != NULL) {
-        novoNo->palavraIngles = (char *)malloc(strlen(palavraIngles) + 1);
-        if (novoNo->palavraIngles != NULL) {
-            strcpy(novoNo->palavraIngles, palavraIngles);
-        }
-        
-        // Inicializar a lista ligada de unidades com o primeiro valor
-        novoNo->unidades = criar_unidade(unidade);
-        
-        // Inicializar os ponteiros da árvore binária
-        novoNo->esq = novoNo->dir = NULL;
+    if (novoNo == NULL) {
+        printf("Erro: Falha ao alocar memória para o nó.\n");
+        return NULL;
     }
+
+    novoNo->palavraIngles = strdup(palavraIng); // Copia segura da string
+    if (novoNo->palavraIngles == NULL) {
+        printf("Erro: Falha ao alocar memória para a palavra '%s'.\n", palavraIng);
+        free(novoNo);
+        return NULL;
+    }
+
+    novoNo->unidades = criar_unidade(unidade); // Inicializa a lista de unidades
+    novoNo->esq = novoNo->dir = NULL; // Inicializa filhos
     return novoNo;
 }
 
@@ -48,18 +51,42 @@ Inglesbin *insertpalavraIngles(Inglesbin *root, const char *palavraIngles, int u
 }
 
 void adicionarTraducaoEmIngles(Info *info, const char *palavraIng, int unidade) {
+    if (!info || !palavraIng) {
+        printf("Erro: Info ou palavra em inglês inválida.\n");
+        return;
+    }
+
     // Verifica se a árvore binária de traduções em inglês está vazia
     if (info->palavraIngles == NULL) {
         // Se a árvore estiver vazia, cria a palavra em inglês com a unidade associada
         info->palavraIngles = createNode(palavraIng, unidade);
+        if (!info->palavraIngles) {
+            printf("Erro: Falha ao criar nó para a palavra '%s'.\n", palavraIng);
+            return;
+        }
     } else {
         // Se a árvore não estiver vazia, insere a palavra em inglês de maneira ordenada na árvore
-        info->palavraIngles = insertpalavraIngles(info->palavraIngles, palavraIng, unidade);
+        Inglesbin *novaRaiz = insertpalavraIngles(info->palavraIngles, palavraIng, unidade);
+        if (novaRaiz == NULL) {
+            printf("Erro: Falha ao inserir palavra '%s' na árvore binária.\n", palavraIng);
+            return;
+        }
+        info->palavraIngles = novaRaiz; // Atualiza a raiz da árvore
     }
 
     // Agora associa a unidade à palavra em inglês, garantindo a ordem das unidades
-    info->palavraIngles->unidades = adicionar_unidade_ordenada(info->palavraIngles->unidades, criar_unidade(unidade));
+    Unidade *novaUnidade = criar_unidade(unidade);
+    if (!novaUnidade) {
+        printf("Erro: Falha ao criar unidade %d para a palavra '%s'.\n", unidade, palavraIng);
+        return;
+    }
+
+    info->palavraIngles->unidades = adicionar_unidade_ordenada(info->palavraIngles->unidades, novaUnidade);
+    if (!info->palavraIngles->unidades) {
+        printf("Erro: Falha ao associar unidade %d à palavra '%s'.\n", unidade, palavraIng);
+    }
 }
+
 
 
 void printBinaryTree(Inglesbin *root)
@@ -120,45 +147,41 @@ Inglesbin *menorFilho(Inglesbin *raiz){
     return aux;
 }
 
-int removerPalavraIngles(Inglesbin **raiz, const char *palavra, int unidade) {
+int removerPalavraIngles(Inglesbin **raiz, const char *palavra) {
     Inglesbin *endFilho = NULL;
     int existe = 0;
 
     if (*raiz) {
-        // Verifica se a palavra em inglês corresponde ao nó atual
         if (strcmp(palavra, (*raiz)->palavraIngles) == 0) {
             Inglesbin *aux = *raiz;
             existe = 1;
 
-            // Remove a unidade da lista associada
-            Unidade *novaLista = remover_unidade((*raiz)->unidades, unidade);
-
-            if (novaLista != (*raiz)->unidades) {
-                (*raiz)->unidades = novaLista;
-
-                // Se a lista de unidades ficar vazia, remover o nó
-                if (novaLista == NULL) {
-                    if (ehFolhas(*raiz)) {
-                        free(aux);
-                        *raiz = NULL;
-                    } else if ((endFilho = soUmFilho(*raiz)) != NULL) {
-                        free(aux);
-                        *raiz = endFilho;
-                    } else {
-                        endFilho = menorFilho((*raiz)->dir);
-                        strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
-                        (*raiz)->unidades = endFilho->unidades;
-
-                        removerPalavraIngles(&(*raiz)->dir, endFilho->palavraIngles, unidade);
-                    }
+            if (ehFolhas(*raiz)) { 
+                // Caso nó folha
+                free(aux->palavraIngles); // Libera a string
+                free(aux);
+                *raiz = NULL;
+            } else if ((endFilho = soUmFilho(*raiz)) != NULL) {
+                // Caso nó tenha apenas um filho
+                free(aux->palavraIngles); // Libera a string
+                free(aux);
+                *raiz = endFilho;
+            } else {
+                // Caso nó tenha dois filhos
+                endFilho = menorFilho((*raiz)->dir);
+                if (endFilho && endFilho->palavraIngles) {
+                    free((*raiz)->palavraIngles); // Libera a string existente
+                    (*raiz)->palavraIngles = strdup(endFilho->palavraIngles); // Copia a palavra do menor filho
+                    (*raiz)->unidades = endFilho->unidades; // Transfere a unidade
+                    removerPalavraIngles(&(*raiz)->dir, endFilho->palavraIngles); // Remove o nó substituído
                 }
             }
         } else if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
-            // Continua a busca na subárvore esquerda
-            existe = removerPalavraIngles(&(*raiz)->esq, palavra, unidade);
+            // Busca na subárvore esquerda
+            existe = removerPalavraIngles(&(*raiz)->esq, palavra);
         } else {
-            // Continua a busca na subárvore direita
-            existe = removerPalavraIngles(&(*raiz)->dir, palavra, unidade);
+            // Busca na subárvore direita
+            existe = removerPalavraIngles(&(*raiz)->dir, palavra);
         }
     }
 

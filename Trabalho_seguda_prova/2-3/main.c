@@ -321,7 +321,7 @@ void menu()
 int main()
 {
     Portugues23 *raiz = NULL;
-    Portugues23 *pai = NULL;
+
 
     char palavra[50];
     int unidade;
@@ -365,33 +365,43 @@ int main()
             printf("\n--------------------------------------------------------------- \n");
             break;
 
-        case 3:
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Insira a palavra em inglês que deseja remover: ");
-            scanf("%s", palavra);
-            printf("Insira a unidade da palavra que deseja remover: ");
-            scanf("%d", &unidade);
+case 3:
+    printf("\n--------------------------------------------------------------- \n");
+    printf("Insira a palavra em ingles que deseja remover: ");
+    while (getchar() != '\n'); // Limpa o buffer
+    fgets(palavra, sizeof(palavra), stdin);
+    palavra[strcspn(palavra, "\n")] = '\0'; // Remove o caractere de nova linha
 
-            // Chama a função para remover a palavra em inglês da árvore binária e da árvore 2-3
-            removerTraducaoIngles(&raiz, palavra, unidade, &pai);
+    printf("Insira a unidade associada à palavra que deseja remover: ");
+    scanf("%d", &unidade);
 
-            printf("\nPalavra '%s' da unidade %d removida com sucesso.\n", palavra, unidade);
-            printf("\n--------------------------------------------------------------- \n");
-            break;
+    // Chama a função principal de remoção
+    if (Remove_palavra_ingles_unidade(&raiz, palavra, unidade)) {
+        printf("Remocao concluida com sucesso.\n");
+    } else {
+        printf("Erro ao realizar a remocao.\n");
+    }
+    printf("\n--------------------------------------------------------------- \n");
+    break;
 
 case 4:
     printf("\n--------------------------------------------------------------- \n");
     printf("Insira a palavra em português que deseja remover: ");
     scanf("%s", palavra);
-    printf("Insira a unidade da palavra que deseja remover: ");
+    printf("Insira a unidade associada à palavra que deseja remover: ");
     scanf("%d", &unidade);
 
-    // Chama a função para remover a palavra em português e sua unidade
-    removerPalavraPortuguesUnidade(&raiz, palavra, unidade);
-
-    printf("\nOperação concluída.\n");
+    // Chama a função principal de remoção
+    if (Remove_palavra_portugues_unidade(&raiz, palavra, unidade)) {
+        printf("Remoção concluída com sucesso.\n");
+    } else {
+        printf("Erro ao realizar a remoção.\n");
+    }
     printf("\n--------------------------------------------------------------- \n");
     break;
+
+
+
 
 
         // case 5:
