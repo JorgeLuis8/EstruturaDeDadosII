@@ -293,7 +293,7 @@ void printWordsByUnit(RedBlackTreePT *arvore, int unidade) {
 
         // Percorre a árvore binária associada
         while (node != NULL) {
-            Unidade *currentUnit = node->unitValues;
+            Unit *currentUnit = node->unitValues;
 
             // Verifica todas as unidades associadas à palavra
             while (currentUnit != NULL) {
@@ -327,7 +327,7 @@ void printWordsByUnit(RedBlackTreePT *arvore, int unidade) {
 void printTranslations(BinaryTreeNode *node, int unidade, char *palavraPortugues) {
     if (node) {
         // Verifica se a unidade fornecida está presente na lista de unidades
-        Unidade *currentUnit = node->unitValues;
+        Unit *currentUnit = node->unitValues;
         int unidadeEncontrada = 0;
 
         while (currentUnit != NULL) {
@@ -399,7 +399,7 @@ RedBlackTreePT *SearchEnglishWordInRBTree(RedBlackTreePT *raiz, char *palavraIng
         while (currentNode != NULL) {
             printf("Verificando palavra: '%s' na unidade %d\n", currentNode->englishWord, unidade);
 
-            Unidade *currentUnit = currentNode->unitValues;
+            Unit *currentUnit = currentNode->unitValues;
             int unidadeEncontrada = 0;
 
             // Verifica se a unidade existe na lista
@@ -479,7 +479,7 @@ void removeWordByUnit(RedBlackTreePT **node, char *wordToRemove, int unit, int *
         // Busca e remove a palavra associada à unidade
         while (currentNode != NULL) {
             if (strcmp(currentNode->englishWord, wordToRemove) == 0) {
-                Unidade *novaLista = remover_unidade(currentNode->unitValues, unit);
+                Unit *novaLista = remove_unit(currentNode->unitValues, unit);
                 currentNode->unitValues = novaLista;
 
                 // Remove o nó se não houver mais unidades associadas
@@ -552,7 +552,7 @@ void removerPalavraPortuguesaPorUnidade(RedBlackTreePT **raizRBT, char *palavraP
                 BinaryTreeNode *currentNode = raizBST;
 
                 while (currentNode != NULL) {
-                    Unidade *novaLista = remover_unidade(currentNode->unitValues, unidade);
+                    Unit *novaLista = remove_unit(currentNode->unitValues, unidade);
                     currentNode->unitValues = novaLista;
 
                     // Se a lista de unidades ficar vazia, remova a palavra

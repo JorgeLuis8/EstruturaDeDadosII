@@ -10,8 +10,8 @@ void printBinaryTree(Inglesbin *root);
 
 int eh_Folha(Inglesbin *raiz);
 Inglesbin *soUmFilho(Inglesbin **raiz);
-Inglesbin *menorFilho(Inglesbin *raiz);
+Inglesbin *getMinimumChild(Inglesbin *raiz);
 int removerPalavraIngles(Inglesbin **raiz, const char *palavra);
-void free_arvore_binaria(Inglesbin *raiz);
+void clear_binary_tree(Inglesbin *raiz);
 
 #endif

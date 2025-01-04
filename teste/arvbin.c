@@ -72,7 +72,7 @@ Inglesbin *soUmFilho(Inglesbin **raiz)
     return aux;
 }
 
-Inglesbin *menorFilho(Inglesbin *raiz)
+Inglesbin *getMinimumChild(Inglesbin *raiz)
 {
     Inglesbin *aux;
     aux = raiz;
@@ -80,7 +80,7 @@ Inglesbin *menorFilho(Inglesbin *raiz)
     if (raiz)
     {
         if (raiz->esq)
-            aux = menorFilho(raiz->esq);
+            aux = getMinimumChild(raiz->esq);
     }
 
     return aux;
@@ -109,7 +109,7 @@ int removerPalavraIngles(Inglesbin **raiz, const char *palavra)
             }
             else
             {
-                endFilho = menorFilho((*raiz)->dir);
+                endFilho = getMinimumChild((*raiz)->dir);
                 strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
                 (*raiz)->unidades = endFilho->unidades;
 
@@ -129,12 +129,12 @@ int removerPalavraIngles(Inglesbin **raiz, const char *palavra)
     return existe;
 }
 
-void free_arvore_binaria(Inglesbin *raiz)
+void clear_binary_tree(Inglesbin *raiz)
 {
     if (raiz)
     {
-        free_arvore_binaria(raiz->esq);
-        free_arvore_binaria(raiz->dir);
+        clear_binary_tree(raiz->esq);
+        clear_binary_tree(raiz->dir);
         free(raiz->palavraIngles);
         free(raiz);
     }

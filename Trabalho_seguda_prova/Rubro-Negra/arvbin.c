@@ -15,7 +15,7 @@ BinaryTreeNode *initializeBinaryTreeNode(char *palavraIngles, int unidade) {
 
     // Inicializa os campos do nó
     strcpy(novoNo->englishWord, palavraIngles);
-    novoNo->unitValues = criar_unidade(unidade); // Cria a lista de unidades com a primeira unidade
+    novoNo->unitValues = create_unit(unidade); // Cria a lista de unidades com a primeira unidade
     novoNo->left = NULL;
     novoNo->right = NULL;
 
@@ -41,9 +41,9 @@ BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int
             root->right = insertEnglishWord(root->right, palavraIngles, unidade);
         } else {
             // Palavra já existe, adiciona a unidade à lista ordenada
-            Unidade *novaUnidade = criar_unidade(unidade);
+            Unit *novaUnidade = create_unit(unidade);
             if (novaUnidade != NULL) {
-                root->unitValues = adicionar_unidade_ordenada(root->unitValues, novaUnidade);
+                root->unitValues = insert_unit_sorted(root->unitValues, novaUnidade);
             } else {
                 perror("Erro ao alocar memória para a unidade.");
             }
@@ -70,7 +70,7 @@ void printBinaryTree(BinaryTreeNode *root) {
         printf("Palavra em inglês: %s\n", root->englishWord);
 
         // Imprime as unidades associadas (caso necessário para depuração)
-        Unidade *currentUnit = root->unitValues;
+        Unit *currentUnit = root->unitValues;
         printf("Unidades: ");
         while (currentUnit != NULL) {
             printf("%d ", currentUnit->unidade);
@@ -132,12 +132,12 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra) {
 
             if (isLeafNodes(*raiz)) {
                 // Libera a lista de unidades associada
-                liberar_lista(aux->unitValues);
+                free_list(aux->unitValues);
                 free(aux);
                 *raiz = NULL;
             } else if ((endFilho = singleChildNode(*raiz)) != NULL) {
                 // Libera a lista de unidades associada
-                liberar_lista(aux->unitValues);
+                free_list(aux->unitValues);
                 free(aux);
                 *raiz = endFilho;
             } else {
@@ -146,14 +146,14 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra) {
                 strcpy((*raiz)->englishWord, endFilho->englishWord);
 
                 // Libera a lista antiga e copia a nova
-                liberar_lista((*raiz)->unitValues);
+                free_list((*raiz)->unitValues);
                 (*raiz)->unitValues = NULL;
 
                 // Clona a lista de unidades do nó substituto
-                Unidade *currentUnit = endFilho->unitValues;
+                Unit *currentUnit = endFilho->unitValues;
                 while (currentUnit != NULL) {
-                    Unidade *novaUnidade = criar_unidade(currentUnit->unidade);
-                    (*raiz)->unitValues = adicionar_unidade_ordenada((*raiz)->unitValues, novaUnidade);
+                    Unit *novaUnidade = create_unit(currentUnit->unidade);
+                    (*raiz)->unitValues = insert_unit_sorted((*raiz)->unitValues, novaUnidade);
                     currentUnit = currentUnit->prox;
                 }
 
@@ -182,7 +182,7 @@ void FindEnglishTerm(RedBlackTreePT **raiz, char *palavraIngles, int unidade) {
             while (currentNode != NULL) {
                 if (strcmp(currentNode->englishWord, palavraIngles) == 0) {
                     // Encontra a palavra e remove a unidade da lista
-                    Unidade *novaLista = remover_unidade(currentNode->unitValues, unidade);
+                    Unit *novaLista = remove_unit(currentNode->unitValues, unidade);
                     currentNode->unitValues = novaLista;
 
                     // Verifica se a lista de unidades está vazia
@@ -215,7 +215,7 @@ void exibir_arvorebinaria(BinaryTreeNode *raiz) {
         printf("Palavra em inglês: %s\n", raiz->englishWord);
 
         // Imprime as unidades associadas (caso necessário para depuração)
-        Unidade *currentUnit = raiz->unitValues;
+        Unit *currentUnit = raiz->unitValues;
         printf("Unidades: ");
         while (currentUnit != NULL) {
             printf("%d ", currentUnit->unidade);

@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "unidade.h"
 
-Unidade *remover_unidade(Unidade *lista, int valor) {
-    Unidade *aux = lista;
-    Unidade *ant = NULL;
-    Unidade *resultado = lista;  
+Unit *remove_unit(Unit *lista, int valor) {
+    Unit *aux = lista;
+    Unit *ant = NULL;
+    Unit *resultado = lista;  
 
     while (aux != NULL && aux->unidade != valor) {
         ant = aux;
@@ -24,8 +24,8 @@ Unidade *remover_unidade(Unidade *lista, int valor) {
     return resultado;
 }
 
-Unidade *buscar_unidade(Unidade *lista, int valor) {
-    Unidade *aux = lista;
+Unit *find_unit(Unit *lista, int valor) {
+    Unit *aux = lista;
 
     while (aux != NULL && aux->unidade != valor) {
         aux = aux->prox;
@@ -34,8 +34,8 @@ Unidade *buscar_unidade(Unidade *lista, int valor) {
     return aux;
 }
 
-void imprimir_unidades(Unidade *lista) {
-    Unidade *aux = lista;
+void print_units(Unit *lista) {
+    Unit *aux = lista;
     while (aux != NULL) {
         printf("Unidade: %d\n", aux->unidade);
         aux = aux->prox;
@@ -43,8 +43,8 @@ void imprimir_unidades(Unidade *lista) {
 }
 
 // Função para criar um novo nó de Unidade.
-Unidade *criar_unidade(int valor) {
-    Unidade *nova_unidade = (Unidade *)malloc(sizeof(Unidade));
+Unit *create_unit(int valor) {
+    Unit *nova_unidade = (Unit *)malloc(sizeof(Unit));
     if (nova_unidade != NULL) {
         nova_unidade->unidade = valor;
         nova_unidade->prox = NULL;
@@ -53,16 +53,16 @@ Unidade *criar_unidade(int valor) {
 }
 
 // Função para inserir uma nova unidade ordenada.
-Unidade *adicionar_unidade_ordenada(Unidade *lista, Unidade *novo_no) {
-    Unidade *aux = lista;
+Unit *insert_unit_sorted(Unit *lista, Unit *novo_no) {
+    Unit *aux = lista;
 
     if (lista == NULL) {
         // Caso a lista esteja vazia, o novo nó se torna o primeiro.
         novo_no->prox = NULL;
         aux = novo_no;
     } else {
-        Unidade *anterior = NULL;
-        Unidade *atual = lista;
+        Unit *anterior = NULL;
+        Unit *atual = lista;
 
         // Percorre a lista para encontrar a posição correta (ordem crescente de "unidade").
         while (atual != NULL && atual->unidade < novo_no->unidade) {
@@ -85,10 +85,10 @@ Unidade *adicionar_unidade_ordenada(Unidade *lista, Unidade *novo_no) {
 }
 
 // Função para liberar a memória da lista.
-void liberar_lista(Unidade *lista) {
-    Unidade *atual = lista;
+void free_list(Unit *lista) {
+    Unit *atual = lista;
     while (atual != NULL) {
-        Unidade *temp = atual;
+        Unit *temp = atual;
         atual = atual->prox;
         free(temp);
     }

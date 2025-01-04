@@ -51,10 +51,10 @@ int remove_palavra_ingles_unidade(Portugues23 *raiz, const char *palavraIngles, 
 
 
     if (!(raiz)->info1.palavraIngles)
-      confirm = arvore_2_3_remover(top, raiz->info1.palavraPortugues);
+      confirm = remove_node_from23_tree(top, raiz->info1.palavraPortugues);
 
     if ((raiz)->nInfos == 2 && !(raiz)->info2.palavraIngles)
-      confirm = arvore_2_3_remover(top, raiz->info2.palavraPortugues);
+      confirm = remove_node_from23_tree(top, raiz->info2.palavraPortugues);
   }
 
   return confirm;
@@ -88,13 +88,13 @@ int remove_palavra_portugues_unidade(Portugues23 *raiz, char *palavraPortugues, 
     {
       confirm = _remove_palavra_portugues_unidade(&(raiz)->info1.palavraIngles, palavraPortugues, unidade);
       if (!(raiz)->info1.palavraIngles)
-        confirm = arvore_2_3_remover(top, palavraPortugues);
+        confirm = remove_node_from23_tree(top, palavraPortugues);
     }
     else if ((raiz)->nInfos == 2 && strcmp((raiz)->info2.palavraPortugues, palavraPortugues) == 0)
     {
       confirm = _remove_palavra_portugues_unidade(&(raiz)->info2.palavraIngles, palavraPortugues, unidade);
       if (!(raiz)->info2.palavraIngles)
-        confirm = arvore_2_3_remover(top, palavraPortugues);
+        confirm = remove_node_from23_tree(top, palavraPortugues);
     }
     else if (strcmp(palavraPortugues, (raiz)->info1.palavraPortugues) < 0)
       confirm = remove_palavra_portugues_unidade((raiz)->esq, palavraPortugues, unidade, top);
