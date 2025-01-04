@@ -16,6 +16,7 @@ typedef struct Portugues23{
     struct Portugues23 *esq;
     int nInfos;
 } Portugues23;
+
 typedef struct Inglesbin Inglesbin;
 Portugues23 *BuscarPalavra(Portugues23 **no, const char *palavraPortugues);
 int inserirPalavraPortugues(Portugues23 **arvore, char *palavraPortugues, char *palavraIngles, int unidade);

@@ -212,6 +212,37 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
         }
     }
 }
+Portugues23 *BuscarPalavraPorUnidade(Portugues23 *raiz, int unidade) {
+    if (raiz == NULL) {
+        return NULL; // Árvore vazia
+    }
+
+    // Verifica se info1 contém a unidade associada
+    if (raiz->info1.palavraPortugues && buscar_unidade(raiz->info1.palavraIngles->unidades, unidade)) {
+        return raiz; // Retorna o nó encontrado
+    }
+
+    // Verifica se info2 contém a unidade associada (se existir)
+    if (raiz->nInfos == 2 && raiz->info2.palavraPortugues && buscar_unidade(raiz->info2.palavraIngles->unidades, unidade)) {
+        return raiz;
+    }
+
+    // Busca recursiva nas subárvores
+    Portugues23 *resultado = BuscarPalavraPorUnidade(raiz->esq, unidade);
+    if (resultado) {
+        return resultado;
+    }
+    resultado = BuscarPalavraPorUnidade(raiz->cent, unidade);
+    if (resultado) {
+        return resultado;
+    }
+    if (raiz->nInfos == 2) {
+        resultado = BuscarPalavraPorUnidade(raiz->dir, unidade);
+    }
+
+    return resultado;
+}
+
 void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *unidadeImpressa)
 {
     if (arvore)
@@ -300,6 +331,59 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
 //     printf("\n### Estado da Árvore Após Remoções ###\n");
 //     exibir_tree23(*raiz);
 // }
+
+void removerTodasPalavrasPortugues(Portugues23 **raiz) {
+    if (!raiz || !(*raiz)) {
+        printf("A árvore está vazia.\n");
+        return;
+    }
+
+    int unidades[] = {1, 2, 3, 4, 5}; // Lista de unidades
+    int totalUnidades = sizeof(unidades) / sizeof(unidades[0]);
+
+    // Iterar por cada unidade
+    for (int i = 0; i < totalUnidades; i++) {
+        int unidadeAtual = unidades[i];
+        int palavraRemovida = 1;
+
+        printf("\nProcessando unidade %d...\n", unidadeAtual);
+
+        // Continue removendo palavras até que nenhuma seja encontrada na unidade
+        while (palavraRemovida) {
+            palavraRemovida = 0;
+            Portugues23 *no = BuscarPalavraPorUnidade(*raiz, unidadeAtual);
+
+            if (no) {
+                char palavraPortugues[256];
+
+                // Verifica qual palavra em português (info1 ou info2) pertence à unidade
+                if (no->info1.palavraPortugues) {
+                    strncpy(palavraPortugues, no->info1.palavraPortugues, sizeof(palavraPortugues));
+                    palavraPortugues[sizeof(palavraPortugues) - 1] = '\0'; // Garante null-termination
+
+                    // Remove a palavra usando o método já existente
+                    if (Remove_palavra_portugues_unidade(raiz, palavraPortugues, unidadeAtual)) {
+                        printf("Palavra '%s' da unidade %d removida com sucesso.\n", palavraPortugues, unidadeAtual);
+                        palavraRemovida = 1;
+                    }
+                }
+
+                if (!palavraRemovida && no->nInfos == 2 && no->info2.palavraPortugues) {
+                    strncpy(palavraPortugues, no->info2.palavraPortugues, sizeof(palavraPortugues));
+                    palavraPortugues[sizeof(palavraPortugues) - 1] = '\0'; // Garante null-termination
+
+                    // Remove a palavra do info2
+                    if (Remove_palavra_portugues_unidade(raiz, palavraPortugues, unidadeAtual)) {
+                        printf("Palavra '%s' da unidade %d removida com sucesso.\n", palavraPortugues, unidadeAtual);
+                        palavraRemovida = 1;
+                    }
+                }
+            }
+        }
+        printf("Todas as palavras da unidade %d foram removidas.\n", unidadeAtual);
+    }
+}
+
 
 void menu()
 {
@@ -402,6 +486,12 @@ case 4:
 
 
 
+case 7: // Escolha para remover automaticamente palavras em português
+    printf("\n--------------------------------------------------------------- \n");
+    printf("Removendo todas as palavras em portugues de todas as unidades...\n");
+    removerTodasPalavrasPortugues(&raiz);
+    printf("\n--------------------------------------------------------------- \n");
+    break;
 
 
         // case 5:

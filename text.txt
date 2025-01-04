@@ -1,27 +1,27 @@
 % Unidade 1
-Bus: onibus, barramento; 
-Bug: inseto, problema; 
-Bike: bicicleta;  
-Coller: ventilador; 
-Network: rede de computadores; 
-System: sistema;  
+Car: carro, veiculo; 
+Bug: erro, inseto; 
+Plane: aviao; 
+Cooling: refrigeracao; 
+Network: rede mundial; 
+Application: aplicativo;  
 % Unidade 2
-Bug: inseto;  
+Bug: inseto, falha;  
 Bicycle: bicicleta; 
-Fan: ventilador; 
-Network: rede de relacionamento;
+Fan: admirador; 
+Network: ligacao;  
 % Unidade 3
-Key: chave;
-Pineapple: abacaxi;
-Storage: armazenamento;
-Friend: amigo;
+Key: chave; 
+Pineapple: abacaxi; 
+Storage: armazenamento; 
+Friend: amigo;  
 % Unidade 4
-File: arquivo;
-Ball: bola;
-Cable: cabo;
-Computer: computador;
+Bug: defeito, erro; 
+Ball: bola; 
+Cable: cabo; 
+Computer: computador;  
 % Unidade 5
-Window: janela;
-Table: mesa;
-Pointer: ponteiro;
-Protocol: protocolo;
+Window: janela; 
+Table: mesa; 
+Pointer: ponteiro; 
+Network: estrutura;  
