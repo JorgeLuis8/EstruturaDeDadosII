@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "arv23.c"
 #include "arvbin.c"
 #include "unidade.c"
-#include <ctype.h>
 
 void clearCharacters(char *str)
 {
@@ -175,7 +175,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info1.portugueseWord);
+                    printf("- %s\n", arvore->info1.palavraPortugues);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
@@ -198,7 +198,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info2.portugueseWord);
+                    printf("- %s\n", arvore->info2.palavraPortugues);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
@@ -267,39 +267,39 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
         }
     }
 }
-void testeAutomatizadoRemocao(Portugues23 **raiz, Portugues23 **pai)
-{
-    char *palavrasIngles[] = {
-        "Bus", "Bike", "Bug", "Bus", "Bug", "Network", "System", "Coller"};
-    int numPalavras = sizeof(palavrasIngles) / sizeof(palavrasIngles[0]);
+// void testeAutomatizadoRemocao(Portugues23 **raiz, Portugues23 **pai)
+// {
+//     char *palavrasIngles[] = {
+//         "Bus", "Bike", "Bug", "Bus", "Bug", "Network", "System", "Coller"};
+//     int numPalavras = sizeof(palavrasIngles) / sizeof(palavrasIngles[0]);
 
-    // Lista de unidades que existem na árvore
-    int unidades[100] = {0};
-    int numUnidades = 0;
-    imprimirUnidadesExistentes(*raiz, unidades, &numUnidades);
+//     // Lista de unidades que existem na árvore
+//     int unidades[100] = {0};
+//     int numUnidades = 0;
+//     imprimirUnidadesExistentes(*raiz, unidades, &numUnidades);
 
-    printf("\n### Iniciando Teste Automático ###\n");
+//     printf("\n### Iniciando Teste Automático ###\n");
 
-    // Percorre cada palavra em inglês e tenta removê-la de todas as unidades
-    for (int i = 0; i < numPalavras; i++)
-    {
-        printf("\nRemovendo a palavra '%s' de todas as unidades...\n", palavrasIngles[i]);
+//     // Percorre cada palavra em inglês e tenta removê-la de todas as unidades
+//     for (int i = 0; i < numPalavras; i++)
+//     {
+//         printf("\nRemovendo a palavra '%s' de todas as unidades...\n", palavrasIngles[i]);
 
-        for (int j = 0; j < numUnidades; j++)
-        {
-            int unidade = unidades[j];
+//         for (int j = 0; j < numUnidades; j++)
+//         {
+//             int unidade = unidades[j];
 
-            printf("Tentando remover '%s' da unidade %d...\n", palavrasIngles[i], unidade);
-            removerTraducaoIngles(raiz, palavrasIngles[i], unidade, pai);
-        }
-    }
+//             printf("Tentando remover '%s' da unidade %d...\n", palavrasIngles[i], unidade);
+//             removerTraducaoIngles(raiz, palavrasIngles[i], unidade, pai);
+//         }
+//     }
 
-    printf("\n### Teste Automático Concluído ###\n");
+//     printf("\n### Teste Automático Concluído ###\n");
 
-    // Exibe a árvore após o teste
-    printf("\n### Estado da Árvore Após Remoções ###\n");
-    exibir_tree23(*raiz);
-}
+//     // Exibe a árvore após o teste
+//     printf("\n### Estado da Árvore Após Remoções ###\n");
+//     exibir_tree23(*raiz);
+// }
 
 void menu()
 {
@@ -341,9 +341,15 @@ int main()
             scanf("%d", &unidade);
 
             // Variável de controle para a impressão do cabeçalho
+            unidadeImpressa = 0;
 
-            // Chama a função para imprimir palavras da unidade
-            imprimirPalavrasUnidade(raiz, unidade, &unidadeImpressa);
+            // Chama a função para imprimir palavras da unidade no formato especificado
+            imprimirPalavrasFormatadasPorUnidade(raiz, unidade, &unidadeImpressa);
+
+            if (!unidadeImpressa)
+            {
+                printf("Nenhuma palavra encontrada para a unidade %d.\n", unidade);
+            }
 
             printf("\n--------------------------------------------------------------- \n");
             break;
@@ -352,7 +358,10 @@ int main()
             printf("\n--------------------------------------------------------------- \n");
             printf("Insira a palavra em português que deseja imprimir as palavras em inglês: ");
             scanf("%s", palavra);
-            exibir_traducao_Portugues(&raiz, palavra); // Chama a função para exibir traduções da palavra
+
+            // Busca a palavra em português na árvore e exibe suas traduções
+            exibirTodasTraducoes(raiz, palavra);
+
             printf("\n--------------------------------------------------------------- \n");
             break;
 
@@ -370,73 +379,78 @@ int main()
             printf("\n--------------------------------------------------------------- \n");
             break;
 
-        case 4:
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Insira a palavra em português que deseja remover: ");
-            scanf("%s", palavra);
-            printf("Insira a unidade da palavra que deseja remover: ");
-            scanf("%d", &unidade);
-            removerTraducaoPortugues(&raiz, palavra, unidade, &pai);
-            printf("\n--------------------------------------------------------------- \n");
-            break;
+case 4:
+    printf("\n--------------------------------------------------------------- \n");
+    printf("Insira a palavra em português que deseja remover: ");
+    scanf("%s", palavra);
+    printf("Insira a unidade da palavra que deseja remover: ");
+    scanf("%d", &unidade);
 
-        case 5:
-            printf("\n--------------------------------------------------------------- \n");
-            exibir_tree23(raiz);
-            printf("\n--------------------------------------------------------------- \n");
-            break;
+    // Chama a função para remover a palavra em português e sua unidade
+    removerPalavraPortuguesUnidade(&raiz, palavra, unidade);
 
-        case 6:
-        {
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Unidades existentes:\n");
+    printf("\nOperação concluída.\n");
+    printf("\n--------------------------------------------------------------- \n");
+    break;
 
-            int unidades[100] = {0};
-            int numUnidades = 0;
-            imprimirUnidadesExistentes(raiz, unidades, &numUnidades);
 
-            for (int i = 0; i < numUnidades; i++)
-            {
-                printf("Unidade: %d\n", unidades[i]);
-            }
-            printf("\n--------------------------------------------------------------- \n");
-            break;
-        }
-        case 7:
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Insira a unidade que deseja listar as palavras em português: ");
-            scanf("%d", &unidade);
+        // case 5:
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     exibir_tree23(raiz);
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     break;
 
-            imprimirPalavrasPortuguesPorUnidade(raiz, unidade, &unidadeImpressa);
+        // case 6:
+        // {
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     printf("Unidades existentes:\n");
 
-            if (!unidadeImpressa)
-            {
-                printf("Nenhuma palavra encontrada para a unidade %d.\n", unidade);
-            }
+        //     int unidades[100] = {0};
+        //     int numUnidades = 0;
+        //     imprimirUnidadesExistentes(raiz, unidades, &numUnidades);
 
-            printf("\n--------------------------------------------------------------- \n");
-            break;
-        case 8:
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Insira a unidade que deseja listar as palavras em inglês: ");
-            scanf("%d", &unidade);
+        //     for (int i = 0; i < numUnidades; i++)
+        //     {
+        //         printf("Unidade: %d\n", unidades[i]);
+        //     }
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     break;
+        // }
+        // case 7:
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     printf("Insira a unidade que deseja listar as palavras em português: ");
+        //     scanf("%d", &unidade);
 
-            int unidadeImpressa = 0;
-            imprimirPalavrasInglesPorUnidade(raiz, unidade, &unidadeImpressa);
+        //     imprimirPalavrasPortuguesPorUnidade(raiz, unidade, &unidadeImpressa);
 
-            if (!unidadeImpressa)
-            {
-                printf("Nenhuma palavra em inglês encontrada para a unidade %d.\n", unidade);
-            }
+        //     if (!unidadeImpressa)
+        //     {
+        //         printf("Nenhuma palavra encontrada para a unidade %d.\n", unidade);
+        //     }
 
-            printf("\n--------------------------------------------------------------- \n");
-            break;
-        case 9:
-            printf("\n--------------------------------------------------------------- \n");
-            printf("Executando teste automático de remoção...\n");
-            testeAutomatizadoRemocao(&raiz, &pai);
-            printf("\n--------------------------------------------------------------- \n");
-            break;
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     break;
+        // case 8:
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     printf("Insira a unidade que deseja listar as palavras em inglês: ");
+        //     scanf("%d", &unidade);
+
+        //     int unidadeImpressa = 0;
+        //     imprimirPalavrasInglesPorUnidade(raiz, unidade, &unidadeImpressa);
+
+        //     if (!unidadeImpressa)
+        //     {
+        //         printf("Nenhuma palavra em inglês encontrada para a unidade %d.\n", unidade);
+        //     }
+
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     break;
+        // case 9:
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     printf("Executando teste automático de remoção...\n");
+        //     testeAutomatizadoRemocao(&raiz, &pai);
+        //     printf("\n--------------------------------------------------------------- \n");
+        //     break;
         case 0:
             printf("\n--------------------------------------------------------------- \n");
             printf("Saindo do programa...\n");
@@ -449,7 +463,7 @@ int main()
         }
     } while (op != 0);
 
-    freeTree(raiz);
+    freeTree(&raiz);
 
     return 0;
 }

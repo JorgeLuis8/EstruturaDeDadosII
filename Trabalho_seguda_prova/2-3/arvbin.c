@@ -120,47 +120,44 @@ Inglesbin *menorFilho(Inglesbin *raiz){
     return aux;
 }
 
-int removerPalavraIngles(Inglesbin **raiz, char *palavra, int unidade) {
-    int existe = 0; // Indicador de sucesso da remoção
+int removerPalavraIngles(Inglesbin **raiz, const char *palavra, int unidade) {
+    Inglesbin *endFilho = NULL;
+    int existe = 0;
 
-    if (*raiz != NULL) {
+    if (*raiz) {
+        // Verifica se a palavra em inglês corresponde ao nó atual
         if (strcmp(palavra, (*raiz)->palavraIngles) == 0) {
-            // Verifica se a unidade está associada
-            if (buscar_unidade((*raiz)->unidades, unidade)) {
-                existe = 1; // Palavra e unidade encontradas
-                printf("Removendo a palavra '%s' da unidade %d\n", palavra, unidade);
+            Inglesbin *aux = *raiz;
+            existe = 1;
 
-                // Remove a unidade da lista associada
-                (*raiz)->unidades = remover_unidade((*raiz)->unidades, unidade);
+            // Remove a unidade da lista associada
+            Unidade *novaLista = remover_unidade((*raiz)->unidades, unidade);
 
-                // Se a lista de unidades ficar vazia, remove o nó da árvore binária
-                if ((*raiz)->unidades == NULL) {
-                    Inglesbin *aux = *raiz;
+            if (novaLista != (*raiz)->unidades) {
+                (*raiz)->unidades = novaLista;
 
-                    if (ehFolhas(*raiz)) { // Nó sem filhos
-                        free(aux->palavraIngles);
+                // Se a lista de unidades ficar vazia, remover o nó
+                if (novaLista == NULL) {
+                    if (ehFolhas(*raiz)) {
                         free(aux);
                         *raiz = NULL;
-                    } else if (soUmFilho(*raiz)) { // Nó com um filho
-                        Inglesbin *endFilho = soUmFilho(*raiz);
-                        *raiz = endFilho;
-                        free(aux->palavraIngles);
+                    } else if ((endFilho = soUmFilho(*raiz)) != NULL) {
                         free(aux);
-                    } else { // Nó com dois filhos
-                        // Substitui pelo menor filho à direita
-                        Inglesbin *endFilho = menorFilho((*raiz)->dir);
-                        free((*raiz)->palavraIngles);
-                        (*raiz)->palavraIngles = strdup(endFilho->palavraIngles);
-                        (*raiz)->unidades = endFilho->unidades; // Atualiza lista de unidades
+                        *raiz = endFilho;
+                    } else {
+                        endFilho = menorFilho((*raiz)->dir);
+                        strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
+                        (*raiz)->unidades = endFilho->unidades;
+
                         removerPalavraIngles(&(*raiz)->dir, endFilho->palavraIngles, unidade);
                     }
                 }
-            } else {
-                printf("A palavra '%s' não está associada à unidade %d.\n", palavra, unidade);
             }
         } else if (strcmp(palavra, (*raiz)->palavraIngles) < 0) {
+            // Continua a busca na subárvore esquerda
             existe = removerPalavraIngles(&(*raiz)->esq, palavra, unidade);
         } else {
+            // Continua a busca na subárvore direita
             existe = removerPalavraIngles(&(*raiz)->dir, palavra, unidade);
         }
     }
@@ -172,16 +169,27 @@ int removerPalavraIngles(Inglesbin **raiz, char *palavra, int unidade) {
 
 
 
-void free_arvore_binaria(Inglesbin *raiz)
-{
-  if (raiz)
-  {
-    free_arvore_binaria(raiz->esq);
-    free_arvore_binaria(raiz->dir);
-    free(raiz->palavraIngles);
-    free(raiz);
-  }
+
+void free_arvore_binaria(Inglesbin *raiz) {
+    if (raiz != NULL) {
+        // Debug: Log the word being freed
+        printf("Liberando nó da árvore binária com palavra: %s\n", raiz->palavraIngles);
+
+        // Recursively free left and right subtrees
+        free_arvore_binaria(raiz->esq);
+        free_arvore_binaria(raiz->dir);
+
+        // Free associated list of units
+        liberar_lista(raiz->unidades);
+
+        // Free the English word
+        free(raiz->palavraIngles);
+
+        // Free the node itself
+        free(raiz);
+    }
 }
+
 void imprimirTraducoes(Inglesbin *node, int unidade, const char *palavraPortugues)
 {
     if (node)

@@ -175,7 +175,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info1.portugueseWord);
+                    printf("- %s\n", arvore->info1.palavraPortugues);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
@@ -198,7 +198,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info2.portugueseWord);
+                    printf("- %s\n", arvore->info2.palavraPortugues);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
