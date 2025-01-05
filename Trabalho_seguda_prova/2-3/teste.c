@@ -23,7 +23,7 @@ void clearCharacters(char *str)
     }
 }
 
-void loadFile(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, PortugueseTree **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL)
@@ -86,7 +86,7 @@ void loadFile(const char *nomeArquivo, Portugues23 **arvore)
     fclose(arquivo);
 }
 
-void imprimirUnidadesExistentes(Portugues23 *raiz, int *unidades, int *numUnidades)
+void imprimirUnidadesExistentes(PortugueseTree *raiz, int *unidades, int *numUnidades)
 {
     if (raiz)
     {
@@ -155,7 +155,7 @@ void imprimirUnidadesExistentes(Portugues23 *raiz, int *unidades, int *numUnidad
         }
     }
 }
-void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *unidadeImpressa)
+void imprimirPalavrasPortuguesPorUnidade(PortugueseTree *arvore, int unidade, int *unidadeImpressa)
 {
     if (arvore)
     {
@@ -212,7 +212,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
         }
     }
 }
-void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *unidadeImpressa)
+void imprimirPalavrasInglesPorUnidade(PortugueseTree *arvore, int unidade, int *unidadeImpressa)
 {
     if (arvore)
     {
@@ -287,8 +287,8 @@ void menu()
 
 int main()
 {
-    Portugues23 *raiz = NULL;
-    Portugues23 *pai = NULL;
+    PortugueseTree *raiz = NULL;
+    PortugueseTree *pai = NULL;
 
     char palavra[50];
     int unidade;

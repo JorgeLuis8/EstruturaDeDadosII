@@ -49,7 +49,7 @@ Inglesbin *insertEnglishWord(Inglesbin *root, const char *palavraIngles, int uni
     return result;
 }
 
-void addEnglishTranslation(Info *info, const char *palavraIng, int unidade) {
+void addEnglishTranslation(NodeInfo *info, const char *palavraIng, int unidade) {
     // Verifica se a árvore binária de traduções em inglês está vazia
     if (info->englishWord == NULL) {
         // Se a árvore estiver vazia, cria a palavra em inglês com a unidade associada
@@ -228,7 +228,7 @@ Inglesbin *findEnglishWord(Inglesbin *raiz, const char *palavraIngles) {
 }
 
 
-void FindEnglishWord(Portugues23 **raiz, char *palavraIngles, int unidade, Portugues23 **pai)
+void FindEnglishWord(PortugueseTree **raiz, char *palavraIngles, int unidade, PortugueseTree **pai)
 {
     if (*raiz != NULL)
     {

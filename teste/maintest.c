@@ -2,9 +2,9 @@
 
 #define TEST_SIZE 30
 
-Portugues23 *buscaTestes(Portugues23 **tree, char *codigo, int n)
+PortugueseTree *buscaTestes(PortugueseTree **tree, char *codigo, int n)
 {
-    Portugues23 *no = NULL;
+    PortugueseTree *no = NULL;
     if (*tree != NULL)
     {
         // Comparando strings (codigo e palavras na árvore)
@@ -37,7 +37,7 @@ Portugues23 *buscaTestes(Portugues23 **tree, char *codigo, int n)
     return no;
 }
 
-void carregarArquivoTeste(const char *nomeArquivo, Portugues23 **arvore)
+void carregarArquivoTeste(const char *nomeArquivo, PortugueseTree **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo != NULL)
@@ -76,7 +76,7 @@ void carregarArquivoTeste(const char *nomeArquivo, Portugues23 **arvore)
     }
 }
 
-void buscaSequencial(char palavras[][20], Portugues23 *raiz)
+void buscaSequencial(char palavras[][20], PortugueseTree *raiz)
 {
     clock_t start, end;
     float totalTime, media;
@@ -90,7 +90,7 @@ void buscaSequencial(char palavras[][20], Portugues23 *raiz)
     printf("\nTempo medio de busca: %.8f ms\n\n", media);
 }
 
-void buscaAleatoria(char palavrasAleatorias[][20], Portugues23 *raiz)
+void buscaAleatoria(char palavrasAleatorias[][20], PortugueseTree *raiz)
 {
     clock_t start, end;
     float totalTime, media;
@@ -108,7 +108,7 @@ void buscaAleatoria(char palavrasAleatorias[][20], Portugues23 *raiz)
 int main_teste(void)
 {
 
-    Portugues23 *raiz = NULL;
+    PortugueseTree *raiz = NULL;
     char palavras[30][20] = {
         "abacaxi", "aluno", "amigo", "avião", "bolsa", "cachorro", "carro", "casa",
         "chave", "computador", "escola", "felicidade", "flor", "floresta", "gato",

@@ -23,7 +23,7 @@ void clearCharacters(char *str)
     }
 }
 
-void loadFile(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, PortugueseTree **arvore)
 {
     FILE *dataFile = fopen(nomeArquivo, "r");
 
@@ -92,8 +92,8 @@ void menu()
 
 int main()
 {
-    Portugues23 *rootNode = NULL;
-    Portugues23 *parentNode = NULL;
+    PortugueseTree *rootNode = NULL;
+    PortugueseTree *parentNode = NULL;
 
     char userInput[50];
     int unit;

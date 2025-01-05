@@ -16,16 +16,16 @@ typedef struct Inglesbin{
 typedef struct info {
     char *portugueseWord;
     Inglesbin *englishWord;
-} Info;
+} NodeInfo;
 
-typedef struct Portugues23{
-    Info info1;
-    Info info2;
-    struct Portugues23 *cent;
-    struct Portugues23 *right;
-    struct Portugues23 *left;
+typedef struct PortugueseTree{
+    NodeInfo info1;
+    NodeInfo info2;
+    struct PortugueseTree *cent;
+    struct PortugueseTree *right;
+    struct PortugueseTree *left;
     int nInfos;
-} Portugues23;
+} PortugueseTree;
 
 
 

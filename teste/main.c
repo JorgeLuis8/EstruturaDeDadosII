@@ -6,7 +6,7 @@
 #include "remocao.c"
 #include "lista_encadeada.c"
 
-void imprimirArvore23(Portugues23 *raiz, int nivel)
+void imprimirArvore23(PortugueseTree *raiz, int nivel)
 {
     if (raiz == NULL)
         return; // Caso base: nó vazio
@@ -44,7 +44,7 @@ void imprimirArvore23(Portugues23 *raiz, int nivel)
     }
 }
 
-void loadFile(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, PortugueseTree **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo != NULL)
@@ -100,8 +100,8 @@ void menu()
 
 int main()
 {
-    Portugues23 *raiz = NULL;
-    Portugues23 *pai = NULL;
+    PortugueseTree *raiz = NULL;
+    PortugueseTree *pai = NULL;
 
     char palavra[50];
     char unidade[50];

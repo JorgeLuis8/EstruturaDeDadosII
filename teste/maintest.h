@@ -7,7 +7,7 @@
 #include "arv23.h"
 #include "arvbin.h"
 #include "lista_encadeada.h"
-Portugues23 *buscaTestes(Portugues23 **tree, char *codigo, int n);
+PortugueseTree *buscaTestes(PortugueseTree **tree, char *codigo, int n);
 int main_teste(void);
 
 #endif

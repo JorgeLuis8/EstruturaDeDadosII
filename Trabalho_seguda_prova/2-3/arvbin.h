@@ -10,7 +10,7 @@ typedef struct Inglesbin {
     Unit *unidades; // Lista ligada de unidades
 } Inglesbin;
 
-typedef struct Portugues23 Portugues23;
+typedef struct PortugueseTree PortugueseTree;
 
 
 
@@ -19,7 +19,7 @@ Inglesbin* initializeNode(const char* word, int unit);
 // Função para inserir uma palavra em inglês na arvore binaria de busca
 Inglesbin* insertEnglishWord(Inglesbin* root, const char* word, int unit);
 
-void insertTranslation(Portugues23 *no, const char *palavraPortugues, const char *palavraIngles, int unidade);
+void insertTranslation(PortugueseTree *no, const char *palavraPortugues, const char *palavraIngles, int unidade);
 
 int isLeafNode(Inglesbin *raiz);
 

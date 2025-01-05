@@ -4,7 +4,7 @@
 #include "structs.h"
 
 Inglesbin* createNode(const char* word, char *unidade);
-int insertpalavraIngles(Inglesbin **root, Info *informacao);
+int insertpalavraIngles(Inglesbin **root, NodeInfo *informacao);
 
 void printBinaryTree(Inglesbin *root);
 

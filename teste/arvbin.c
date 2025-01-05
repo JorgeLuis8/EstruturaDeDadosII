@@ -19,7 +19,7 @@ Inglesbin *createNode(const char *palavraIngles, char *unidade)
 }
 
 // Função para inserir uma palavra em ingles na arvore binaria de busca
-int insertpalavraIngles(Inglesbin **root, Info *informacao)
+int insertpalavraIngles(Inglesbin **root, NodeInfo *informacao)
 {
     int result = 0;
     if ((*root) == NULL)

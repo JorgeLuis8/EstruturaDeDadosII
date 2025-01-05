@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int Remove_palavra_ingles_unidade(Portugues23 **raiz, const char *palavras_ingles, const char *unidade)
+int Remove_palavra_ingles_unidade(PortugueseTree **raiz, const char *palavras_ingles, const char *unidade)
 {
   int confirm = 1;
   confirm = remove_palavra_ingles_unidade(*raiz, palavras_ingles, unidade, raiz);
@@ -32,7 +32,7 @@ int remove_unidade(Inglesbin **raiz, const char *palavraIngles, const char *unid
   return confirm;
 }
 
-int remove_palavra_ingles_unidade(Portugues23 *raiz, const char *palavraIngles, const char *unidade, Portugues23 **top)
+int remove_palavra_ingles_unidade(PortugueseTree *raiz, const char *palavraIngles, const char *unidade, PortugueseTree **top)
 {
   int confirm = 0;
 
@@ -78,7 +78,7 @@ int _remove_palavra_portugues_unidade(Inglesbin **raiz, const char *palavraPortu
   return confirm;
 }
 
-int remove_palavra_portugues_unidade(Portugues23 *raiz, char *palavraPortugues, const char *unidade, Portugues23 **top)
+int remove_palavra_portugues_unidade(PortugueseTree *raiz, char *palavraPortugues, const char *unidade, PortugueseTree **top)
 {
   int confirm = 1;
 
@@ -107,7 +107,7 @@ int remove_palavra_portugues_unidade(Portugues23 *raiz, char *palavraPortugues, 
   return confirm;
 }
 
-int Remove_palavra_portugues_unidade(Portugues23 **raiz, char *palavraPortugues, const char *unidade)
+int Remove_palavra_portugues_unidade(PortugueseTree **raiz, char *palavraPortugues, const char *unidade)
 {
   int confirm = 1;
   confirm = remove_palavra_portugues_unidade(*raiz, palavraPortugues, unidade, raiz);
