@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-Info *CreateInfo(int start, int end, int status)
+NodeData *CreateInfo(int start, int end, int status)
 {
-    Info *info = (Info *)malloc(sizeof(Info));
+    NodeData *info = (NodeData *)malloc(sizeof(NodeData));
 
     if (info != NULL)
     {
@@ -16,7 +16,7 @@ Info *CreateInfo(int start, int end, int status)
     return info;
 }
 
-Memory *createNode(Info *information, Memory *leftChild, Memory *centerChild)
+Memory *createNode(NodeData *information, Memory *leftChild, Memory *centerChild)
 {
     Memory *node = (Memory *)malloc(sizeof(Memory));
 
@@ -40,7 +40,7 @@ int isLeaf(Memory *node)
     return node->left == NULL;
 }
 
-void AddInfo(Memory **node, Info *info, Memory *child)
+void AddInfo(Memory **node, NodeData *info, Memory *child)
 {
     if ((*node)->numKeys == 1)
     {
@@ -88,10 +88,10 @@ void AddInfo(Memory **node, Info *info, Memory *child)
     }
 }
 
-Split SplitNode(Memory **root, Info *info, Memory *child)
+Split SplitNode(Memory **root, NodeData *info, Memory *child)
 {
     Memory *largestNode = (Memory *)malloc(sizeof(Memory));
-    Info *promote = NULL;
+    NodeData *promote = NULL;
     Split itBroke;
 
     largestNode->numKeys = 1;
@@ -132,11 +132,11 @@ Split SplitNode(Memory **root, Info *info, Memory *child)
     return itBroke;
 }
 
-void Insert23(Memory **root, Memory *parent, Info **promote, int start, int end, int status, int *flag)
+void Insert23(Memory **root, Memory *parent, NodeData **promote, int start, int end, int status, int *flag)
 {
     if (*root == NULL)
     {
-        Info *nova_info = CreateInfo(start, end, status);
+        NodeData *nova_info = CreateInfo(start, end, status);
         *root = createNode(nova_info, NULL, NULL);
         *flag = 1;
     }
@@ -145,12 +145,12 @@ void Insert23(Memory **root, Memory *parent, Info **promote, int start, int end,
         *flag = 1;
         if ((*root)->numKeys < 2)
         {
-            Info *nova_info = CreateInfo(start, end, status);
+            NodeData *nova_info = CreateInfo(start, end, status);
             AddInfo(root, nova_info, NULL);
         }
         else
         {
-            Info *nova_info = CreateInfo(start, end, status);
+            NodeData *nova_info = CreateInfo(start, end, status);
             Split resultado = SplitNode(root, nova_info, NULL);
 
             if (!parent)

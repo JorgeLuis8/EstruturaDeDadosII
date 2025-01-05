@@ -4,17 +4,17 @@
 #define FREE 1
 #define OCCUPIED 0
 
-typedef struct Info
+typedef struct NodeData
 {
     int start;
     int end;
     int status;
-} Info;
+} NodeData;
 
 typedef struct Memory
 {
-    Info *info1;
-    Info *info2;
+    NodeData *info1;
+    NodeData *info2;
 
     struct Memory *left;
     struct Memory *center;
@@ -27,15 +27,15 @@ typedef struct Memory
 typedef struct Split
 {
     Memory *largestNode;
-    Info *promote;
+    NodeData *promote;
 } Split;
 
-Info *CreateInfo(int start, int end, int status);
-Memory *createNode(Info *information, Memory *leftChild, Memory *centerChild);
+NodeData *CreateInfo(int start, int end, int status);
+Memory *createNode(NodeData *information, Memory *leftChild, Memory *centerChild);
 int isLeaf(Memory *node);
-void AddInfo(Memory **node, Info *info, Memory *child);
-Split SplitNode(Memory **root, Info *info, Memory *child);
-void Insert23(Memory **root, Memory *parent, Info **promote, int start, int end, int status, int *flag);
+void AddInfo(Memory **node, NodeData *info, Memory *child);
+Split SplitNode(Memory **root, NodeData *info, Memory *child);
+void Insert23(Memory **root, Memory *parent, NodeData **promote, int start, int end, int status, int *flag);
 Memory *FindSpace(Memory *root, int requiredSpace);
 Memory *SourceSpace(Memory *root, int RequiredSpace);
 void DisplayInfos(Memory *root);

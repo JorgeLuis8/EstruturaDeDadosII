@@ -22,7 +22,7 @@ void cadastrar_nos(Memory **root) {
         return;
     }
 
-    Info *info = CreateInfo(start, end, status);
+    NodeData *info = CreateInfo(start, end, status);
     *root = createNode(info, NULL, NULL);
 
     while (end < MEMORY_SIZE) {
@@ -38,7 +38,7 @@ void cadastrar_nos(Memory **root) {
         // Alternar status automaticamente
         status = (status == FREE) ? OCCUPIED : FREE;
 
-        Info *newInfo = CreateInfo(start, end, status);
+        NodeData *newInfo = CreateInfo(start, end, status);
         int flag = 0;
         Insert23(root, NULL, NULL, start, end, status, &flag);
 
@@ -90,7 +90,7 @@ void alocar_blocos(Memory **root, int quantidade_blocos) {
         return;
     }
 
-    Info *targetInfo = NULL;
+    NodeData *targetInfo = NULL;
 
     // Identificar qual bloco contém espaço suficiente
     if (node->info1->status == FREE && (node->info1->end - node->info1->start + 1) >= quantidade_blocos) {
@@ -116,7 +116,7 @@ void alocar_blocos(Memory **root, int quantidade_blocos) {
         targetInfo->start = novoInicio;
 
         // Criar novo bloco para os blocos alocados
-        Info *alocadoInfo = CreateInfo(inicio, novoInicio - 1, OCCUPIED);
+        NodeData *alocadoInfo = CreateInfo(inicio, novoInicio - 1, OCCUPIED);
         int flag = 0;
         Insert23(root, NULL, NULL, alocadoInfo->start, alocadoInfo->end, OCCUPIED, &flag);
 
@@ -144,7 +144,7 @@ void liberar_blocos(Memory **root, int inicio, int quantidade_blocos) {
     }
 
     Memory *node = *root;
-    Info *targetInfo = NULL;
+    NodeData *targetInfo = NULL;
 
     // Encontrar o bloco que contém o intervalo solicitado
     while (node) {
@@ -185,7 +185,7 @@ void liberar_blocos(Memory **root, int inicio, int quantidade_blocos) {
     } else {
         // Dividir o bloco
         int novoInicio = inicio + quantidade_blocos;
-        Info *restante = CreateInfo(novoInicio, targetInfo->end, targetInfo->status);
+        NodeData *restante = CreateInfo(novoInicio, targetInfo->end, targetInfo->status);
 
         targetInfo->end = inicio - 1;
         targetInfo->status = FREE;
