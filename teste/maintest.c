@@ -8,22 +8,22 @@ Portugues23 *buscaTestes(Portugues23 **tree, char *codigo, int n)
     if (*tree != NULL)
     {
         // Comparando strings (codigo e palavras na árvore)
-        if (strcmp(codigo, (*tree)->info1.palavraPortugues) == 0)
+        if (strcmp(codigo, (*tree)->info1.portugueseWord) == 0)
         {
-            printf("Info 1: %s\n\n", (*tree)->info1.palavraPortugues);
+            printf("Info 1: %s\n\n", (*tree)->info1.portugueseWord);
             no = *tree;
         }
-        else if ((*tree)->nInfos == 2 && strcmp(codigo, (*tree)->info2.palavraPortugues) == 0)
+        else if ((*tree)->nInfos == 2 && strcmp(codigo, (*tree)->info2.portugueseWord) == 0)
         {
-            printf("Info 2: %s\n\n", (*tree)->info2.palavraPortugues);
+            printf("Info 2: %s\n\n", (*tree)->info2.portugueseWord);
             no = *tree;
         }
-        else if(strcmp(codigo, (*tree)->info1.palavraPortugues) < 0)
+        else if(strcmp(codigo, (*tree)->info1.portugueseWord) < 0)
         {
             printf("%d-esquerda \n", n);
-            no = buscaTestes(&(*tree)->esq, codigo, n + 1);
+            no = buscaTestes(&(*tree)->left, codigo, n + 1);
         }
-        else if ((*tree)->nInfos == 1 || strcmp(codigo, (*tree)->info2.palavraPortugues) < 0)
+        else if ((*tree)->nInfos == 1 || strcmp(codigo, (*tree)->info2.portugueseWord) < 0)
         {
             printf("%d-centro \n", n);
             no = buscaTestes(&(*tree)->cent, codigo, n + 1);
@@ -31,7 +31,7 @@ Portugues23 *buscaTestes(Portugues23 **tree, char *codigo, int n)
         else
         {
             printf("%d-direita \n", n);
-            no = buscaTestes(&(*tree)->dir, codigo, n + 1);
+            no = buscaTestes(&(*tree)->right, codigo, n + 1);
         }
     }
     return no;

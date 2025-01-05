@@ -23,16 +23,16 @@ Info criaInfo(char *palavra, char *palavraIngles, char *unidade)
     Info info;
 
     // Aloca e copia a palavra em portugues
-    info.palavraPortugues = malloc(strlen(palavra) + 1);
-    strcpy(info.palavraPortugues, palavra);
+    info.portugueseWord = malloc(strlen(palavra) + 1);
+    strcpy(info.portugueseWord, palavra);
 
     // Estrutura de palavraIngles
-    info.palavraIngles = malloc(sizeof(Inglesbin));
-    info.palavraIngles->palavraIngles = malloc(strlen(palavraIngles) + 1);
-    strcpy(info.palavraIngles->palavraIngles, palavraIngles);
+    info.englishWord = malloc(sizeof(Inglesbin));
+    info.englishWord->palavraIngles = malloc(strlen(palavraIngles) + 1);
+    strcpy(info.englishWord->palavraIngles, palavraIngles);
 
-    info.palavraIngles->unidades = NULL;
-    inserir_lista_encadeada_unidade(&(info.palavraIngles->unidades), unidade);
+    info.englishWord->unidades = NULL;
+    inserir_lista_encadeada_unidade(&(info.englishWord->unidades), unidade);
 
     return info;
 }
@@ -44,32 +44,32 @@ Portugues23 *createNode(const Info *informacao, Portugues23 *filhoesq, Portugues
 
     // Preenche info1 com os dados da nova disciplina
     no->info1 = *informacao;
-    no->esq = filhoesq;
+    no->left = filhoesq;
     no->cent = filhocen;
     no->nInfos = 1;
 
     // Inicializa info2 com nulo
-    no->info2.palavraIngles = NULL;
-    no->info2.palavraPortugues = NULL;
-    no->dir = NULL;
+    no->info2.englishWord = NULL;
+    no->info2.portugueseWord = NULL;
+    no->right = NULL;
 
     return no;
 }
 
 void adicionaChave(Portugues23 *no, const Info informacao, Portugues23 *filho)
 {
-    if (strcmp(informacao.palavraPortugues, (no)->info1.palavraPortugues) > 0)
+    if (strcmp(informacao.portugueseWord, (no)->info1.portugueseWord) > 0)
     {
         // Adiciona a nova informação a info2
         (no)->info2 = informacao;
-        (no)->dir = filho; // Ajusta o ponteiro do filho dir
+        (no)->right = filho; // Ajusta o ponteiro do filho dir
     }
     else
     {
         // Move info1 para info2 e coloca a nova informação em info1
         (no)->info2 = (no)->info1;
         (no)->info1 = informacao;
-        (no)->dir = (no)->cent;
+        (no)->right = (no)->cent;
         (no)->cent = filho;
     }
     (no)->nInfos = 2; // Atualiza o número de informações
@@ -79,35 +79,35 @@ Portugues23 *quebraNo(Portugues23 **no, const Info *informacao, Info *promove, P
 {
     Portugues23 *maior;
 
-    if (strcmp(informacao->palavraPortugues, (*no)->info1.palavraPortugues) < 0)
+    if (strcmp(informacao->portugueseWord, (*no)->info1.portugueseWord) < 0)
     {
         // A nova informação é menor que info1, então info1 será promovida
         *promove = (*no)->info1;
-        maior = createNode(&(*no)->info2, (*no)->cent, (*no)->dir);
+        maior = createNode(&(*no)->info2, (*no)->cent, (*no)->right);
 
         // Atualiza info1 com a nova informação
         (*no)->info1 = *informacao;
         (*no)->cent = filho;
     }
-    else if (strcmp(informacao->palavraPortugues, (*no)->info2.palavraPortugues) < 0)
+    else if (strcmp(informacao->portugueseWord, (*no)->info2.portugueseWord) < 0)
     {
         // A nova informação é maior que info1 e menor que info2, então ela será promovida
         *promove = *informacao;
-        maior = createNode(&(*no)->info2, filho, (*no)->dir);
+        maior = createNode(&(*no)->info2, filho, (*no)->right);
     }
     else
     {
         // A nova informação é maior que info1 e info2, então info2 será promovido
         *promove = (*no)->info2;
-        maior = createNode(informacao, (*no)->dir, filho);
+        maior = createNode(informacao, (*no)->right, filho);
     }
 
     // Limpa info2
-    (*no)->info2.palavraIngles = NULL;
-    (*no)->info2.palavraPortugues = NULL;
+    (*no)->info2.englishWord = NULL;
+    (*no)->info2.portugueseWord = NULL;
 
     (*no)->nInfos = 1; // Atualizando a quantidade de informação no nó
-    (*no)->dir = NULL; // Ajusta o filho dir
+    (*no)->right = NULL; // Ajusta o filho dir
 
     return maior;
 }
@@ -116,7 +116,7 @@ int ehFolha(const Portugues23 *no)
 {
     int achou = 0;
 
-    if (no->esq == NULL)
+    if (no->left == NULL)
         achou = 1; // Se não tem filho esq, é uma folha
     return achou;
 }
@@ -128,10 +128,10 @@ Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Por
 
     if (*no == NULL)
         *no = createNode(informacao, NULL, NULL); // Cria um novo nó caso seja nulo
-    if (strcmp(informacao->palavraPortugues, (*no)->info1.palavraPortugues) == 0)
-        insertpalavraIngles(&(*no)->info1.palavraIngles, informacao);
-    else if ((*no)->nInfos == 2 && strcmp(informacao->palavraPortugues, (*no)->info2.palavraPortugues) == 0)
-        insertpalavraIngles(&(*no)->info2.palavraIngles, informacao);
+    if (strcmp(informacao->portugueseWord, (*no)->info1.portugueseWord) == 0)
+        insertpalavraIngles(&(*no)->info1.englishWord, informacao);
+    else if ((*no)->nInfos == 2 && strcmp(informacao->portugueseWord, (*no)->info2.portugueseWord) == 0)
+        insertpalavraIngles(&(*no)->info2.englishWord, informacao);
     else
     {
         if (ehFolha(*no))
@@ -156,12 +156,12 @@ Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Por
         else
         { // Nó não é folha
             // Navega para o filho apropriado
-            if (strcmp(informacao->palavraPortugues, (*no)->info1.palavraPortugues) < 0)
-                maiorNo = inserirArv23(&((*no)->esq), informacao, promove, no); // Insere na subárvore à esq
-            else if ((*no)->nInfos == 1 || strcmp(informacao->palavraPortugues, (*no)->info2.palavraPortugues) < 0)
+            if (strcmp(informacao->portugueseWord, (*no)->info1.portugueseWord) < 0)
+                maiorNo = inserirArv23(&((*no)->left), informacao, promove, no); // Insere na subárvore à esq
+            else if ((*no)->nInfos == 1 || strcmp(informacao->portugueseWord, (*no)->info2.portugueseWord) < 0)
                 maiorNo = inserirArv23(&((*no)->cent), informacao, promove, no); // Insere na subárvore do cent
             else
-                maiorNo = inserirArv23(&((*no)->dir), informacao, promove, no); // Insere na subárvore à dir
+                maiorNo = inserirArv23(&((*no)->right), informacao, promove, no); // Insere na subárvore à dir
 
             // Após inserir, verifica se houve promoção
             if (maiorNo != NULL)
@@ -202,18 +202,18 @@ void print_tree23(const Portugues23 *Raiz)
 {
     if (Raiz != NULL)
     {
-        print_tree23(Raiz->esq);
-        printf("Palavra (PT): %s\n", Raiz->info1.palavraPortugues);
-        printBinaryTree(Raiz->info1.palavraIngles);
+        print_tree23(Raiz->left);
+        printf("Palavra (PT): %s\n", Raiz->info1.portugueseWord);
+        printBinaryTree(Raiz->info1.englishWord);
         printf("\n");
         print_tree23(Raiz->cent);
         // Se houver o segundo elemento (nInfos == 2), exibe o segundo filho
         if (Raiz->nInfos == 2)
         {
-            printf("Palavra (PT): %s\n", Raiz->info2.palavraPortugues);
-            printBinaryTree(Raiz->info2.palavraIngles);
+            printf("Palavra (PT): %s\n", Raiz->info2.portugueseWord);
+            printBinaryTree(Raiz->info2.englishWord);
             printf("\n");
-            print_tree23(Raiz->dir);
+            print_tree23(Raiz->right);
         }
     }
 }
@@ -222,15 +222,15 @@ void imprimirPalavrasUnidade(Portugues23 *arvore, char *unidade)
 {
     if (arvore)
     {
-        imprimirPalavrasUnidade(arvore->esq, unidade);
-        imprimirTraducoes(arvore->info1.palavraIngles, unidade, arvore->info1.palavraPortugues);
+        imprimirPalavrasUnidade(arvore->left, unidade);
+        imprimirTraducoes(arvore->info1.englishWord, unidade, arvore->info1.portugueseWord);
 
         imprimirPalavrasUnidade(arvore->cent, unidade);
         if (arvore->nInfos == 2)
         {
-            imprimirTraducoes(arvore->info2.palavraIngles, unidade, arvore->info2.palavraPortugues);
+            imprimirTraducoes(arvore->info2.englishWord, unidade, arvore->info2.portugueseWord);
         }
-        imprimirPalavrasUnidade(arvore->dir, unidade);
+        imprimirPalavrasUnidade(arvore->right, unidade);
     }
 }
 
@@ -254,19 +254,19 @@ Portugues23 *FindWord(Portugues23 **no, const char *palavraPortugues)
 
     if (no != NULL && *no != NULL)
     {
-        if (strcmp(palavraPortugues, (*no)->info1.palavraPortugues) == 0)
+        if (strcmp(palavraPortugues, (*no)->info1.portugueseWord) == 0)
             inserida = (*no); // Palavra encontrada, retorna o nó
-        else if ((*no)->nInfos == 2 && strcmp(palavraPortugues, (*no)->info2.palavraPortugues) == 0)
+        else if ((*no)->nInfos == 2 && strcmp(palavraPortugues, (*no)->info2.portugueseWord) == 0)
             inserida = (*no);
         else
         {
             // Continua a busca nos filhos
-            if (strcmp(palavraPortugues, (*no)->info1.palavraPortugues) < 0)
-                inserida = FindWord(&(*no)->esq, palavraPortugues);
-            else if ((*no)->nInfos == 1 || strcmp(palavraPortugues, (*no)->info2.palavraPortugues) < 0)
+            if (strcmp(palavraPortugues, (*no)->info1.portugueseWord) < 0)
+                inserida = FindWord(&(*no)->left, palavraPortugues);
+            else if ((*no)->nInfos == 1 || strcmp(palavraPortugues, (*no)->info2.portugueseWord) < 0)
                 inserida = FindWord(&(*no)->cent, palavraPortugues);
             else
-                inserida = FindWord(&(*no)->dir, palavraPortugues);
+                inserida = FindWord(&(*no)->right, palavraPortugues);
         }
     }
 
@@ -283,10 +283,10 @@ void printPortugueseTranslation(Portugues23 **Raiz, const char *palavraPortugues
         {
             printf("Traducoes em ingles para a palavra '%s':\n", palavraPortugues);
 
-            if (strcmp(palavraPortugues, resultado->info1.palavraPortugues) == 0)
-                printBinaryTree(resultado->info1.palavraIngles);
+            if (strcmp(palavraPortugues, resultado->info1.portugueseWord) == 0)
+                printBinaryTree(resultado->info1.englishWord);
             else
-                printBinaryTree(resultado->info2.palavraIngles);
+                printBinaryTree(resultado->info2.englishWord);
         }
         else
             printf("A palavra '%s' nao foi encontrada na arvore.\n", palavraPortugues);
@@ -297,14 +297,14 @@ void arvore23_exibir_pre(Portugues23 *raiz)
 {
     if (raiz != NULL)
     {
-        printf("[1º] %s -> ", raiz->info1.palavraPortugues);
+        printf("[1º] %s -> ", raiz->info1.portugueseWord);
         if (raiz->nInfos == 2)
-            printf("[2º] %s -> ", raiz->info2.palavraPortugues);
+            printf("[2º] %s -> ", raiz->info2.portugueseWord);
 
-        arvore23_exibir_pre(raiz->esq);
+        arvore23_exibir_pre(raiz->left);
         arvore23_exibir_pre(raiz->cent);
         if (raiz->nInfos == 2)
-            arvore23_exibir_pre(raiz->dir);
+            arvore23_exibir_pre(raiz->right);
     }
 }
 
@@ -312,14 +312,14 @@ void arvore23_exibir_ordem(Portugues23 *raiz)
 {
     if (raiz != NULL)
     {
-        arvore23_exibir_ordem(raiz->esq);
-        printf("[1º] %s -> ", raiz->info1.palavraPortugues);
+        arvore23_exibir_ordem(raiz->left);
+        printf("[1º] %s -> ", raiz->info1.portugueseWord);
         arvore23_exibir_ordem(raiz->cent);
 
         if (raiz->nInfos == 2)
         {
-            printf("[2º] %s -> ", raiz->info2.palavraPortugues);
-            arvore23_exibir_ordem(raiz->dir);
+            printf("[2º] %s -> ", raiz->info2.portugueseWord);
+            arvore23_exibir_ordem(raiz->right);
         }
     }
 }
@@ -328,14 +328,14 @@ void arvore23_exibir_pos(Portugues23 *raiz)
 {
     if (raiz != NULL)
     {
-        arvore23_exibir_pos(raiz->esq);
+        arvore23_exibir_pos(raiz->left);
         arvore23_exibir_pos(raiz->cent);
         if (raiz->nInfos == 2)
-            arvore23_exibir_pos(raiz->dir);
+            arvore23_exibir_pos(raiz->right);
 
-        printf("[1º] %s -> ", raiz->info1.palavraPortugues);
+        printf("[1º] %s -> ", raiz->info1.portugueseWord);
         if (raiz->nInfos == 2)
-            printf("[2º] %s -> ", raiz->info2.palavraPortugues);
+            printf("[2º] %s -> ", raiz->info2.portugueseWord);
     }
 }
 
@@ -348,12 +348,12 @@ static Info no23_maior_info(Portugues23 *raiz)
 
 static int eh_info1(Portugues23 no, char *info)
 {
-    return strcmp(info, no.info1.palavraPortugues) == 0;
+    return strcmp(info, no.info1.portugueseWord) == 0;
 }
 
 static int eh_info2(Portugues23 no, char *info)
 {
-    return no.nInfos == 2 && strcmp(info, no.info2.palavraPortugues) == 0;
+    return no.nInfos == 2 && strcmp(info, no.info2.portugueseWord) == 0;
 }
 
 Portugues23 *get_maximum_child_from_tree(Portugues23 *raiz, Portugues23 **pai, Info *maior_valor)
@@ -367,7 +367,7 @@ Portugues23 *get_maximum_child_from_tree(Portugues23 *raiz, Portugues23 **pai, I
         if (filho->nInfos == 1)
             filho = filho->cent;
         else
-            filho = filho->dir;
+            filho = filho->right;
     }
 
     if (filho != NULL)
@@ -384,7 +384,7 @@ Portugues23 *findMinimumChild(Portugues23 *raiz, Portugues23 **pai)
     while (!ehFolha(filho))
     {
         *pai = filho;
-        filho = filho->esq;
+        filho = filho->left;
     }
 
     return filho;
@@ -394,13 +394,13 @@ static int calculate_height(Portugues23 *no)
 {
     int altura = -1;
     if (no != NULL)
-        altura = 1 + calculate_height(no->esq);
+        altura = 1 + calculate_height(no->left);
     return altura;
 }
 
 static int wave_movement(Info saindo, Info *entrada, Portugues23 *pai, Portugues23 **origem, Portugues23 **raiz, Portugues23 **maior, int (*funcao_remover)(Portugues23 **, char *, Portugues23 *, Portugues23 **, Portugues23 **))
 {
-    int removeu = funcao_remover(raiz, saindo.palavraPortugues, pai, origem, maior);
+    int removeu = funcao_remover(raiz, saindo.portugueseWord, pai, origem, maior);
     *entrada = saindo;
     return removeu;
 }
@@ -414,12 +414,12 @@ static Portugues23 *findParentIn23Tree(Portugues23 *raiz, char *info)
     {
         if (!eh_info1(*raiz, info) && !eh_info2(*raiz, info))
         {
-            if (strcmp(info, raiz->info1.palavraPortugues) < 0)
-                pai = findParentIn23Tree(raiz->esq, info);
-            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.palavraPortugues) < 0))
+            if (strcmp(info, raiz->info1.portugueseWord) < 0)
+                pai = findParentIn23Tree(raiz->left, info);
+            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.portugueseWord) < 0))
                 pai = findParentIn23Tree(raiz->cent, info);
             else
-                pai = findParentIn23Tree(raiz->dir, info);
+                pai = findParentIn23Tree(raiz->right, info);
 
             if (pai == NULL)
                 pai = raiz;
@@ -437,16 +437,16 @@ static Portugues23 *findLargestParentIn23Tree(Portugues23 *raiz, char *info)
     {
         if (!eh_info1(*raiz, info) && !eh_info2(*raiz, info))
         {
-            if (strcmp(info, raiz->info1.palavraPortugues) < 0)
-                pai = findLargestParentIn23Tree(raiz->esq, info);
-            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.palavraPortugues) < 0))
+            if (strcmp(info, raiz->info1.portugueseWord) < 0)
+                pai = findLargestParentIn23Tree(raiz->left, info);
+            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.portugueseWord) < 0))
                 pai = findLargestParentIn23Tree(raiz->cent, info);
             else
-                pai = findLargestParentIn23Tree(raiz->dir, info);
+                pai = findLargestParentIn23Tree(raiz->right, info);
 
             if (pai == NULL &&
-                ((raiz->nInfos == 1 && (strcmp(raiz->info1.palavraPortugues, info) > 0)) ||
-                 (raiz->nInfos == 2 && (strcmp(raiz->info2.palavraPortugues, info) > 0))))
+                ((raiz->nInfos == 1 && (strcmp(raiz->info1.portugueseWord, info) > 0)) ||
+                 (raiz->nInfos == 2 && (strcmp(raiz->info2.portugueseWord, info) > 0))))
             {
                 pai = raiz;
             }
@@ -465,14 +465,14 @@ static Portugues23 *findSmallestParentWithTwoInfo(Portugues23 *raiz, char *info)
     {
         if (!eh_info1(*raiz, info) && !eh_info2(*raiz, info))
         {
-            if (strcmp(info, raiz->info1.palavraPortugues) < 0)
-                pai = findSmallestParentWithTwoInfo(raiz->esq, info);
-            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.palavraPortugues) < 0))
+            if (strcmp(info, raiz->info1.portugueseWord) < 0)
+                pai = findSmallestParentWithTwoInfo(raiz->left, info);
+            else if (raiz->nInfos == 1 || (strcmp(info, raiz->info2.portugueseWord) < 0))
                 pai = findSmallestParentWithTwoInfo(raiz->cent, info);
             else
-                pai = findSmallestParentWithTwoInfo(raiz->dir, info);
+                pai = findSmallestParentWithTwoInfo(raiz->right, info);
 
-            if (pai == NULL && raiz->nInfos == 2 && strcmp(raiz->info2.palavraPortugues, info) < 0)
+            if (pai == NULL && raiz->nInfos == 2 && strcmp(raiz->info2.portugueseWord, info) < 0)
                 pai = raiz;
         }
     }
@@ -489,14 +489,14 @@ static Portugues23 *findSmallestParent23(Portugues23 *raiz, char *info)
     {
         if (!eh_info1(*raiz, info) && !eh_info2(*raiz, info))
         {
-            if (strcmp(info, raiz->info1.palavraPortugues) < 0)
-                pai = findSmallestParent23(raiz->esq, info);
-            else if (raiz->nInfos == 1 || strcmp(info, raiz->info2.palavraPortugues) < 0)
+            if (strcmp(info, raiz->info1.portugueseWord) < 0)
+                pai = findSmallestParent23(raiz->left, info);
+            else if (raiz->nInfos == 1 || strcmp(info, raiz->info2.portugueseWord) < 0)
                 pai = findSmallestParent23(raiz->cent, info);
             else
-                pai = findSmallestParent23(raiz->dir, info);
+                pai = findSmallestParent23(raiz->right, info);
 
-            if (pai == NULL && strcmp(raiz->info1.palavraPortugues, info) < 0)
+            if (pai == NULL && strcmp(raiz->info1.portugueseWord, info) < 0)
                 pai = raiz;
         }
     }
@@ -585,11 +585,11 @@ int deleteFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portugues
                     {
                         Portugues23 *pai_aux;
                         Info info_pai;
-                        if (*raiz == pai->esq || (pai->nInfos == 2 && *raiz == pai->cent))
+                        if (*raiz == pai->left || (pai->nInfos == 2 && *raiz == pai->cent))
                         {
-                            pai_aux = findParentIn23Tree(*origem, pai->info1.palavraPortugues);
+                            pai_aux = findParentIn23Tree(*origem, pai->info1.portugueseWord);
 
-                            if (*raiz == pai->esq)
+                            if (*raiz == pai->left)
                                 info_pai = pai->info1;
                             else
                                 info_pai = pai->info2;
@@ -598,14 +598,14 @@ int deleteFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portugues
                         }
                         else
                         {
-                            pai_aux = findLargestParentIn23Tree(*origem, (*raiz)->info1.palavraPortugues);
+                            pai_aux = findLargestParentIn23Tree(*origem, (*raiz)->info1.portugueseWord);
 
                             Portugues23 *menor_pai;
-                            menor_pai = findSmallestParentWithTwoInfo(*origem, (*raiz)->info1.palavraPortugues);
+                            menor_pai = findSmallestParentWithTwoInfo(*origem, (*raiz)->info1.portugueseWord);
 
                             if (pai_aux != NULL)
                             {
-                                if (strcmp(pai_aux->info1.palavraPortugues, (*raiz)->info1.palavraPortugues) > 0)
+                                if (strcmp(pai_aux->info1.portugueseWord, (*raiz)->info1.portugueseWord) > 0)
                                     info_pai = pai_aux->info1;
                                 else
                                     info_pai = pai_aux->info2;
@@ -615,7 +615,7 @@ int deleteFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portugues
                             int altura_pai_aux = calculate_height(pai_aux);
 
                             if (pai_aux == NULL || (pai_aux != pai && menor_pai != NULL &&
-                                                    altura_menor_pai <= altura_pai_aux && strcmp(info_pai.palavraPortugues, menor_pai->info2.palavraPortugues) > 0))
+                                                    altura_menor_pai <= altura_pai_aux && strcmp(info_pai.portugueseWord, menor_pai->info2.portugueseWord) > 0))
                             {
                                 *maior = pai;
                                 (*raiz)->nInfos = 0;
@@ -624,7 +624,7 @@ int deleteFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portugues
                             else
                             {
                                 Portugues23 *avo;
-                                avo = findParentIn23Tree(*origem, info_pai.palavraPortugues);
+                                avo = findParentIn23Tree(*origem, info_pai.portugueseWord);
                                 removeu = wave_movement(info_pai, &((*raiz)->info1), avo, origem, &pai_aux, maior, deleteFrom23Tree);
                             }
                         }
@@ -632,18 +632,18 @@ int deleteFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portugues
                 }
             }
             else if (info2)
-                removeu = removeNonLeafNodeFrom23Tree(origem, *raiz, &((*raiz)->info2), (*raiz)->cent, (*raiz)->dir, maior);
+                removeu = removeNonLeafNodeFrom23Tree(origem, *raiz, &((*raiz)->info2), (*raiz)->cent, (*raiz)->right, maior);
             else if (info1)
-                removeu = removeNonLeafNodeFrom23Tree(origem, *raiz, &((*raiz)->info1), (*raiz)->esq, (*raiz)->cent, maior);
+                removeu = removeNonLeafNodeFrom23Tree(origem, *raiz, &((*raiz)->info1), (*raiz)->left, (*raiz)->cent, maior);
         }
         else
         {
-            if (strcmp(info, (*raiz)->info1.palavraPortugues) < 0)
-                removeu = deleteFrom23Tree(&(*raiz)->esq, info, *raiz, origem, maior);
-            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.palavraPortugues) < 0))
+            if (strcmp(info, (*raiz)->info1.portugueseWord) < 0)
+                removeu = deleteFrom23Tree(&(*raiz)->left, info, *raiz, origem, maior);
+            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.portugueseWord) < 0))
                 removeu = deleteFrom23Tree(&(*raiz)->cent, info, *raiz, origem, maior);
             else
-                removeu = deleteFrom23Tree(&(*raiz)->dir, info, *raiz, origem, maior);
+                removeu = deleteFrom23Tree(&(*raiz)->right, info, *raiz, origem, maior);
         }
     }
     return removeu;
@@ -678,9 +678,9 @@ int removeNodeFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portu
                     {
                         Portugues23 *pai_aux;
                         Info info_pai;
-                        if (*raiz == pai->cent || (pai->nInfos == 2 && *raiz == pai->dir))
+                        if (*raiz == pai->cent || (pai->nInfos == 2 && *raiz == pai->right))
                         {
-                            pai_aux = findParentIn23Tree(*origem, pai->info1.palavraPortugues);
+                            pai_aux = findParentIn23Tree(*origem, pai->info1.portugueseWord);
 
                             if (*raiz == pai->cent)
                                 info_pai = pai->info1;
@@ -691,10 +691,10 @@ int removeNodeFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portu
                         }
                         else
                         {
-                            pai_aux = findSmallestParent23(*origem, (*raiz)->info1.palavraPortugues);
+                            pai_aux = findSmallestParent23(*origem, (*raiz)->info1.portugueseWord);
 
                             Portugues23 *menor_pai;
-                            menor_pai = findSmallestParentWithTwoInfo(*origem, (*raiz)->info1.palavraPortugues);
+                            menor_pai = findSmallestParentWithTwoInfo(*origem, (*raiz)->info1.portugueseWord);
 
                             Portugues23 *avo;
                             if (pai_aux == NULL || (pai_aux != pai && menor_pai != NULL))
@@ -704,12 +704,12 @@ int removeNodeFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portu
                             }
                             else
                             {
-                                if (pai_aux->nInfos == 2 && pai_aux->info2.palavraPortugues < (*raiz)->info1.palavraPortugues)
+                                if (pai_aux->nInfos == 2 && pai_aux->info2.portugueseWord < (*raiz)->info1.portugueseWord)
                                     info_pai = pai_aux->info2;
                                 else
                                     info_pai = pai_aux->info1;
 
-                                avo = findParentIn23Tree(*origem, info_pai.palavraPortugues);
+                                avo = findParentIn23Tree(*origem, info_pai.portugueseWord);
                                 removeu = wave_movement(info_pai, &((*raiz)->info1), avo, origem, &pai_aux, maior, removeNodeFrom23Tree);
                             }
                         }
@@ -717,18 +717,18 @@ int removeNodeFrom23Tree(Portugues23 **raiz, char *info, Portugues23 *pai, Portu
                 }
             }
             else if (info2)
-                removeu = nonLeafNodeDeletion(origem, *raiz, &((*raiz)->info2), (*raiz)->dir, (*raiz)->cent, maior);
+                removeu = nonLeafNodeDeletion(origem, *raiz, &((*raiz)->info2), (*raiz)->right, (*raiz)->cent, maior);
             else if (info1)
-                removeu = nonLeafNodeDeletion(origem, *raiz, &((*raiz)->info1), (*raiz)->cent, (*raiz)->esq, maior);
+                removeu = nonLeafNodeDeletion(origem, *raiz, &((*raiz)->info1), (*raiz)->cent, (*raiz)->left, maior);
         }
         else
         {
-            if (strcmp(info, (*raiz)->info1.palavraPortugues) < 0)
-                removeu = removeNodeFrom23Tree(&(*raiz)->esq, info, *raiz, origem, maior);
-            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.palavraPortugues) < 0))
+            if (strcmp(info, (*raiz)->info1.portugueseWord) < 0)
+                removeu = removeNodeFrom23Tree(&(*raiz)->left, info, *raiz, origem, maior);
+            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.portugueseWord) < 0))
                 removeu = removeNodeFrom23Tree(&(*raiz)->cent, info, *raiz, origem, maior);
             else
-                removeu = removeNodeFrom23Tree(&(*raiz)->dir, info, *raiz, origem, maior);
+                removeu = removeNodeFrom23Tree(&(*raiz)->right, info, *raiz, origem, maior);
         }
     }
     return removeu;
@@ -747,7 +747,7 @@ int can_remove_node(Portugues23 *raiz)
             possivel = can_remove_node(raiz->cent);
 
             if (!possivel)
-                possivel = can_remove_node(raiz->esq);
+                possivel = can_remove_node(raiz->left);
         }
     }
 
@@ -783,29 +783,29 @@ int rebalanceTree23(Portugues23 **raiz, char *info, Portugues23 **maior)
     {
         if (!ehFolha(*raiz))
         {
-            if (strcmp(info, (*raiz)->info1.palavraPortugues) < 0)
-                balanceou = rebalanceTree23(&((*raiz)->esq), info, maior);
-            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.palavraPortugues) < 0))
+            if (strcmp(info, (*raiz)->info1.portugueseWord) < 0)
+                balanceou = rebalanceTree23(&((*raiz)->left), info, maior);
+            else if ((*raiz)->nInfos == 1 || (strcmp(info, (*raiz)->info2.portugueseWord) < 0))
             {
-                if ((*raiz)->esq->nInfos == 2 && !can_remove_node((*raiz)->cent))
+                if ((*raiz)->left->nInfos == 2 && !can_remove_node((*raiz)->cent))
                     balanceou = -1;
                 else
                     balanceou = rebalanceTree23(&((*raiz)->cent), info, maior);
             }
             else
             {
-                if ((*raiz)->cent->nInfos == 2 && !can_remove_node((*raiz)->dir))
+                if ((*raiz)->cent->nInfos == 2 && !can_remove_node((*raiz)->right))
                     balanceou = -1;
                 else
-                    balanceou = rebalanceTree23(&((*raiz)->dir), info, maior);
+                    balanceou = rebalanceTree23(&((*raiz)->right), info, maior);
             }
 
             if (balanceou != -1)
             {
                 if ((*raiz)->nInfos == 1)
-                    balanceTreeNodes(raiz, (*raiz)->esq, &((*raiz)->cent), (*raiz)->info1, maior);
+                    balanceTreeNodes(raiz, (*raiz)->left, &((*raiz)->cent), (*raiz)->info1, maior);
                 else if ((*raiz)->nInfos == 2)
-                    balanceTreeNodes(raiz, (*raiz)->cent, &((*raiz)->dir), (*raiz)->info2, maior);
+                    balanceTreeNodes(raiz, (*raiz)->cent, &((*raiz)->right), (*raiz)->info2, maior);
                 balanceou = 1;
             }
         }
@@ -823,30 +823,30 @@ int remove_node_from23_tree(Portugues23 **raiz, char *info)
     {
         Info valor_juncao = no23_maior_info(posicao_juncao);
         maior = NULL;
-        removeu = rebalanceTree23(raiz, valor_juncao.palavraPortugues, &maior);
+        removeu = rebalanceTree23(raiz, valor_juncao.portugueseWord, &maior);
 
         if (removeu == -1)
         {
             Portugues23 *pai, *posicao_juncao2;
             Info *entrada;
-            pai = findParentIn23Tree(*raiz, valor_juncao.palavraPortugues);
+            pai = findParentIn23Tree(*raiz, valor_juncao.portugueseWord);
 
-            if (eh_info1(*posicao_juncao, valor_juncao.palavraPortugues))
+            if (eh_info1(*posicao_juncao, valor_juncao.portugueseWord))
                 entrada = &(posicao_juncao->cent->info1);
             else
-                entrada = &(posicao_juncao->dir->info1);
+                entrada = &(posicao_juncao->right->info1);
 
             removeu = wave_movement(valor_juncao, entrada, pai, raiz, &posicao_juncao, &posicao_juncao2, removeNodeFrom23Tree);
 
             if (removeu == -1)
             {
                 valor_juncao = posicao_juncao2->info1;
-                pai = findParentIn23Tree(*raiz, valor_juncao.palavraPortugues);
-                removeu = wave_movement(valor_juncao, &(posicao_juncao2->esq->info1), pai, raiz, &posicao_juncao2, &posicao_juncao, deleteFrom23Tree);
+                pai = findParentIn23Tree(*raiz, valor_juncao.portugueseWord);
+                removeu = wave_movement(valor_juncao, &(posicao_juncao2->left->info1), pai, raiz, &posicao_juncao2, &posicao_juncao, deleteFrom23Tree);
 
                 valor_juncao = no23_maior_info(posicao_juncao);
                 maior = NULL;
-                removeu = rebalanceTree23(raiz, valor_juncao.palavraPortugues, &maior);
+                removeu = rebalanceTree23(raiz, valor_juncao.portugueseWord, &maior);
             }
         }
 
@@ -863,8 +863,8 @@ void deleteInfo2_3(Info *info)
 {
     if (info != NULL)
     {
-        clear_binary_tree(info->palavraIngles);
-        free(info->palavraPortugues);
+        clear_binary_tree(info->englishWord);
+        free(info->portugueseWord);
     }
 }
 
@@ -872,12 +872,12 @@ void deallocateTree(Portugues23 **no)
 {
     if (*no != NULL)
     {
-        deallocateTree(&((*no)->esq));
+        deallocateTree(&((*no)->left));
         deallocateTree(&((*no)->cent));
         if ((*no)->nInfos == 2)
         {
             deleteInfo2_3(&((*no)->info2));
-            deallocateTree(&((*no)->dir));
+            deallocateTree(&((*no)->right));
         }
         deleteInfo2_3(&((*no)->info1));
         free(*no);

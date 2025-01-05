@@ -4,16 +4,16 @@
 
 #include "arvbin.h"
 typedef struct info {
-    char *palavraPortugues;
-    Inglesbin *palavraIngles;
+    char *portugueseWord;
+    Inglesbin *englishWord;
 } Info;
 
 typedef struct Portugues23{
     Info info1;
     Info info2;
     struct Portugues23 *cent;
-    struct Portugues23 *dir;
-    struct Portugues23 *esq;
+    struct Portugues23 *right;
+    struct Portugues23 *left;
     int nInfos;
 } Portugues23;
 
@@ -23,9 +23,9 @@ int insertPortugueseTerm(Portugues23 **arvore, char *palavraPortugues, char *pal
 void addEnglishTranslation(Info *info, const char *palavraIng, int unidade);
 
 Info createInfo(char *palavra, char *palavraIngles, int unidade);
-Portugues23 *createNode(const Info *informacao, Portugues23 *filhoesq, Portugues23 *filhocen);
+Portugues23 *createNode(Info *informacao, Portugues23 *filhoesq, Portugues23 *filhocen);
 Portugues23 *updateNode23(Portugues23 *no,  Info *informacao, Portugues23 *filho);
-Portugues23 *splitNode(Portugues23 **no, const Info *informacao, Info *promove, Portugues23 **filho);
+Portugues23 *splitNode(Portugues23 **no, Info *informacao, Info *promove, Portugues23 **filho);
 int ehFolha(const Portugues23 *no);
 Portugues23 *inserirArv23(Portugues23 **no, Info *informacao, Info *promove, Portugues23 **pai);
 

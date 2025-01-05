@@ -14,16 +14,16 @@ typedef struct Inglesbin{
 } Inglesbin;
 
 typedef struct info {
-    char *palavraPortugues;
-    Inglesbin *palavraIngles;
+    char *portugueseWord;
+    Inglesbin *englishWord;
 } Info;
 
 typedef struct Portugues23{
     Info info1;
     Info info2;
     struct Portugues23 *cent;
-    struct Portugues23 *dir;
-    struct Portugues23 *esq;
+    struct Portugues23 *right;
+    struct Portugues23 *left;
     int nInfos;
 } Portugues23;
 

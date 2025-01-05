@@ -51,16 +51,16 @@ Inglesbin *insertEnglishWord(Inglesbin *root, const char *palavraIngles, int uni
 
 void addEnglishTranslation(Info *info, const char *palavraIng, int unidade) {
     // Verifica se a árvore binária de traduções em inglês está vazia
-    if (info->palavraIngles == NULL) {
+    if (info->englishWord == NULL) {
         // Se a árvore estiver vazia, cria a palavra em inglês com a unidade associada
-        info->palavraIngles = initializeNode(palavraIng, unidade);
+        info->englishWord = initializeNode(palavraIng, unidade);
     } else {
         // Se a árvore não estiver vazia, insere a palavra em inglês de maneira ordenada na árvore
-        info->palavraIngles = insertEnglishWord(info->palavraIngles, palavraIng, unidade);
+        info->englishWord = insertEnglishWord(info->englishWord, palavraIng, unidade);
     }
 
     // Agora associa a unidade à palavra em inglês, garantindo a ordem das unidades
-    info->palavraIngles->unidades = insert_unit_sorted(info->palavraIngles->unidades, create_unit(unidade));
+    info->englishWord->unidades = insert_unit_sorted(info->englishWord->unidades, create_unit(unidade));
 }
 
 
@@ -233,12 +233,12 @@ void FindEnglishWord(Portugues23 **raiz, char *palavraIngles, int unidade, Portu
     if (*raiz != NULL)
     {
         // Verifica na subárvore esquerda
-        FindEnglishWord(&(*raiz)->esq, palavraIngles, unidade, pai);
+        FindEnglishWord(&(*raiz)->left, palavraIngles, unidade, pai);
 
         // Verifica no primeiro elemento do nó
-        if ((*raiz)->info1.palavraIngles != NULL)
+        if ((*raiz)->info1.englishWord != NULL)
         {
-            Inglesbin *traducaoEncontrada = findEnglishWord((*raiz)->info1.palavraIngles, palavraIngles);
+            Inglesbin *traducaoEncontrada = findEnglishWord((*raiz)->info1.englishWord, palavraIngles);
             if (traducaoEncontrada != NULL && find_unit(traducaoEncontrada->unidades, unidade))
             {
                 printf("Palavra em Inglês: %s encontrada na Unidade: %d\n", palavraIngles, unidade);
@@ -249,9 +249,9 @@ void FindEnglishWord(Portugues23 **raiz, char *palavraIngles, int unidade, Portu
         FindEnglishWord(&(*raiz)->cent, palavraIngles, unidade, raiz);
 
         // Se o nó tem dois elementos, verifica o segundo
-        if ((*raiz)->nInfos == 2 && (*raiz)->info2.palavraIngles != NULL)
+        if ((*raiz)->nInfos == 2 && (*raiz)->info2.englishWord != NULL)
         {
-            Inglesbin *traducaoEncontrada = findEnglishWord((*raiz)->info2.palavraIngles, palavraIngles);
+            Inglesbin *traducaoEncontrada = findEnglishWord((*raiz)->info2.englishWord, palavraIngles);
             if (traducaoEncontrada != NULL && find_unit(traducaoEncontrada->unidades, unidade))
             {
                 printf("Palavra em Inglês: %s encontrada na Unidade: %d\n", palavraIngles, unidade);
@@ -261,7 +261,7 @@ void FindEnglishWord(Portugues23 **raiz, char *palavraIngles, int unidade, Portu
         // Verifica na subárvore direita
         if ((*raiz)->nInfos == 2)
         {
-            FindEnglishWord(&(*raiz)->dir, palavraIngles, unidade, raiz);
+            FindEnglishWord(&(*raiz)->right, palavraIngles, unidade, raiz);
         }
     }
 }

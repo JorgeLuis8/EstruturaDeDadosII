@@ -19,28 +19,28 @@ void imprimirArvore23(Portugues23 *raiz, int nivel)
 
     // Imprime as informações do nó, verificando valores nulos
     printf("[");
-    if (raiz->nInfos >= 1 && raiz->info1.palavraPortugues != NULL)
+    if (raiz->nInfos >= 1 && raiz->info1.portugueseWord != NULL)
     {
-        printf(" %s ", raiz->info1.palavraPortugues);
+        printf(" %s ", raiz->info1.portugueseWord);
     }
-    if (raiz->nInfos == 2 && raiz->info2.palavraPortugues != NULL)
+    if (raiz->nInfos == 2 && raiz->info2.portugueseWord != NULL)
     {
-        printf("| %s ", raiz->info2.palavraPortugues);
+        printf("| %s ", raiz->info2.portugueseWord);
     }
     printf("]\n");
 
     // Recursivamente imprime os filhos, com indentação ajustada
-    if (raiz->esq != NULL)
+    if (raiz->left != NULL)
     {
-        imprimirArvore23(raiz->esq, nivel + 1); // Filho à esquerda
+        imprimirArvore23(raiz->left, nivel + 1); // Filho à esquerda
     }
     if (raiz->cent != NULL)
     {
         imprimirArvore23(raiz->cent, nivel + 1); // Filho central
     }
-    if (raiz->dir != NULL)
+    if (raiz->right != NULL)
     {
-        imprimirArvore23(raiz->dir, nivel + 1); // Filho à direita
+        imprimirArvore23(raiz->right, nivel + 1); // Filho à direita
     }
 }
 

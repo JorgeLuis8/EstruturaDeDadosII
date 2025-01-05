@@ -38,23 +38,23 @@ int remove_palavra_ingles_unidade(Portugues23 *raiz, const char *palavraIngles, 
 
   if (raiz)
   {
-    confirm = remove_palavra_ingles_unidade((raiz)->esq, palavraIngles, unidade, top);
+    confirm = remove_palavra_ingles_unidade((raiz)->left, palavraIngles, unidade, top);
     confirm = remove_palavra_ingles_unidade((raiz)->cent, palavraIngles, unidade, top) || confirm;
 
     if ((raiz)->nInfos == 2)
     {
-      confirm = remove_palavra_ingles_unidade((raiz)->dir, palavraIngles, unidade, top) || confirm;
-      confirm = remove_unidade(&(raiz)->info2.palavraIngles, palavraIngles, unidade);
+      confirm = remove_palavra_ingles_unidade((raiz)->right, palavraIngles, unidade, top) || confirm;
+      confirm = remove_unidade(&(raiz)->info2.englishWord, palavraIngles, unidade);
     }
 
-    confirm = remove_unidade(&(raiz)->info1.palavraIngles, palavraIngles, unidade);
+    confirm = remove_unidade(&(raiz)->info1.englishWord, palavraIngles, unidade);
 
 
-    if (!(raiz)->info1.palavraIngles)
-      confirm = remove_node_from23_tree(top, raiz->info1.palavraPortugues);
+    if (!(raiz)->info1.englishWord)
+      confirm = remove_node_from23_tree(top, raiz->info1.portugueseWord);
 
-    if ((raiz)->nInfos == 2 && !(raiz)->info2.palavraIngles)
-      confirm = remove_node_from23_tree(top, raiz->info2.palavraPortugues);
+    if ((raiz)->nInfos == 2 && !(raiz)->info2.englishWord)
+      confirm = remove_node_from23_tree(top, raiz->info2.portugueseWord);
   }
 
   return confirm;
@@ -84,24 +84,24 @@ int remove_palavra_portugues_unidade(Portugues23 *raiz, char *palavraPortugues, 
 
   if (raiz)
   {
-    if (strcmp((raiz)->info1.palavraPortugues, palavraPortugues) == 0)
+    if (strcmp((raiz)->info1.portugueseWord, palavraPortugues) == 0)
     {
-      confirm = _remove_palavra_portugues_unidade(&(raiz)->info1.palavraIngles, palavraPortugues, unidade);
-      if (!(raiz)->info1.palavraIngles)
+      confirm = _remove_palavra_portugues_unidade(&(raiz)->info1.englishWord, palavraPortugues, unidade);
+      if (!(raiz)->info1.englishWord)
         confirm = remove_node_from23_tree(top, palavraPortugues);
     }
-    else if ((raiz)->nInfos == 2 && strcmp((raiz)->info2.palavraPortugues, palavraPortugues) == 0)
+    else if ((raiz)->nInfos == 2 && strcmp((raiz)->info2.portugueseWord, palavraPortugues) == 0)
     {
-      confirm = _remove_palavra_portugues_unidade(&(raiz)->info2.palavraIngles, palavraPortugues, unidade);
-      if (!(raiz)->info2.palavraIngles)
+      confirm = _remove_palavra_portugues_unidade(&(raiz)->info2.englishWord, palavraPortugues, unidade);
+      if (!(raiz)->info2.englishWord)
         confirm = remove_node_from23_tree(top, palavraPortugues);
     }
-    else if (strcmp(palavraPortugues, (raiz)->info1.palavraPortugues) < 0)
-      confirm = remove_palavra_portugues_unidade((raiz)->esq, palavraPortugues, unidade, top);
-    else if ((raiz)->nInfos == 1 || strcmp(palavraPortugues, (raiz)->info2.palavraPortugues) < 0)
+    else if (strcmp(palavraPortugues, (raiz)->info1.portugueseWord) < 0)
+      confirm = remove_palavra_portugues_unidade((raiz)->left, palavraPortugues, unidade, top);
+    else if ((raiz)->nInfos == 1 || strcmp(palavraPortugues, (raiz)->info2.portugueseWord) < 0)
       confirm = remove_palavra_portugues_unidade((raiz)->cent, palavraPortugues, unidade, top);
     else
-      confirm = remove_palavra_portugues_unidade((raiz)->dir, palavraPortugues, unidade, top);
+      confirm = remove_palavra_portugues_unidade((raiz)->right, palavraPortugues, unidade, top);
   }
 
   return confirm;

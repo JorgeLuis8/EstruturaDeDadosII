@@ -24,16 +24,16 @@ int insertpalavraIngles(Inglesbin **root, Info *informacao)
     int result = 0;
     if ((*root) == NULL)
     {
-        Inglesbin *new = createNode(informacao->palavraIngles->palavraIngles, informacao->palavraIngles->unidades->nome_unidade);
+        Inglesbin *new = createNode(informacao->englishWord->palavraIngles, informacao->englishWord->unidades->nome_unidade);
         *root = new;
         result = 1;
     }
-    else if (strcmp(informacao->palavraIngles->palavraIngles, (*root)->palavraIngles) < 0)
+    else if (strcmp(informacao->englishWord->palavraIngles, (*root)->palavraIngles) < 0)
         result = insertpalavraIngles(&(*root)->esq, informacao);
-    else if (strcmp(informacao->palavraIngles->palavraIngles, (*root)->palavraIngles) > 0)
+    else if (strcmp(informacao->englishWord->palavraIngles, (*root)->palavraIngles) > 0)
         result = insertpalavraIngles(&(*root)->dir, informacao);
     else
-        result = inserir_lista_encadeada_unidade(&((*root)->unidades), informacao->palavraIngles->unidades->nome_unidade);
+        result = inserir_lista_encadeada_unidade(&((*root)->unidades), informacao->englishWord->unidades->nome_unidade);
     
     return result;
 }

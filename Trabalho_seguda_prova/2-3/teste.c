@@ -91,7 +91,7 @@ void imprimirUnidadesExistentes(Portugues23 *raiz, int *unidades, int *numUnidad
     if (raiz)
     {
         // Verifica as unidades da primeira informação
-        Inglesbin *ingles = raiz->info1.palavraIngles;
+        Inglesbin *ingles = raiz->info1.englishWord;
         while (ingles)
         {
             Unidade *unidadeAtual = ingles->unidades;
@@ -122,7 +122,7 @@ void imprimirUnidadesExistentes(Portugues23 *raiz, int *unidades, int *numUnidad
         // Verifica as unidades da segunda informação
         if (raiz->nInfos == 2)
         {
-            ingles = raiz->info2.palavraIngles;
+            ingles = raiz->info2.englishWord;
             while (ingles)
             {
                 Unidade *unidadeAtual = ingles->unidades;
@@ -151,7 +151,7 @@ void imprimirUnidadesExistentes(Portugues23 *raiz, int *unidades, int *numUnidad
         // Percorre a subárvore direita
         if (raiz->nInfos == 2)
         {
-            imprimirUnidadesExistentes(raiz->dir, unidades, numUnidades);
+            imprimirUnidadesExistentes(raiz->right, unidades, numUnidades);
         }
     }
 }
@@ -160,12 +160,12 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
     if (arvore)
     {
         // Percorre a subárvore esquerda
-        imprimirPalavrasPortuguesPorUnidade(arvore->esq, unidade, unidadeImpressa);
+        imprimirPalavrasPortuguesPorUnidade(arvore->left, unidade, unidadeImpressa);
 
         // Verifica se a palavra em português está associada à unidade e imprime
-        if (arvore->info1.palavraIngles != NULL)
+        if (arvore->info1.englishWord != NULL)
         {
-            Inglesbin *ingles = arvore->info1.palavraIngles;
+            Inglesbin *ingles = arvore->info1.englishWord;
             while (ingles)
             {
                 if (buscar_unidade(ingles->unidades, unidade))
@@ -175,7 +175,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info1.palavraPortugues);
+                    printf("- %s\n", arvore->info1.portugueseWord);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
@@ -186,9 +186,9 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
         imprimirPalavrasPortuguesPorUnidade(arvore->cent, unidade, unidadeImpressa);
 
         // Se houver um segundo elemento, verifica também
-        if (arvore->nInfos == 2 && arvore->info2.palavraIngles != NULL)
+        if (arvore->nInfos == 2 && arvore->info2.englishWord != NULL)
         {
-            Inglesbin *ingles = arvore->info2.palavraIngles;
+            Inglesbin *ingles = arvore->info2.englishWord;
             while (ingles)
             {
                 if (buscar_unidade(ingles->unidades, unidade))
@@ -198,7 +198,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
                         printf("%% Unidade %d\n", unidade);
                         *unidadeImpressa = 1;
                     }
-                    printf("- %s\n", arvore->info2.palavraPortugues);
+                    printf("- %s\n", arvore->info2.portugueseWord);
                     break; // Palavra em português já encontrada para esta unidade
                 }
                 ingles = ingles->esq ? ingles->esq : ingles->dir;
@@ -208,7 +208,7 @@ void imprimirPalavrasPortuguesPorUnidade(Portugues23 *arvore, int unidade, int *
         // Percorre a subárvore direita
         if (arvore->nInfos == 2)
         {
-            imprimirPalavrasPortuguesPorUnidade(arvore->dir, unidade, unidadeImpressa);
+            imprimirPalavrasPortuguesPorUnidade(arvore->right, unidade, unidadeImpressa);
         }
     }
 }
@@ -217,12 +217,12 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
     if (arvore)
     {
         // Percorre a subárvore esquerda
-        imprimirPalavrasInglesPorUnidade(arvore->esq, unidade, unidadeImpressa);
+        imprimirPalavrasInglesPorUnidade(arvore->left, unidade, unidadeImpressa);
 
         // Verifica as palavras em inglês associadas ao primeiro elemento do nó
-        if (arvore->info1.palavraIngles != NULL)
+        if (arvore->info1.englishWord != NULL)
         {
-            Inglesbin *ingles = arvore->info1.palavraIngles;
+            Inglesbin *ingles = arvore->info1.englishWord;
             while (ingles)
             {
                 if (buscar_unidade(ingles->unidades, unidade))
@@ -242,9 +242,9 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
         imprimirPalavrasInglesPorUnidade(arvore->cent, unidade, unidadeImpressa);
 
         // Verifica as palavras em inglês associadas ao segundo elemento do nó, se existir
-        if (arvore->nInfos == 2 && arvore->info2.palavraIngles != NULL)
+        if (arvore->nInfos == 2 && arvore->info2.englishWord != NULL)
         {
-            Inglesbin *ingles = arvore->info2.palavraIngles;
+            Inglesbin *ingles = arvore->info2.englishWord;
             while (ingles)
             {
                 if (buscar_unidade(ingles->unidades, unidade))
@@ -263,7 +263,7 @@ void imprimirPalavrasInglesPorUnidade(Portugues23 *arvore, int unidade, int *uni
         // Percorre a subárvore direita
         if (arvore->nInfos == 2)
         {
-            imprimirPalavrasInglesPorUnidade(arvore->dir, unidade, unidadeImpressa);
+            imprimirPalavrasInglesPorUnidade(arvore->right, unidade, unidadeImpressa);
         }
     }
 }
