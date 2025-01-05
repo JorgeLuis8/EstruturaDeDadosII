@@ -7,16 +7,16 @@ Unit *remove_unit(Unit *lista, int valor) {
     Unit *ant = NULL;
     Unit *resultado = lista;  
 
-    while (aux != NULL && aux->unidade != valor) {
+    while (aux != NULL && aux->unitValue != valor) {
         ant = aux;
-        aux = aux->prox;
+        aux = aux->nextNode;
     }
 
     if (aux != NULL) {
         if (ant == NULL) {
-            resultado = aux->prox;
+            resultado = aux->nextNode;
         } else {
-            ant->prox = aux->prox;
+            ant->nextNode = aux->nextNode;
         }
         free(aux);
     }
@@ -27,8 +27,8 @@ Unit *remove_unit(Unit *lista, int valor) {
 Unit *find_unit(Unit *lista, int valor) {
     Unit *aux = lista;
 
-    while (aux != NULL && aux->unidade != valor) {
-        aux = aux->prox;
+    while (aux != NULL && aux->unitValue != valor) {
+        aux = aux->nextNode;
     }
 
     return aux;
@@ -37,8 +37,8 @@ Unit *find_unit(Unit *lista, int valor) {
 void print_units(Unit *lista) {
     Unit *aux = lista;
     while (aux != NULL) {
-        printf("Unidade: %d\n", aux->unidade);
-        aux = aux->prox;
+        printf("Unidade: %d\n", aux->unitValue);
+        aux = aux->nextNode;
     }
 }
 
@@ -46,8 +46,8 @@ void print_units(Unit *lista) {
 Unit *create_unit(int valor) {
     Unit *nova_unidade = (Unit *)malloc(sizeof(Unit));
     if (nova_unidade != NULL) {
-        nova_unidade->unidade = valor;
-        nova_unidade->prox = NULL;
+        nova_unidade->unitValue = valor;
+        nova_unidade->nextNode = NULL;
     }
     return nova_unidade;
 }
@@ -58,26 +58,26 @@ Unit *insert_unit_sorted(Unit *lista, Unit *novo_no) {
 
     if (lista == NULL) {
         // Caso a lista esteja vazia, o novo nó se torna o primeiro.
-        novo_no->prox = NULL;
+        novo_no->nextNode = NULL;
         aux = novo_no;
     } else {
         Unit *anterior = NULL;
         Unit *atual = lista;
 
         // Percorre a lista para encontrar a posição correta (ordem crescente de "unidade").
-        while (atual != NULL && atual->unidade < novo_no->unidade) {
+        while (atual != NULL && atual->unitValue < novo_no->unitValue) {
             anterior = atual;
-            atual = atual->prox;
+            atual = atual->nextNode;
         }
 
         if (anterior == NULL) {
             // Insere o novo nó no início da lista.
-            novo_no->prox = lista;
+            novo_no->nextNode = lista;
             aux = novo_no;
         } else {
             // Insere o novo nó no meio ou no final da lista.
-            anterior->prox = novo_no;
-            novo_no->prox = atual;
+            anterior->nextNode = novo_no;
+            novo_no->nextNode = atual;
         }
     }
 
@@ -89,7 +89,7 @@ void free_list(Unit *lista) {
     Unit *atual = lista;
     while (atual != NULL) {
         Unit *temp = atual;
-        atual = atual->prox;
+        atual = atual->nextNode;
         free(temp);
     }
 }

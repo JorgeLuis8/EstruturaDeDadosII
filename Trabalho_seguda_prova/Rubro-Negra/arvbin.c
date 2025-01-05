@@ -73,8 +73,8 @@ void printBinaryTree(BinaryTreeNode *root) {
         Unit *currentUnit = root->unitValues;
         printf("Unidades: ");
         while (currentUnit != NULL) {
-            printf("%d ", currentUnit->unidade);
-            currentUnit = currentUnit->prox;
+            printf("%d ", currentUnit->unitValue);
+            currentUnit = currentUnit->nextNode;
         }
         printf("\n");
 
@@ -152,9 +152,9 @@ int removeEnglishWord(BinaryTreeNode **raiz, char *palavra) {
                 // Clona a lista de unidades do nó substituto
                 Unit *currentUnit = endFilho->unitValues;
                 while (currentUnit != NULL) {
-                    Unit *novaUnidade = create_unit(currentUnit->unidade);
+                    Unit *novaUnidade = create_unit(currentUnit->unitValue);
                     (*raiz)->unitValues = insert_unit_sorted((*raiz)->unitValues, novaUnidade);
-                    currentUnit = currentUnit->prox;
+                    currentUnit = currentUnit->nextNode;
                 }
 
                 removeEnglishWord(&(*raiz)->right, endFilho->englishWord);
@@ -218,8 +218,8 @@ void exibir_arvorebinaria(BinaryTreeNode *raiz) {
         Unit *currentUnit = raiz->unitValues;
         printf("Unidades: ");
         while (currentUnit != NULL) {
-            printf("%d ", currentUnit->unidade);
-            currentUnit = currentUnit->prox;
+            printf("%d ", currentUnit->unitValue);
+            currentUnit = currentUnit->nextNode;
         }
         printf("\n");
 

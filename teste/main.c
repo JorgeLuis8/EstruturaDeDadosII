@@ -44,7 +44,7 @@ void imprimirArvore23(Portugues23 *raiz, int nivel)
     }
 }
 
-void carregarArquivo(const char *nomeArquivo, Portugues23 **arvore)
+void loadFile(const char *nomeArquivo, Portugues23 **arvore)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
     if (arquivo != NULL)
@@ -106,7 +106,7 @@ int main()
     char palavra[50];
     char unidade[50];
     int removido;
-    carregarArquivo("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &raiz);
+    loadFile("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/trabalhoEd2.txt", &raiz);
     int op, res;
 
     do

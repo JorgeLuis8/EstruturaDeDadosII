@@ -3,92 +3,92 @@
 #include "unidade.h"
 
 Unit *remove_unit(Unit *lista, int valor) {
-    Unit *aux = lista;       // Ponteiro para percorrer a lista
-    Unit *ant = NULL;        // Ponteiro para o nó anterior
-    Unit *resultado = lista; // Cabeça da lista, pode mudar se o primeiro nó for removido
+    Unit *next = lista;       // Ponteiro para percorrer a lista
+    Unit *prev = NULL;        // Ponteiro para o nó anterior
+    Unit *result = lista; // Cabeça da lista, pode mudar se o primeiro nó for removido
 
     // Percorre a lista até encontrar o nó com o valor ou o final da lista
-    while (aux != NULL && aux->unidade != valor) {
-        ant = aux;
-        aux = aux->prox;
+    while (next != NULL && next->unitValue != valor) {
+        prev = next;
+        next = next->nextNode;
     }
 
     // Se encontrou o nó, remove-o
-    if (aux != NULL) {
-        if (ant == NULL) {
+    if (next != NULL) {
+        if (prev == NULL) {
             // Se o nó a ser removido é o primeiro
-            resultado = aux->prox;
+            result = next->nextNode;
         } else {
             // Se o nó está no meio ou no final
-            ant->prox = aux->prox;
+            prev->nextNode = next->nextNode;
         }
-        free(aux); // Libera a memória do nó removido
+        free(next); // Libera a memória do nó removido
     }
 
-    return resultado; // Retorna a nova cabeça da lista
+    return result; // Retorna a nova cabeça da lista
 }
 
 
 Unit *find_unit(Unit *lista, int valor) {
     Unit *aux = lista;
 
-    while (aux != NULL && aux->unidade != valor) {
-        aux = aux->prox;
+    while (aux != NULL && aux->unitValue != valor) {
+        aux = aux->nextNode;
     }
 
     return aux;
 }
 
-void print_units(Unit *lista) {
-    Unit *aux = lista;
+void print_units(Unit *list) {
+    Unit *aux = list;
     while (aux != NULL) {
-        printf("Unidade: %d\n", aux->unidade);
-        aux = aux->prox;
+        printf("Unidade: %d\n", aux->unitValue);
+        aux = aux->nextNode;
     }
 }
 
 // Função para criar um novo nó de Unidade.
-Unit *create_unit(int valor) {
+Unit *create_unit(int unitValue) {
     Unit *nova_unidade = (Unit *)malloc(sizeof(Unit));
     if (nova_unidade != NULL) {
-        nova_unidade->unidade = valor;
-        nova_unidade->prox = NULL;
+        nova_unidade->unitValue = unitValue;
+        nova_unidade->nextNode = NULL;
     }
     return nova_unidade;
 }
 
 // Função para inserir uma nova unidade ordenada.
-Unit *insert_unit_sorted(Unit *lista, Unit *novo_no) {
-    Unit *head = lista;  // Aponta para o início da lista
-    Unit *anterior = NULL;
-    Unit *atual = lista;
+Unit *insert_unit_sorted(Unit *unitList, Unit *new_unit) {
+    Unit *head = unitList;  // Aponta para o início da lista
+    Unit *previousUnit = NULL;
+    Unit *currentUnit = unitList;
 
-    if (lista == NULL) {
+    if (unitList == NULL) {
         // Lista vazia, adiciona como primeiro elemento
-        printf("Adicionando unidade %d como a primeira na lista.\n", novo_no->unidade);
-        novo_no->prox = NULL;
-        head = novo_no;
+        printf("Adicionando unidade %d como a primeira na lista.\n", new_unit->unitValue);
+        new_unit->nextNode = NULL;
+        head = new_unit;
     } else {
         // Percorre a lista até encontrar a posição correta ou verificar duplicata
-        while (atual != NULL && atual->unidade < novo_no->unidade) {
-            anterior = atual;
-            atual = atual->prox;
+        while (currentUnit != NULL && currentUnit->unitValue < new_unit->unitValue) {
+            previousUnit = currentUnit;
+            currentUnit = currentUnit->nextNode;
         }
 
         // Verifica se a unidade já existe
-        if (atual != NULL && atual->unidade == novo_no->unidade) {
-            printf("Unidade %d já existe na lista. Ignorando.\n", novo_no->unidade);
-            free(novo_no);
-        } else if (anterior == NULL) {
+        if (currentUnit != NULL && currentUnit->unitValue == new_unit->unitValue) {
+            printf("Unidade %d já existe na lista. Ignorando.\n", new_unit->unitValue);
+            free(new_unit);
+        } else if (previousUnit == NULL) {
             // Adiciona no início da lista
-            novo_no->prox = lista;
-            head = novo_no;
-            printf("Unidade %d adicionada no início da lista.\n", novo_no->unidade);
+            new_unit->nextNode = unitList;
+            head = new_unit;
+            printf("Unidade %d adicionada no início da lista.\n", new_unit->unitValue);
         } else {
             // Adiciona no meio ou no final
-            anterior->prox = novo_no;
-            novo_no->prox = atual;
-            printf("Unidade %d adicionada na lista.\n", novo_no->unidade);
+            previousUnit->nextNode = new_unit;
+            new_unit->nextNode = currentUnit;
+            printf("Unidade %d adicionada na lista.\n", new_unit->unitValue);
         }
     }
 
@@ -98,11 +98,11 @@ Unit *insert_unit_sorted(Unit *lista, Unit *novo_no) {
 
 
 // Função para liberar a memória da lista.
-void free_list(Unit *lista) {
-    Unit *atual = lista;
-    while (atual != NULL) {
-        Unit *temp = atual;
-        atual = atual->prox;
+void free_list(Unit *unitList) {
+    Unit *currentUnit = unitList;
+    while (currentUnit != NULL) {
+        Unit *temp = currentUnit;
+        currentUnit = currentUnit->nextNode;
         free(temp);
     }
 }

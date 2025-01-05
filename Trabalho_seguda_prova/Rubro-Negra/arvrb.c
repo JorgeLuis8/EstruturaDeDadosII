@@ -297,11 +297,11 @@ void printWordsByUnit(RedBlackTreePT *arvore, int unidade) {
 
             // Verifica todas as unidades associadas à palavra
             while (currentUnit != NULL) {
-                if (currentUnit->unidade == unidade) {
+                if (currentUnit->unitValue == unidade) {
                     printf("%s: %s;\n", node->englishWord, arvore->info.portugueseWord); // Palavra e significado
                     break; // Sai da lista de unidades ao encontrar a unidade desejada
                 }
-                currentUnit = currentUnit->prox;
+                currentUnit = currentUnit->nextNode;
             }
 
             // Movimenta para o próximo nó da árvore binária
@@ -331,11 +331,11 @@ void printTranslations(BinaryTreeNode *node, int unidade, char *palavraPortugues
         int unidadeEncontrada = 0;
 
         while (currentUnit != NULL) {
-            if (currentUnit->unidade == unidade) {
+            if (currentUnit->unitValue == unidade) {
                 unidadeEncontrada = 1;
                 break;
             }
-            currentUnit = currentUnit->prox;
+            currentUnit = currentUnit->nextNode;
         }
 
         // Se a unidade foi encontrada, imprime a tradução
@@ -404,11 +404,11 @@ RedBlackTreePT *SearchEnglishWordInRBTree(RedBlackTreePT *raiz, char *palavraIng
 
             // Verifica se a unidade existe na lista
             while (currentUnit != NULL) {
-                if (currentUnit->unidade == unidade) {
+                if (currentUnit->unitValue == unidade) {
                     unidadeEncontrada = 1;
                     break;
                 }
-                currentUnit = currentUnit->prox;
+                currentUnit = currentUnit->nextNode;
             }
 
             if (unidadeEncontrada && strcmp(currentNode->englishWord, palavraIngles) == 0) {

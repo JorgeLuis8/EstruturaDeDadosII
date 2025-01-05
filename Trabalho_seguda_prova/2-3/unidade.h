@@ -3,8 +3,8 @@
 
 // Estrutura para a lista de unidades
 typedef struct Unit {
-    int unidade;              // Valor da unidade
-    struct Unit *prox;     // Ponteiro para o próximo nó da lista
+    int unitValue;              // Valor da unidade
+    struct Unit *nextNode;     // Ponteiro para o próximo nó da lista
 } Unit;
 
 // Função para criar um novo nó de Unidade
