@@ -291,7 +291,7 @@ void printWordsByUnit(RedBlackTreePT *redBlackTree, int unit)
 {
     static int printedUnit = 0; // Controla se a unidade já foi impressa
 
-    if (redBlackTree)
+    if (redBlackTree != NULL)
     {
         // Percorre a subárvore esquerda
         printWordsByUnit(redBlackTree->left, unit);
@@ -318,12 +318,11 @@ void printWordsByUnit(RedBlackTreePT *redBlackTree, int unit)
 
                     // Imprime a palavra
                     printf("%s: %s;\n", redBlackTree->info.portugueseWord, englishWordNode->englishWord);
-                    break; // Sai do loop interno se a unidade for encontrada
                 }
                 currentUnit = currentUnit->nextNode;
             }
 
-            // Movimenta para o próximo nó da árvore binária
+            // Avança para o próximo nó da árvore binária
             if (englishWordNode->left != NULL)
             {
                 englishWordNode = englishWordNode->left;
@@ -342,7 +341,7 @@ void printWordsByUnit(RedBlackTreePT *redBlackTree, int unit)
         printWordsByUnit(redBlackTree->right, unit);
     }
 
-    // Reseta o estado da variável estática para a próxima chamada
+    // Reseta o estado da variável estática para a próxima chamada quando a árvore foi completamente processada
     if (redBlackTree == NULL)
     {
         printedUnit = 0;
@@ -357,12 +356,13 @@ void printTranslations(BinaryTreeNode *currentNode, int unit, char *portugueseWo
         Unit *currentUnit = currentNode->unitValues;
         int foundUnit = 0;
 
+        // Verifica se a unidade está associada ao nó atual
         while (currentUnit != NULL)
         {
             if (currentUnit->unitValue == unit)
             {
                 foundUnit = 1;
-                break;
+                // Continuar a verificar os outros nós sem break
             }
             currentUnit = currentUnit->nextNode;
         }
@@ -373,10 +373,12 @@ void printTranslations(BinaryTreeNode *currentNode, int unit, char *portugueseWo
             printf("Palavra em inglês: %s\n", currentNode->englishWord);
         }
 
+        // Chama a função recursivamente para as subárvores esquerda e direita
         printTranslations(currentNode->left, unit, portugueseWord);
         printTranslations(currentNode->right, unit, portugueseWord);
     }
 }
+
 
 void showPortugueseTranslation(RedBlackTreePT **rootNode, char *portugueseWord)
 {
