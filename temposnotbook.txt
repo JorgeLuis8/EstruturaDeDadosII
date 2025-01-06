@@ -309,4 +309,4 @@ Caminho percorrido: Centro -> Esquerda -> Esquerda -> Esquerda -> NULL
 Tempo gasto: 5449800.00 ns
 
 Tempo total: 161865500.00 ns
-Tempo m├®dio: 5395516.67 ns
+Tempo m├®dio: 3148006.67
