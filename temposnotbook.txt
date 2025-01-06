@@ -161,152 +161,152 @@ Buscando palavras na ├ürvore 2-3:
 Palavra: carro
 Palavra encontrada.
 Caminho percorrido:
-Tempo gasto: 386100.00 ns
+Tempo gasto: 4156900.00 ns
 
 Palavra: automovel
 Palavra nao encontrada.
 Caminho percorrido: Esquerda -> Centro -> Centro -> Esquerda -> NULL
-Tempo gasto: 98100.00 ns
+Tempo gasto: 3147300.00 ns
 
 Palavra: erro
 Palavra encontrada.
 Caminho percorrido: Centro -> Centro
-Tempo gasto: 93400.00 ns
+Tempo gasto: 6295200.00 ns
 
 Palavra: engano
 Palavra nao encontrada.
 Caminho percorrido: Centro -> Centro -> Esquerda -> Centro -> NULL
-Tempo gasto: 96400.00 ns
+Tempo gasto: 4670800.00 ns
 
 Palavra: roda
 Palavra encontrada.
 Caminho percorrido: Direita
-Tempo gasto: 91200.00 ns
+Tempo gasto: 8168100.00 ns
 
 Palavra: ventilador
 Palavra encontrada.
 Caminho percorrido: Direita -> Centro
-Tempo gasto: 127300.00 ns
+Tempo gasto: 752900.00 ns
 
 Palavra: soprador
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Centro -> Esquerda -> Esquerda -> NULL
-Tempo gasto: 1110000.00 ns
+Tempo gasto: 4213000.00 ns
 
 Palavra: teia
 Palavra encontrada.
 Caminho percorrido: Direita -> Centro -> Esquerda
-Tempo gasto: 10492600.00 ns
+Tempo gasto: 1143200.00 ns
 
 Palavra: conexao
 Palavra nao encontrada.
 Caminho percorrido: Centro -> Esquerda -> Centro -> Esquerda -> NULL
-Tempo gasto: 18458900.00 ns
+Tempo gasto: 1537500.00 ns
 
 Palavra: estrutura
 Palavra encontrada.
 Caminho percorrido:
-Tempo gasto: 2960200.00 ns
+Tempo gasto: 1562300.00 ns
 
 Palavra: organizacao
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Esquerda -> Centro -> Centro -> NULL
-Tempo gasto: 1466000.00 ns
+Tempo gasto: 5279500.00 ns
 
 Palavra: cadeado
 Palavra encontrada.
 Caminho percorrido: Esquerda -> Centro -> Centro
-Tempo gasto: 1454100.00 ns
+Tempo gasto: 1974900.00 ns
 
 Palavra: fruta
 Palavra encontrada.
 Caminho percorrido: Direita -> Esquerda
-Tempo gasto: 1396900.00 ns
+Tempo gasto: 1502900.00 ns
 
 Palavra: memoria
 Palavra encontrada.
 Caminho percorrido: Direita -> Esquerda -> Centro
-Tempo gasto: 14410700.00 ns
+Tempo gasto: 6432600.00 ns
 
 Palavra: companheiro
 Palavra encontrada.
 Caminho percorrido: Centro -> Esquerda -> Esquerda
-Tempo gasto: 3748600.00 ns
+Tempo gasto: 8308700.00 ns
 
 Palavra: documento
 Palavra encontrada.
 Caminho percorrido: Centro -> Centro -> Esquerda
-Tempo gasto: 3103600.00 ns
+Tempo gasto: 1607000.00 ns
 
 Palavra: esfera
 Palavra encontrada.
 Caminho percorrido: Centro -> Centro -> Centro
-Tempo gasto: 2898900.00 ns
+Tempo gasto: 1343400.00 ns
 
 Palavra: fio
 Palavra encontrada.
 Caminho percorrido: Direita -> Esquerda -> Esquerda
-Tempo gasto: 16162500.00 ns
+Tempo gasto: 5849500.00 ns
 
 Palavra: dispositivo
 Palavra encontrada.
 Caminho percorrido: Centro
-Tempo gasto: 3296000.00 ns
+Tempo gasto: 1246200.00 ns
 
 Palavra: vidro
 Palavra encontrada.
 Caminho percorrido: Direita -> Centro -> Centro
-Tempo gasto: 18135700.00 ns
+Tempo gasto: 1227000.00 ns
 
 Palavra: escrivaninha
 Palavra encontrada.
 Caminho percorrido: Centro -> Centro -> Centro
-Tempo gasto: 17968400.00 ns
+Tempo gasto: 1128200.00 ns
 
 Palavra: cursor
 Palavra encontrada.
 Caminho percorrido: Centro -> Esquerda -> Centro
-Tempo gasto: 2056500.00 ns
+Tempo gasto: 1054100.00 ns
 
 Palavra: acordo
 Palavra encontrada.
 Caminho percorrido: Esquerda -> Centro
-Tempo gasto: 4645500.00 ns
+Tempo gasto: 7780300.00 ns
 
 Palavra: estrela
 Palavra nao encontrada.
 Caminho percorrido: Centro -> Centro -> Centro -> Direita -> NULL
-Tempo gasto: 12700900.00 ns
+Tempo gasto: 1302300.00 ns
 
 Palavra: mar
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Esquerda -> Centro -> Esquerda -> NULL
-Tempo gasto: 2862100.00 ns
+Tempo gasto: 1210600.00 ns
 
 Palavra: rio
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Esquerda -> Centro -> Direita -> NULL
-Tempo gasto: 1665400.00 ns
+Tempo gasto: 1391300.00 ns
 
 Palavra: cachoeira
 Palavra nao encontrada.
 Caminho percorrido: Esquerda -> Centro -> Centro -> Esquerda -> NULL
-Tempo gasto: 1939600.00 ns
+Tempo gasto: 1368900.00 ns
 
 Palavra: tempo
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Centro -> Esquerda -> Centro -> NULL
-Tempo gasto: 1888700.00 ns
+Tempo gasto: 5989600.00 ns
 
 Palavra: vento
 Palavra nao encontrada.
 Caminho percorrido: Direita -> Centro -> Centro -> Esquerda -> NULL
-Tempo gasto: 10701400.00 ns
+Tempo gasto: 1259200.00 ns
 
 Palavra: chuva
 Palavra nao encontrada.
 Caminho percorrido: Centro -> Esquerda -> Esquerda -> Esquerda -> NULL
-Tempo gasto: 5449800.00 ns
+Tempo gasto: 1536800.00 ns
 
-Tempo total: 161865500.00 ns
-Tempo m├®dio: 3148006.67
+Tempo total: 94440200.00 ns
+Tempo m├®dio: 3148006.67 ns
