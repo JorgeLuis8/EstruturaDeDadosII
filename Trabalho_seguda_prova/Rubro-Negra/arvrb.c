@@ -382,34 +382,43 @@ void showPortugueseTranslation(RedBlackTreePT **rootNode, char *portugueseWord)
 {
     if (*rootNode != NULL)
     {
-        // Busca a palavra na árvore rubro-negra
+        // Busca a palavra na arvore rubro-negra
         RedBlackTreePT *resultado = SearchWordInTree(rootNode, portugueseWord);
 
         if (resultado != NULL)
         {
-            printf("Traduções em inglês para a palavra '%s':\n", portugueseWord);
+            printf("\n============================\n");
+            printf(" Traducao da palavra: %s\n", portugueseWord);
+            printf("============================\n");
 
-            // Percorre a árvore binária associada e imprime as traduções
+            // Percorre a arvore binaria associada e imprime as traducoes
             BinaryTreeNode *node = resultado->info.englishWordNode;
             if (node == NULL)
             {
-                printf("Nenhuma tradução encontrada.\n");
+                printf(" Nenhuma traducao encontrada.\n");
             }
             else
             {
+                printf(" Traducoes encontradas:\n");
                 printBinaryTree(node);
             }
+            printf("============================\n");
         }
         else
         {
-            printf("Nenhuma tradução encontrada para '%s'.\n", portugueseWord);
+            printf("\n============================\n");
+            printf(" Nenhuma traducao encontrada para: %s\n", portugueseWord);
+            printf("============================\n");
         }
     }
     else
     {
-        printf("A árvore rubro-negra está vazia.\n");
+        printf("\n============================\n");
+        printf(" A arvore rubro-negra esta vazia.\n");
+        printf("============================\n");
     }
 }
+
 
 
 void showRedBlackTree(RedBlackTreePT *rootNode)

@@ -1,12 +1,13 @@
 #include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "arv23.c"
 #include "arvbin.c"
 #include "unidade.c"
-#include <time.h>
+#include <windows.h> // Para QueryPerformanceCounter e QueryPerformanceFrequency
+
+// Função para limpar caracteres indesejados
 void clearCharacters(char *str)
 {
     char *end = str + strlen(str) - 1;
@@ -23,6 +24,7 @@ void clearCharacters(char *str)
     }
 }
 
+// Função para carregar o arquivo de dados
 void loadFile(const char *nomeArquivo, PortugueseTree **arvore)
 {
     FILE *dataFile = fopen(nomeArquivo, "r");
@@ -75,7 +77,7 @@ void loadFile(const char *nomeArquivo, PortugueseTree **arvore)
     }
 }
 
-
+// Função para encontrar uma palavra e exibir o caminho
 void printPathAndFindWord(PortugueseTree **tree, const char *word)
 {
     PortugueseTree *currentNode = *tree;
@@ -118,14 +120,18 @@ void printPathAndFindWord(PortugueseTree **tree, const char *word)
         if (strlen(caminho) > 0)
             caminho[strlen(caminho) - 4] = '\0';
 
+        printf("Palavra encontrada.\n");
         printf("Caminho percorrido: %s\n", caminho);
     }
     else
     {
-        printf("Palavra nao encontrada\n");
+        strcat(caminho, "NULL"); // Adiciona "NULL" ao final do caminho
+        printf("Palavra nao encontrada.\n");
+        printf("Caminho percorrido: %s\n", caminho);
     }
 }
 
+// Função principal
 int main()
 {
     PortugueseTree *arvore = NULL;
@@ -136,38 +142,40 @@ int main()
 
     // Lista de palavras para busca
     const char *palavras[] = {
-         "estrela",
-        "mar", "rio", "cachoeira", "tempo", "vento", "chuva", "amor", "esperanca", "alegria", "tristeza",
-        "familia", "coracao", "alma", "mente", "cidade", "campo", "montanha", "cavalo", "passaro", "peixe",
-        "onibus", "barramento", "problema", "bicicleta", "ventilador", "rede", "sistema", 
-        "rede de computadores", "rede de relacionamento"
-    };
+        "carro", "automovel", "erro", "engano", "roda", "ventilador", "soprador",
+        "teia", "conexao", "estrutura", "organizacao", "cadeado", "fruta",
+        "memoria", "companheiro", "documento", "esfera", "fio", "dispositivo",
+        "vidro", "escrivaninha", "cursor", "acordo", "estrela", "mar", "rio",
+        "cachoeira", "tempo", "vento", "chuva"};
 
     int numPalavras = sizeof(palavras) / sizeof(palavras[0]);
 
     printf("Realizando buscas por %d palavras\n\n", numPalavras);
 
-    clock_t startTime, endTime;
+    LARGE_INTEGER frequency, startTime, endTime;
+    QueryPerformanceFrequency(&frequency); // Obtém a frequência do contador de alta precisão
+
     double totalTime = 0;
 
-    // Buscar cada palavra e medir o tempo
+    // Buscar cada palavra e medir o tempo em nanosegundos
     for (int i = 0; i < numPalavras; i++)
     {
-        startTime = clock();
         printf("Palavra: %s\n", palavras[i]);
-        printPathAndFindWord(&arvore, palavras[i]);
-        endTime = clock();
 
-        double elapsedTime = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+        QueryPerformanceCounter(&startTime);
+        printPathAndFindWord(&arvore, palavras[i]);
+        QueryPerformanceCounter(&endTime);
+
+        double elapsedTime = (double)(endTime.QuadPart - startTime.QuadPart) * 1e9 / frequency.QuadPart; // Em nanosegundos
         totalTime += elapsedTime;
 
-        printf("\n");
+        printf("Tempo de busca: %.2f ns\n\n", elapsedTime); // Exibir o tempo em nanosegundos
     }
 
-    printf("Tempo total para buscar %d palavras %.6f segundos\n", numPalavras, totalTime);
-    printf("Tempo medio por palavra %.6f segundos\n", totalTime / numPalavras);
+    printf("Tempo total para buscar %d palavras: %.2f ns\n", numPalavras, totalTime);
+    printf("Tempo medio por palavra: %.2f ns\n", totalTime / numPalavras);
 
-    // Liberar memoria
+    // Liberar memória
     deallocateTree(&arvore);
 
     return 0;
