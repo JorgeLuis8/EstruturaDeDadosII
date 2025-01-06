@@ -17,16 +17,16 @@ int remove_unidade(Inglesbin **raiz, const char *palavraIngles, const char *unid
 
   if (*raiz)
   {
-    if (strcmp((*raiz)->palavraIngles, palavraIngles) == 0)
+    if (strcmp((*raiz)->englishWord, palavraIngles) == 0)
     {
       confirm = remover_lista_encadeada_unidade(&(*raiz)->unidades, unidade);
       if (!(*raiz)->unidades)
         confirm = removerPalavraIngles(raiz, palavraIngles);
     }
-    else if (strcmp((*raiz)->palavraIngles, palavraIngles) > 0)
-      confirm = remove_unidade(&(*raiz)->esq, palavraIngles, unidade);
+    else if (strcmp((*raiz)->englishWord, palavraIngles) > 0)
+      confirm = remove_unidade(&(*raiz)->leftChild, palavraIngles, unidade);
     else
-      confirm = remove_unidade(&(*raiz)->dir, palavraIngles, unidade);
+      confirm = remove_unidade(&(*raiz)->rightChild, palavraIngles, unidade);
   }
 
   return confirm;
@@ -67,12 +67,12 @@ int _remove_palavra_portugues_unidade(Inglesbin **raiz, const char *palavraPortu
   int confirm = 0;
   if (*raiz)
   {
-    confirm = _remove_palavra_portugues_unidade(&(*raiz)->esq, palavraPortugues, unidade);
-    confirm = _remove_palavra_portugues_unidade(&(*raiz)->dir, palavraPortugues, unidade) || confirm;
+    confirm = _remove_palavra_portugues_unidade(&(*raiz)->leftChild, palavraPortugues, unidade);
+    confirm = _remove_palavra_portugues_unidade(&(*raiz)->rightChild, palavraPortugues, unidade) || confirm;
     confirm = remover_lista_encadeada_unidade(&(*raiz)->unidades, unidade);
 
     if (!(*raiz)->unidades)
-      confirm = removerPalavraIngles(raiz, (*raiz)->palavraIngles);
+      confirm = removerPalavraIngles(raiz, (*raiz)->englishWord);
   }
 
   return confirm;

@@ -9,8 +9,8 @@ typedef struct listaEncadeadaUnidade
 
 typedef struct Inglesbin{
     ListaEncadeadaUnidade *unidades;
-    char *palavraIngles;
-    struct Inglesbin *dir,*esq;
+    char *englishWord;
+    struct Inglesbin *rightChild,*leftChild;
 } Inglesbin;
 
 typedef struct info {

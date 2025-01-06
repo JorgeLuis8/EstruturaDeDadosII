@@ -4,7 +4,7 @@
 typedef struct EnglishBinaryTree
 {
   char englishWord[50];
-  Unit *unitValues; // Lista encadeada de unidades
+  Unit *unitValues; 
   struct EnglishBinaryTree *left;
   struct EnglishBinaryTree *right;
 } BinaryTreeNode;
@@ -13,7 +13,7 @@ typedef struct EnglishBinaryTree
 typedef struct  RedBlackTreePT  RedBlackTreePT;
 BinaryTreeNode *initializeBinaryTreeNode(char *palavraIngles, int unidade);
 
-// Função para inserir uma palavra em inglês na arvore binaria de busca
+
 BinaryTreeNode *insertEnglishWord(BinaryTreeNode *root, char *palavraIngles, int unidade);
 
 void addEnglishTranslation(RedBlackTreePT *raiz, char *palavraIng, int unidade);

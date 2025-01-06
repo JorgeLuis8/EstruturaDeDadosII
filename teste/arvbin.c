@@ -9,11 +9,11 @@ Inglesbin *createNode(const char *palavraIngles, char *unidade)
     Inglesbin *novoNo = (Inglesbin *)malloc(sizeof(Inglesbin));
     if (novoNo != NULL)
     {
-        novoNo->palavraIngles = (char *)malloc(strlen(palavraIngles) + 1);
-        strcpy(novoNo->palavraIngles, palavraIngles);
+        novoNo->englishWord = (char *)malloc(strlen(palavraIngles) + 1);
+        strcpy(novoNo->englishWord, palavraIngles);
         novoNo->unidades = NULL;
         inserir_lista_encadeada_unidade(&(novoNo->unidades), unidade);
-        novoNo->esq = novoNo->dir = NULL;
+        novoNo->leftChild = novoNo->rightChild = NULL;
     }
     return novoNo;
 }
@@ -24,14 +24,14 @@ int insertpalavraIngles(Inglesbin **root, NodeInfo *informacao)
     int result = 0;
     if ((*root) == NULL)
     {
-        Inglesbin *new = createNode(informacao->englishWord->palavraIngles, informacao->englishWord->unidades->nome_unidade);
+        Inglesbin *new = createNode(informacao->englishWord->englishWord, informacao->englishWord->unidades->nome_unidade);
         *root = new;
         result = 1;
     }
-    else if (strcmp(informacao->englishWord->palavraIngles, (*root)->palavraIngles) < 0)
-        result = insertpalavraIngles(&(*root)->esq, informacao);
-    else if (strcmp(informacao->englishWord->palavraIngles, (*root)->palavraIngles) > 0)
-        result = insertpalavraIngles(&(*root)->dir, informacao);
+    else if (strcmp(informacao->englishWord->englishWord, (*root)->englishWord) < 0)
+        result = insertpalavraIngles(&(*root)->leftChild, informacao);
+    else if (strcmp(informacao->englishWord->englishWord, (*root)->englishWord) > 0)
+        result = insertpalavraIngles(&(*root)->rightChild, informacao);
     else
         result = inserir_lista_encadeada_unidade(&((*root)->unidades), informacao->englishWord->unidades->nome_unidade);
     
@@ -42,17 +42,17 @@ void printBinaryTree(Inglesbin *root)
 {
     if (root != NULL)
     {
-        printBinaryTree(root->esq); // Percorre a árvore à esquerda
+        printBinaryTree(root->leftChild); // Percorre a árvore à esquerda
         // Imprime a tradução de ingles associada à palavra em portugues
-        printf("Palavra em Ingles: %s \n", root->palavraIngles);
+        printf("Palavra em Ingles: %s \n", root->englishWord);
         show_lista_encadeada_unidade(root->unidades);
-        printBinaryTree(root->dir); // Percorre a árvore à direita
+        printBinaryTree(root->rightChild); // Percorre a árvore à direita
     }
 }
 
 int eh_Folha(Inglesbin *raiz)
 {
-    return (raiz->esq == NULL && raiz->dir == NULL);
+    return (raiz->leftChild == NULL && raiz->rightChild == NULL);
 }
 
 Inglesbin *soUmFilho(Inglesbin **raiz)
@@ -60,13 +60,13 @@ Inglesbin *soUmFilho(Inglesbin **raiz)
     Inglesbin *aux;
     aux = NULL;
 
-    if ((*raiz)->dir == NULL)
+    if ((*raiz)->rightChild == NULL)
     {
-        aux = (*raiz)->esq;
+        aux = (*raiz)->leftChild;
     }
-    else if ((*raiz)->esq == NULL)
+    else if ((*raiz)->leftChild == NULL)
     {
-        aux = (*raiz)->dir;
+        aux = (*raiz)->rightChild;
     }
 
     return aux;
@@ -79,8 +79,8 @@ Inglesbin *getMinimumChild(Inglesbin *raiz)
 
     if (raiz)
     {
-        if (raiz->esq)
-            aux = getMinimumChild(raiz->esq);
+        if (raiz->leftChild)
+            aux = getMinimumChild(raiz->leftChild);
     }
 
     return aux;
@@ -93,7 +93,7 @@ int removerPalavraIngles(Inglesbin **raiz, const char *palavra)
 
     if (*raiz)
     {
-        if (strcmp(palavra, (*raiz)->palavraIngles) == 0)
+        if (strcmp(palavra, (*raiz)->englishWord) == 0)
         {
             Inglesbin *aux = *raiz;
             existe = 1;
@@ -109,20 +109,20 @@ int removerPalavraIngles(Inglesbin **raiz, const char *palavra)
             }
             else
             {
-                endFilho = getMinimumChild((*raiz)->dir);
-                strcpy((*raiz)->palavraIngles, endFilho->palavraIngles);
+                endFilho = getMinimumChild((*raiz)->rightChild);
+                strcpy((*raiz)->englishWord, endFilho->englishWord);
                 (*raiz)->unidades = endFilho->unidades;
 
-                removerPalavraIngles(&(*raiz)->dir, endFilho->palavraIngles);
+                removerPalavraIngles(&(*raiz)->rightChild, endFilho->englishWord);
             }
         }
-        else if (strcmp(palavra, (*raiz)->palavraIngles) < 0)
+        else if (strcmp(palavra, (*raiz)->englishWord) < 0)
         {
-            existe = removerPalavraIngles(&(*raiz)->esq, palavra);
+            existe = removerPalavraIngles(&(*raiz)->leftChild, palavra);
         }
         else
         {
-            existe = removerPalavraIngles(&(*raiz)->dir, palavra);
+            existe = removerPalavraIngles(&(*raiz)->rightChild, palavra);
         }
     }
 
@@ -133,9 +133,9 @@ void clear_binary_tree(Inglesbin *raiz)
 {
     if (raiz)
     {
-        clear_binary_tree(raiz->esq);
-        clear_binary_tree(raiz->dir);
-        free(raiz->palavraIngles);
+        clear_binary_tree(raiz->leftChild);
+        clear_binary_tree(raiz->rightChild);
+        free(raiz->englishWord);
         free(raiz);
     }
 }

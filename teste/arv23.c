@@ -28,8 +28,8 @@ NodeInfo criaInfo(char *palavra, char *palavraIngles, char *unidade)
 
     // Estrutura de palavraIngles
     info.englishWord = malloc(sizeof(Inglesbin));
-    info.englishWord->palavraIngles = malloc(strlen(palavraIngles) + 1);
-    strcpy(info.englishWord->palavraIngles, palavraIngles);
+    info.englishWord->englishWord = malloc(strlen(palavraIngles) + 1);
+    strcpy(info.englishWord->englishWord, palavraIngles);
 
     info.englishWord->unidades = NULL;
     inserir_lista_encadeada_unidade(&(info.englishWord->unidades), unidade);
@@ -241,10 +241,10 @@ void imprimirTraducoes(Inglesbin *node, char *unidade, const char *palavraPortug
         if (buscar_lista_encadeada_unidade(node->unidades, unidade))
         {
             printf("Palavra em Portugues: %s\n", palavraPortugues);
-            printf("Palavra em ingles: %s\n", node->palavraIngles);
+            printf("Palavra em ingles: %s\n", node->englishWord);
         }
-        imprimirTraducoes(node->esq, unidade, palavraPortugues);
-        imprimirTraducoes(node->dir, unidade, palavraPortugues);
+        imprimirTraducoes(node->leftChild, unidade, palavraPortugues);
+        imprimirTraducoes(node->rightChild, unidade, palavraPortugues);
     }
 }
 
