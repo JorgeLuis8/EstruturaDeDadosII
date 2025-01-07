@@ -99,7 +99,7 @@ int main()
 {
     RedBlackTreePT *rootNode = NULL;
 
-    loadFile("C:/Users/purolight/Documents/GitHub/ED2-TRAB2/EstruturaDeDadosII/Trabalho_seguda_prova/text.txt", &rootNode);
+    loadFile("C:/Users/jorge/OneDrive/Documentos/GitHub/EstruturaDeDadosII/Trabalho_seguda_prova/Rubro-Negra/trabalhoEd2.txt", &rootNode);
 
     int option;
     char inputWord[50];
