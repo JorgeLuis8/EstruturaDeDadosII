@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvbin.c"
-#include "arvrb.c"
+#include "ingles.c"
+#include "portugues.c"
 #include "unidade.c"
 #include <ctype.h>
 
@@ -158,7 +158,7 @@ int main()
             scanf("%d", &unitValue);
 
          
-            removerPalavraPortuguesaPorUnidade(&rootNode, inputWord, unitValue);
+            deleteWordFromTreeByUnit(&rootNode, inputWord, unitValue);
 
             break;
 

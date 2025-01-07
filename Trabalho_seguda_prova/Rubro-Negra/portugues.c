@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvbin.h"
-#include "arvrb.h"
+#include "ingles.h"
+#include "portugues.h"
 #include "unidade.h"
 #define RED 1
 #define BLACK 0
@@ -514,7 +514,7 @@ void exibir_arvorebianria_dada_palavra_portuguesa(RedBlackTreePT *rootNode, char
         exibir_arvorebianria_dada_palavra_portuguesa(rootNode->right, portugueseWord);
     }
 }
-void removerPalavraPortuguesaPorUnidade(RedBlackTreePT **redBlackTreeRoot, char *portugueseWord, int unidade) {
+void deleteWordFromTreeByUnit(RedBlackTreePT **redBlackTreeRoot, char *portugueseWord, int unit) {
     int erro = 0; // Flag para indicar se há erro
 
     // Validação inicial
@@ -541,13 +541,13 @@ void removerPalavraPortuguesaPorUnidade(RedBlackTreePT **redBlackTreeRoot, char 
 
             while (currentNode != NULL) {
                 // Remove a unidade da palavra inglesa
-                Unit *novaLista = remove_unit(currentNode->unitValues, unidade);
+                Unit *novaLista = remove_unit(currentNode->unitValues, unit);
                 currentNode->unitValues = novaLista;
 
                 // Se a palavra inglesa não tem mais unidades, remova-a da árvore binária
                 if (currentNode->unitValues == NULL) {
-                    printf("Palavra '%s' na unidade %d ficou sem unidades. Removendo.\n", currentNode->englishWord, unidade);
-                    removeEnglishWord(&raizBST, currentNode->englishWord, unidade);
+                    printf("Palavra '%s' na unidade %d ficou sem unidades. Removendo.\n", currentNode->englishWord, unit);
+                    removeEnglishWord(&raizBST, currentNode->englishWord, unit);
                     currentNode = raizBST; // Reinicia a navegação a partir da raiz atualizada
                 } else {
                     // Percorre a árvore binária

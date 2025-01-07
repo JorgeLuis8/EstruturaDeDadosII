@@ -1,8 +1,8 @@
-#include "arvbin.h"
+#include "ingles.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvrb.h"
+#include "portugues.h"
 #include "unidade.h"
 
 BinaryTreeNode *initializeBinaryTreeNode(char *englishWord, int unit) {
@@ -170,37 +170,38 @@ int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int u
 
 void FindEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
     if (*rootNode != NULL) {
+        // Processa a subárvore esquerda
         FindEnglishTerm(&(*rootNode)->left, englishTerm, unit);
 
-        
         if ((*rootNode)->info.englishWordNode != NULL) {
-          
             BinaryTreeNode *currentNode = (*rootNode)->info.englishWordNode;
-            while (currentNode != NULL) {
+            int found = 0; // Flag para indicar se o termo foi encontrado
+
+            // Percorre a árvore binária associada
+            while (currentNode != NULL && !found) {
                 if (strcmp(currentNode->englishWord, englishTerm) == 0) {
-                   
                     Unit *novaLista = remove_unit(currentNode->unitValues, unit);
                     currentNode->unitValues = novaLista;
 
-                  
+                    // Se a palavra inglesa não tem mais unidades, remova-a da árvore binária
                     if (currentNode->unitValues == NULL) {
-                       
                         removeEnglishWord(&(*rootNode)->info.englishWordNode, englishTerm, unit);
                     }
-                    break; 
-                }
 
-
-                if (strcmp(englishTerm, currentNode->englishWord) < 0) {
+                    found = 1; // Termo encontrado e processado
+                } else if (strcmp(englishTerm, currentNode->englishWord) < 0) {
                     currentNode = currentNode->left;
                 } else {
                     currentNode = currentNode->right;
                 }
             }
         }
+
+        // Processa a subárvore direita
         FindEnglishTerm(&(*rootNode)->right, englishTerm, unit);
     }
 }
+
 
 void exibir_arvorebinaria(BinaryTreeNode *rootNode) {
     if (rootNode != NULL) {
