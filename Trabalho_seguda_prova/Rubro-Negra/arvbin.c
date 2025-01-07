@@ -118,54 +118,54 @@ BinaryTreeNode *minimumChildNode(BinaryTreeNode *rootNode)
     return aux;
 }
 
-int removeEnglishWord(BinaryTreeNode **rootNode, char *wordToRemove) {
-    int isFound = 0; 
-    BinaryTreeNode *lastChild = NULL;
+int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int unit) {
+    BinaryTreeNode *childNode = NULL;
+    int isFound = 0;
 
     if (*rootNode) {
         if (strcmp(wordToRemove, (*rootNode)->englishWord) == 0) {
-            isFound = 1;
-            printf("Removendo palavra: %s\n", wordToRemove);
             BinaryTreeNode *aux = *rootNode;
+            isFound = 1;
 
-            if (isLeafNodes(*rootNode)) {
-               
-                free_list(aux->unitValues);
-                free(aux);
-                *rootNode = NULL;
-            } else if ((lastChild = singleChildNode(*rootNode)) != NULL) {
-              
-                free_list(aux->unitValues);
-                free(aux);
-                *rootNode = lastChild;
-            } else {
-                
-                lastChild = minimumChildNode((*rootNode)->right);
-                strcpy((*rootNode)->englishWord, lastChild->englishWord);
+            // Atualiza a lista de unidades
+            Unit *newUnitList = remove_unit((*rootNode)->unitValues, unit);
 
-              
-                free_list((*rootNode)->unitValues);
-                (*rootNode)->unitValues = NULL;
+            if (newUnitList != (*rootNode)->unitValues) {
+                (*rootNode)->unitValues = newUnitList;
 
-               
-                Unit *currentUnit = lastChild->unitValues;
-                while (currentUnit != NULL) {
-                    Unit *novaUnidade = create_unit(currentUnit->unitValue);
-                    (*rootNode)->unitValues = insert_unit_sorted((*rootNode)->unitValues, novaUnidade);
-                    currentUnit = currentUnit->nextNode;
+                // Se a lista de unidades está vazia, remova o nó
+                if (newUnitList == NULL) {
+                    if (isLeafNodes(*rootNode)) {
+                        // Caso o nó seja uma folha
+                        free(aux);
+                        *rootNode = NULL;
+                    } else if ((childNode = singleChildNode(*rootNode)) != NULL) {
+                        // Caso o nó tenha um único filho
+                        free(aux);
+                        *rootNode = childNode;
+                    } else {
+                        // Caso o nó tenha dois filhos
+                        childNode = minimumChildNode((*rootNode)->right);
+                        strcpy((*rootNode)->englishWord, childNode->englishWord);
+                        (*rootNode)->unitValues = childNode->unitValues;
+
+                        // Remove o menor nó da subárvore direita
+                        removeEnglishWord(&(*rootNode)->right, childNode->englishWord, unit);
+                    }
                 }
-
-                removeEnglishWord(&(*rootNode)->right, lastChild->englishWord);
             }
         } else if (strcmp(wordToRemove, (*rootNode)->englishWord) < 0) {
-            isFound = removeEnglishWord(&(*rootNode)->left, wordToRemove);
+            // Busca na subárvore esquerda
+            isFound = removeEnglishWord(&(*rootNode)->left, wordToRemove, unit);
         } else {
-            isFound = removeEnglishWord(&(*rootNode)->right, wordToRemove);
+            // Busca na subárvore direita
+            isFound = removeEnglishWord(&(*rootNode)->right, wordToRemove, unit);
         }
     }
 
-    return isFound; 
+    return isFound;
 }
+
 
 
 void FindEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
@@ -185,7 +185,7 @@ void FindEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
                   
                     if (currentNode->unitValues == NULL) {
                        
-                        removeEnglishWord(&(*rootNode)->info.englishWordNode, englishTerm);
+                        removeEnglishWord(&(*rootNode)->info.englishWordNode, englishTerm, unit);
                     }
                     break; 
                 }
