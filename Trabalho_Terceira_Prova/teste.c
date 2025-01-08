@@ -8,15 +8,15 @@
 #define MAX_FUNCIONARIOS 1000
 
 typedef struct {
-    char matricula[7];  // Tamanho ajustado para 6 + 1 (terminador nulo)
-    char nome[50];
-    char funcao[20];
-    int salario;
-    bool ocupado;
-} Funcionario;
+    char Id[7];  // Tamanho ajustado para 6 + 1 (terminador nulo)
+    char userName[50];
+    char functionName[20];
+    int salary;
+    bool isOccupied;
+} Employee;
 
 // Função para realizar a rotação à esquerda
-void rotacao_esquerda(char *matricula) {
+void rotate_left(char *matricula) {
     char temp = matricula[0];
     for (int i = 0; i < 5; i++) {  // Rotação ajustada para tamanho 6
         matricula[i] = matricula[i + 1];
@@ -25,8 +25,8 @@ void rotacao_esquerda(char *matricula) {
 }
 
 // Função de hashing personalizada: Rotação e Extração
-int funcao_hashing_rotacao(char *matricula, int tamanho_tabela) {
-    rotacao_esquerda(matricula);
+int rotate_hash_function(char *matricula, int tamanho_tabela) {
+    rotate_left(matricula);
     int d2 = matricula[1] - '0';  // Segundo dígito
     int d4 = matricula[3] - '0';  // Quarto dígito
     int d6 = matricula[5] - '0';  // Sexto dígito
@@ -35,7 +35,7 @@ int funcao_hashing_rotacao(char *matricula, int tamanho_tabela) {
 }
 
 // Função de hashing: Fold Shift
-int funcao_hashing_fold_shift(char *matricula, int tamanho_tabela) {
+int hash_fold_and_shift(char *matricula, int tamanho_tabela) {
     int grupo1 = (matricula[0] - '0') * 100 + (matricula[2] - '0') * 10 + (matricula[5] - '0');
     int grupo2 = (matricula[1] - '0') * 100 + (matricula[3] - '0') * 10 + (matricula[4] - '0');
     int resultado = (grupo1 + grupo2) % tamanho_tabela;
@@ -137,7 +137,7 @@ int main() {
             inicializar_tabela(tabela2, tamanho_tabela);
         }
 
-        hash_func = (metodo == 1) ? funcao_hashing_rotacao : funcao_hashing_fold_shift;
+        hash_func = (metodo == 1) ? rotate_hash_function : hash_fold_and_shift;
 
         int colisoes = 0;
 
