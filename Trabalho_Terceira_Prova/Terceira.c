@@ -42,7 +42,7 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
     int prev[MAX_VERTICES];
     int visited[MAX_VERTICES] = {0};
     int n = g->numVertices;
-    int continueLoop = 1; // Variável para controlar o loop principal
+    int continueLoop = 1; 
 
     for (int i = 0; i < n; i++) {
         dist[i] = INF;
@@ -51,7 +51,7 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
     dist[start] = 0.0;
 
     int i = 0;
-    while (i < n && continueLoop) { // Substitui o for com um controle adicional
+    while (i < n && continueLoop) { 
         double minDist = INF;
         int u = -1;
 
@@ -63,7 +63,7 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
         }
 
         if (u == -1) {
-            continueLoop = 0; // Atualiza o controle para encerrar o loop
+            continueLoop = 0; 
         } else {
             visited[u] = 1;
 

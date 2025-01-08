@@ -38,7 +38,7 @@ int hash_fold_and_shift(char *matricula, int tamanho_tabela) {
 }
 
 int handle_rotation_collision(int indice, int i, char *matricula, int tamanho_tabela) {
-    int incremento = matricula[0] - '0'; // Primeiro dígito da matrícula
+    int incremento = matricula[0] - '0'; 
     return (indice + i * incremento) % tamanho_tabela;
 }
 
@@ -53,33 +53,32 @@ bool insertEmployee(Employee *tabela, Employee funcionario, int tamanho_tabela, 
     bool metodo_valido = (metodo == 1 || metodo == 2);
     int i = 0;
 
-    // Caso o método não seja válido, a inserção não será realizada
+ 
     if (!metodo_valido) {
         inserido = false;
     } else {
         while (i < tamanho_tabela && !inserido) {
             int posicao = 0;
 
-            // Calcula a posição com base no método de tratamento de colisão
+   
             if (metodo == 1) { 
                 posicao = handle_rotation_collision(indice, i, funcionario.Id, tamanho_tabela);
             } else if (metodo == 2) { 
                 posicao = handle_fold_shift_collision(indice, i, tamanho_tabela);
             }
 
-            // Verifica se a posição está desocupada
+    
             if (!tabela[posicao].isOccupied) {
                 tabela[posicao] = funcionario;
                 tabela[posicao].isOccupied = true;
                 inserido = true;
             } else {
-                (*colisoes)++; // Incrementa o contador de colisões
+                (*colisoes)++;
             }
 
-            i++; // Incrementa o contador de tentativas
+            i++; 
         }
 
-        // Caso não tenha sido possível inserir, usa a posição 0 como fallback
         if (!inserido) {
             tabela[0] = funcionario;
             tabela[0].isOccupied = true;
