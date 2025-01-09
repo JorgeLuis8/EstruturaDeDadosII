@@ -7,11 +7,13 @@ Web: teia, conexao;
 Structure: estrutura, organizacao;
 % Unidade 2
 Mistake: erro;
+Wheel: roda;
 Cycle: ciclo;
 Cooler: refrigerador;
 Community: comunidade, grupo;
 % Unidade 3
 Lock: cadeado;
+Car: carro;
 Fruit: fruta;
 Memory: memoria;
 Companion: companheiro;
