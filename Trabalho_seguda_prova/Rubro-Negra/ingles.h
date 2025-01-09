@@ -27,6 +27,6 @@ BinaryTreeNode *minimumChildNode(BinaryTreeNode *raiz);
 void printBinaryTree(BinaryTreeNode *root);
 
 int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int unit);
-void FindEnglishTerm(RedBlackTreePT **raiz, char *palavraIngles, int unidade);
+void RemoveUnitFromEnglishTerm(RedBlackTreePT **raiz, char *palavraIngles, int unidade);
 
 #endif

@@ -127,38 +127,37 @@ int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int u
             BinaryTreeNode *aux = *rootNode;
             isFound = 1;
 
-            // Atualiza a lista de unidades
             Unit *newUnitList = remove_unit((*rootNode)->unitValues, unit);
 
             if (newUnitList != (*rootNode)->unitValues) {
                 (*rootNode)->unitValues = newUnitList;
 
-                // Se a lista de unidades está vazia, remova o nó
+               
                 if (newUnitList == NULL) {
                     if (isLeafNodes(*rootNode)) {
-                        // Caso o nó seja uma folha
+                        
                         free(aux);
                         *rootNode = NULL;
                     } else if ((childNode = singleChildNode(*rootNode)) != NULL) {
-                        // Caso o nó tenha um único filho
+                        
                         free(aux);
                         *rootNode = childNode;
                     } else {
-                        // Caso o nó tenha dois filhos
+                       
                         childNode = minimumChildNode((*rootNode)->right);
                         strcpy((*rootNode)->englishWord, childNode->englishWord);
                         (*rootNode)->unitValues = childNode->unitValues;
 
-                        // Remove o menor nó da subárvore direita
+                      
                         removeEnglishWord(&(*rootNode)->right, childNode->englishWord, unit);
                     }
                 }
             }
         } else if (strcmp(wordToRemove, (*rootNode)->englishWord) < 0) {
-            // Busca na subárvore esquerda
+        
             isFound = removeEnglishWord(&(*rootNode)->left, wordToRemove, unit);
         } else {
-            // Busca na subárvore direita
+            
             isFound = removeEnglishWord(&(*rootNode)->right, wordToRemove, unit);
         }
     }
@@ -168,27 +167,26 @@ int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int u
 
 
 
-void FindEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
+void RemoveUnitFromEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
     if (*rootNode != NULL) {
-        // Processa a subárvore esquerda
-        FindEnglishTerm(&(*rootNode)->left, englishTerm, unit);
+        RemoveUnitFromEnglishTerm(&(*rootNode)->left, englishTerm, unit);
 
         if ((*rootNode)->info.englishWordNode != NULL) {
             BinaryTreeNode *currentNode = (*rootNode)->info.englishWordNode;
-            int found = 0; // Flag para indicar se o termo foi encontrado
+            int found = 0; 
 
-            // Percorre a árvore binária associada
+            
             while (currentNode != NULL && !found) {
                 if (strcmp(currentNode->englishWord, englishTerm) == 0) {
                     Unit *novaLista = remove_unit(currentNode->unitValues, unit);
                     currentNode->unitValues = novaLista;
 
-                    // Se a palavra inglesa não tem mais unidades, remova-a da árvore binária
+                   
                     if (currentNode->unitValues == NULL) {
                         removeEnglishWord(&(*rootNode)->info.englishWordNode, englishTerm, unit);
                     }
 
-                    found = 1; // Termo encontrado e processado
+                    found = 1; 
                 } else if (strcmp(englishTerm, currentNode->englishWord) < 0) {
                     currentNode = currentNode->left;
                 } else {
@@ -197,8 +195,7 @@ void FindEnglishTerm(RedBlackTreePT **rootNode, char *englishTerm, int unit) {
             }
         }
 
-        // Processa a subárvore direita
-        FindEnglishTerm(&(*rootNode)->right, englishTerm, unit);
+        RemoveUnitFromEnglishTerm(&(*rootNode)->right, englishTerm, unit);
     }
 }
 
