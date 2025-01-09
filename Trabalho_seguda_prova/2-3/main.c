@@ -142,7 +142,7 @@ int main()
 
     // Tentar remover a palavra em inglês da unidade especificada
     int removalResult = 0;
-    removalResult = Remove_palavra_ingles_unidade(&rootNode, userInput, unit);
+    removalResult = Remove_english_word_from_unit(&rootNode, userInput, unit);
 
     if (removalResult)
     {

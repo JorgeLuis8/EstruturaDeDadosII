@@ -288,82 +288,73 @@ void showEnglishTranslations(Inglesbin *englishRoot)
 }
 
 
-int Remove_palavra_ingles_unidade(PortugueseTree **raiz, const char *palavraIngles, int unidade)
+int Remove_english_word_from_unit(PortugueseTree **rootNode, const char *englishWord, int unit)
 {
-    int confirm = 1; // Indica se a remoção foi bem-sucedida
-    confirm = remove_palavra_ingles_unidade(*raiz, palavraIngles, unidade, raiz);
-    return confirm;
+    int result = 1; 
+    result = remove_english_word_by_unit(*rootNode, englishWord, unit, rootNode);
+    return result;
 }
 
-int remove_unidade(Inglesbin **raiz, const char *palavraIngles, int unidade)
+int remove_english_unit(Inglesbin **rootNode, const char *englishWord, int unit)
 {
-    int confirm = 1;
+    int result = 1;
 
-    if (*raiz)
+    if (*rootNode)
     {
-        // Se a palavra foi encontrada
-        if (strcmp((*raiz)->englishWord, palavraIngles) == 0)
+       
+        if (strcmp((*rootNode)->englishWord, englishWord) == 0)
         {
-            // Remove a unidade da lista
-            confirm = remover_lista_encadeada_unidade(&(*raiz)->unitList, unidade);
+            
+            result = remover_lista_encadeada_unidade(&(*rootNode)->unitList, unit);
 
-            // Se a lista de unidades ficou vazia, remove a palavra
-            if (!(*raiz)->unitList)
+            if (!(*rootNode)->unitList)
             {
-                confirm = removeEnglishWord(raiz, palavraIngles, unidade);
+                result = removeEnglishWord(rootNode, englishWord, unit);
             }
         }
-        else if (strcmp((*raiz)->englishWord, palavraIngles) > 0)
+        else if (strcmp((*rootNode)->englishWord, englishWord) > 0)
         {
-            // Busca na subárvore esquerda
-            confirm = remove_unidade(&(*raiz)->leftChild, palavraIngles, unidade);
+            result = remove_english_unit(&(*rootNode)->leftChild, englishWord, unit);
         }
         else
         {
-            // Busca na subárvore direita
-            confirm = remove_unidade(&(*raiz)->rightChild, palavraIngles, unidade);
+            result = remove_english_unit(&(*rootNode)->rightChild, englishWord, unit);
         }
     }
 
-    return confirm;
+    return result;
 }
 
-int remove_palavra_ingles_unidade(PortugueseTree *raiz, const char *palavraIngles, int unidade, PortugueseTree **top)
+int remove_english_word_by_unit(PortugueseTree *rootNode, const char *englishWord, int unit, PortugueseTree **newTopNode)
 {
-    int confirm = 0; // Indica se algo foi removido
+    int result = 0; 
 
-    if (raiz)
+    if (rootNode)
     {
-        // Percorre a subárvore esquerda
-        confirm = remove_palavra_ingles_unidade(raiz->left, palavraIngles, unidade, top);
+     
+        result = remove_english_word_by_unit(rootNode->left, englishWord, unit, newTopNode);
 
-        // Percorre a subárvore central
-        confirm = remove_palavra_ingles_unidade(raiz->cent, palavraIngles, unidade, top) || confirm;
+        result = remove_english_word_by_unit(rootNode->cent, englishWord, unit, newTopNode) || result;
 
-        // Se o nó tem dois elementos, processa info2
-        if (raiz->nInfos == 2)
+        if (rootNode->nInfos == 2)
         {
-            confirm = remove_palavra_ingles_unidade(raiz->right, palavraIngles, unidade, top) || confirm;
+            result = remove_english_word_by_unit(rootNode->right, englishWord, unit, newTopNode) || result;
 
-            // Remove a palavra em info2
-            confirm = remove_unidade(&(raiz->info2.englishWord), palavraIngles, unidade) || confirm;
+            result = remove_english_unit(&(rootNode->info2.englishWord), englishWord, unit) || result;
 
-            // Se a árvore binária associada a info2 ficou vazia, remove o nó do 2-3 tree
-            if (!raiz->info2.englishWord)
+            if (!rootNode->info2.englishWord)
             {
-                confirm = remove_node_from23_tree(top, raiz->info2.portugueseWord) || confirm;
+                result = remove_node_from23_tree(newTopNode, rootNode->info2.portugueseWord) || result;
             }
         }
 
-        // Processa info1
-        confirm = remove_unidade(&(raiz->info1.englishWord), palavraIngles, unidade) || confirm;
+        result = remove_english_unit(&(rootNode->info1.englishWord), englishWord, unit) || result;
 
-        // Se a árvore binária associada a info1 ficou vazia, remove o nó do 2-3 tree
-        if (!raiz->info1.englishWord)
+        if (!rootNode->info1.englishWord)
         {
-            confirm = remove_node_from23_tree(top, raiz->info1.portugueseWord) || confirm;
+            result = remove_node_from23_tree(newTopNode, rootNode->info1.portugueseWord) || result;
         }
     }
 
-    return confirm;
+    return result;
 }
