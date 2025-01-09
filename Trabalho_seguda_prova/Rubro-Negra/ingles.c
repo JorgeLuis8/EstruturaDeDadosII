@@ -57,7 +57,7 @@ void addEnglishTranslation(RedBlackTreePT *rootNode, char *englishWord, int unit
         BinaryTreeNode *novoRoot = insertEnglishWord(rootNode->info.englishWordNode, englishWord, unit);
         rootNode->info.englishWordNode = novoRoot;
     } else {
-        perror("Erro: Nó da árvore vermelho-preto é nulo.");
+        perror("Erro: No da árvore vermelho-preto e nulo.");
     }
 }
 
@@ -66,7 +66,7 @@ void printBinaryTree(BinaryTreeNode *root) {
         printBinaryTree(root->left);
 
 
-        printf("Palavra em inglês: %s\n", root->englishWord);
+        printf("Palavra em ingles: %s\n", root->englishWord);
 
         Unit *currentUnit = root->unitValues;
         printf("Unidades: ");
@@ -119,42 +119,36 @@ BinaryTreeNode *minimumChildNode(BinaryTreeNode *rootNode)
 }
 
 int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int unit) {
-    BinaryTreeNode *childNode = NULL;
-    int isFound = 0;
+    int isFound = 0; 
 
-    if (*rootNode) {
+    if (rootNode != NULL && *rootNode != NULL && wordToRemove != NULL) {
         if (strcmp(wordToRemove, (*rootNode)->englishWord) == 0) {
-            BinaryTreeNode *aux = *rootNode;
+           
             isFound = 1;
-
             Unit *newUnitList = remove_unit((*rootNode)->unitValues, unit);
+            (*rootNode)->unitValues = newUnitList;
 
-            if (newUnitList != (*rootNode)->unitValues) {
-                (*rootNode)->unitValues = newUnitList;
+            if (newUnitList == NULL) { 
+                BinaryTreeNode *nodeToRemove = *rootNode;
 
-               
-                if (newUnitList == NULL) {
-                    if (isLeafNodes(*rootNode)) {
-                        
-                        free(aux);
-                        *rootNode = NULL;
-                    } else if ((childNode = singleChildNode(*rootNode)) != NULL) {
-                        
-                        free(aux);
-                        *rootNode = childNode;
-                    } else {
-                       
-                        childNode = minimumChildNode((*rootNode)->right);
-                        strcpy((*rootNode)->englishWord, childNode->englishWord);
-                        (*rootNode)->unitValues = childNode->unitValues;
-
-                      
-                        removeEnglishWord(&(*rootNode)->right, childNode->englishWord, unit);
-                    }
+                if (isLeafNodes(*rootNode)) {
+                   
+                    free(nodeToRemove);
+                    *rootNode = NULL;
+                } else if ((nodeToRemove = singleChildNode(*rootNode)) != NULL) {
+                
+                    free(*rootNode);
+                    *rootNode = nodeToRemove;
+                } else {
+                
+                    BinaryTreeNode *successor = minimumChildNode((*rootNode)->right);
+                    strcpy((*rootNode)->englishWord, successor->englishWord);
+                    (*rootNode)->unitValues = successor->unitValues;
+                    removeEnglishWord(&(*rootNode)->right, successor->englishWord, unit);
                 }
             }
         } else if (strcmp(wordToRemove, (*rootNode)->englishWord) < 0) {
-        
+            
             isFound = removeEnglishWord(&(*rootNode)->left, wordToRemove, unit);
         } else {
             
@@ -164,6 +158,7 @@ int removeEnglishWord(BinaryTreeNode **rootNode, const char *wordToRemove, int u
 
     return isFound;
 }
+
 
 
 
@@ -205,7 +200,7 @@ void exibir_arvorebinaria(BinaryTreeNode *rootNode) {
         exibir_arvorebinaria(rootNode->left);
 
   
-        printf("Palavra em inglês: %s\n", rootNode->englishWord);
+        printf("Palavra em ingles: %s\n", rootNode->englishWord);
 
     
         Unit *currentUnit = rootNode->unitValues;
