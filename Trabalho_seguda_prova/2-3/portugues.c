@@ -918,6 +918,13 @@ int remove_node_from23_tree(PortugueseTree **root, char *nodeValue)
     return isDeleted;
 }
 
+void deleteString(char **str) {
+    if (*str != NULL) {
+        free(*str);
+        *str = NULL;  // Marca como liberada
+    }
+}
+
 
 
 void deleteInfo2_3(NodeInfo *nodeInfo)
@@ -925,7 +932,7 @@ void deleteInfo2_3(NodeInfo *nodeInfo)
     if (nodeInfo != NULL)
     {
         clear_binary_tree(nodeInfo->englishWord);
-        free(nodeInfo->portugueseWord);
+        deleteString(&nodeInfo->portugueseWord);
     }
 }
 
