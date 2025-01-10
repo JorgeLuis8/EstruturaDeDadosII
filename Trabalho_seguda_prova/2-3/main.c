@@ -140,7 +140,7 @@ int main()
     printf("Informe a unidade associada: ");
     scanf("%d", &unit); // Entrada da unidade
 
-    // Tentar remover a palavra em inglês da unidade especificada
+
     int removalResult = 0;
     removalResult = Remove_english_word_from_unit(&rootNode, userInput, unit);
 
