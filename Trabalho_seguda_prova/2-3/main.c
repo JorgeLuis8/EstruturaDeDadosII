@@ -138,7 +138,7 @@ int main()
             scanf("%d", &unit);
 
         
-            removalResult = remove_english_word_by_unit(rootNode, userInput, unit, &rootNode);
+            removalResult = remove_english_word(rootNode, userInput, unit, &rootNode);
 
             if (removalResult)
             {
