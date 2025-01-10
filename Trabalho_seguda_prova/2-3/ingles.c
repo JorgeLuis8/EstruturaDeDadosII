@@ -133,52 +133,33 @@ Inglesbin *getMinimumChild(Inglesbin *raiz)
     return aux;
 }
 
-int removeEnglishWord(Inglesbin **raiz, const char *englishWord, int unit)
-{
-    Inglesbin *childPointer = NULL;
-    int isExists = 0;
+int removeEnglishWord(Inglesbin **root, const char *englishWord, int unit) {
+    if (*root == NULL) {
+        printf("Erro: Palavra '%s' não encontrada na árvore.\n", englishWord);
+        return 0;
+    }
 
-    if (*raiz)
-    {
+    if (strcmp((*root)->englishWord, englishWord) == 0) {
+        if (find_unit((*root)->unitList, unit)) {
+            remove_unit(&(*root)->unitList, unit);
 
-        if (strcmp(englishWord, (*raiz)->englishWord) == 0)
-        {
-            Inglesbin *aux = *raiz;
-            isExists = 1;
-
-            if (isLeafNode(*raiz))
-            {
-                free(aux);
-                *raiz = NULL;
+            if ((*root)->unitList == NULL) { // Liberar nó apenas se não houver mais unidades
+                printf("Liberando nó com palavra: %s\n", (*root)->englishWord);
+                free((*root)->englishWord);
+                free(*root);
+                *root = NULL;
             }
-            else if ((childPointer = getSingleChild(*raiz)) != NULL)
-            {
-                free(aux);
-                *raiz = childPointer;
-            }
-            else
-            {
-                childPointer = getMinimumChild((*raiz)->rightChild);
-                strcpy((*raiz)->englishWord, childPointer->englishWord);
-                (*raiz)->unitList = childPointer->unitList;
-
-                removeEnglishWord(&(*raiz)->rightChild, childPointer->englishWord, unit);
-            }
-        }
-        else if (strcmp(englishWord, (*raiz)->englishWord) < 0)
-        {
-
-            isExists = removeEnglishWord(&(*raiz)->leftChild, englishWord, unit);
-        }
-        else
-        {
-
-            isExists = removeEnglishWord(&(*raiz)->rightChild, englishWord, unit);
+            return 1;
         }
     }
 
-    return isExists;
+    if (strcmp(englishWord, (*root)->englishWord) < 0) {
+        return removeEnglishWord(&(*root)->leftChild, englishWord, unit);
+    } else {
+        return removeEnglishWord(&(*root)->rightChild, englishWord, unit);
+    }
 }
+
 
 void clear_binary_tree(Inglesbin *rootNode)
 {
