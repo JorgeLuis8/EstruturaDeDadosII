@@ -92,7 +92,7 @@ void menu()
 int main()
 {
     PortugueseTree *rootNode = NULL;
-    PortugueseTree *parentNode = NULL;
+
 
     char userInput[50];
     int unit;
@@ -133,18 +133,29 @@ int main()
             printf("---------------------------------------------------------------\n");
             break;
 
-        case 3:
-            printf("\n---------------------------------------------------------------\n");
-            printf("Digite a palavra em ingles para remover: ");
-            scanf(" %[^\n]", userInput);
-            printf("Informe a unidade associada: ");
-            scanf("%d", &unit);
+     case 3:
+    printf("\n---------------------------------------------------------------\n");
+    printf("Digite a palavra em ingles para remover: ");
+    scanf(" %[^\n]", userInput); // Entrada da palavra em inglês
+    printf("Informe a unidade associada: ");
+    scanf("%d", &unit); // Entrada da unidade
 
-            removeEnglishTranslation(&rootNode, userInput, unit, &parentNode);
 
-            printf("\nPalavra '%s' removida com sucesso da unidade %d.\n", userInput, unit);
-            printf("---------------------------------------------------------------\n");
-            break;
+    int removalResult = 0;
+    removalResult = Remove_english_word_from_unit(&rootNode, userInput, unit);
+
+    if (removalResult)
+    {
+        printf("\nPalavra '%s' removida com sucesso da unidade %d.\n", userInput, unit);
+    }
+    else
+    
+    {
+        printf("\nFalha ao remover a palavra '%s' da unidade %d ou palavra não encontrada.\n", userInput, unit);
+    }
+    printf("---------------------------------------------------------------\n");
+    break;
+
 
         case 4:
             printf("\n---------------------------------------------------------------\n");
