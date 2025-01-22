@@ -6,6 +6,82 @@
 #include "ingles.c"
 #include "unidade.c"
 
+// Contadores globais para monitoramento de memoria
+size_t totalMemoryAllocated = 0;
+size_t totalMemoryFreed = 0;
+
+// Funcoes para monitorar alocacao e liberacao de memoria
+void *monitorMalloc(size_t size)
+{
+    void *ptr = malloc(size);
+    if (ptr != NULL)
+    {
+        totalMemoryAllocated += size;
+    }
+    return ptr;
+}
+
+void monitorFree(void *ptr, size_t size)
+{
+    if (ptr != NULL)
+    {
+        free(ptr);
+        totalMemoryFreed += size;
+    }
+}
+
+// Função createNode com monitoramento de memória
+PortugueseTree *createNode(NodeInfo *nodeInfo, PortugueseTree *leftChild, PortugueseTree *middleChild)
+{
+    // Aloca memória usando a função monitorada
+    PortugueseTree *no = (PortugueseTree *)monitorMalloc(sizeof(PortugueseTree));
+    if (no == NULL)
+    {
+        printf("Erro: Falha na alocacao de memoria para o no.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    no->info1 = *nodeInfo;        // Copia as informações do nó principal (info1).
+    no->info2.englishWord = NULL; // Inicializa a informação secundária como nula.
+    no->info2.portugueseWord = NULL;
+    no->left = leftChild;   // Define o filho esquerdo.
+    no->cent = middleChild; // Define o filho central.
+    no->right = NULL;       // Inicializa o filho direito como NULL.
+    no->nInfos = 1;         // Define que o nó possui apenas uma informação inicialmente.
+
+    printf("Memoria alocada para o no: %zu bytes\n", sizeof(PortugueseTree));
+    printf("Memoria total alocada ate agora: %zu bytes\n", totalMemoryAllocated);
+
+    return no; // Retorna o ponteiro para o novo nó criado.
+}
+
+// Funcao de desalocacao da arvore com monitoramento de memoria
+void deallocateTree(PortugueseTree **node)
+{
+    if (*node != NULL)
+    {
+        // Desaloca recursivamente a subárvore esquerda.
+        deallocateTree(&((*node)->left));
+
+        // Desaloca recursivamente a subárvore central.
+        deallocateTree(&((*node)->cent));
+
+        // Se o nó possui duas informações, remove a segunda e desaloca a subárvore direita.
+        if ((*node)->nInfos == 2)
+        {
+            removeNodeInfo(&((*node)->info2)); // Supondo que esta função também libera recursos internos
+            deallocateTree(&((*node)->right));
+        }
+
+        // Remove a primeira informação e libera o nó atual.
+        removeNodeInfo(&((*node)->info1));          // Supondo que esta função também libera recursos internos
+        monitorFree(*node, sizeof(PortugueseTree)); // Usando monitorFree para rastrear a memória liberada
+
+        // Define o ponteiro para nulo para evitar acessos inválidos.
+        *node = NULL;
+    }
+}
+
 // Funcao para embaralhar as palavras (para ordem aleatoria)
 void shuffle(char *array[], int n)
 {
@@ -116,31 +192,23 @@ int main()
         insertPortugueseTerm(&arvore, palavras[i], "english_translation", i % 3 + 1);
     }
     printf("Palavras inseridas com sucesso.\n\n");
+        // Vetor de palavras para busca
+    //   char *palavrasBuscar[] = {
+    //     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
+    //     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
+    //     "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
+    //     "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
+    //     "submarino", "tempo", "terra", "universo", "vento", "vulcao"
+    // };
+    char *palavrasBuscar[] = {
+        "vulcao", "vento", "universo", "terra", "tempo", "submarino",
+        "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
+        "neve", "montanha", "mar", "lua", "galaxia", "floresta",
+        "estrela-do-mar", "estrela", "deserto", "chuva", "constelacao",
+        "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
+    };
 
-// char *palavrasBuscar[] = {
-//     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
-//     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
-//     "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
-//     "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
-//     "submarino", "tempo", "terra", "universo", "vento", "vulcao"
-// };
-// char *palavrasBuscar[] = {
-//     "vulcao", "vento", "universo", "terra", "tempo", "submarino",
-//     "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
-//     "neve", "montanha", "mar", "lua", "galaxia", "floresta",
-//     "estrela-do-mar", "estrela", "deserto", "chuva", "constelacao",
-//     "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
-// };
-
-char *palavrasBuscar[] = {
-    "cachoeira", "planicie", "bicicleta", "universo", "lua", "vento",
-    "estrela", "mar", "cometa", "submarino", "chuva", "galaxia",
-    "computador", "planeta", "cidade", "constelacao", "montanha", "areia",
-    "vulcao", "tempo", "terra", "rio", "estrela-do-mar", "floresta",
-    "aviacao", "nuvem", "carro", "deserto", "neve", "oceano"
-};
-
-
+ 
     int numBuscar = sizeof(palavrasBuscar) / sizeof(palavrasBuscar[0]);
 
     // Realizando as buscas
@@ -177,6 +245,21 @@ char *palavrasBuscar[] = {
 
     printf("Tempo total para buscar palavras: %.2f ns\n", totalTime);
     printf("Tempo medio por palavra: %.2f ns\n", totalTime / numBuscar);
+
+    // Relatorio de gerenciamento de memoria
+    printf("\nGerenciamento de Memoria:\n");
+    printf("Total de memoria alocada: %zu bytes\n", totalMemoryAllocated);
+    printf("Total de memoria liberada: %zu bytes\n", totalMemoryFreed);
+
+    if (totalMemoryAllocated == totalMemoryFreed)
+    {
+        printf("Memoria gerenciada corretamente. Nenhum vazamento detectado.\n");
+    }
+    else
+    {
+        printf("Atencao: Vazamento de memoria detectado! (%zu bytes nao liberados)\n",
+               totalMemoryAllocated - totalMemoryFreed);
+    }
 
     // Liberar memoria
     printf("\nLimpando memoria...\n");

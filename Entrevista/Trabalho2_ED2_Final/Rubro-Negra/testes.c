@@ -6,6 +6,19 @@
 #include "ingles.c"
 #include "portugues.c"
 #include "unidade.c"
+// Contadores globais para monitoramento de memoria
+// size_t totalMemoryAllocated = 0;
+// size_t totalMemoryFreed = 0;
+
+// Função de alocação de memória com monitoramento
+
+// Função de desalocação de memória com monitoramento
+void monitorFree(void *ptr, size_t size) {
+    if (ptr != NULL) {
+        free(ptr);
+        totalMemoryFreed += size;
+    }
+}
 
 // Função para embaralhar palavras (ordem aleatória)
 void shuffle(char *array[], int n) {
@@ -46,13 +59,12 @@ int main() {
     RedBlackTreePT *arvore = NULL;
 
     // Vetor de palavras para inserção
-    char *palavras[] = {
-        "carro", "automovel", "bicicleta", "deserto", "estrela", "floresta",
-        "galaxia", "montanha", "oceano", "planicie", "submarino", "tempo",
-        "universo", "vento", "vulcao", "chuva", "nuvem", "sol", "lua", "mar",
-        "rio", "cachoeira", "cidade", "neve", "areia", "terra", "planeta",
-        "cometa", "estrela-do-mar", "constelacao"
-    };
+   char *palavras[] = {
+        "carro", "automovel", "erro", "engano", "roda", "ventilador", "soprador",
+        "teia", "conexao", "estrutura", "organizacao", "cadeado", "fruta",
+        "memoria", "companheiro", "documento", "esfera", "fio", "dispositivo",
+        "vidro", "escrivaninha", "cursor", "acordo", "estrela", "mar", "rio",
+        "cachoeira", "tempo", "vento", "chuva"};
     int numPalavras = sizeof(palavras) / sizeof(palavras[0]);
 
     // Escolher a ordem
@@ -82,19 +94,20 @@ int main() {
         printf("Escolha inválida. Usando ordem original.\n");
     }
 
-    // Inserindo palavras na árvore
+    // Inserir palavras na árvore
     for (int i = 0; i < numPalavras; i++) {
         insertPortugueseWord(&arvore, palavras[i], "tradução", i % 3 + 1);
     }
 
-//     // Vetor de palavras para busca
-//   char *palavrasBuscar[] = {
-//     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
-//     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
-//     "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
-//     "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
-//     "submarino", "tempo", "terra", "universo", "vento", "vulcao"
-// };
+    // Vetor de palavras para busca
+      // Vetor de palavras para busca
+  char *palavrasBuscar[] = {
+    "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
+    "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
+    "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
+    "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
+    "submarino", "tempo", "terra", "universo", "vento", "vulcao"
+};
 // char *palavrasBuscar[] = {
 //     "vulcao", "vento", "universo", "terra", "tempo", "submarino",
 //     "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
@@ -102,14 +115,6 @@ int main() {
 //     "estrela-do-mar", "estrela", "deserto", "chuva", "constelacao",
 //     "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
 // };
-
-char *palavrasBuscar[] = {
-    "cachoeira", "planicie", "bicicleta", "universo", "lua", "vento",
-    "estrela", "mar", "cometa", "submarino", "chuva", "galaxia",
-    "computador", "planeta", "cidade", "constelacao", "montanha", "areia",
-    "vulcao", "tempo", "terra", "rio", "estrela-do-mar", "floresta",
-    "aviacao", "nuvem", "carro", "deserto", "neve", "oceano"
-};
     int numBuscar = sizeof(palavrasBuscar) / sizeof(palavrasBuscar[0]);
 
     // Realizando buscas e calculando o tempo
@@ -139,10 +144,30 @@ char *palavrasBuscar[] = {
     printf("Tempo total para buscar palavras: %.2f ns\n", totalTime);
     printf("Tempo médio por palavra: %.2f ns\n", totalTime / numBuscar);
 
+    // Relatório de gerenciamento de memória
+    printf("\nGerenciamento de Memória:\n");
+    printf("Total de memória alocada: %zu bytes\n", totalMemoryAllocated);
+    printf("Total de memória liberada: %zu bytes\n", totalMemoryFreed);
+
+    if (totalMemoryAllocated == totalMemoryFreed) {
+        printf("Memória gerenciada corretamente. Nenhum vazamento detectado.\n");
+    } else {
+        printf("Atenção: Vazamento de memória detectado! (%zu bytes não liberados)\n",
+               totalMemoryAllocated - totalMemoryFreed);
+    }
+
     // Limpeza da árvore
     printf("Limpando memória...\n");
-
+    //deallocateTree(&arvore);
     printf("Memória liberada.\n");
 
     return 0;
 }
+
+
+
+
+
+
+
+

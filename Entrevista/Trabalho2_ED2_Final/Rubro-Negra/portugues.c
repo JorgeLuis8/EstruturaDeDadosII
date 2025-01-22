@@ -6,6 +6,8 @@
 #include "unidade.h"
 #define RED 1
 #define BLACK 0
+size_t totalMemoryAllocated = 0;
+size_t totalMemoryFreed = 0;
 
 // Função para criar e inicializar informações para um nó da árvore
 NodeData createInfo(char *portugueseWord, char *englishWord, int unit) {
@@ -55,16 +57,34 @@ int insertPortugueseWord(RedBlackTreePT **redBlackTree, char *portugueseWord, ch
     // Retorna se a palavra foi inserida ou tratada com sucesso
     return isInserted;
 }
+void *monitorMalloc(size_t size) {
+    void *ptr = malloc(size);
+    if (ptr != NULL) {
+        totalMemoryAllocated += size;
+    }
+    return ptr;
+}
 
 // Função para criar um novo nó na árvore vermelho-preta
+// Função para criar um novo nó na árvore vermelho-preta com monitoramento de memória
 RedBlackTreePT *createNode(NodeData *nodeData)
 {
-    // Aloca memória para o novo nó da árvore
-    RedBlackTreePT *newRedBlackTree = (RedBlackTreePT *)malloc(sizeof(RedBlackTreePT));
+    // Aloca memória para o novo nó da árvore usando a função monitorada
+    RedBlackTreePT *newRedBlackTree = (RedBlackTreePT *)monitorMalloc(sizeof(RedBlackTreePT));
+    
+    // Se a alocação falhar, retornamos NULL
+    if (newRedBlackTree == NULL)
+    {
+        printf("Erro: Falha na alocação de memória para o nó.\n");
+        exit(EXIT_FAILURE);
+    }
+
     // Copia os dados do nó para o novo nó
     newRedBlackTree->info = *nodeData;
+
     // Define a cor do novo nó como vermelho (1)
     newRedBlackTree->color = 1; // Vermelho por padrão em árvores vermelho-pretas
+
     // Inicializa os filhos esquerdo e direito como NULL
     newRedBlackTree->left = NULL;
     newRedBlackTree->right = NULL;

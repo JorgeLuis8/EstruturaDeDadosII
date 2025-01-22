@@ -98,19 +98,19 @@ NodeInfo createInfo(char *portugueseWord, char *englishWord, int unit)
 }
 
 // Função para criar um novo nó na árvore 2-3.
-PortugueseTree *createNode(NodeInfo *nodeInfo, PortugueseTree *leftChild, PortugueseTree *middlechild)
-{
-    PortugueseTree *no = (PortugueseTree *)malloc(sizeof(PortugueseTree)); // Aloca memória para o novo nó.
-    no->info1 = *nodeInfo; // Copia as informações do nó principal (info1).
-    no->info2.englishWord = NULL; // Inicializa a informação secundária como nula.
-    no->info2.portugueseWord = NULL;
-    no->left = leftChild; // Define o filho esquerdo.
-    no->cent = middlechild; // Define o filho central.
-    no->right = NULL; // Inicializa o filho direito como NULL.
-    no->nInfos = 1; // Define que o nó possui apenas uma informação inicialmente.
+// PortugueseTree *createNode(NodeInfo *nodeInfo, PortugueseTree *leftChild, PortugueseTree *middlechild)
+// {
+//     PortugueseTree *no = (PortugueseTree *)malloc(sizeof(PortugueseTree)); // Aloca memória para o novo nó.
+//     no->info1 = *nodeInfo; // Copia as informações do nó principal (info1).
+//     no->info2.englishWord = NULL; // Inicializa a informação secundária como nula.
+//     no->info2.portugueseWord = NULL;
+//     no->left = leftChild; // Define o filho esquerdo.
+//     no->cent = middlechild; // Define o filho central.
+//     no->right = NULL; // Inicializa o filho direito como NULL.
+//     no->nInfos = 1; // Define que o nó possui apenas uma informação inicialmente.
 
-    return no; // Retorna o ponteiro para o novo nó criado.
-}
+//     return no; // Retorna o ponteiro para o novo nó criado.
+// }
 
 
 // Atualiza um nó existente na árvore 2-3 quando um novo valor é adicionado ao nó.
@@ -1006,28 +1006,28 @@ void removeNodeInfo(NodeInfo *nodeInfo) {
     }
 }
 
-void deallocateTree(PortugueseTree **node) {
-    if (*node != NULL) {
-        // Desaloca recursivamente a subárvore esquerda.
-        deallocateTree(&((*node)->left));
+// void deallocateTree(PortugueseTree **node) {
+//     if (*node != NULL) {
+//         // Desaloca recursivamente a subárvore esquerda.
+//         deallocateTree(&((*node)->left));
 
-        // Desaloca recursivamente a subárvore central.
-        deallocateTree(&((*node)->cent));
+//         // Desaloca recursivamente a subárvore central.
+//         deallocateTree(&((*node)->cent));
 
-        // Se o nó possui duas informações, remove a segunda e desaloca a subárvore direita.
-        if ((*node)->nInfos == 2) {
-            removeNodeInfo(&((*node)->info2));
-            deallocateTree(&((*node)->right));
-        }
+//         // Se o nó possui duas informações, remove a segunda e desaloca a subárvore direita.
+//         if ((*node)->nInfos == 2) {
+//             removeNodeInfo(&((*node)->info2));
+//             deallocateTree(&((*node)->right));
+//         }
 
-        // Remove a primeira informação e libera o nó atual.
-        removeNodeInfo(&((*node)->info1));
-        free(*node);
+//         // Remove a primeira informação e libera o nó atual.
+//         removeNodeInfo(&((*node)->info1));
+//         free(*node);
 
-        // Define o ponteiro para nulo para evitar acessos inválidos.
-        *node = NULL;
-    }
-}
+//         // Define o ponteiro para nulo para evitar acessos inválidos.
+//         *node = NULL;
+//     }
+// }
 
 void removeEnglishTranslation(PortugueseTree **rootNode, char *englishWord, int unit, PortugueseTree **parentNode) {
     if (*rootNode != NULL) {
