@@ -3,484 +3,348 @@ Ordenado RB:
 
 
 Buscando: areia
-Caminho percorrido: left -> left -> left -> left -> info ->
-Palavra encontrada: areia
-Tempo de busca: 678200.00 ns
+Caminho percorrido: left -> left -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 397000.00 ns
 
 Buscando: aviacao
-Caminho percorrido: left -> left -> left -> right -> left -> NULL
+Caminho percorrido: left -> left -> left -> right -> NULL
 Palavra n├úo encontrada.
-Tempo de busca: 807000.00 ns
+Tempo de busca: 322400.00 ns
 
 Buscando: bicicleta
-Caminho percorrido: left -> left -> left -> right -> info ->
-Palavra encontrada: bicicleta
-Tempo de busca: 678800.00 ns
+Caminho percorrido: left -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 303100.00 ns
 
 Buscando: cachoeira
 Caminho percorrido: left -> left -> info ->
 Palavra encontrada: cachoeira
-Tempo de busca: 494600.00 ns
+Tempo de busca: 391900.00 ns
 
 Buscando: carro
-Caminho percorrido: left -> left -> right -> left -> left -> info ->
+Caminho percorrido: left -> left -> right -> info ->
 Palavra encontrada: carro
-Tempo de busca: 926300.00 ns
+Tempo de busca: 259100.00 ns
 
 Buscando: cidade
-Caminho percorrido: left -> left -> right -> left -> right -> info ->
-Palavra encontrada: cidade
-Tempo de busca: 1605700.00 ns
+Caminho percorrido: left -> right -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1664300.00 ns
 
 Buscando: cometa
-Caminho percorrido: left -> left -> right -> info ->
-Palavra encontrada: cometa
-Tempo de busca: 1553100.00 ns
+Caminho percorrido: left -> right -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 916400.00 ns
 
 Buscando: computador
-Caminho percorrido: left -> left -> right -> right -> left -> NULL
+Caminho percorrido: left -> right -> left -> left -> right -> NULL
 Palavra n├úo encontrada.
-Tempo de busca: 1414900.00 ns
+Tempo de busca: 992500.00 ns
 
 Buscando: constelacao
-Caminho percorrido: left -> left -> right -> right -> info ->
-Palavra encontrada: constelacao
-Tempo de busca: 1355800.00 ns
+Caminho percorrido: left -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 770900.00 ns
 
 Buscando: chuva
-Caminho percorrido: left -> left -> right -> left -> info ->
+Caminho percorrido: left -> info ->
 Palavra encontrada: chuva
-Tempo de busca: 4013200.00 ns
+Tempo de busca: 687800.00 ns
 
 Buscando: deserto
-Caminho percorrido: left -> info ->
-Palavra encontrada: deserto
-Tempo de busca: 1041200.00 ns
+Caminho percorrido: left -> right -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 724800.00 ns
 
 Buscando: estrela
-Caminho percorrido: left -> right -> left -> left -> left -> info ->
+Caminho percorrido: right -> left -> left -> right -> left -> info ->
 Palavra encontrada: estrela
-Tempo de busca: 1548900.00 ns
+Tempo de busca: 889800.00 ns
 
 Buscando: estrela-do-mar
-Caminho percorrido: left -> right -> left -> left -> info ->
-Palavra encontrada: estrela-do-mar
-Tempo de busca: 1582900.00 ns
+Caminho percorrido: right -> left -> left -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 807100.00 ns
 
 Buscando: floresta
-Caminho percorrido: left -> right -> left -> left -> right -> info ->
-Palavra encontrada: floresta
-Tempo de busca: 1560400.00 ns
+Caminho percorrido: right -> left -> right -> left -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1135900.00 ns
 
 Buscando: galaxia
-Caminho percorrido: left -> right -> left -> info ->
-Palavra encontrada: galaxia
-Tempo de busca: 1333100.00 ns
+Caminho percorrido: right -> left -> right -> left -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 953200.00 ns
 
 Buscando: lua
-Caminho percorrido: left -> right -> left -> right -> info ->
-Palavra encontrada: lua
-Tempo de busca: 1434100.00 ns
+Caminho percorrido: right -> left -> right -> left -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 935100.00 ns
 
 Buscando: mar
-Caminho percorrido: left -> right -> info ->
+Caminho percorrido: right -> left -> right -> left -> left -> info ->
 Palavra encontrada: mar
-Tempo de busca: 4268800.00 ns
+Tempo de busca: 1100200.00 ns
 
 Buscando: montanha
-Caminho percorrido: left -> right -> right -> left -> info ->
-Palavra encontrada: montanha
-Tempo de busca: 1368800.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 979600.00 ns
 
 Buscando: neve
-Caminho percorrido: left -> right -> right -> info ->
-Palavra encontrada: neve
-Tempo de busca: 1306000.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 868100.00 ns
 
 Buscando: nuvem
-Caminho percorrido: left -> right -> right -> right -> left -> info ->
-Palavra encontrada: nuvem
-Tempo de busca: 1767000.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 892300.00 ns
 
 Buscando: oceano
-Caminho percorrido: left -> right -> right -> right -> info ->
-Palavra encontrada: oceano
-Tempo de busca: 1423900.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 926500.00 ns
 
 Buscando: planeta
-Caminho percorrido: info ->
-Palavra encontrada: planeta
-Tempo de busca: 1154800.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 974000.00 ns
 
 Buscando: planicie
-Caminho percorrido: right -> left -> left -> info ->
-Palavra encontrada: planicie
-Tempo de busca: 1332200.00 ns
+Caminho percorrido: right -> left -> right -> left -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 950500.00 ns
 
 Buscando: rio
-Caminho percorrido: right -> left -> info ->
+Caminho percorrido: right -> left -> right -> left -> right -> info ->
 Palavra encontrada: rio
-Tempo de busca: 984400.00 ns
+Tempo de busca: 859400.00 ns
 
 Buscando: sol
-Caminho percorrido: right -> left -> right -> left -> info ->
-Palavra encontrada: sol
-Tempo de busca: 25571600.00 ns
+Caminho percorrido: right -> left -> right -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 848100.00 ns
 
 Buscando: submarino
-Caminho percorrido: right -> left -> right -> info ->
-Palavra encontrada: submarino
-Tempo de busca: 2843100.00 ns
+Caminho percorrido: right -> left -> right -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 851100.00 ns
 
 Buscando: tempo
 Caminho percorrido: right -> info ->
 Palavra encontrada: tempo
-Tempo de busca: 1249700.00 ns
+Tempo de busca: 2673700.00 ns
 
 Buscando: terra
-Caminho percorrido: right -> right -> left -> info ->
-Palavra encontrada: terra
-Tempo de busca: 1542000.00 ns
+Caminho percorrido: right -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 839000.00 ns
 
 Buscando: universo
+Caminho percorrido: right -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 722200.00 ns
+
+Buscando: vento
 Caminho percorrido: right -> right -> info ->
-Palavra encontrada: universo
-Tempo de busca: 7880300.00 ns
+Palavra encontrada: vento
+Tempo de busca: 721700.00 ns
+
+Buscando: vulcao
+Caminho percorrido: right -> right -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 773500.00 ns
+
+Tempo total para buscar palavras: 27131200.00 ns
+Tempo m├®dio por palavra: 875200.00 ns
+
+Gerenciamento de Mem├│ria:
+Total de mem├│ria alocada: 600 bytes
+Total de mem├│ria liberada: 0 bytes
+Aten├º├úo: Vazamento de mem├│ria detectado! (600 bytes n├úo liberados)
+
+
+
+
+
+
+
+
+
+Decrescente:
+Buscando: vulcao
+Caminho percorrido: right -> right -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 565300.00 ns
 
 Buscando: vento
 Caminho percorrido: right -> right -> right -> left -> info ->
 Palavra encontrada: vento
-Tempo de busca: 42359700.00 ns
-
-Buscando: vulcao
-Caminho percorrido: right -> right -> right -> info ->
-Palavra encontrada: vulcao
-Tempo de busca: 1844800.00 ns
-
-Tempo total para buscar palavras: 118925300.00 ns
-
-
-
-
-
-
-
-
-
-decrescentr: 
-Buscando: vulcao
-Caminho percorrido: right -> right -> right -> info ->
-Palavra encontrada: vulcao
-Tempo de busca: 711400.00 ns
-
-Buscando: vento
-Caminho percorrido: right -> right -> info ->
-Palavra encontrada: vento
-Tempo de busca: 455500.00 ns
+Tempo de busca: 556900.00 ns
 
 Buscando: universo
-Caminho percorrido: right -> right -> left -> info ->
-Palavra encontrada: universo
-Tempo de busca: 527000.00 ns
+Caminho percorrido: right -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 548800.00 ns
 
 Buscando: terra
-Caminho percorrido: right -> right -> left -> left -> info ->
-Palavra encontrada: terra
-Tempo de busca: 611800.00 ns
+Caminho percorrido: right -> right -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 10932800.00 ns
 
 Buscando: tempo
-Caminho percorrido: right -> info ->
+Caminho percorrido: right -> right -> left -> info ->
 Palavra encontrada: tempo
-Tempo de busca: 355000.00 ns
+Tempo de busca: 483600.00 ns
 
 Buscando: submarino
-Caminho percorrido: right -> left -> right -> info ->
-Palavra encontrada: submarino
-Tempo de busca: 1315700.00 ns
+Caminho percorrido: right -> right -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1706300.00 ns
 
 Buscando: sol
-Caminho percorrido: right -> left -> info ->
-Palavra encontrada: sol
-Tempo de busca: 1214600.00 ns
+Caminho percorrido: right -> left -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 5733300.00 ns
 
 Buscando: rio
-Caminho percorrido: right -> left -> left -> right -> info ->
+Caminho percorrido: right -> left -> info ->
 Palavra encontrada: rio
-Tempo de busca: 2719200.00 ns
+Tempo de busca: 1457000.00 ns
 
 Buscando: planicie
-Caminho percorrido: right -> left -> left -> right -> left -> info ->
-Palavra encontrada: planicie
-Tempo de busca: 1859700.00 ns
+Caminho percorrido: right -> left -> left -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 2038400.00 ns
 
 Buscando: planeta
-Caminho percorrido: right -> left -> left -> info ->
-Palavra encontrada: planeta
-Tempo de busca: 32754800.00 ns
+Caminho percorrido: right -> left -> left -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1790700.00 ns
 
 Buscando: oceano
-Caminho percorrido: right -> left -> left -> left -> info ->
-Palavra encontrada: oceano
-Tempo de busca: 1000400.00 ns
+Caminho percorrido: right -> left -> left -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 975400.00 ns
 
 Buscando: nuvem
-Caminho percorrido: info ->
-Palavra encontrada: nuvem
-Tempo de busca: 1001900.00 ns
+Caminho percorrido: right -> left -> left -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1413800.00 ns
 
 Buscando: neve
-Caminho percorrido: left -> right -> right -> info ->
-Palavra encontrada: neve
-Tempo de busca: 2404200.00 ns
+Caminho percorrido: right -> left -> left -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1200500.00 ns
 
 Buscando: montanha
-Caminho percorrido: left -> right -> info ->
-Palavra encontrada: montanha
-Tempo de busca: 7509000.00 ns
-
-Buscando: mar
-Caminho percorrido: left -> right -> left -> right -> info ->
-Palavra encontrada: mar
-Tempo de busca: 1501800.00 ns
-
-Buscando: lua
-Caminho percorrido: left -> right -> left -> info ->
-Palavra encontrada: lua
-Tempo de busca: 2256700.00 ns
-
-Buscando: galaxia
-Caminho percorrido: left -> right -> left -> left -> info ->
-Palavra encontrada: galaxia
-Tempo de busca: 1464100.00 ns
-
-Buscando: floresta
-Caminho percorrido: left -> info ->
-Palavra encontrada: floresta
-Tempo de busca: 2001200.00 ns
-
-Buscando: estrela-do-mar
-Caminho percorrido: left -> left -> right -> right -> info ->
-Palavra encontrada: estrela-do-mar
-Tempo de busca: 1555700.00 ns
-
-Buscando: estrela
-Caminho percorrido: left -> left -> right -> right -> left -> info ->
-Palavra encontrada: estrela
-Tempo de busca: 16819300.00 ns
-
-Buscando: deserto
-Caminho percorrido: left -> left -> right -> info ->
-Palavra encontrada: deserto
-Tempo de busca: 3424600.00 ns
-
-Buscando: chuva
-Caminho percorrido: left -> left -> info ->
-Palavra encontrada: chuva
-Tempo de busca: 1398800.00 ns
-
-Buscando: constelacao
-Caminho percorrido: left -> left -> right -> left -> right -> info ->
-Palavra encontrada: constelacao
-Tempo de busca: 1445000.00 ns
-
-Buscando: computador
-Caminho percorrido: left -> left -> right -> left -> right -> left -> NULL
+Caminho percorrido: right -> left -> left -> right -> left -> NULL
 Palavra n├úo encontrada.
-Tempo de busca: 1752200.00 ns
-
-Buscando: cometa
-Caminho percorrido: left -> left -> right -> left -> info ->
-Palavra encontrada: cometa
-Tempo de busca: 1384300.00 ns
-
-Buscando: cidade
-Caminho percorrido: left -> left -> right -> left -> left -> info ->
-Palavra encontrada: cidade
-Tempo de busca: 1528000.00 ns
-
-Buscando: carro
-Caminho percorrido: left -> left -> left -> right -> info ->
-Palavra encontrada: carro
-Tempo de busca: 1088700.00 ns
-
-Buscando: cachoeira
-Caminho percorrido: left -> left -> left -> right -> left -> info ->
-Palavra encontrada: cachoeira
-Tempo de busca: 1351800.00 ns
-
-Buscando: bicicleta
-Caminho percorrido: left -> left -> left -> info ->
-Palavra encontrada: bicicleta
-Tempo de busca: 1362500.00 ns
-
-Buscando: areia
-Caminho percorrido: left -> left -> left -> left -> left -> info ->
-Palavra encontrada: areia
-Tempo de busca: 1611400.00 ns
-
-Tempo total para buscar palavras: 96386300.00 ns
-Tempo m├®dio por palavra: 3212876.67 ns
-
-
-
-
-
-
-
-
-
-
-Aleatorio: 
-
-Buscando: cachoeira
-Caminho percorrido: left -> left -> left -> right -> info ->
-Palavra encontrada: cachoeira
-Tempo de busca: 853400.00 ns
-
-Buscando: planicie
-Caminho percorrido: right -> left -> right -> info ->
-Palavra encontrada: planicie
-Tempo de busca: 630700.00 ns
-
-Buscando: bicicleta
-Caminho percorrido: left -> left -> left -> info ->
-Palavra encontrada: bicicleta
-Tempo de busca: 627600.00 ns
-
-Buscando: universo
-Caminho percorrido: right -> right -> left -> right -> info ->
-Palavra encontrada: universo
-Tempo de busca: 714300.00 ns
-
-Buscando: lua
-Caminho percorrido: info ->
-Palavra encontrada: lua
-Tempo de busca: 309800.00 ns
-
-Buscando: vento
-Caminho percorrido: right -> right -> info ->
-Palavra encontrada: vento
-Tempo de busca: 1711700.00 ns
-
-Buscando: estrela
-Caminho percorrido: left -> right -> left -> right -> left -> info ->
-Palavra encontrada: estrela
-Tempo de busca: 1513100.00 ns
+Tempo de busca: 1366300.00 ns
 
 Buscando: mar
 Caminho percorrido: right -> left -> left -> left -> info ->
 Palavra encontrada: mar
-Tempo de busca: 1439600.00 ns
+Tempo de busca: 2802600.00 ns
 
-Buscando: cometa
-Caminho percorrido: left -> info ->
-Palavra encontrada: cometa
-Tempo de busca: 3605600.00 ns
-
-Buscando: submarino
-Caminho percorrido: right -> right -> left -> left -> info ->
-Palavra encontrada: submarino
-Tempo de busca: 1455500.00 ns
-
-Buscando: chuva
-Caminho percorrido: left -> left -> right -> left -> info ->
-Palavra encontrada: chuva
-Tempo de busca: 1534500.00 ns
+Buscando: lua
+Caminho percorrido: right -> left -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 2583800.00 ns
 
 Buscando: galaxia
-Caminho percorrido: left -> right -> right -> info ->
-Palavra encontrada: galaxia
-Tempo de busca: 3723700.00 ns
+Caminho percorrido: right -> left -> left -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 2973900.00 ns
 
-Buscando: computador
+Buscando: floresta
+Caminho percorrido: left -> right -> right -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1430600.00 ns
+
+Buscando: estrela-do-mar
+Caminho percorrido: left -> right -> right -> right -> left -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 6777000.00 ns
+
+Buscando: estrela
+Caminho percorrido: left -> right -> right -> info ->
+Palavra encontrada: estrela
+Tempo de busca: 1619700.00 ns
+
+Buscando: deserto
+Caminho percorrido: left -> right -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1759800.00 ns
+
+Buscando: chuva
+Caminho percorrido: left -> left -> right -> info ->
+Palavra encontrada: chuva
+Tempo de busca: 2877200.00 ns
+
+Buscando: constelacao
 Caminho percorrido: left -> right -> left -> left -> left -> NULL
 Palavra n├úo encontrada.
-Tempo de busca: 1584800.00 ns
+Tempo de busca: 2041500.00 ns
 
-Buscando: planeta
-Caminho percorrido: right -> left -> right -> left -> info ->
-Palavra encontrada: planeta
-Tempo de busca: 1371800.00 ns
+Buscando: computador
+Caminho percorrido: left -> left -> right -> right -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1532900.00 ns
+
+Buscando: cometa
+Caminho percorrido: left -> left -> right -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1561400.00 ns
 
 Buscando: cidade
-Caminho percorrido: left -> left -> right -> info ->
-Palavra encontrada: cidade
-Tempo de busca: 3479300.00 ns
-
-Buscando: constelacao
-Caminho percorrido: left -> right -> left -> left -> info ->
-Palavra encontrada: constelacao
-Tempo de busca: 1504200.00 ns
-
-Buscando: montanha
-Caminho percorrido: right -> left -> left -> info ->
-Palavra encontrada: montanha
-Tempo de busca: 1332200.00 ns
-
-Buscando: areia
-Caminho percorrido: left -> left -> left -> left -> left -> info ->
-Palavra encontrada: areia
-Tempo de busca: 3613500.00 ns
-
-Buscando: vulcao
-Caminho percorrido: right -> right -> right -> info ->
-Palavra encontrada: vulcao
-Tempo de busca: 1479500.00 ns
-
-Buscando: tempo
-Caminho percorrido: right -> right -> left -> info ->
-Palavra encontrada: tempo
-Tempo de busca: 1487900.00 ns
-
-Buscando: terra
-Caminho percorrido: right -> right -> left -> right -> left -> info ->
-Palavra encontrada: terra
-Tempo de busca: 3572400.00 ns
-
-Buscando: rio
-Caminho percorrido: right -> left -> right -> right -> info ->
-Palavra encontrada: rio
-Tempo de busca: 1501200.00 ns
-
-Buscando: estrela-do-mar
-Caminho percorrido: left -> right -> left -> right -> info ->
-Palavra encontrada: estrela-do-mar
-Tempo de busca: 1379100.00 ns
-
-Buscando: floresta
-Caminho percorrido: left -> right -> info ->
-Palavra encontrada: floresta
-Tempo de busca: 1335600.00 ns
-
-Buscando: aviacao
-Caminho percorrido: left -> left -> left -> left -> right -> NULL
+Caminho percorrido: left -> left -> right -> right -> left -> NULL
 Palavra n├úo encontrada.
-Tempo de busca: 1529000.00 ns
-
-Buscando: nuvem
-Caminho percorrido: right -> left -> left -> right -> info ->
-Palavra encontrada: nuvem
-Tempo de busca: 1662600.00 ns
+Tempo de busca: 1903400.00 ns
 
 Buscando: carro
-Caminho percorrido: left -> left -> info ->
+Caminho percorrido: left -> left -> right -> left -> info ->
 Palavra encontrada: carro
-Tempo de busca: 1437500.00 ns
+Tempo de busca: 1249500.00 ns
 
-Buscando: deserto
-Caminho percorrido: left -> right -> left -> info ->
-Palavra encontrada: deserto
-Tempo de busca: 1459500.00 ns
+Buscando: cachoeira
+Caminho percorrido: left -> left -> left -> right -> info ->
+Palavra encontrada: cachoeira
+Tempo de busca: 1180300.00 ns
 
-Buscando: neve
-Caminho percorrido: right -> left -> left -> right -> left -> info ->
-Palavra encontrada: neve
-Tempo de busca: 1527700.00 ns
+Buscando: bicicleta
+Caminho percorrido: left -> left -> left -> right -> left -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1662700.00 ns
 
-Buscando: oceano
-Caminho percorrido: right -> left -> info ->
-Palavra encontrada: oceano
-Tempo de busca: 1473600.00 ns
+Buscando: areia
+Caminho percorrido: left -> left -> left -> left -> right -> NULL
+Palavra n├úo encontrada.
+Tempo de busca: 1927300.00 ns
 
-Tempo total para buscar palavras: 50850900.00 ns
-Tempo m├®dio por palavra: 1695030.00 ns
+Tempo total para buscar palavras: 66652700.00 ns
+Tempo m├®dio por palavra: 2221756.67 ns
+
+Gerenciamento de Mem├│ria:
+Total de mem├│ria alocada: 600 bytes
+Total de mem├│ria liberada: 0 bytes
+Aten├º├úo: Vazamento de mem├│ria detectado! (600 bytes n├úo liberados)
+Limpando mem├│ria...
+Mem├│ria liberada.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

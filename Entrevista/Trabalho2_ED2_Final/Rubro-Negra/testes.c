@@ -101,20 +101,20 @@ int main() {
 
     // Vetor de palavras para busca
       // Vetor de palavras para busca
-  char *palavrasBuscar[] = {
-    "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
-    "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
-    "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
-    "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
-    "submarino", "tempo", "terra", "universo", "vento", "vulcao"
-};
-// char *palavrasBuscar[] = {
-//     "vulcao", "vento", "universo", "terra", "tempo", "submarino",
-//     "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
-//     "neve", "montanha", "mar", "lua", "galaxia", "floresta",
-//     "estrela-do-mar", "estrela", "deserto", "chuva", "constelacao",
-//     "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
+//   char *palavrasBuscar[] = {
+//     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
+//     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
+//     "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
+//     "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
+//     "submarino", "tempo", "terra", "universo", "vento", "vulcao"
 // };
+char *palavrasBuscar[] = {
+    "vulcao", "vento", "universo", "terra", "tempo", "submarino",
+    "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
+    "neve", "montanha", "mar", "lua", "galaxia", "floresta",
+    "estrela-do-mar", "estrela", "deserto", "chuva", "constelacao",
+    "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
+};
     int numBuscar = sizeof(palavrasBuscar) / sizeof(palavrasBuscar[0]);
 
     // Realizando buscas e calculando o tempo
