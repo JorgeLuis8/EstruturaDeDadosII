@@ -186,3 +186,119 @@ int main() {
     return 0;
 }
 
+/* Função: rotate_left
+   Propósito:
+   - Realiza uma rotação à esquerda nos caracteres de uma matrícula, movendo o primeiro caractere para o final.
+
+   Funcionamento:
+   1. O primeiro caractere é armazenado em uma variável temporária.
+   2. Todos os caracteres são deslocados uma posição para a esquerda.
+   3. O caractere armazenado temporariamente é colocado na última posição.
+
+   Explicação:
+   - Essa função é usada para modificar a estrutura da matrícula e garantir maior dispersão dos valores ao aplicar uma função de hash. */
+
+/* Função: rotate_hash_function
+   Propósito:
+   - Calcula o índice hash de uma matrícula utilizando o método de rotação e extração.
+
+   Funcionamento:
+   1. A matrícula passa por uma rotação à esquerda (chamando `rotate_left`).
+   2. Os dígitos 2, 4 e 6 da matrícula são extraídos.
+   3. A soma dos valores desses dígitos é calculada.
+   4. O índice hash final é obtido como o resto da divisão dessa soma pelo tamanho da tabela.
+
+   Explicação:
+   - Este método combina diferentes dígitos da matrícula, reduzindo a probabilidade de colisões para matrículas similares. */
+
+/* Função: hash_fold_and_shift
+   Propósito:
+   - Calcula o índice hash de uma matrícula utilizando a técnica de divisão em grupos e soma.
+
+   Funcionamento:
+   1. Divide a matrícula em dois grupos de dígitos:
+      - Grupo 1: Dígitos 0, 2 e 5.
+      - Grupo 2: Dígitos 1, 3 e 4.
+   2. Cada grupo é convertido para um número inteiro.
+   3. Soma os valores dos dois grupos.
+   4. O índice hash final é obtido como o resto da divisão dessa soma pelo tamanho da tabela.
+
+   Explicação:
+   - Este método utiliza mais informações da matrícula (dois grupos) para calcular o índice hash, melhorando a dispersão. */
+
+/* Função: handle_rotation_collision
+   Propósito:
+   - Resolve colisões para o método de hash baseado em rotação, utilizando incrementos dependentes da matrícula.
+
+   Funcionamento:
+   1. Calcula um incremento baseado no primeiro dígito da matrícula.
+   2. Ajusta a posição do índice hash adicionando o incremento multiplicado pelo número de tentativas (i).
+   3. Retorna o novo índice ajustado.
+
+   Explicação:
+   - A dependência do incremento no primeiro dígito da matrícula reduz a chance de ciclos repetitivos durante a resolução de colisões. */
+
+/* Função: handle_fold_shift_collision
+   Propósito:
+   - Resolve colisões para o método de hash baseado em Fold Shift, utilizando um incremento fixo.
+
+   Funcionamento:
+   1. Define um incremento fixo (neste caso, 7).
+   2. Ajusta a posição do índice hash adicionando o incremento multiplicado pelo número de tentativas (i).
+   3. Retorna o novo índice ajustado.
+
+   Explicação:
+   - Um incremento fixo é simples de implementar e evita ciclos, funcionando bem para tabelas com tamanhos primos. */
+
+/* Função: insertEmployee
+   Propósito:
+   - Insere um funcionário na tabela hash, resolvendo colisões quando necessário.
+
+   Funcionamento:
+   1. Calcula o índice inicial usando a função de hash escolhida.
+   2. Tenta inserir o funcionário na posição calculada.
+   3. Se houver colisão:
+      - Calcula uma nova posição usando o método de resolução de colisões escolhido.
+      - Incrementa o contador de colisões.
+   4. Continua até encontrar uma posição vazia ou percorrer toda a tabela.
+
+   Explicação:
+   - Combina hashing e métodos de resolução de colisões para garantir que todos os funcionários possam ser inseridos na tabela. */
+
+/* Função: initialize_employee_table
+   Propósito:
+   - Inicializa a tabela de funcionários, marcando todas as posições como vazias.
+
+   Funcionamento:
+   1. Itera por todas as posições da tabela.
+   2. Define o campo `isOccupied` como falso para cada posição.
+
+   Explicação:
+   - Garante que a tabela hash esteja pronta para receber os funcionários, sem valores residuais. */
+
+/* Função: generate_employee_data
+   Propósito:
+   - Gera dados fictícios para os funcionários, incluindo matrícula, nome, função e salário.
+
+   Funcionamento:
+   1. Para cada funcionário:
+      - Gera uma matrícula aleatória de 6 dígitos.
+      - Cria um nome no formato "Funcionario_X".
+      - Atribui uma função no formato "Funcao_Y" (cíclico entre 4 funções).
+      - Gera um salário aleatório entre 3000 e 23000.
+
+   Explicação:
+   - Essa função simula dados reais, permitindo testar a funcionalidade da tabela hash com diferentes entradas. */
+
+/* Função: print_hash_table
+   Propósito:
+   - Exibe a tabela hash em formato tabular, mostrando os funcionários armazenados.
+
+   Funcionamento:
+   1. Percorre todas as posições da tabela.
+   2. Para cada posição:
+      - Se estiver ocupada, exibe os dados do funcionário.
+      - Caso contrário, exibe "Vazio".
+
+   Explicação:
+   - Facilita a análise visual da distribuição de funcionários na tabela hash, ajudando a identificar colisões e padrões de dispersão. */

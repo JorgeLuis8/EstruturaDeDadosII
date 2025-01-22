@@ -7,20 +7,21 @@
 #define INF DBL_MAX
 
 typedef struct {
-    int v;         // Identifica o vértice de destino desta aresta.
-    double weight; // Peso associado à aresta, pode representar custo, distância, etc.
-} Edge;            // Estrutura para representar uma aresta no grafo.
+    int v;         // Vértice de destino da aresta.
+    double weight; // Peso da aresta (calculado como -log(reliability)).
+} Edge;
 
 typedef struct {
-    Edge edges[MAX_VERTICES][MAX_VERTICES]; // Matriz de adjacência para armazenar arestas entre vértices.
+    Edge edges[MAX_VERTICES][MAX_VERTICES]; // Matriz de adjacência para armazenar arestas.
     int numVertices;                        // Número total de vértices no grafo.
     int numEdges;                           // Número total de arestas no grafo.
-} Graph;                                    // Estrutura para representar o grafo.
-
+} Graph;
 
 void initGraph(Graph *g, int numVertices) {
-    g->numVertices = numVertices;
-    g->numEdges = 0;
+    g->numVertices = numVertices; // Configura o número de vértices.
+    g->numEdges = 0;             // Inicializa o número de arestas como zero.
+
+    // Configura todas as arestas como "infinito", exceto as diagonais (peso 0 para arestas reflexivas).
     for (int i = 0; i < numVertices; i++) {
         for (int j = 0; j < numVertices; j++) {
             g->edges[i][j].weight = (i == j) ? 0.0 : INF;
@@ -28,38 +29,39 @@ void initGraph(Graph *g, int numVertices) {
     }
 }
 
+
 void addEdge(Graph *g, int u, int v, double reliability) {
     if (reliability <= 0 || reliability > 1) {
         printf("Erro: Confiabilidade deve estar no intervalo (0, 1].\n");
         exit(1);
     }
+
+    // Define o peso como -log(reliability) para modelar confiabilidade no caminho.
     g->edges[u][v].v = v;
     g->edges[u][v].weight = -log(reliability);
-    g->numEdges++;
+    g->numEdges++; // Incrementa o número total de arestas.
 }
 
+
 void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
-    // Inicializa as distâncias, predecessores, e o vetor de nós visitados.
-    double dist[MAX_VERTICES];       // Array para armazenar as menores distâncias do nó inicial.
-    int prev[MAX_VERTICES];          // Array para armazenar os predecessores no caminho.
+    double dist[MAX_VERTICES];       // Distância mínima conhecida de cada vértice ao vértice inicial.
+    int prev[MAX_VERTICES];          // Array para armazenar o predecessor de cada nó.
     int visited[MAX_VERTICES] = {0}; // Marca os nós já processados.
-    int n = g->numVertices;          // Número total de vértices no grafo.
-    int continueLoop = 1;            // Controle do loop principal.
+    int n = g->numVertices;          // Número de vértices no grafo.
 
-    // Passo 1: Inicializa as distâncias como infinito e predecessores como -1.
+    // Passo 1: Inicializa distâncias como infinito e predecessores como -1.
     for (int i = 0; i < n; i++) {
-        dist[i] = INF;   // Inicialmente, todas as distâncias são desconhecidas (infinito).
-        prev[i] = -1;    // Nenhum nó tem predecessor ainda.
+        dist[i] = INF;
+        prev[i] = -1;
     }
-    dist[start] = 0.0;    // A distância do nó inicial para ele mesmo é 0.
+    dist[start] = 0.0; // A distância do vértice inicial para ele mesmo é 0.
 
-    // Passo 2: Processa todos os vértices utilizando Dijkstra.
-    int i = 0;
-    while (i < n && continueLoop) { 
-        double minDist = INF; // Armazena a menor distância não processada.
-        int u = -1;           // Nó com a menor distância ainda não visitado.
+    // Passo 2: Executa o algoritmo de Dijkstra.
+    for (int i = 0; i < n; i++) {
+        double minDist = INF; // Menor distância encontrada para um vértice não visitado.
+        int u = -1;
 
-        // Encontra o nó não visitado com a menor distância.
+        // Encontra o próximo vértice não visitado com a menor distância.
         for (int j = 0; j < n; j++) {
             if (!visited[j] && dist[j] < minDist) {
                 minDist = dist[j];
@@ -68,26 +70,23 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
         }
 
         // Se nenhum nó acessível for encontrado, encerra o loop.
-        if (u == -1) {
-            continueLoop = 0; 
-        } else {
-            visited[u] = 1; // Marca o nó atual como visitado.
+        if (u == -1) break;
 
-            // Atualiza as distâncias para os nós vizinhos.
-            for (int v = 0; v < n; v++) {
-                if (!visited[v] && g->edges[u][v].weight < INF) { 
-                    double newDist = dist[u] + g->edges[u][v].weight; // Calcula nova distância.
-                    if (newDist < dist[v]) {
-                        dist[v] = newDist;  // Atualiza a menor distância.
-                        prev[v] = u;       // Atualiza o predecessor de v.
-                    }
+        visited[u] = 1; // Marca o vértice atual como visitado.
+
+        // Atualiza as distâncias para os vizinhos do vértice atual.
+        for (int v = 0; v < n; v++) {
+            if (!visited[v] && g->edges[u][v].weight < INF) {
+                double newDist = dist[u] + g->edges[u][v].weight;
+                if (newDist < dist[v]) {
+                    dist[v] = newDist; // Atualiza a menor distância para o vizinho.
+                    prev[v] = u;       // Atualiza o predecessor do vizinho.
                 }
             }
         }
-        i++;
     }
 
-    // Passo 3: Reconstrói o caminho do destino até a origem.
+    // Passo 3: Reconstrói o caminho do destino ao início.
     int current = end;
     int pathIndex = 0;
     while (current != -1) { // Segue os predecessores até o início.
@@ -95,86 +94,73 @@ void dijkstra(Graph *g, int start, int end, int *path, double *probability) {
         current = prev[current];
     }
 
-    // Passo 4: Calcula a probabilidade usando a distância do destino.
-    *probability = exp(-dist[end]); // A probabilidade é calculada como e^(-distância).
-
-    // Passo 5: Inverte o caminho para ficar na ordem correta (do início ao fim).
+    // Inverte o caminho para exibir do início ao fim.
     for (int i = 0; i < pathIndex / 2; i++) {
         int temp = path[i];
         path[i] = path[pathIndex - 1 - i];
         path[pathIndex - 1 - i] = temp;
     }
 
-    // Marca o final do caminho com -1 para indicar o término.
-    path[pathIndex] = -1; 
+    // Marca o fim do caminho com -1.
+    path[pathIndex] = -1;
+
+    // Passo 4: Calcula a probabilidade total como e^(-distância).
+    *probability = exp(-dist[end]);
 }
 
 
+
 int main() {
+    Graph g; // Declaração do grafo.
     int repeat = 1;
-    Graph g;
-    while (repeat == 1) {
+
+    while (repeat) {
         int n, m;
-        int erro = 0;
 
         printf("Digite o numero de vertices e arestas: ");
         if (scanf("%d %d", &n, &m) != 2 || n <= 0 || m < 0 || n > MAX_VERTICES) {
             printf("Erro: Entrada invalida para vertices ou arestas.\n");
-            erro = 1;
+            continue;
         }
 
-        if (!erro) {
-           
-            initGraph(&g, n);
+        initGraph(&g, n); // Inicializa o grafo com n vértices.
 
-            printf("Digite as arestas no formato (u v r):\n");
-            for (int i = 0; i < m; i++) {
-                int u, v;
-                double r;
-                if (scanf("%d %d %lf", &u, &v, &r) != 3 || u < 0 || v < 0 || u >= n || v >= n) {
-                    printf("Erro: Entrada invalida para arestas.\n");
-                    erro = 1;
-                    i = m; 
-                } else {
-                    addEdge(&g, u, v, r);
-                }
+        printf("Digite as arestas no formato (u v r):\n");
+        for (int i = 0; i < m; i++) {
+            int u, v;
+            double r;
+            if (scanf("%d %d %lf", &u, &v, &r) != 3 || u < 0 || v < 0 || u >= n || v >= n || r <= 0 || r > 1) {
+                printf("Erro: Entrada invalida para arestas.\n");
+                i--; // Permite tentar novamente.
+            } else {
+                addEdge(&g, u, v, r); // Adiciona a aresta ao grafo.
             }
         }
 
-        if (!erro) {
-            int start, end;
-            printf("Digite os vertices de origem e destino: ");
-            if (scanf("%d %d", &start, &end) != 2 || start < 0 || end < 0 || start >= n || end >= n) {
-                printf("Erro: Entrada invalida para origem ou destino.\n");
-                erro = 1;
-            }
-
-            if (!erro) {
-                int path[MAX_VERTICES] = {-1};
-                double probability;
-                dijkstra(&g, start, end, path, &probability);
-
-                printf("Caminho mais confiavel: ");
-                for (int i = 0; path[i] != -1; i++) {
-                    printf("%d ", path[i]);
-                }
-
-                printf("\nProbabilidade de sucesso total: %.2lf (%.2lf%%)\n", probability, probability * 100);
-            }
+        int start, end;
+        printf("Digite os vertices de origem e destino: ");
+        if (scanf("%d %d", &start, &end) != 2 || start < 0 || end < 0 || start >= n || end >= n) {
+            printf("Erro: Entrada invalida para origem ou destino.\n");
+            continue;
         }
 
-        if (erro) {
-            printf("Houve um erro. Deseja tentar novamente? (1 - Sim / 0 - Nao): ");
-        } else {
-            printf("Deseja calcular novamente? (1 - Sim / 0 - Nao): ");
+        int path[MAX_VERTICES] = {-1};
+        double probability;
+        dijkstra(&g, start, end, path, &probability);
+
+        printf("Caminho mais confiavel: ");
+        for (int i = 0; path[i] != -1; i++) {
+            printf("%d ", path[i]);
         }
-        if (scanf("%d", &repeat) != 1) {
-            repeat = 0; 
-        }
+        printf("\nProbabilidade de sucesso total: %.2lf%%\n", probability * 100);
+
+        printf("Deseja calcular novamente? (1 - Sim / 0 - Nao): ");
+        if (scanf("%d", &repeat) != 1) repeat = 0;
     }
 
     return 0;
 }
+
 /* Função: initGraph
    Propósito:
    - Inicializa o grafo, configurando todos os pesos entre os vértices como "infinito" (`INF`), exceto para loops (peso 0 para vértices conectados a si mesmos).

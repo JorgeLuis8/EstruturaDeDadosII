@@ -1,158 +1,149 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <windows.h>
-#include <time.h>
-#define MAX_CONFIGURATIONS 81
-#define INF 1000000
+#include <stdio.h> // Biblioteca padrão para entrada e saída
+#include <stdlib.h> // Biblioteca para funções úteis, como alocação de memória
+#include <math.h> // Biblioteca para cálculos matemáticos (ex.: potência)
+#include <windows.h> // Biblioteca específica do Windows (ex.: medição de tempo)
+#include <time.h> // Biblioteca para manipulação de tempo
 
+#define MAX_CONFIGURATIONS 81 // Total de configurações possíveis (3^4 = 81)
+#define INF 1000000 // Valor que representa "infinito" no algoritmo de Dijkstra
+// O infinito é usado para inicializar a distância de todos os nós, exceto o nó inicial, 
+// já que no início do algoritmo não sabemos o caminho para esses nós. 
+// Isso garante que qualquer distância calculada durante o algoritmo será menor que INF.
+
+// Estrutura para representar uma configuração
 typedef struct
 {
-    int disks[4];
+    int disks[4]; // Cada configuração tem 4 discos, com posições de 0 a 2 (3 pinos)
 } Configuration;
 
+// Função para obter o tempo em nanosegundos
 double getTime()
 {
     LARGE_INTEGER frequency, start;
-    QueryPerformanceFrequency(&frequency);
-    QueryPerformanceCounter(&start);
-    return (double)start.QuadPart / frequency.QuadPart * 1e9;
+    QueryPerformanceFrequency(&frequency); // Obtém a frequência do contador de alta precisão
+    QueryPerformanceCounter(&start); // Lê o valor atual do contador
+    return (double)start.QuadPart / frequency.QuadPart * 1e9; // Converte para nanosegundos
 }
 
+// Função para gerar todas as 81 configurações possíveis
 void generateConfigurations(Configuration *configs)
 {
-    // Declara duas variáveis inteiras, i e j, que serão usadas nos loops.
-    int i, j;
+    int i, j; // Variáveis de loop
 
-    // Loop externo: percorre todas as configurações possíveis, de 0 até MAX_CONFIGURATIONS - 1.
+    // Itera por todas as configurações possíveis (0 a 80)
     for (i = 0; i < MAX_CONFIGURATIONS; i++)
     {
-        // Loop interno: percorre cada um dos 4 discos (índices 0 a 3) da configuração atual.
+        // Para cada configuração, define o estado de cada disco (4 discos no total)
         for (j = 0; j < 4; j++)
         {
-            // Define o estado do disco 'j' na configuração 'i'.
-            // Aqui, (int)pow(3, j) calcula 3 elevado à potência 'j'.
-            // O índice 'i' é dividido por esse valor para isolar o dígito correspondente ao disco 'j'.
-            // O operador '%' (módulo) é usado para extrair o valor do disco na base 3 (resto da divisão por 3).
-            configs[i].disks[j] = (i / (int)pow(3, j)) % 3;
+            // Determina a posição do disco `j` com base no número da configuração `i`
+            configs[i].disks[j] = (i / (int)pow(3, j)) % 3; // Converte o número da configuração para base 3
         }
     }
 }
 
-
+// Função para exibir todas as configurações geradas
 void displayConfigurations(Configuration *configs)
 {
-    int i, j;
+    int i, j; // Variáveis de loop
+
     printf("\nTodas as configurações:\n");
-    for (i = 0; i < MAX_CONFIGURATIONS; i++)
+    for (i = 0; i < MAX_CONFIGURATIONS; i++) // Itera por todas as configurações
     {
-        printf("No %d: ", i);
-        for (j = 0; j < 4; j++)
+        printf("No %d: ", i); // Exibe o número da configuração
+        for (j = 0; j < 4; j++) // Itera pelos 4 discos
         {
-            printf("%d ", configs[i].disks[j] + 1);
+            printf("%d ", configs[i].disks[j] + 1); // Exibe a posição de cada disco (ajustada para 1 a 3)
         }
-        printf("\n");
+        printf("\n"); // Nova linha após cada configuração
     }
 }
 
+// Função para verificar se uma configuração é um movimento válido de outra
 int isValidMove(Configuration a, Configuration b)
 {
-    // Contador para saber quantos discos mudaram de posição.
-    int diffCount = 0;
+    int diffCount = 0; // Contador para diferenças entre as configurações
+    int from = -1, to = -1; // Armazena de onde e para onde o disco foi movido
+    int smallestDisk = -1; // Índice do menor disco movido
+    int isValid = 1; // Assume que o movimento é válido
+    int i; // Variável de loop
 
-    // Variáveis para armazenar de onde veio e para onde foi o disco movido.
-    int from = -1, to = -1;
-
-    // Armazena o índice do menor disco (mais alto na torre) que foi movido.
-    int smallestDisk = -1;
-
-    // Assume que o movimento é válido até provar o contrário.
-    int isValid = 1;
-
-    // Variável para percorrer os discos.
-    int i;
-
-    // Passo 1: Identificar discos que mudaram de posição entre as configurações.
+    // Identifica discos que mudaram de posição
     for (i = 0; i < 4; i++)
     {
-        // Verifica se o estado do disco `i` é diferente entre `a` e `b`.
-        if (a.disks[i] != b.disks[i])
+        if (a.disks[i] != b.disks[i]) // Se a posição do disco mudou
         {
-            // Incrementa o número de diferenças encontradas.
-            diffCount++;
+            diffCount++; // Incrementa o número de diferenças
 
-            // Se mais de um disco mudou, o movimento é inválido.
-            if (diffCount > 1)
+            if (diffCount > 1) // Se mais de um disco mudou, o movimento é inválido
             {
                 isValid = 0;
             }
             else
             {
-                // Armazena de onde veio (from) e para onde foi (to) o disco movido.
-                from = a.disks[i];
-                to = b.disks[i];
-
-          
-                smallestDisk = i;
+                from = a.disks[i]; // Armazena de onde o disco foi movido
+                to = b.disks[i]; // Armazena para onde o disco foi movido
+                smallestDisk = i; // Armazena o índice do menor disco movido
             }
         }
     }
 
-  
-    if (diffCount != 1)
+    if (diffCount != 1) // Se nenhum ou mais de um disco foi movido
     {
-        isValid = 0; 
+        isValid = 0;
     }
 
     i = 0;
-    while (i < smallestDisk && isValid)
+    while (i < smallestDisk && isValid) // Verifica se discos menores bloqueiam o movimento
     {
-     
-        if (a.disks[i] == from || b.disks[i] == to)
+        if (a.disks[i] == from || b.disks[i] == to) // Se um disco menor está no caminho
         {
-            isValid = 0; 
+            isValid = 0;
         }
         i++;
     }
 
-    return isValid;
+    return isValid; // Retorna se o movimento é válido ou não
 }
 
-
+// Função para construir o grafo representando todas as configurações e movimentos válidos
 void buildGraph(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], Configuration *configs)
 {
+    int i, j; // Variáveis de loop
 
-    int i, j;
-
-
+    // Inicializa o grafo com base nas configurações
     for (i = 0; i < MAX_CONFIGURATIONS; i++)
     {
         for (j = 0; j < MAX_CONFIGURATIONS; j++)
         {
-          
+            // Define o peso da aresta como 1 se o movimento for válido, caso contrário, infinito
             graph[i][j] = isValidMove(configs[i], configs[j]) ? 1 : INF;
         }
     }
 }
 
+// Algoritmo de Dijkstra para encontrar o menor caminho entre duas configurações
 void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int end, Configuration *configs)
 {
     int dist[MAX_CONFIGURATIONS], prev[MAX_CONFIGURATIONS], visited[MAX_CONFIGURATIONS] = {0};
     int i, j, v, at;
-    int loopControl = 1;
+    int loopControl = 1; // Controle do loop principal
 
+    // Inicializa as distâncias como infinito e o nó anterior como -1
     for (i = 0; i < MAX_CONFIGURATIONS; i++)
     {
         dist[i] = INF;
         prev[i] = -1;
     }
-    dist[start] = 0;
+    dist[start] = 0; // Distância da configuração inicial para ela mesma é 0
 
+    // Loop principal de Dijkstra
     i = 0;
     while (i < MAX_CONFIGURATIONS && loopControl)
     {
         int minDist = INF, u = -1;
 
+        // Encontra o próximo nó com a menor distância
         for (j = 0; j < MAX_CONFIGURATIONS; j++)
         {
             if (!visited[j] && dist[j] < minDist)
@@ -162,36 +153,39 @@ void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int 
             }
         }
 
-        if (u == -1)
+        if (u == -1) // Se nenhum nó não visitado foi encontrado, encerra
         {
             loopControl = 0;
         }
         else
         {
-            visited[u] = 1;
+            visited[u] = 1; // Marca o nó como visitado
 
+            // Atualiza as distâncias dos vizinhos
             for (v = 0; v < MAX_CONFIGURATIONS; v++)
             {
                 if (graph[u][v] != INF && dist[u] + graph[u][v] < dist[v])
                 {
                     dist[v] = dist[u] + graph[u][v];
-                    prev[v] = u;
+                    prev[v] = u; // Atualiza o nó anterior
                 }
             }
         }
         i++;
     }
 
+    // Exibe o menor caminho e sua distância
     printf("Menor caminho do início ao final: %d movimentos\n", dist[end]);
     printf("Caminho:\n");
 
+    // Reconstrói o caminho
     int path[MAX_CONFIGURATIONS], pathIndex = 0;
-
     for (at = end; at != -1; at = prev[at])
     {
         path[pathIndex++] = at;
     }
 
+    // Exibe o caminho reconstruído
     for (i = pathIndex - 1; i >= 0; i--)
     {
         printf("Configuracao %d: [", path[i]);
@@ -205,16 +199,18 @@ void dijkstra(int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS], int start, int 
     }
 }
 
+// Função principal
 int main()
 {
-    Configuration configs[MAX_CONFIGURATIONS];
-    int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS];
-    int choice, start, end;
-    double startTime, endTime;
+    Configuration configs[MAX_CONFIGURATIONS]; // Array de configurações
+    int graph[MAX_CONFIGURATIONS][MAX_CONFIGURATIONS]; // Matriz de adjacência do grafo
+    int choice, start, end; // Opções e configurações inicial e final
+    double startTime, endTime; // Para medir o tempo de execução
 
-    generateConfigurations(configs);
-    buildGraph(graph, configs);
+    generateConfigurations(configs); // Gera todas as configurações possíveis
+    buildGraph(graph, configs); // Constrói o grafo com movimentos válidos
 
+    // Menu interativo
     do
     {
         printf("\n========== MENU ==========\n");
@@ -223,35 +219,53 @@ int main()
         printf("3. Sair\n");
         printf("==========================\n");
         printf("Escolha uma opcao: ");
-        scanf("%d", &choice);
+        scanf("%d", &choice); // Lê a opção do usuário
 
         switch (choice)
         {
         case 1:
-            displayConfigurations(configs);
+            displayConfigurations(configs); // Exibe todas as configurações
             break;
         case 2:
             printf("Digite a configuracao inicial (0 a 80): ");
-            scanf("%d", &start);
+            scanf("%d", &start); // Lê a configuração inicial
             printf("Digite a configuracao final (0 a 80): ");
-            scanf("%d", &end);
+            scanf("%d", &end); // Lê a configuração final
 
-            startTime = getTime();
-            dijkstra(graph, start, end, configs);
-            endTime = getTime();
+            startTime = getTime(); // Marca o tempo inicial
+            dijkstra(graph, start, end, configs); // Executa o algoritmo de Dijkstra
+            endTime = getTime(); // Marca o tempo final
 
-            printf("Tempo gasto: %.2lf nanosegundos\n", endTime - startTime);
+            printf("Tempo gasto: %.2lf nanosegundos\n", endTime - startTime); // Exibe o tempo gasto
             break;
         case 3:
-            printf("Saindo...\n");
+            printf("Saindo...\n"); // Finaliza o programa
             break;
         default:
-            printf("Opcao invalida!\n");
+            printf("Opcao invalida!\n"); // Opção inválida
         }
-    } while (choice != 3);
+    } while (choice != 3); // Continua enquanto o usuário não escolher sair
 
-    return 0;
+    return 0; // Indica que o programa terminou com sucesso
 }
+/* 
+    Por que usamos o algoritmo de Dijkstra?
+
+    1. **Arestas com pesos positivos**:
+       - Todas as arestas no grafo têm peso positivo (1 ou INF).
+       - O Dijkstra é otimizado para encontrar o menor caminho em grafos com pesos positivos.
+       - O Bellman-Ford é necessário apenas quando existem arestas com pesos negativos, o que não é o caso aqui.
+
+    2. **Eficiência**:
+       - O Dijkstra tem complexidade O(V + E * log(V)) quando implementado com uma fila de prioridade.
+       - O Bellman-Ford, por outro lado, tem complexidade O(V * E), tornando-o mais lento em grafos densos como este.
+
+    3. **Menor caminho com pesos uniformes**:
+       - Como todas as arestas válidas têm peso 1, o Dijkstra consegue encontrar o menor número de movimentos de forma rápida e eficiente.
+
+    Resumo:
+    O algoritmo de Dijkstra é a melhor escolha para este problema porque é mais eficiente e adequado para grafos com arestas de peso positivo e uniforme.
+*/
 
 
 // Struct Configuration
