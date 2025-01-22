@@ -117,13 +117,13 @@ int main()
     }
     printf("Palavras inseridas com sucesso.\n\n");
 
-char *palavrasBuscar[] = {
-    "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
-    "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
-    "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
-    "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
-    "submarino", "tempo", "terra", "universo", "vento", "vulcao"
-};
+// char *palavrasBuscar[] = {
+//     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
+//     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
+//     "estrela-do-mar", "floresta", "galaxia", "lua", "mar", "montanha",
+//     "neve", "nuvem", "oceano", "planeta", "planicie", "rio", "sol",
+//     "submarino", "tempo", "terra", "universo", "vento", "vulcao"
+// };
 // char *palavrasBuscar[] = {
 //     "vulcao", "vento", "universo", "terra", "tempo", "submarino",
 //     "sol", "rio", "planicie", "planeta", "oceano", "nuvem",
@@ -132,13 +132,13 @@ char *palavrasBuscar[] = {
 //     "computador", "cometa", "cidade", "carro", "cachoeira", "bicicleta", "areia"
 // };
 
-// char *palavrasBuscar[] = {
-//     "cachoeira", "planicie", "bicicleta", "universo", "lua", "vento",
-//     "estrela", "mar", "cometa", "submarino", "chuva", "galaxia",
-//     "computador", "planeta", "cidade", "constelacao", "montanha", "areia",
-//     "vulcao", "tempo", "terra", "rio", "estrela-do-mar", "floresta",
-//     "aviacao", "nuvem", "carro", "deserto", "neve", "oceano"
-// };
+char *palavrasBuscar[] = {
+    "cachoeira", "planicie", "bicicleta", "universo", "lua", "vento",
+    "estrela", "mar", "cometa", "submarino", "chuva", "galaxia",
+    "computador", "planeta", "cidade", "constelacao", "montanha", "areia",
+    "vulcao", "tempo", "terra", "rio", "estrela-do-mar", "floresta",
+    "aviacao", "nuvem", "carro", "deserto", "neve", "oceano"
+};
 
 
     int numBuscar = sizeof(palavrasBuscar) / sizeof(palavrasBuscar[0]);

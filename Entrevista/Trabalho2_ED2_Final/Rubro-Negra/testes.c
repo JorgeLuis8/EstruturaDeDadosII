@@ -87,7 +87,7 @@ int main() {
         insertPortugueseWord(&arvore, palavras[i], "tradução", i % 3 + 1);
     }
 
-    // Vetor de palavras para busca
+//     // Vetor de palavras para busca
 //   char *palavrasBuscar[] = {
 //     "areia", "aviacao", "bicicleta", "cachoeira", "carro", "cidade",
 //     "cometa", "computador", "constelacao", "chuva", "deserto", "estrela",
