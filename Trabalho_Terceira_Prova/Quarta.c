@@ -97,13 +97,24 @@ void initialize_employee_table(Employee *tabela, int tamanho_tabela) {
     }
 }
 
-
 void generate_employee_data(Employee *dados, int total) {
     for (int i = 0; i < total; i++) {
-        sprintf(dados[i].Id, "%06d", rand() % 1000000);
+        // Gera cada dígito da matrícula individualmente para maior variação
+        for (int j = 0; j < 6; j++) {
+            dados[i].Id[j] = '0' + (rand() % 10); // Gera dígitos de 0 a 9
+        }
+        dados[i].Id[6] = '\0'; // Adiciona o terminador de string
+
+        // Gera um nome fictício baseado no índice
         sprintf(dados[i].userName, "Funcionario_%d", i);
+
+        // Define funções ciclicamente entre 4 valores
         sprintf(dados[i].functionName, "Funcao_%d", i % 4);
-        dados[i].salary = 3000 + rand() % 20000;
+
+        // Gera salários aleatórios entre 3000 e 23000
+        dados[i].salary = 3000 + (rand() % 20000);
+
+        // Inicializa o status de ocupação como falso
         dados[i].isOccupied = false;
     }
 }
