@@ -114,7 +114,7 @@ int main()
     int option; // Variável para armazenar a opção do menu
 
     // Carrega o arquivo de palavras e popula a árvore binária
-    loadFile("C:\\Users\\jorge\\OneDrive\\Documentos\\GitHub\\EstruturaDeDadosII\\dicionario.txt", &rootNode);
+    loadFile("C:\\Users\\jorge\\OneDrive\\Documentos\\GitHub\\EstruturaDeDadosII\\Entrevista\\Trabalho2_ED2_Final\\dicionario.txt", &rootNode);
 
     do
     {
@@ -192,7 +192,7 @@ int main()
         }
     } while (option != 0); // Continua no loop enquanto a opção não for 0 (sair)
 
-    deallocateTree(&rootNode); // Libera a memória da árvore antes de sair
+    //deallocateTree(&rootNode); // Libera a memória da árvore antes de sair
 
     return 0; // Encerra o programa com sucesso
 }
